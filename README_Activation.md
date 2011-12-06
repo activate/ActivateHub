@@ -4,13 +4,13 @@ Activation Calendar
 Setup
 -----
 * Install git.  (`apt-get install git` on Ubuntu).
-* Download the code from https://github.com/PDXHub/activation_calendar.
-    git clone git://github.com/PDXHub/activation_calendar.git
+* Download the code from https://github.com/activate/activation_calendar.
+    git clone git://github.com/activate/activation_calendar.git
 * Note that you probably need some prerequisite packages (related to xml and ssl).  See the requirements for RVM and Rails.
 * Follow the Calagator setup instructions in INSTALL.md, except that:
   * Download [RVM](http://beginrescueend.com/rvm/install), and use that to get rails 3. I followed these instructions for getting requirements: http://stuffingabout.blogspot.com/2011/04/installing-rails-3-on-ubuntu-1104.html.  Your mileage may vary; please update this file if you have better instructions.
   * Instead of downloading calagator code, you have already downloaded Activation Calendar.
-* Follow the Development instructions (but instead of running `./scripts/server`, run `rails server`).  You should now see the site running at http://localhost:3000
+* Follow the Development instructions (e.g. run `rails server`).  You should now see the site running at http://localhost:3000
 
 Verify Setup
 ------------
