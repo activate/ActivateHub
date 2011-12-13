@@ -42,6 +42,7 @@ class Event < ActiveRecord::Base
   belongs_to :venue, :counter_cache => true
   belongs_to :source
   belongs_to :organization
+  has_and_belongs_to_many :types
 
   # Triggers
   before_validation :normalize_url!
