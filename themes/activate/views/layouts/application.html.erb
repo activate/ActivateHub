@@ -91,6 +91,12 @@
       </div>
 
       <div class="content">
+        <% if content_for?(:breadcrumbs) %>
+          <ul class="breadcrumb">
+            <li><a href="#">Home</a> <span class="divider">/</span></li>
+            <%= yield :breadcrumbs %>
+          </ul>
+        <% end %>
         <%# flash[:success] = "yay"; flash[:failure] = "meh" %>
         <%= render_flash %>
         <%= yield %>
