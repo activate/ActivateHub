@@ -64,4 +64,12 @@
   </div>
 <% end %>
 
+<% if @event.organization %>
+  <% content_for :breadcrumbs do %>
+    <li><a href='<%= organization_url(@event.organization) %>'><%= @event.organization.name %></a>
+        <span class="divider">/</span></li>
+    <li class="active"><%= @event.title %></li>
+  <% end %>
+<% end %>
+
 <%= render :partial => 'events/item', :locals => {:event => @event} %>
