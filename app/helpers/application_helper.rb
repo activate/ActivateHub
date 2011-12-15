@@ -17,13 +17,21 @@ module ApplicationHelper
 
   FLASH_TYPES = [:success, :failure]
 
-  def render_flash
-    FLASH_TYPES.map{|type|
-      next unless flash[type].present?
-      content_tag(:div, :class => "flash #{type} flash_#{type}") do
-        "#{type == :failure ? 'ERROR: ' : ''}#{flash[type]}".html_safe
-      end
-    }.compact.join.html_safe
+  def twitterized_type(type)
+    case type
+      when :alert
+        "warning"
+      when :error
+        "error"
+      when :notice
+        "info"
+      when :success
+        "success"
+      when :failure
+        "error"
+      else
+        type.to_s
+    end
   end
 
   def datetime_format(time,format)
