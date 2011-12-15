@@ -66,7 +66,7 @@
               %a{:href => "#"} Home
               %span.divider /
             = yield :breadcrumbs
-        - flash[:success] = "yay"; flash[:failure] = "meh"; flash[:notice] = "note"; flash[:error] = "meh"; flash[:warn] = "look!"
+        -# flash[:success] = "yay"; flash[:failure] = "meh"; flash[:notice] = "note"; flash[:error] = "meh"; flash[:warn] = "look!"
         = render :partial => "shared/flash_messages.html", :locals => {:flash => flash}
         = yield
     - if Rails.env == 'production'

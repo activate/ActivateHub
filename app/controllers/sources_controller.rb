@@ -125,6 +125,7 @@ class SourcesController < ApplicationController
         format.html { redirect_to( source_path(@source) ) }
         format.xml  { head :ok }
       else
+        flash[:error] = 'Source edit didn\'t validate.'
         format.html { render :action => "edit" }
         format.xml  { render :xml => @source.errors, :status => :unprocessable_entity }
       end
