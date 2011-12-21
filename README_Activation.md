@@ -16,35 +16,9 @@ Note: these install steps need to be checked. Please provide feedback on anythin
 * Start the server in development mode: `rails server`. You can now see the site at http://localhost:3000
 * Run the test suite: `rake`
 
-Verify Setup
-------------
-Run 'rails db' and it drops you in sqlite3 command, where the `.database` and `.tables` sqlite3 commands show that you have some tables in the development.sqlite3 database (which, prior to runnining `bundle exec rake db:migrate db:test:prepare` in the Calagator development instructions was empty):
-    shark@eos:~/dev/activation_calendar(activate_theme)$ rails db
-    SQLite version 3.7.4
-    Enter ".help" for instructions
-    Enter SQL statements terminated with a ";"
-    sqlite> .database
-    seq  name             file
-    ---  ---------------  ----------------------------------------------------------
-    0    main             /home/shark/dev/activation_calendar/db/development.sqlite3
-    sqlite> .tables
-    events             sources            tags               venues
-    schema_migrations  taggings           updates            versions
-
-
-
 Development Conventions
 -----------------------
 * Implement new features on feature branches in git (ex: `git checkout -b full-calendalar` ... hackhackhack... `git commit; git checkout master; git merge full-calendar`).
-
-Model Notes
------------------------
-Calagator comes with Events, Tags, Venues, and Sources.  Activate makes the following modifications:
- * New model added: Organization (which can have Sources and Events).
- * Tags on Events and Venues stores the information for Type, Topics, and Neighborhood, like so:
-   * A tag is stored like type:protest on an Event to represent a Protest.
-   * A tag is stored like 'beekeeping' on an Event to represent the 'beekeeping' Topic.
-   * A tag is stored like 'hood:SW' on a Venue to represent the SW Neighborhood.
 
 See Also
 --------
