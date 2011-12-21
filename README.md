@@ -12,13 +12,13 @@ By releasing this code under a liberal MIT open source license, we hope to empow
 Releases
 --------
 
-The stable releases this software are tagged with version numbers, such as `v0.20090416-ac`, that represent the date they were made. There is also a `stable` branch that points to the current stable release. We're not currently updating [[CHANGES.md]], so look at the commit log to find out what has changed.
+The stable releases this software are tagged with version numbers, such as `v0.20090416-ac`, that represent the date they were made. There is also a `stable` branch that points to the current stable release. We're not currently updating [CHANGES.md](https://github.com/activate/activation_calendar/blob/master/CHANGES.md), so look at the commit log to find out what has changed.
 
 
 Installing
 ----------
 
-Read the [INSTALL.md] file for details on installing the software.
+Read [INSTALL.md](https://github.com/activate/activation_calendar/blob/master/INSTALL.md) for details on installing the software.
 
 
 Contributing
@@ -35,16 +35,16 @@ Activation Calendar is based on the [Calagator](http://calagator.org/) project [
 Contributors
 ------------
 
-This free, open source software was made possible by a group of volunteers that put many hours of hard work into it. See the [CONTRIBUTORS.md](http://github.com/calagator/calagator/blob/master/CONTRIBUTORS.md) file for details.
+This free, open source software was made possible by a group of volunteers that put many hours of hard work into it. See the [CONTRIBUTORS.md](https://github.com/activate/activation_calendar/blob/master/CONTRIBUTORS.md) file for details.
 
 
 License
 -------
 
-This program is provided under an MIT open source license, read the [LICENSE.txt](http://github.com/calagator/calagator/blob/master/LICENSE.txt) file for details.
+This program is provided under an MIT open source license, read the [LICENSE.txt](https://github.com/activate/activation_calendar/blob/master/LICENSE.txt) file for details.
 
 
 Copyright
 ---------
 
-Copyright (c) 2007-2011 Calagator
+Copyright (c) 2012 Activation Calendar
