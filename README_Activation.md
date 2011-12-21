@@ -3,14 +3,18 @@ Activation Calendar
 
 Setup
 -----
+
+Note: these install steps need to be checked. Please provide feedback on anything that didn't work and workarounds you used.
+
 * Install git.  (`apt-get install git` on Ubuntu).
-* Download the code from https://github.com/activate/activation_calendar.
-    git clone git://github.com/activate/activation_calendar.git
-* Note that you probably need some prerequisite packages (related to xml and ssl).  See the requirements for RVM and Rails.
-* Follow the Calagator setup instructions in INSTALL.md, except that:
-  * Download [RVM](http://beginrescueend.com/rvm/install), and use that to get rails 3. I followed these instructions for getting requirements: http://stuffingabout.blogspot.com/2011/04/installing-rails-3-on-ubuntu-1104.html.  Your mileage may vary; please update this file if you have better instructions.
-  * Instead of downloading calagator code, you have already downloaded Activation Calendar.
-* Follow the Development instructions (e.g. run `rails server`).  You should now see the site running at http://localhost:3000
+* Fork the repo on github and check it out locally.
+* You'll need Ruby 1.8.* or 1.9.*. and Ruby Gems. If you have a Mac, you may already have these installed. On Linux, you can install them through the package manager. Most professional Ruby programmers seem to use [RVM](http://beginrescueend.com/) to compile their own Ruby. Take the route you feel most comfortable with, you can always change later.
+* `gem install bundler`
+* `cd` to the project root
+* To install project dependencies, run `bundle`
+* Initialize your environment: `rake db:migrate db:test:prepare`
+* Start the server in development mode: `rails server`. You can now see the site at http://localhost:3000
+* Run the test suite: `rake`
 
 Verify Setup
 ------------
