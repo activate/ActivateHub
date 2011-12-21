@@ -1,7 +1,7 @@
 Activation Calendar
 ===================
 
-Goal: A calendar of all the Progressive, Educational, Volunteer-Oriented events in your city, filterable by event type, topic and neighborhood. [more info](http://activatehub.org/).
+Goal: A calendar of all the Progressive, Educational, Volunteer-Oriented events in your city, filterable by event type, topic and neighborhood - [more info](http://activatehub.org/)
 
 Why
 ---
@@ -18,7 +18,7 @@ The stable releases this software are tagged with version numbers, such as `v0.2
 Installing
 ----------
 
-Read the [INSTALL.md](http://github.com/calagator/calagator/blob/master/INSTALL.md) file for details on installing the software.
+Read the [INSTALL.md] file for details on installing the software.
 
 
 Contributing
