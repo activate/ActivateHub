@@ -1,14 +1,10 @@
 
 <% content_for :css_insert do %>
-  <%= stylesheet_link_tag \
-    "fullcalendar"
-  %>
+  <%= theme_stylesheet_link_tag 'fullcalendar' %>
 <% end %>
 
 <% content_for :javascript_insert do %>
-  <%= javascript_include_tag \
-    'fullcalendar.min.js'
-  %>
+  <%= theme_javascript_include_tag 'fullcalendar.min' %>
   <script>
     $(document).ready(function() {
       $('#calendar').fullCalendar({
