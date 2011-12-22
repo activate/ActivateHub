@@ -13,7 +13,10 @@
 
 <% content_for :sidebar do %>
   <div class='box'>
-    <%= link_to 'Edit this organization', edit_organization_url %> 
+    <ul>
+    	<li><%= link_to 'Edit this organization', edit_organization_url %> 
+    	<li><%= link_to 'Import events from an existing source', new_organization_source_path(@organization) %>
+    </ul>
   </div>
 <%# link_to 'Destroy', @organization, :confirm => 'Are you sure?', :method => :delete %>
 <% end %>

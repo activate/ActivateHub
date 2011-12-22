@@ -1,6 +1,5 @@
 <h1>Editing source</h1>
-
-<%= semantic_form_for(@source) do |f| %>
+<%= semantic_form_for [@source.organization, @source] do |f| %>
   <%= f.inputs do %>
     <%= f.input :title %>
     <%= f.input :url %>
@@ -10,6 +9,3 @@
     <%= f.submit "Update" %>
   <% end %>
 <% end %>
-
-<%= link_to 'Show', @source %> |
-<%= link_to 'Back', sources_path %>
