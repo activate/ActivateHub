@@ -1,0 +1,22 @@
+<h1>Listing sources</h1>
+
+<table>
+  <tr>
+    <th>Manage</th>
+    <th>URL</th>
+  </tr>
+
+  <% for source in @sources %>
+  <tr class="<%= cycle 'odd', 'even' %>">
+    <td>
+      <%= link_to 'Show', organization_source_path(params[:organization_id], source) %> | 
+      <%= link_to 'Destroy', organization_source_path(params[:organization_id], source), :confirm => 'Are you sure?', :method => :delete %>
+    </td>
+    <td><%= source_url_link source %></td>
+  </tr>
+  <% end %>
+</table>
+
+<br />
+
+<%= will_paginate @versions %>

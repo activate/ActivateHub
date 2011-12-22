@@ -19,13 +19,15 @@ Calagator::Application.routes.draw do
     end
   end
 
-  resources :sources do
-    collection do
-      put :import
+  resources :organizations do
+    resources :sources do
+      collection do
+        post :import
+      end
     end
   end
 
-  resources :organizations
+    
 
   resources :venues do
     collection do

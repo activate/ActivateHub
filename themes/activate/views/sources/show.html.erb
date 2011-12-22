@@ -1,0 +1,16 @@
+<% content_for :discovery_insert do %>
+  <link rel="alternate" type="application/x-wiki" title="Edit this page" href="<%= edit_organization_source_url(@source) %>" />
+<% end %>
+
+<p>
+  <b>URL:</b>
+  <%= source_url_link @source %>
+</p>
+
+<p>
+   <b>Events:</b>
+   <%= render :partial => 'events/list', :locals => { :events =>  @source.events } %>
+</p>
+
+<%= link_to 'Back', organization_sources_path %> |
+<%= link_to 'Destroy', organization_source_path(params[:organization_id], @source), :confirm => 'Are you sure?', :method => :delete %>
