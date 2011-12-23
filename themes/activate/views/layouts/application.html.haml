@@ -39,8 +39,8 @@
         .container-fluid
           %a.brand{:href => "/", :title => SETTINGS.name}= theme_image_tag 'logo_dark_sm.png'
           %ul.nav
-            %li{:class => link_class[:organizations]}= link_to "Organizations", organizations_path
             %li{:class => link_class[:events]}= link_to "Events", events_path
+            %li{:class => link_class[:organizations]}= link_to "Organizations", organizations_path
             %li{:class => link_class[:venues]}= link_to "Venues", venues_path
           .pull-right
             = form_tag '/events/search', :method => :get do
