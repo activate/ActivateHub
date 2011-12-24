@@ -8,7 +8,8 @@
 
 Type.create(
  [ 
-	 { :name => 'volunteer' }, { :name => 'social' }, 
-	 { :name => 'meeting' }, { :name => 'educational'},
-	 { :name => 'action'}, { :name => 'other' }
+   { :name => 'volunteer' }, { :name => 'social' },
+   { :name => 'meeting' }, { :name => 'educational'},
+   { :name => 'rally'}, { :name => 'other' },
+   { :name => 'film screening'}
  ]);
