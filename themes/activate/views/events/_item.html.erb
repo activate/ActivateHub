@@ -104,5 +104,12 @@ html_classes << " contentbar" if has_contentbar
     </div>
     <% end %>
 
+    <% unless event.topics.blank? -%>
+    <h3>Topics</h3>
+    <div class="topics">
+        <%= event.topics.map{ |x| x.name }.join(', ') %>
+    </div>
+    <% end %>
+
   </div>
 </div>

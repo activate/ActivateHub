@@ -43,6 +43,7 @@ class Event < ActiveRecord::Base
   belongs_to :source
   belongs_to :organization
   has_and_belongs_to_many :types
+  has_and_belongs_to_many :topics
 
   # Triggers
   before_validation :normalize_url!

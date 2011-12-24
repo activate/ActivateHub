@@ -136,6 +136,7 @@
                 :hint => "(Tags are comma-separated keywords that make it easier to find your event and boost its position in searches. You can also use a tag like <code>plancast:plan=ABCD</code> to associate this with a particular <a href='http://plancast.com/'>Plancast</a> event, or a tag like <code>epdx:group=1234</code> to associate the event with a particular <a href='http://epdx.org/'>ePDX</a> group)".html_safe %>
 
     <%= f.input :types, :input_html => { :class => 'required chzn-select' } %>
+    <%= f.input :topics, :input_html => { :class => 'required chzn-select' } %>
 
     <li class='trap'>
       <%= label 'trap', 'field', "Leave this field blank or we'll think you're a robot." %>
