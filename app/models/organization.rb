@@ -1,6 +1,7 @@
 class Organization < ActiveRecord::Base
   has_many :events # we might want :dependent => :destroy later
   has_many :sources
+  has_and_belongs_to_many :topics
 
   # Validations
   validates_presence_of :name
