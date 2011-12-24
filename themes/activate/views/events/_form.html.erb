@@ -96,15 +96,7 @@
     <%= f.input :title, :label => "Event Name" %>
     <% focus_on '#event_title' %>
 
-    <!-- Organizaton Autocomplete Form Element (name + hidden id) -->
-    <li class="string input required stringish" id="event_organization_title_input">
-      <%= f.label :organization_id, "Organization", :class => 'label' %>
-      <%= autocomplete_field_tag 'organization_name', '', autocomplete_organization_name_events_path, :id_element => '#organization_id' %>
-      <%= hidden_field(:event, :organization_id, :id => 'organization_id', :value => (!event.organization.nil? ? event.organization.id : params[:event_organization_id])) %>
-      <p class='inline-hints'>
-        Type the name of an organization to search.
-      </p>
-    </li>
+    <%= f.input :organization, :input_html => { :class => 'required chzn-select' } %>
    
     <li class="string input required stringish" id="event_venue_title_input">
       <%= f.label :venue_id, "Venue", :class => 'label' %>

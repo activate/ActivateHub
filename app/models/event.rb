@@ -189,30 +189,6 @@ class Event < ActiveRecord::Base
   end
 
 
- # Associate this event with the +organization+. The +organization+ can be given as an Organization
-  # instance, an ID, or a title.
-  def associate_with_organization(organization)
-    organization = \
-      case organization
-      when Organization then organization
-      when NilClass then nil
-      when String   then Organization.find_or_initialize_by_name(organization)
-      when Fixnum   then Organization.find(organization)
-      else raise TypeError, "Unknown type: #{organization.class}"
-      end
-
-    if organization && ((self.organization && self.organization != organization) || (!self.organization))
-      # Set organization if one is provided and it's different than the current, or no organization is currently set.
-      self.organization = organization
-    elsif !organization && self.organization
-      # Clear the event's organization field
-      self.organization = nil
-    end
-
-    return self.organization
-  end
-
-
   # Returns groups of records for the site overview screen in the following format:
   #
   #   {
