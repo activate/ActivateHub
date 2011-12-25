@@ -4,6 +4,10 @@ class SourcesController < ApplicationController
   # Import sources
   def import
     @source = Source.find_or_create_from(params[:source])
+    @source.organization = Organization.find(params[:organization_id])
+    @source.save
+
+
     @events = nil # nil means events were never assigned, while [] means no events were found
 
     valid = @source.valid?
@@ -56,7 +60,7 @@ class SourcesController < ApplicationController
   # GET /sources
   # GET /sources.xml
   def index
-    @sources = Source.listing
+    @sources = Source.where('organization_id' => params[:organization_id])
 
     respond_to do |format|
       format.html { @sources = @sources.paginate(:page => params[:page], :per_page => params[:per_page]) }
@@ -95,6 +99,7 @@ class SourcesController < ApplicationController
   # GET /sources/1/edit
   def edit
     @source = Source.find(params[:id])
+    @organization = Organization.find(params[:organization_id])
   end
 
   # POST /sources
@@ -105,7 +110,7 @@ class SourcesController < ApplicationController
     respond_to do |format|
       if @source.save
         flash[:notice] = 'Source was successfully created.'
-        format.html { redirect_to( source_path(@source) ) }
+        format.html { redirect_to( organization_source_path(@source) ) }
         format.xml  { render :xml => @source, :status => :created, :location => @source }
       else
         format.html { render :action => "new" }
@@ -125,6 +130,7 @@ class SourcesController < ApplicationController
         format.html { redirect_to( source_path(@source) ) }
         format.xml  { head :ok }
       else
+        flash[:error] = 'Source edit didn\'t validate.'
         format.html { render :action => "edit" }
         format.xml  { render :xml => @source.errors, :status => :unprocessable_entity }
       end
@@ -138,8 +144,12 @@ class SourcesController < ApplicationController
     @source.destroy
 
     respond_to do |format|
-      format.html { redirect_to(sources_url) }
+      format.html { redirect_to(organization_sources_url) }
       format.xml  { head :ok }
     end
+  end
+
+  def source_path(source)
+    return self.organization_source_path source.organization, source
   end
 end

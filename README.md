@@ -1,18 +1,7 @@
-Calagator
-=========
+Activation Calendar
+===================
 
-
-About
------
-
-Calagator is an open source community calendaring platform:
-
-  * [Calagator.org](http://calagator.org/) is the flagship website running this software.
-  * [Source code](http://github.com/calagator/calagator/) is available.
-  * [Mailing list](http://groups.google.com/group/pdx-tech-calendar/) for discussion about the software.
-  * [Wiki](http://code.google.com/p/calagator/) features many useful articles on using and developing.
-  * [Issue tracker](http://code.google.com/p/calagator/issues/list) lists outstanding issues and
-
+Goal: A calendar of all the Progressive, Educational, Volunteer-Oriented events in your city, filterable by event type, topic and neighborhood - [more info](http://activatehub.org/)
 
 Why
 ---
@@ -23,13 +12,13 @@ By releasing this code under a liberal MIT open source license, we hope to empow
 Releases
 --------
 
-The stable releases this software are tagged with version numbers, such as `v0.20090416`, that represent the date they were made. There is also a `stable` branch that points to the current stable release. The [CHANGES.md](http://github.com/calagator/calagator/blob/master/CHANGES.md) file describes significant changes made between stable releases.
+The stable releases this software are tagged with version numbers, such as `v0.20090416-ac`, that represent the date they were made. There is also a `stable` branch that points to the current stable release. We're not currently updating [CHANGES.md](https://github.com/activate/activation_calendar/blob/master/CHANGES.md), so look at the commit log to find out what has changed.
 
 
 Installing
 ----------
 
-Read the [INSTALL.md](http://github.com/calagator/calagator/blob/master/INSTALL.md) file for details on installing the software.
+Read [INSTALL.md](https://github.com/activate/activation_calendar/blob/master/INSTALL.md) for details on installing the software.
 
 
 Contributing
@@ -38,19 +27,24 @@ Contributing
 Bug fixes and features are welcomed. Please fork the source code and submit a pull request: <http://github.com/calagator/calagator/tree/master>
 
 
+Calagator
+---------
+
+Activation Calendar is based on the [Calagator](http://calagator.org/) project [source code](http://github.com/calagator/calagator/). We merge frequently to stay close to the Calagator source. Where possible, [bugfixes](http://code.google.com/p/calagator/issues/list) should be sent back upstream, via a [pull request](http://help.github.com/pull-requests/). The Calagator [mailing list](http://groups.google.com/group/pdx-tech-calendar/) is a great resource for communicating upstream.
+
 Contributors
 ------------
 
-This free, open source software was made possible by a group of volunteers that put many hours of hard work into it. See the [CONTRIBUTORS.md](http://github.com/calagator/calagator/blob/master/CONTRIBUTORS.md) file for details.
+This free, open source software was made possible by a group of volunteers that put many hours of hard work into it. See the [CONTRIBUTORS.md](https://github.com/activate/activation_calendar/blob/master/CONTRIBUTORS.md) file for details.
 
 
 License
 -------
 
-This program is provided under an MIT open source license, read the [LICENSE.txt](http://github.com/calagator/calagator/blob/master/LICENSE.txt) file for details.
+This program is provided under an MIT open source license, read the [LICENSE.txt](https://github.com/activate/activation_calendar/blob/master/LICENSE.txt) file for details.
 
 
 Copyright
 ---------
 
-Copyright (c) 2007-2011 Calagator
+Copyright (c) 2012 Activation Calendar
