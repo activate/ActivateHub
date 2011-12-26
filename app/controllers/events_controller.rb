@@ -101,6 +101,24 @@ class EventsController < ApplicationController
     @event.associate_with_venue(venue_ref(params))
     has_new_venue = @event.venue && @event.venue.new_record?
 
+    params[:event][:type_ids].map! do |item|
+      begin
+        i = Type.find(Integer(item))
+      rescue ArgumentError, ActiveRecord::RecordNotFound
+        i = Type.find_or_create_by_name(item)
+      end
+      i[:id]
+    end
+
+    params[:event][:topic_ids].map! do |item|
+      begin
+        i = Topic.find(Integer(item))
+      rescue ArgumentError, ActiveRecord::RecordNotFound
+        i = Topic.find_or_create_by_name(item)
+      end
+      i[:id]
+    end
+
     @event.start_time = [ params[:start_date], params[:start_time] ]
     @event.end_time   = [ params[:end_date], params[:end_time] ]
 
