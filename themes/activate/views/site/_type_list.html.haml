@@ -1,0 +1,5 @@
+%h3 Types
+%ul.types
+  - Type.all.each do |type|
+    %li
+      = link_to type[:name], 'types/'+type[:name]

@@ -61,10 +61,14 @@
   </div>
   <% if @tags.present? %>
     <div id="tagcloud" class="box">
-      <h2>Popular tags</h2>
+      <h3>Popular tags</h3>
       <% @tags.each do |tag| %>
         <%= tag_link(:event, tag[:tag], "tagcloud_level_#{tag[:level]}") %>
       <% end %>
+    </div>
+    <div class="topic-list box">
+      <%= render :partial => 'topic_list' %>
+      <%= render :partial => 'type_list' %>
     </div>
   <% end %>
 <% end %>

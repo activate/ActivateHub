@@ -1,0 +1,5 @@
+%h3 Topics
+%ul.topics
+  - Topic.all.each do |topic|
+    %li
+      = link_to topic[:name], 'topics/'+topic[:name]
