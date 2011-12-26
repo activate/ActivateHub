@@ -1,8 +1,6 @@
 class EventsController < ApplicationController
   include SquashManyDuplicatesMixin # Provides squash_many_duplicates
 
-  autocomplete :organization, :name, :full=>true
-
   # GET /events
   # GET /events.xml
   def index
@@ -69,10 +67,6 @@ class EventsController < ApplicationController
     @event.associate_with_venue(venue_ref(params))
     has_new_venue = @event.venue && @event.venue.new_record?
 
-    @event.associate_with_organization(organization_ref(params))
-    flash[:success] = 'DEBUG - org name: ' + @event.organization.name
-    # TODO - remove debug stmt after fixing Event _item.html.erb.
-
     @event.start_time = [ params[:start_date], params[:start_time] ]
     @event.end_time   = [ params[:end_date], params[:end_time] ]
 
@@ -106,6 +100,24 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @event.associate_with_venue(venue_ref(params))
     has_new_venue = @event.venue && @event.venue.new_record?
+
+    params[:event][:type_ids].map! do |item|
+      begin
+        i = Type.find(Integer(item))
+      rescue ArgumentError, ActiveRecord::RecordNotFound
+        i = Type.find_or_create_by_name(item)
+      end
+      i[:id]
+    end
+
+    params[:event][:topic_ids].map! do |item|
+      begin
+        i = Topic.find(Integer(item))
+      rescue ArgumentError, ActiveRecord::RecordNotFound
+        i = Topic.find_or_create_by_name(item)
+      end
+      i[:id]
+    end
 
     @event.start_time = [ params[:start_date], params[:start_time] ]
     @event.end_time   = [ params[:end_date], params[:end_time] ]
@@ -252,15 +264,6 @@ class EventsController < ApplicationController
       p[:event][:venue_id].to_i
     else
       p[:venue_name]
-    end
-  end
-
-  # TODO - comment.  See above; consider refactoring.
-  def organization_ref(p)
-    if (p[:event] && !p[:event][:organization_id].blank?)
-      p[:event][:organization_id].to_i
-    else
-      p[:organization_name]
     end
   end
 

@@ -5,3 +5,32 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
+
+Type.create(
+ [ 
+   { :name => 'volunteer' }, { :name => 'social' },
+   { :name => 'meeting' }, { :name => 'educational'},
+   { :name => 'rally'}, { :name => 'other' },
+   { :name => 'film screening'}
+ ]);
+
+ Topic.create(
+  [
+   { :name => 'animal rights' },
+   { :name => 'arts'},
+   { :name => 'biking' },
+   { :name => 'business'},
+   { :name => 'community'}, 
+   { :name => 'urban'},
+   { :name => 'environment'},
+   { :name => 'economics'},
+   { :name => 'food'},
+   { :name => 'health'},
+   { :name => 'human rights'},
+   { :name => 'politics'},
+   { :name => 'transportation'},
+   { :name => 'walking'},
+   { :name => 'transit'},
+   { :name => 'humanitarian aid'},
+   { :name => 'war and peace'},
+  ]);

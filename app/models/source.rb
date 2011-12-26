@@ -24,6 +24,7 @@ class Source < ActiveRecord::Base
   has_many :events,  :dependent => :destroy
   has_many :venues,  :dependent => :destroy
   has_many :updates, :dependent => :destroy
+  has_and_belongs_to_many :types
   belongs_to :organization
 
   scope :listing, :order => 'created_at DESC'

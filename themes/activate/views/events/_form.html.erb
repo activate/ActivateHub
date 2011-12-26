@@ -96,27 +96,21 @@
     <%= f.input :title, :label => "Event Name" %>
     <% focus_on '#event_title' %>
 
-    <!-- Organizaton Autocomplete Form Element (name + hidden id) -->
-    <li class="string input required stringish" id="event_organization_title_input">
-      <%= f.label :organization_id, "Organization", :class => 'label' %>
-      <%= autocomplete_field_tag 'organization_name', '', autocomplete_organization_name_events_path, :id_element => '#organization_id' %>
-      <%= hidden_field(:event, :organization_id, :id => 'organization_id', :value => (!event.organization.nil? ? event.organization.id : params[:event_organization_id])) %>
-      <p class='inline-hints'>
-        Type the name of an organization to search.
-      </p>
-    </li>
+    <%= f.input :organization, :input_html => { :class => 'required chzn-select' } %>
    
-    <li class="string input required stringish" id="event_venue_title_input">
-      <%= f.label :venue_id, "Venue", :class => 'label' %>
-      <%= text_field_tag 'venue_name', '', :class=> 'autocomplete', :value => !event.venue.nil? ? event.venue.title : params[:venue_name] %>
-      <%= hidden_field(:event, :venue_id, :value => (!event.venue.nil? ? event.venue.id : params[:event_venue_id])) %>
-      <%= image_tag "spinner.gif", :id=> "event_venue_loading", :style => "display: none; margin-left: 0.5em;" %>
-      <p class='inline-hints'>
-        Type the name of a venue to search. If it doesn't exist, we'll create it for you.
-      </p>
-    <li>
-    <li id="event_times" class='input'>
-      <%= f.label :when, "When", :class => 'label' %>
+    <div class="string required clearfix stringish" id="event_venue_title_input">
+      <%= f.label :venue_id, "Venue"%>
+      <div class='input'>
+        <%= text_field_tag 'venue_name', '', :class=> 'autocomplete', :value => !event.venue.nil? ? event.venue.title : params[:venue_name] %>
+        <%= hidden_field(:event, :venue_id, :value => (!event.venue.nil? ? event.venue.id : params[:event_venue_id])) %>
+        <%= image_tag "spinner.gif", :id=> "event_venue_loading", :style => "display: none; margin-left: 0.5em;" %>
+        <span class='help-inline'>
+          Type the name of a venue to search. If it doesn't exist, we'll create it for you.
+        </span>
+      </div>
+    </div>
+    <div id="event_times" class='date clearfix'>
+      <%= f.label :when, "When"%>
       <%
         present = Time.now
         if event.new_record?
@@ -125,13 +119,15 @@
           event.end_time   ||= present + (60.minutes - present.min.minutes) - present.sec + 1.hour
         end
       %>
+      <div class='input'>
         <%= text_field_tag 'start_date', event.start_time ? event.start_time.to_date : present.to_date, :id => 'date_start', :class => 'date_picker' %>
         <%= text_field_tag 'start_time', event.start_time.strftime('%I:%M %p'), :id => 'time_start', :class => 'time_picker' %>
         <span class="to">to</span>
         <%= text_field_tag 'end_time', event.end_time ? event.end_time.strftime('%I:%M %p') : nil, :id => 'time_end', :class => 'time_picker' %>
         <%= text_field_tag 'end_date', event.end_time ? event.end_time.to_date : Time.now.to_date, :id => 'date_end', :class => 'date_picker' %>
         <%= f.semantic_errors :start_date, :start_time, :end_date, :end_time %>
-    </li>
+      </div>
+    </div>
     <%= f.input :url, :label => 'Website' %>
     <%= f.input :description,
                 :input_html => {:rows => 12},
@@ -142,6 +138,10 @@
     <%= f.input :tag_list, :required => false,
                 :label => 'Tags',
                 :hint => "(Tags are comma-separated keywords that make it easier to find your event and boost its position in searches. You can also use a tag like <code>plancast:plan=ABCD</code> to associate this with a particular <a href='http://plancast.com/'>Plancast</a> event, or a tag like <code>epdx:group=1234</code> to associate the event with a particular <a href='http://epdx.org/'>ePDX</a> group)".html_safe %>
+
+    <%= f.input :types, :input_html => { :class => 'required chzn-select' } %>
+    <%= f.input :topics, :input_html => { :class => 'required chzn-select' } %>
+
     <li class='trap'>
       <%= label 'trap', 'field', "Leave this field blank or we'll think you're a robot." %>
       <%= text_field_tag 'trap_field', params[:trap_field] %>
