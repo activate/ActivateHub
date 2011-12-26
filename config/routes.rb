@@ -26,7 +26,8 @@ Calagator::Application.routes.draw do
     end
   end
 
-    
+  match 'topics/:name' => 'topics#show'
+  match 'types/:name' => 'types#show'
 
   resources :venues do
     collection do
