@@ -1,5 +1,5 @@
 %h3 Types
-%ul.types
-  - Type.all.each do |type|
-    %li
-      = link_to type[:name], 'types/'+type[:name]
+- Type.all.each do |item|
+  %a{:href => 'types/'+item[:name], :class => 'type label warning'}
+    =item[:name]
+  &nbsp;
