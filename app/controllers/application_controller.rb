@@ -42,6 +42,21 @@ protected
       flash[kind] = "#{message}"
     end
   end
+
+  # find missing/nonnumeric ids in list and look them up/create them, setting id
+  def create_missing_refs(list, model)
+    list ||= []
+    if list.is_a?(Array)
+      list.map do |item|
+        begin
+          i = model.find(Integer(item))
+        rescue ArgumentError, ActiveRecord::RecordNotFound
+          i = model.find_or_create_by_name(item)
+        end
+        i[:id]
+      end
+    end
+  end
 end
 
 # Make it possible to use helpers in controllers
