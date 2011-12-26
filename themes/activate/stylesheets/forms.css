@@ -13,46 +13,6 @@
 
 fieldset .trap { display: none }
 
-form.formtastic {
-  width: 900px;
-}
-
-.formtastic .inputs {
-  padding-top: .5em;
-}
-
-.formtastic .buttons {
-  padding-bottom: 3em;
-}
-
-.formtastic .stringish input,
-.formtastic .text textarea,
-.formtastic #event_times input {
-  font-family: inherit;
-  font-size: inherit;
-  padding: 6px;
-}
-
-.formtastic .input .label {
-  font-weight: bold;
-  text-align: right;
-  padding-right: 1em;
-  margin-left: -1em;
-  width: 15%;
-}
-
-.formtastic .input .inline-hints,
-.formtastic .errors,
-.formtastic .inline-errors {
-  margin-left: 15%;
-  width: 74%;
-}
-
-.formtastic .buttons,
-.formtastic .boolean label {
-  padding-left: 15%;
-}
-
 /* @group Autocomplete
 -------------------------------------------------------------- */
 ul.jq-ui-autocomplete {

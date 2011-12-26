@@ -98,17 +98,19 @@
 
     <%= f.input :organization, :input_html => { :class => 'required chzn-select' } %>
    
-    <li class="string input required stringish" id="event_venue_title_input">
-      <%= f.label :venue_id, "Venue", :class => 'label' %>
-      <%= text_field_tag 'venue_name', '', :class=> 'autocomplete', :value => !event.venue.nil? ? event.venue.title : params[:venue_name] %>
-      <%= hidden_field(:event, :venue_id, :value => (!event.venue.nil? ? event.venue.id : params[:event_venue_id])) %>
-      <%= image_tag "spinner.gif", :id=> "event_venue_loading", :style => "display: none; margin-left: 0.5em;" %>
-      <p class='inline-hints'>
-        Type the name of a venue to search. If it doesn't exist, we'll create it for you.
-      </p>
-    <li>
-    <li id="event_times" class='input'>
-      <%= f.label :when, "When", :class => 'label' %>
+    <div class="string required clearfix stringish" id="event_venue_title_input">
+      <%= f.label :venue_id, "Venue"%>
+      <div class='input'>
+        <%= text_field_tag 'venue_name', '', :class=> 'autocomplete', :value => !event.venue.nil? ? event.venue.title : params[:venue_name] %>
+        <%= hidden_field(:event, :venue_id, :value => (!event.venue.nil? ? event.venue.id : params[:event_venue_id])) %>
+        <%= image_tag "spinner.gif", :id=> "event_venue_loading", :style => "display: none; margin-left: 0.5em;" %>
+        <span class='help-inline'>
+          Type the name of a venue to search. If it doesn't exist, we'll create it for you.
+        </span>
+      </div>
+    </div>
+    <div id="event_times" class='date clearfix'>
+      <%= f.label :when, "When"%>
       <%
         present = Time.now
         if event.new_record?
@@ -117,13 +119,15 @@
           event.end_time   ||= present + (60.minutes - present.min.minutes) - present.sec + 1.hour
         end
       %>
+      <div class='input'>
         <%= text_field_tag 'start_date', event.start_time ? event.start_time.to_date : present.to_date, :id => 'date_start', :class => 'date_picker' %>
         <%= text_field_tag 'start_time', event.start_time.strftime('%I:%M %p'), :id => 'time_start', :class => 'time_picker' %>
         <span class="to">to</span>
         <%= text_field_tag 'end_time', event.end_time ? event.end_time.strftime('%I:%M %p') : nil, :id => 'time_end', :class => 'time_picker' %>
         <%= text_field_tag 'end_date', event.end_time ? event.end_time.to_date : Time.now.to_date, :id => 'date_end', :class => 'date_picker' %>
         <%= f.semantic_errors :start_date, :start_time, :end_date, :end_time %>
-    </li>
+      </div>
+    </div>
     <%= f.input :url, :label => 'Website' %>
     <%= f.input :description,
                 :input_html => {:rows => 12},
