@@ -70,6 +70,8 @@
         -# flash[:success] = "yay"; flash[:failure] = "meh"; flash[:notice] = "note"; flash[:error] = "meh"; flash[:warn] = "look!"
         = render :partial => "shared/flash_messages.html", :locals => {:flash => flash}
         = yield
+    :javascript 
+      $(".chzn-select").chosen();
     - if Rails.env == 'production'
       :javascript
         var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
