@@ -71,7 +71,8 @@
         = render :partial => "shared/flash_messages.html", :locals => {:flash => flash}
         = yield
     :javascript 
-      $(".chzn-select").chosen({
+      $(".chzn-select").chosen();
+      $(".chzn-select-create").chosen({
         create_option: function(term){
           var chosen = this;
           chosen.append_option({
