@@ -128,52 +128,6 @@ ul.event_list .description, ul.event_list .url {
   float: left;
 }
 
-fieldset label {
-  display: block;
-  float: left;
-  width: 7em;
-  text-align: right;
-  margin-right: 1em;
-  clear: left;
-}
-
-fieldset > div {
-  clear: both;
-  padding-top: 1em;
-  
-}
-
-label.checkbox {
-  clear: none;
-  text-align: left;
-}
-
-fieldset input {
-  float: left;
-}
-
-fieldset .date_picker {
-  float: left;
-  margin-right: 2em;
-}
-
-fieldset .calendar_date_select {
-  border: 0;
-  width: 25em;
-}
-
-fieldset .date_picker label {
-  text-align: left;
-}
-
-fieldset .no_label, fieldset .help {
-  padding-left: 8em;
-}
-
-fieldset .help {
-  color: #999;
-}
-
 #list_filters {
   padding: 1em;
   float: left;
