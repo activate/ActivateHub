@@ -15,7 +15,7 @@
         %script{:src => "http://html5shim.googlecode.com/svn/trunk/html5.js"}
       / Stylesheets, static
       = stylesheet_link_tag 'common', 'formtastic', :media => :all
-      = theme_stylesheet_link_tag 'chosen', 'formtastic-bootstrap', 'layout', 'forms', 'jquery-ui/jquery-ui', :media => :all
+      = theme_stylesheet_link_tag 'chosen', 'formtastic-bootstrap', 'layout', 'forms', 'jquery-ui-bootstrap/jquery-ui-bootstrap', :media => :all
       = theme_stylesheet_link_tag 'mobile', :media => mobile_stylesheet_media("only screen and (max-device-width: 960px)")
       /[if IE]
         = theme_stylesheet_link_tag 'ie', :media => :all
@@ -67,7 +67,7 @@
               %a{:href => "#"} Home
               %span.divider /
             = yield :breadcrumbs
-        -# flash[:success] = "yay"; flash[:failure] = "meh"; flash[:notice] = "note"; flash[:error] = "meh"; flash[:warn] = "look!"
+        -# flash[:success] = "yay"; flash[:failure] = "meh <em>meh!</em>"; flash[:notice] = "note"; flash[:error] = "meh"; flash[:warn] = "look!"
         = render :partial => "shared/flash_messages.html", :locals => {:flash => flash}
         = yield
     :javascript 
