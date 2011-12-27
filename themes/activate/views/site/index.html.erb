@@ -71,11 +71,5 @@
       <%= render :partial => 'topic_list' %>
       <%= render :partial => 'type_list' %>
     </div>
-    <div id="tagcloud" class="box">
-      <h3>Popular tags</h3>
-      <% @tags.each do |tag| %>
-        <%= tag_link(:event, tag[:tag], "tagcloud_level_#{tag[:level]}") %>
-      <% end %>
-    </div>
   <% end %>
 <% end %>
