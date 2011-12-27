@@ -7,6 +7,11 @@
   <%= source_url_link @source %>
 </p>
 
+<% unless @source.types.blank? -%>
+  <b>Types:</b>
+    <%= render :partial => 'shared/types', :locals => {:types => @source.types} %>
+<% end %>
+
 <p>
    <b>Events:</b>
    <%= render :partial => 'events/list', :locals => { :events =>  @source.events } %>

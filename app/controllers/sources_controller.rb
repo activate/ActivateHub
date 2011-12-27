@@ -3,6 +3,8 @@ class SourcesController < ApplicationController
   
   # Import sources
   def import
+    params[:source][:type_ids] = create_missing_refs(params[:source][:type_ids], Type)
+
     @source = Source.find_or_create_from(params[:source])
     @source.organization = Organization.find(params[:organization_id])
     @source.save
@@ -105,6 +107,8 @@ class SourcesController < ApplicationController
   # POST /sources
   # POST /sources.xml
   def create
+    params[:source][:type_ids] = create_missing_refs(params[:source][:type_ids], Type)
+
     @source = Source.new(params[:source])
 
     respond_to do |format|
@@ -122,6 +126,8 @@ class SourcesController < ApplicationController
   # PUT /sources/1
   # PUT /sources/1.xml
   def update
+    params[:source][:type_ids] = create_missing_refs(params[:source][:type_ids], Type)
+
     @source = Source.find(params[:id])
 
     respond_to do |format|
