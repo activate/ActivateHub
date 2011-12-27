@@ -16,18 +16,19 @@ ul.event_list .url {
 ul.event_list .list_date {
   text-align: right;
   padding-right: 1.5em;
-  border-right: 1px solid #e2fad2;
+  border: none;
   vertical-align: top;
   width: 7em;
 }
 
 .event_table .event_summary {
-  padding-left: 1.5em
+  padding-left: 1.5em;
+  border: none;
 }
 
 .event_table .day_of_week,
 ul.event_list .day_of_week {
-  color: #59a12d;
+  //color: #59a12d;
   font-weight: bold;
 }
 
