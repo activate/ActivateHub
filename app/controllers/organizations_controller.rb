@@ -42,6 +42,8 @@ class OrganizationsController < ApplicationController
   # POST /organizations
   # POST /organizations.xml
   def create
+    params[:organization][:topic_ids] = create_missing_refs(params[:organization][:topic_ids], Topic)
+
     @organization = Organization.new(params[:organization])
 
     if evil_robot = !params[:trap_field].blank?
@@ -63,6 +65,8 @@ class OrganizationsController < ApplicationController
   # PUT /organizations/1
   # PUT /organizations/1.xml
   def update
+    params[:organization][:topic_ids] = create_missing_refs(params[:organization][:topic_ids], Topic)
+
     @organization = Organization.find(params[:id])
 
     respond_to do |format|

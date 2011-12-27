@@ -12,6 +12,7 @@
       </li>
       <%= f.input :name, :label => "Name" %>
       <%= f.input :url, :label => "Homepage" %>
+      <%= f.input :topics, :input_html => { :class => 'required chzn-select-create' } %>
       <% focus_on '#organization_name' %>
     <% end %>
 
