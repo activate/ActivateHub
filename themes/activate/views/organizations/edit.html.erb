@@ -4,6 +4,7 @@
   <%= f.inputs do %>
     <%= f.input :name %>
     <%= f.input :url %>
+    <%= f.input :topics, :input_html => { :class => 'required chzn-select-create' } %>
   <% end %>
   <%= f.buttons do %>
     <%= f.submit "Update" %>

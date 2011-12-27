@@ -98,17 +98,17 @@ html_classes << " contentbar" if has_contentbar
     <% end %>
 
     <% unless event.types.blank? -%>
-    <h3>Types</h3>
-    <div class="types">
-        <%= event.types.map{ |x| x.name }.join(', ') %>
-    </div>
+      <h3>Types</h3>
+      <div class="types">
+        <%= render :partial => 'shared/types', :locals => {:types => @event.types} %>
+      </div>
     <% end %>
 
     <% unless event.topics.blank? -%>
-    <h3>Topics</h3>
-    <div class="topics">
-        <%= event.topics.map{ |x| x.name }.join(', ') %>
-    </div>
+      <h3>Topics</h3>
+      <div class="topics">
+        <%= render :partial => 'shared/topics', :locals => {:topics => @event.topics} %>
+      </div>
     <% end %>
 
   </div>

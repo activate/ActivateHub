@@ -6,6 +6,13 @@
   <%= source_url_link @organization %>
 </p>
 
+<% unless @organization.topics.blank? -%>
+<p>
+  <b>Topics:</b>
+  <%= render :partial => 'shared/topics', :locals => {:topics => @organization.topics} %>
+</p>
+<% end %>
+
 <p>
    <b>Events:</b>
    <%= render :partial => 'events/list', :locals => { :events =>  @organization.events } %>
