@@ -71,7 +71,7 @@ class OrganizationsController < ApplicationController
 
     respond_to do |format|
       if @organization.update_attributes(params[:organization])
-        flash[:notice] = 'Organization was successfully updated.'
+        flash[:success] = 'Organization was successfully updated.'
         format.html { redirect_to( organization_path(@organization) ) }
         format.xml  { head :ok }
       else
