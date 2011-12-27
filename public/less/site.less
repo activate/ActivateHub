@@ -75,3 +75,16 @@ a.type {
   .label;
   .label.warning;
 }
+
+//Table styles
+
+table {
+  border: none;
+  th + th,
+  td + td {
+    border-left: none;
+  }
+  tr + tr td {
+    border-top: 1px solid #ddd;
+  }
+}
