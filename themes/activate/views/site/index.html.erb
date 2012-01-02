@@ -64,13 +64,12 @@
       <a class="btn email-signup-button" data-controls-modal="email-signup" data-backdrop="true" data-keyboard="true">Sign Up</a>
     </div>
   </div>
-  <% if @tags.present? %>
-    <div id="email-signup" class="modal" style="display:none">
-      <%= render :partial => 'email_signup' %>
-    </div>
-    <div class="topic-list box">
-      <%= render :partial => 'topic_list' %>
-      <%= render :partial => 'type_list' %>
-    </div>
-  <% end %>
+  <div id="email-signup" class="modal" style="display:none">
+    <%= render :partial => 'email_signup' %>
+  </div>
+  <div class="topic-list box">
+    <%= render :partial => 'topic_list' %>
+    <%= render :partial => 'type_list' %>
+  </div>
+
 <% end %>
