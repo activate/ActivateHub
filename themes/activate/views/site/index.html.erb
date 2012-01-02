@@ -49,13 +49,13 @@
 
 <% tabindex_on '#search_field' %>
 
-<% cache(CacheObserver.daily_key_for("site_index", request)) do %>
+<%# cache(CacheObserver.daily_key_for("site_index", request)) do %>
 <div id="whats_happening">
   <h1>What's happening?</h1>
   <div id='calendar'>
   </div>
 </div>
-<% end %>
+<%# end %>
 
 <% content_for :sidebar do %>
   <div class="alert-message">
