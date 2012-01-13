@@ -83,8 +83,14 @@ class Source < ActiveRecord::Base
       event.start_time.localtime
       event.end_time.localtime if event.end_time
 
-      event.types = self.types
-      event.topics = self.organization.topics
+      if self.types.any?
+        event.types = self.types
+      end
+
+      if self.organization
+        event.topics = self.organization.topics if self.organization.topics.any?
+        event.organization = self.organization
+      end
 
       # clear duplicate_of_id field in case to_events picked up orphaned duplicate
       # TODO clear the duplicate_of_id at the point where the object is created, not down here
