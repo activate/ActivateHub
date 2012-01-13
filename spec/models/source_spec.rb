@@ -26,6 +26,49 @@ describe Source, "in general" do
   end
 end
 
+describe Source, "when associated with an organization" do
+  before(:each) do
+
+    @topics =  [Topic.new(:name => 'fun'), Topic.new(:name => 'loving')]
+
+    @organization = mock_model(Organization,
+      :name => "Test Org Title",
+      :topics => @topics)
+
+    @event = mock_model(Event,
+      :title => "Title",
+      :description => "Description",
+      :url => "http://my.url/",
+      :start_time => Time.now + 1.day,
+      :end_time => nil,
+      :venue => nil,
+      :duplicate_of_id => nil,
+      )
+      #)
+  end
+
+ it "should set types, topics, & organization on imported events (within create_events)" do
+  @event.should_receive(:save!)
+
+  # Setup a source with some topics
+  source = Source.new(:url => "http://my.url/", :organization => @organization)
+  types = [Type.new(:name => 'random'), Type.new(:name => 'tests')]
+  source.types = types
+
+  # stub to_events to return @event
+  source.should_receive(:to_events).and_return([@event])
+
+  # setup expectations that the output event has types, topics, and organization set
+  event2 = @event.dup
+  event2.should_receive(:types=).with(types)
+  event2.should_receive(:topics=).with(@organization.topics)
+  event2.should_receive(:organization=).with(@organization)
+
+  # Go! (Run the code and verify the above expectations)
+  source.create_events!.should == [event2]
+  end
+end
+
 describe Source, "when reading name" do
   before(:each) do
     @title = "title"
