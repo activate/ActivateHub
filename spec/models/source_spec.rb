@@ -30,6 +30,7 @@ describe Source, "when associated with an organization" do
   before(:each) do
 
     @topics =  [Topic.new(:name => 'fun'), Topic.new(:name => 'loving')]
+    @types = [Type.new(:name => 'random'), Type.new(:name => 'tests')]
 
     @organization = mock_model(Organization,
       :name => "Test Org Title",
@@ -43,29 +44,27 @@ describe Source, "when associated with an organization" do
       :end_time => nil,
       :venue => nil,
       :duplicate_of_id => nil,
+      :save! => true
       )
       #)
   end
 
  it "should set types, topics, & organization on imported events (within create_events)" do
-  @event.should_receive(:save!)
 
   # Setup a source with some topics
-  source = Source.new(:url => "http://my.url/", :organization => @organization)
-  types = [Type.new(:name => 'random'), Type.new(:name => 'tests')]
-  source.types = types
+  source = Source.new(:url => "http://my.url/", :organization => @organization, :types => @types)
 
-  # stub to_events to return @event
+  # stub to_events to return mocked event
   source.should_receive(:to_events).and_return([@event])
 
   # setup expectations that the output event has types, topics, and organization set
-  event2 = @event.dup
-  event2.should_receive(:types=).with(types)
-  event2.should_receive(:topics=).with(@organization.topics)
-  event2.should_receive(:organization=).with(@organization)
+  output_event = @event.dup
+  output_event.should_receive(:types=).with(@types)
+  output_event.should_receive(:topics=).with(@organization.topics)
+  output_event.should_receive(:organization=).with(@organization)
 
   # Go! (Run the code and verify the above expectations)
-  source.create_events!.should == [event2]
+  source.create_events!.should == [output_event]
   end
 end
 
