@@ -15,6 +15,7 @@
         %script{:src => "http://html5shim.googlecode.com/svn/trunk/html5.js"}
       / Stylesheets, static
       = stylesheet_link_tag 'common', :media => :all
+      = theme_stylesheet_link_tag 'activate', :media => :all
       = theme_stylesheet_link_tag 'chosen', 'formtastic-bootstrap', 'layout', 'forms', 'jquery-ui-bootstrap/jquery-ui-bootstrap', :media => :all
       = theme_stylesheet_link_tag 'mobile', :media => mobile_stylesheet_media("only screen and (max-device-width: 960px)")
       /[if IE]
@@ -70,6 +71,8 @@
         -# flash[:success] = "yay"; flash[:failure] = "meh <em>meh!</em>"; flash[:notice] = "note"; flash[:error] = "meh"; flash[:warn] = "look!"
         = render :partial => "shared/flash_messages.html", :locals => {:flash => flash}
         = yield
+    %footer.footer
+      = yield :footer
     :javascript 
       $(".chzn-select").chosen();
       $(".chzn-select-create").chosen({
