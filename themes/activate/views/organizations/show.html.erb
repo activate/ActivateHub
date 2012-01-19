@@ -23,6 +23,9 @@
     <ul>
     	<li><%= link_to 'Edit this organization', edit_organization_url %> 
     	<li><%= link_to 'Import events from an existing source', new_organization_source_path(@organization) %>
+      <li><%= link_to 'Add an event', '/events/new?event[organization_id]=' + @organization.id.to_s %>
+      <%# XXX TODO - last line is a hack.  Should use something like new_event_url after updating routes.rb,
+                     or figure out how to set params to pass org id. %>
     </ul>
   </div>
 <%# link_to 'Destroy', @organization, :confirm => 'Are you sure?', :method => :delete %>
