@@ -74,6 +74,8 @@
         -# flash[:success] = "yay"; flash[:failure] = "meh <em>meh!</em>"; flash[:notice] = "note"; flash[:error] = "meh"; flash[:warn] = "look!"
         = render :partial => "shared/flash_messages.html", :locals => {:flash => flash}
         = yield
+    %footer.footer
+      = yield :footer
     :javascript 
       $(".chzn-select").chosen();
       $(".chzn-select-create").chosen({
