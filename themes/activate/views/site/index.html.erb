@@ -5,7 +5,6 @@
 
 <% content_for :javascript_insert do %>
   <%= theme_javascript_include_tag 'fullcalendar.min' %>
-  <%= theme_javascript_include_tag 'bootstrap-modal' %>
   <script>
     $(document).ready(function() {
       $('#calendar').fullCalendar({
@@ -27,7 +26,6 @@
             success: function(doc) {
               var events = [];
               $.each(doc, function(i, v){
-                console.log(v);
                 events.push({
                   title: v.title,
                   start: v.start_time, // will be parsed
@@ -63,9 +61,6 @@
     <div>
       <a class="btn email-signup-button" data-controls-modal="email-signup" data-backdrop="true" data-keyboard="true">Newsletter Sign Up</a>
     </div>
-  </div>
-  <div id="email-signup" class="modal" style="display:none">
-    <%= render :partial => 'email_signup' %>
   </div>
   <div class="topic-list box">
     <%= render :partial => 'topic_list' %>
