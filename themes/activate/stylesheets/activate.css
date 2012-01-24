@@ -18,6 +18,12 @@
   padding-left: 1em;
 }
 
+.footer #credits {
+  border-left: 1px solid #D0D0D0;
+  margin-left: 0.8em;
+  padding-left: 1em;
+}
+
 .footer p {
   color: #555;
 }
