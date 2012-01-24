@@ -45,13 +45,15 @@
             %li{:class => link_class[:events]}= link_to "Events", events_path
             %li{:class => link_class[:organizations]}= link_to "Organizations", organizations_path
             %li{:class => link_class[:venues]}= link_to "Venues", venues_path
-          .pull-right
+          .pull-left
             = form_tag '/events/search', :method => :get do
               #search_form
                 - if request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"].include?("Safari")
                   %input#search_field{:name => "query", :results => "5", :type => "search", :value => @query}
                 - else
                   = text_field_tag 'query', @query, :id => 'search_field'
+          %ul.nav.secondary-nav
+            %li= link_to "ActivateHub Blog", "http://activatehub.org"
     .container-fluid
       .sidebar
         - if content_for?(:sidebar)
