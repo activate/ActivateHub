@@ -27,7 +27,8 @@
       / JavaScripts, static
       = javascript_include_tag  "less"
       = javascript_include_tag  :defaults, :cache => true
-      = theme_javascript_include_tag  'chosen.jquery'
+      = theme_javascript_include_tag 'chosen.jquery'
+      = theme_javascript_include_tag 'bootstrap-modal'
       / JavaScripts, inserted
       = yield :javascript_insert
       / Auto-discovery, static
@@ -53,6 +54,8 @@
                   = text_field_tag 'query', @query, :id => 'search_field'
           %ul.nav.secondary-nav
             %li= link_to "ActivateHub Blog", "http://activatehub.org"
+            %li
+              %a#menu-email-signup{:href => '#', 'data-controls-modal' => "email-signup"} Newsletter
     .container-fluid
       .sidebar
         - if content_for?(:sidebar)
@@ -75,7 +78,11 @@
         = yield
     %footer.footer
       = render(:partial => 'site/footer')
-
+    #email-signup.modal.hide
+      .modal-header
+        %a.close{:href => '#'} ×
+        %h3 Sign up to get the latest news!
+      .modal-body= render :partial => 'site/email_signup'
     :javascript 
       $(".chzn-select").chosen();
       $(".chzn-select-create").chosen({
@@ -87,6 +94,11 @@
           });
         },
         persistent_create_option: true
+      });
+      $('#email-signup').modal({
+        show: false,
+        backdrop: true,
+        keyboard: true
       });
     - if Rails.env == 'production'
       :javascript
