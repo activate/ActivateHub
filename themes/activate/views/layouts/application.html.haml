@@ -57,25 +57,26 @@
             %li
               %a#menu-email-signup{:href => '#', 'data-controls-modal' => "email-signup"} Newsletter
     .container-fluid
-      .sidebar
-        - if content_for?(:sidebar)
-          = yield :sidebar
-        .subnav.box
-          -# Pick a subnav
-          = render(:partial => 'events/subnav') if link_class[:events] == 'active'
-          = render(:partial => 'venues/subnav') if link_class[:venues] == 'active'
-          = render(:partial => 'sources/subnav') if link_class[:import] == 'active'
-          = render(:partial => 'organizations/subnav') if link_class[:organizations] == 'active'
-      .content
-        - if content_for?(:breadcrumbs)
-          %ul.breadcrumb
-            %li
-              %a{:href => "#"} Home
-              %span.divider /
-            = yield :breadcrumbs
-        -# flash[:success] = "yay"; flash[:failure] = "meh <em>meh!</em>"; flash[:notice] = "note"; flash[:error] = "meh"; flash[:warn] = "look!"
-        = render :partial => "shared/flash_messages.html", :locals => {:flash => flash}
-        = yield
+      .row-fluid
+        .sidebar.span2
+          - if content_for?(:sidebar)
+            = yield :sidebar
+          .subnav.box
+            -# Pick a subnav
+            = render(:partial => 'events/subnav') if link_class[:events] == 'active'
+            = render(:partial => 'venues/subnav') if link_class[:venues] == 'active'
+            = render(:partial => 'sources/subnav') if link_class[:import] == 'active'
+            = render(:partial => 'organizations/subnav') if link_class[:organizations] == 'active'
+        .content.span10
+          - if content_for?(:breadcrumbs)
+            %ul.breadcrumb
+              %li
+                %a{:href => "#"} Home
+                %span.divider /
+              = yield :breadcrumbs
+          -# flash[:success] = "yay"; flash[:failure] = "meh <em>meh!</em>"; flash[:notice] = "note"; flash[:error] = "meh"; flash[:warn] = "look!"
+          = render :partial => "shared/flash_messages.html", :locals => {:flash => flash}
+          = yield
     %footer.footer
       = render(:partial => 'site/footer')
     #email-signup.modal.hide.fade
