@@ -37,22 +37,22 @@
       = yield :discovery_insert
       %link{:href => "/images/site-icon.png", :rel => "apple-touch-icon"}/
   %body{:class => "#{"#{controller.controller_name}_#{action_name}"} #{"#{controller.controller_name}_controller"} #{%w[new create edit update].include?(action_name) ? "#{controller.controller_name}_change" : ""}"}
-    .topbar
-      .topbar-inner
+    .navbar.navbar-fixed-top
+      .navbar-inner
         .container-fluid
           %a.brand{:href => "/", :title => SETTINGS.name}= theme_image_tag 'logo_dark_sm.png'
           %ul.nav
             %li{:class => link_class[:events]}= link_to "Events", events_path
             %li{:class => link_class[:organizations]}= link_to "Organizations", organizations_path
             %li{:class => link_class[:venues]}= link_to "Venues", venues_path
-          .pull-left
+          .navbar-search.pull-left
             = form_tag '/events/search', :method => :get do
               #search_form
                 - if request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"].include?("Safari")
-                  %input#search_field{:name => "query", :results => "5", :type => "search", :value => @query}
+                  %input#search_field{:name => "query", :results => "5", :type => "search", :class => "search-query", :value => @query}
                 - else
                   = text_field_tag 'query', @query, :id => 'search_field'
-          %ul.nav.secondary-nav
+          %ul.nav.pull-right
             %li= link_to "ActivateHub Blog", "http://activatehub.org"
             %li
               %a#menu-email-signup{:href => '#', 'data-controls-modal' => "email-signup"} Newsletter
