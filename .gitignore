@@ -51,3 +51,25 @@ vendor/plugins/acts_as_solr/solr/solr/data/*
 vendor/plugins/acts_as_solr/solr/tmp/*
 .ruby-gemset
 .ruby-version
+
+# OS or Editor folders
+.DS_Store
+Thumbs.db
+.cache
+.project
+.settings
+.tmproj
+*.esproj
+nbproject
+*.sublime-project
+*.sublime-workspace
+
+# Komodo
+*.komodoproject
+.komodotools
+
+# Folders to ignore
+.hg
+.svn
+.CVS
+.idea
