@@ -35,6 +35,7 @@
       = auto_discovery_link_tag(:atom, events_url(:format => 'atom'), :title => 'Atom: All Events' )
       / Auto-discovery, inserted
       = yield :discovery_insert
+      %link{:href => theme_image_path('favicon.ico'), :rel => "icon"}/
       %link{:href => "/images/site-icon.png", :rel => "apple-touch-icon"}/
   %body{:class => "#{"#{controller.controller_name}_#{action_name}"} #{"#{controller.controller_name}_controller"} #{%w[new create edit update].include?(action_name) ? "#{controller.controller_name}_change" : ""}"}
     .navbar.navbar-fixed-top
