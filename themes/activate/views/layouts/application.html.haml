@@ -75,7 +75,7 @@
                 %a{:href => "#"} Home
                 %span.divider /
               = yield :breadcrumbs
-          -# flash[:success] = "yay"; flash[:failure] = "meh <em>meh!</em>"; flash[:notice] = "note"; flash[:error] = "meh"; flash[:warn] = "look!"
+          -# flash[:success] = "yay: success"; flash[:failure] = "meh <em>meh!</em>: failure"; flash[:notice] = "note: notice"; flash[:error] = "meh: error"; flash[:warn] = "look!: warning"
           = render :partial => "shared/flash_messages.html", :locals => {:flash => flash}
           = yield
     %footer.footer
