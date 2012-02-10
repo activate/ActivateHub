@@ -58,7 +58,6 @@
               %a#menu-email-signup{:href => '#', 'data-controls-modal' => "email-signup"} Newsletter
     .container-fluid
       .sidebar
-        - if content_for?(:sidebar)
           = yield :sidebar
         .subnav.box
           -# Pick a subnav
