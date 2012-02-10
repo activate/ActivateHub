@@ -1,0 +1,15 @@
+%h1 Listing Organizations
+
+%table
+  %thead
+    %tr
+      %th Manage
+      %th Name
+      %th URL
+
+  - for organization in @organizations
+    %tr
+      %td #{link_to 'Show', organization} | #{link_to 'Edit', edit_organization_path(organization)}
+      -# link_to 'Destroy', organization, :confirm => 'Are you sure?', :method => :delete 
+      %td= organization.name
+      %td= organization.url
