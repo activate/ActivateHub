@@ -96,7 +96,7 @@
     <%= f.input :title, :label => "Event Name" %>
     <% focus_on '#event_title' %>
 
-    <%= f.input :organization, :input_html => { :class => 'required chzn-select' } %>
+    <%= f.input :organization, :input_html => { :class => 'required chzn-select' }, :hint => "Pick an organization, or add a new one #{link_to('here', new_organization_url)}.".html_safe %>
    
     <div class="string required clearfix stringish" id="event_venue_title_input">
       <%= f.label :venue_id, "Venue"%>
