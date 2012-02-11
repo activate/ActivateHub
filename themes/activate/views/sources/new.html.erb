@@ -1,4 +1,6 @@
-<%= render :partial => 'site/appropriateness_message' %>
+<div class="alert alert-info">
+  <%= render :partial => 'site/appropriateness_message' %>
+</div>
 
 <%= semantic_form_for(@source, :html => {:id => 'source_form', :class => 'standard_form'}, :url => { :action => :import }) do |f| %>
   <%= f.inputs :name => "Import a source" do %>
