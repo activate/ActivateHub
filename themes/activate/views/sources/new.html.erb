@@ -3,16 +3,10 @@
 </div>
 
 <%= semantic_form_for(@source, :html => {:id => 'source_form', :class => 'standard_form'}, :url => { :action => :import }) do |f| %>
-  <%= f.inputs :name => "Import a source" do %>
-    <li class='input'>
-      <p class='inline-hints'>
-        Import one or more events from a feed or web page in one of the following formats:
-        <%= SourceParser.labels.to_sentence %>
-      </p>
-    </li>
-    <%= f.input :url, :label => "URL" %>
-    <%= f.input :title, :label => "Name" %>
-    <%= f.input :types, :input_html => { :class => 'required chzn-select-create' } %>
+  <%= f.inputs :name => "Import Event or Calendar" do %>
+    <%= f.input :url, :label => "Event or Calendar URL", :hint => '... a feed or web page in one of the following formats: ' + SourceParser.labels.to_sentence %>
+    <%= f.input :title, :label => "Event or Calendar Name", :hint => 'example: "Tree Planting Events"' %>
+    <%= f.input :types, :input_html => { 'data-placeholder' => "Choose or add your own...", :class => 'required chzn-select-create' } %>
     <% focus_on '#source_url' %>
 
     <%# FIXME Igal has disabled reimport UI because people are adding almost all new events with re-import, which means that they're almost all generating duplicates and I'm completely overwhelmed with having to use the horrible squashing UI to deal with them. %>
@@ -24,13 +18,13 @@
   <%= f.buttons do %>
     <%= f.commit_button "Import" %>
   <% end %>
-
-  <%= f.inputs do %>
-    <li class='input'>
-      <p class='inline-hints'>
-      <b>Bookmarklet</b>: Import pages faster by adding the following bookmark to your browser's bookmarks and click it when you're visiting a webpage that contains events that you'd like to import:
-      <%= link_to "Add to #{SETTINGS.name}", "javascript:d=document;q=(d.location.href);w=window;location.href='#{new_organization_source_url}?url='+escape(q);" %>
-      </p>
-    </li>
-  <% end %>
 <% end %>
+
+  <div class="alert alert-block">
+  <a class="close" data-dismiss="alert" href="#">&times;</a>
+  <h4 class="alert-heading">Quick Import Tip</h4>
+
+  Drag this <button class="btn"><%= link_to "✚ #{SETTINGS.name}", "javascript:d=document;q=(d.location.href);w=window;location.href='#{new_organization_source_url}?url='+escape(q);" %></button> button to your browser bookmark bar and click it when you're viewing events you want to import.  
+  </div>
+
+
