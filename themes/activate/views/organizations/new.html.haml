@@ -1,5 +1,4 @@
 #new_organization_form
-  = render :partial => 'site/appropriateness_message'
   -# Create a form that collects Org details (currently name + URL).
   = semantic_form_for(@organization, :html => {:id => 'organization_form', :class => 'standard_form'}) do |f|
     = f.inputs :name => "Create Organization" do
