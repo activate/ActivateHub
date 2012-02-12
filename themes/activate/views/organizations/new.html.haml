@@ -2,12 +2,9 @@
   -# Create a form that collects Org details (currently name + URL).
   = semantic_form_for(@organization, :html => {:id => 'organization_form', :class => 'standard_form'}) do |f|
     = f.inputs :name => "Create Organization" do
-      %li.input
-        %p.inline-hints
-          Specify the organization's full name:
-      = f.input :name, :label => "Name"
+      = f.input :name, :label => "Name", :hint => "the organization's full name"
       = f.input :url, :label => "Homepage"
-      = f.input :topics, :input_html => { :class => 'required chzn-select-create' }
+      = f.input :topics, :input_html => { :class => 'required chzn-select-create', 'data-placeholder' => "Choose or add your own..." }
       - focus_on '#organization_name'
     = f.buttons do
       = f.commit_button "Save"
