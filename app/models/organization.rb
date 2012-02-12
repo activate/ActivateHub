@@ -12,7 +12,8 @@ class Organization < ActiveRecord::Base
   validates_format_of :url,
     :with => /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
     :allow_blank => true,
-    :allow_nil => true
+    :allow_nil => true,
+    :message => "is invalid (did you include the http:// part?)"
 
   def title
     @name
