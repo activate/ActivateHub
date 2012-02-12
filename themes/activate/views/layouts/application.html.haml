@@ -55,6 +55,8 @@
                   %input#search_field{:name => "query", :results => "5", :type => "search", :class => "search-query", :value => @query}
                 - else
                   = text_field_tag 'query', @query, :id => 'search_field'
+          %ul.nav
+            %li= link_to "Add Event", new_event_path
           %ul.nav.pull-right
             %li= link_to "ActivateHub Blog", "http://activatehub.org"
             %li
