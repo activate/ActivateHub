@@ -39,6 +39,20 @@
       = yield :discovery_insert
       %link{:href => theme_image_path('favicon.ico'), :rel => "icon"}/
       %link{:href => "/images/site-icon.png", :rel => "apple-touch-icon"}/
+
+    - if Rails.env == 'production'
+      :javascript
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-28297028-1']);
+        _gaq.push(['_setDomainName', 'activatehub.org']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
   %body{:class => "#{"#{controller.controller_name}_#{action_name}"} #{"#{controller.controller_name}_controller"} #{%w[new create edit update].include?(action_name) ? "#{controller.controller_name}_change" : ""}"}
     .navbar.navbar-fixed-top
       .navbar-inner
@@ -105,11 +119,3 @@
         backdrop: true,
         keyboard: true
       });
-    - if Rails.env == 'production'
-      :javascript
-        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-      :javascript
-        var pageTracker = _gat._getTracker("UA-168427-7");
-        pageTracker._initData();
-        pageTracker._trackPageview();
