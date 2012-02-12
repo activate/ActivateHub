@@ -1,3 +1,7 @@
+- if @organization.events.future.empty?
+  .alert.alert-info
+    There are no upcoming events.  You should #{link_to 'add an event', '/events/new?event[organization_id]=' + @organization.id.to_s} or #{link_to 'import event(s)', new_organization_source_path(@organization)}.
+
 %h1= @organization.name
 
 %p
