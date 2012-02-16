@@ -1,5 +1,4 @@
 %h3 Types
 .types
   - Type.all.each do |item|
-    %a{:href => 'types/'+item[:name], :class => 'type'}
-      =item[:name]
+    %a{:href => 'types/'+item[:name], :class => 'type'}= item[:name]
