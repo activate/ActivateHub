@@ -4,7 +4,7 @@
 
 <%= semantic_form_for(@source, :html => {:id => 'source_form', :class => 'standard_form'}, :url => { :action => :import }) do |f| %>
   <%= f.inputs :name => "Import Event or Calendar" do %>
-    <%= f.input :url, :label => "Event or Calendar URL", :hint => '... a feed or web page in one of the following formats: ' + SourceParser.labels.to_sentence %>
+    <%= f.input :url, :label => "Event or Calendar URL", :hint => '... a feed or web page in one of the following formats: Google Calendar (ICAL/.ics), ' + SourceParser.labels.to_sentence %>
     <%= f.input :title, :label => "Event or Calendar Name", :hint => 'example: "Tree Planting Events"' %>
     <%= f.input :types, :input_html => { 'data-placeholder' => "Choose or add your own...", :class => 'required chzn-select-create' } %>
     <% focus_on '#source_url' %>
