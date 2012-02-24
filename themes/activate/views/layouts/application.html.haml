@@ -9,7 +9,9 @@
       %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=yes", :name => "viewport"}
       %meta{:content => "yes", :name => "apple-mobile-web-app-capable"}
       %meta{:content => "black", :name => "apple-mobile-web-app-status-bar-style"}
+      %meta{:property => 'og:image', :content => "#{request.protocol}#{request.host_with_port}#{current_theme_image_path('logo.png')}"} 
       %link{:href => "/opensearch.xml", :rel => "search", :title => SETTINGS.name, :type => "application/opensearchdescription+xml"}
+
       / Le HTML5 shim, for IE6-8 support of HTML elements
       /[if lt IE 9]
         %script{:src => "http://html5shim.googlecode.com/svn/trunk/html5.js"}
