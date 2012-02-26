@@ -52,6 +52,7 @@ gem 'themes_for_rails', '0.4.2'
 gem 'jquery-rails', '1.0.19'
 gem 'haml'
 gem 'formtastic-bootstrap', :git => 'git@github.com:activate/formtastic-bootstrap.git'
+gem 'rails_admin'
 
 # gem 'paper_trail_manager', :path => '../paper_trail_manager'
 gem 'paper_trail_manager'
