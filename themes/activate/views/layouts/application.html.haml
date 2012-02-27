@@ -92,7 +92,7 @@
 
     .container-fluid
       .row-fluid
-        .sidebar.span2
+        .sidebar.span3
           = yield :sidebar
           .subnav.box
             -# Pick a subnav
@@ -100,7 +100,7 @@
             = render(:partial => 'venues/subnav') if link_class[:venues] == 'active'
             = render(:partial => 'sources/subnav') if link_class[:import] == 'active'
             = render(:partial => 'organizations/subnav') if link_class[:organizations] == 'active'
-        .content.span10
+        .content.span9
           - if content_for?(:breadcrumbs)
             %ul.breadcrumb
               %li
