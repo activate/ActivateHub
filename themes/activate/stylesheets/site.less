@@ -1,6 +1,12 @@
 @import "bootstrap/bootstrap.less";
-// @import "bootstrap/responsive.less";
 @import "fonts.less";
+
+/* Leave space for fixed top navigation bar.  Set this *before* importing responsive.css. */
+body {
+  padding-top: 65px;
+}
+
+@import "bootstrap/responsive.less";
 
 h1 {
   .page-header;
@@ -15,19 +21,15 @@ table {
 }
 
 .navbar {
-  a.brand {
-    padding-top: 0;
-    margin-bottom: -30px;
+  /* since we replace brand text with icon, we need all the space we can get. */
+  .brand {
+    padding: 0px 10px;
+    line-height: 13px;
+    font-size: 13px;
     img {
-      width: 124px;
-      height: 57px;
+      width: 85px;
+      height: 39px;
     }
-  }
-  div > ul a {
-    padding: 18px 10px;
-  }
-  #search_form {
-    margin-top: 8px;
   }
   input#search_field {
     width: 165px;
@@ -36,10 +38,6 @@ table {
 
 .sidebar .box {
   .well;
-}
-
-body {
-  padding-top: 85px;
 }
 
 body, html {

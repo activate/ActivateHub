@@ -33,6 +33,7 @@
       = theme_javascript_include_tag 'chosen.jquery'
       = theme_javascript_include_tag 'bootstrap-modal'
       = theme_javascript_include_tag 'bootstrap-alert'
+      = theme_javascript_include_tag 'bootstrap-collapse'
       / JavaScripts, inserted
       = yield :javascript_insert
       / Auto-discovery, static
@@ -56,27 +57,39 @@
         })();
 
   %body{:class => "#{"#{controller.controller_name}_#{action_name}"} #{"#{controller.controller_name}_controller"} #{%w[new create edit update].include?(action_name) ? "#{controller.controller_name}_change" : ""}"}
+
     .navbar.navbar-fixed-top
       .navbar-inner
         .container-fluid
+          -# .btn-navbar is used as the toggle for collapsed navbar content -->
+          %a.btn.btn-navbar{'data-toggle' => "collapse", 'data-target' => ".nav-collapse"}
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+
+          -# Be sure to leave the brand out there if you want it shown -->
+          -#<a class="brand" href="#">Project name</a>
           %a.brand{:href => "/", :title => SETTINGS.name}= theme_image_tag 'logo_dark_sm.png'
-          %ul.nav
-            %li{:class => link_class[:events]}= link_to "Events", events_path
-            %li{:class => link_class[:organizations]}= link_to "Organizations", organizations_path
-            %li{:class => link_class[:venues]}= link_to "Venues", venues_path
-          .navbar-search.pull-left
-            = form_tag '/events/search', :method => :get do
-              #search_form
+
+          -# Everything you want hidden at 940px or less, place within here -->
+          .nav-collapse
+            -# .nav, .navbar-search, .navbar-form, etc -->
+            %ul.nav
+              %li{:class => link_class[:events]}= link_to "Events", events_path
+              %li{:class => link_class[:organizations]}= link_to "Organizations", organizations_path
+              %li{:class => link_class[:venues]}= link_to "Venues", venues_path
+              = form_tag '/events/search', :class => 'navbar-search pull-left', :id => 'search_form', :method => :get do
                 - if request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"].include?("Safari")
                   %input#search_field{:name => "query", :results => "5", :type => "search", :class => "search-query", :value => @query}
                 - else
                   = text_field_tag 'query', @query, :id => 'search_field'
-          %ul.nav
-            %li= link_to "Add Event", new_event_path
-          %ul.nav.pull-right
-            %li= link_to "Blog", "http://activatehub.org"
-            %li
-              %a#menu-email-signup{:href => '#', 'data-controls-modal' => "email-signup"} Newsletter
+            %ul.nav
+              %li= link_to "Add Event", new_event_path
+            %ul.nav.pull-right
+              %li= link_to "Blog", "http://activatehub.org"
+              %li
+                %a#menu-email-signup{:href => '#', 'data-controls-modal' => "email-signup"} Newsletter
+
     .container-fluid
       .row-fluid
         .sidebar.span2
