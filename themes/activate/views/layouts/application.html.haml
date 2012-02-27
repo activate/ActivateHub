@@ -78,17 +78,18 @@
               %li{:class => link_class[:events]}= link_to "Events", events_path
               %li{:class => link_class[:organizations]}= link_to "Organizations", organizations_path
               %li{:class => link_class[:venues]}= link_to "Venues", venues_path
-              = form_tag '/events/search', :class => 'navbar-search pull-left', :id => 'search_form', :method => :get do
-                - if request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"].include?("Safari")
-                  %input#search_field{:name => "query", :results => "5", :type => "search", :class => "search-query", :value => @query}
-                - else
-                  = text_field_tag 'query', @query, :id => 'search_field'
             %ul.nav
               %li= link_to "Add Event", new_event_path
             %ul.nav.pull-right
               %li= link_to "Blog", "http://activatehub.org"
               %li
                 %a#menu-email-signup{:href => '#', 'data-controls-modal' => "email-signup"} Newsletter
+              %li
+                = form_tag '/events/search', :class => 'navbar-search pull-left', :id => 'search_form', :method => :get do
+                  - if request.env["HTTP_USER_AGENT"] && request.env["HTTP_USER_AGENT"].include?("Safari")
+                    %input#search_field{:name => "query", :results => "5", :type => "search", :class => "search-query", :value => @query}
+                  - else
+                    = text_field_tag 'query', @query, :id => 'search_field'
 
     .container-fluid
       .row-fluid
