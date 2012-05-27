@@ -1,4 +1,5 @@
 %h3 Types
 .types
-  - Type.all.each do |item|
-    %a{:href => 'types/'+item[:name], :class => 'type'}= item[:name]
+  - Type.all.each do |type| # TODO: .sort Types
+    - empty = type.events.future.empty? ? 'empty ' : ''
+    %a{:href => 'types/'+type[:name], :class => "#{empty}type"}= type[:name]

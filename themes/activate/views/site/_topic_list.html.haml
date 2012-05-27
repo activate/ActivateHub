@@ -1,4 +1,5 @@
 %h3 Topics
 .topics
   - Topic.all.each do |topic|
-    %a{:href => 'topics/'+topic[:name], :class => 'topic'}= topic[:name]
+    - empty = topic.events.future.empty? ? 'empty ' : ''
+    %a{:href => 'topics/'+topic[:name], :class => "#{empty}topic"}= topic[:name]

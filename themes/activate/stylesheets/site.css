@@ -5720,6 +5720,9 @@ a.topic, a.type {
   margin-right: 0.5em;
   white-space: nowrap;
 }
+a.empty.topic, a.empty.type {
+  background-color: gray;
+}
 a.topic {
   background-color: #468847;
 }
