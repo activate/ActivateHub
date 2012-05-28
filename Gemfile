@@ -31,7 +31,7 @@ adapter = 'pg' if adapter == 'postgresql'
 gem adapter
 
 # Run-time dependencies
-gem 'rails', '3.0.10'
+gem 'rails', '3.0.11'
 gem 'columnize', '0.3.4'
 gem 'rdoc', '3.8', :require => nil
 gem 'geokit', '1.5.0'
@@ -52,7 +52,8 @@ gem 'themes_for_rails', '0.4.2'
 gem 'jquery-rails', '1.0.19'
 gem 'haml'
 gem 'formtastic-bootstrap', :git => 'git@github.com:activate/formtastic-bootstrap.git'
-gem 'rails_admin'
+gem 'devise'
+gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git', :branch => "rails-3.0"
 
 # gem 'paper_trail_manager', :path => '../paper_trail_manager'
 gem 'paper_trail_manager'
