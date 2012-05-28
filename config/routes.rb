@@ -1,4 +1,6 @@
 Calagator::Application.routes.draw do
+  devise_for :users
+
   match 'omfg' => 'site#omfg'
   match 'hello' => 'site#hello'
 
