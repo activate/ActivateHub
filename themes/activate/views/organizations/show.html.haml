@@ -15,7 +15,7 @@
 
 %p
   %b Events:
-  = render :partial => 'events/list', :locals => { :events =>  @organization.events.sort_by(&:start_time) }
+  = render :partial => 'events/list', :locals => { :events =>  @organization.events.future.sort_by(&:start_time) }
 
 - content_for :sidebar do
   .box
