@@ -15,7 +15,7 @@ class Organization < ActiveRecord::Base
     :allow_nil => true,
     :message => "is invalid (did you include the http:// part?)"
 
-  default_scope :order => 'name ASC'
+  default_scope :order => 'LOWER(name) ASC'
 
   def title
     @name
