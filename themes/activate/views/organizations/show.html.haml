@@ -24,5 +24,6 @@
       -# XXX TODO - last line is a hack.  Should use something like new_event_url after updating routes.rb,
       -#              or figure out how to set params to pass org id. 
       %li= link_to 'Import event or calendar', new_organization_source_path(@organization)
+      %li= link_to 'Manage event or calendar sources', organization_sources_path(@organization)
       %li= link_to 'Edit this organization', edit_organization_url
   -# link_to 'Destroy', @organization, :confirm => 'Are you sure?', :method => :delete 
