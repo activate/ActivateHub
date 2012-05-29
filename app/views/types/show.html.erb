@@ -1,5 +1,5 @@
 <h1><%= @type.name %></h1>
 <p>
    <b>Events:</b>
-   <%= render :partial => 'events/list', :locals => { :events =>  @type.events } %>
+   <%= render :partial => 'events/list', :locals => { :events =>  @type.events.future } %>
 </p>
