@@ -5,5 +5,5 @@ class Type < ActiveRecord::Base
   # Validations
   validates_presence_of :name
 
-  default_scope :order => 'name ASC'
+  default_scope :order => 'LOWER(name) ASC'
 end
