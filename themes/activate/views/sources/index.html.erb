@@ -1,4 +1,9 @@
-<h1>Listing sources</h1>
+<h1>Listing sources for <%= Organization.find_by_id(params[:organization_id]).name %></h1>
+
+<% if @sources.empty? %>
+This organization has no sources yet.
+
+<% else %>
 
 <table>
   <tr>
@@ -16,6 +21,8 @@
   </tr>
   <% end %>
 </table>
+
+<% end %>
 
 <br />
 
