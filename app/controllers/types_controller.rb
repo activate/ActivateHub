@@ -9,7 +9,7 @@ class TypesController < ApplicationController
       return redirect_to('/')
     end
 
-    @page_title = 'Type' + @type.name
+    @page_title = 'Type: ' + @type.name
 
     respond_to do |format|
       format.html # show.html.erb
