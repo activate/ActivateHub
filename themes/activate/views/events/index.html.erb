@@ -9,7 +9,7 @@
 
 <% content_for :sidebar do %>
   <div id='list_filters' class='box'>
-    
+
     <h3 class='first'>Filter by date</h3>
 
     <%= form_tag events_url, :method => 'get' do  -%>
@@ -29,7 +29,10 @@
       </div>
     </div>
     <% end %>
-    
+
+    <%= render 'site/topic_list' %>
+    <%= render 'site/type_list' %>
+
     <h3>Subscribe to</h3>
     <ul>
       <li><%= link_to "iCalendar feed", url_for(:action => "index", :protocol => "webcal", :only_path => false)+".ics" %></li>
@@ -42,7 +45,7 @@
       <li><%= link_to "iCalendar file", events_url(:format => "ics") %></li>
       <li><%= link_to "Google Calendar", "http://www.google.com/calendar/render?cid="+events_url(:format => 'ics') %></li>
     </ul>
-    
+
   </div>
 <% end %>
 

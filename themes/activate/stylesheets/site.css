@@ -5729,6 +5729,9 @@ a.topic {
 a.type {
   background-color: #f89406;
 }
+div.types, div.topics {
+  margin-bottom: 9px;
+}
 table {
   border: none;
 }
