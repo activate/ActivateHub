@@ -51,7 +51,7 @@ gem 'acts-as-taggable-on', '2.0.6'
 gem 'themes_for_rails', '0.4.2'
 gem 'jquery-rails', '1.0.19'
 gem 'haml'
-gem 'formtastic-bootstrap', :git => 'git@github.com:activate/formtastic-bootstrap.git'
+gem 'formtastic-bootstrap', :git => 'git://github.com/activate/formtastic-bootstrap.git'
 gem 'devise'
 gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git', :branch => "rails-3.0"
 
