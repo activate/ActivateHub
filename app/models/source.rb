@@ -70,6 +70,7 @@ class Source < ActiveRecord::Base
   def create_events!(opts={})
     cutoff = Time.now.yesterday # All events before this date will be skipped
     events = []
+    self.events.future.delete_all # Before creating events, find all events in the future attached to that source and delete them so we can re-import events
     for event in self.to_events(opts)
       if opts[:skip_old]
         next if event.title.blank? && event.description.blank? && event.url.blank?
