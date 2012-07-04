@@ -54,5 +54,6 @@ Calagator::Application.routes.draw do
 
   themes_for_rails
 
+  match '/import_all' => 'sources#import_all'
   match '/:controller(/:action(/:id))'
 end

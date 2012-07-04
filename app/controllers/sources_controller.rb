@@ -1,6 +1,6 @@
 class SourcesController < ApplicationController
   MAXIMUM_EVENTS_TO_DISPLAY_IN_FLASH = 5
-  
+
   # Import sources
   def import
     params[:source][:type_ids] = create_missing_refs(params[:source][:type_ids], Type)
@@ -58,7 +58,28 @@ class SourcesController < ApplicationController
       end
     end
   end
-  
+
+  def import_all # Controller for cron imports
+    fresh_sources = Source.all.reject{ |s| s.events.future.length < 1 } # Could add some random element here to make sure we're not hitting all the sources
+    errors = []
+
+    fresh_sources.each do |source|
+      begin
+        source.create_events!
+      rescue => e
+        # Could have more robust error handling here
+        errors.push( { :source => source, :error => "Error at import_all(). #{e.message}" })
+      end
+    end
+
+    if errors.length < 1
+      render :text => '', :layout => false #Render nothing if cron is succesful
+    else
+      render :text => errors, :layout => false #Should come up some something better if it fails
+    end
+
+  end
+
   # GET /sources
   # GET /sources.xml
   def index
