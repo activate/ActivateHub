@@ -14,7 +14,7 @@
 
 <p>
    <b>Events:</b>
-   <%= render :partial => 'events/list', :locals => { :events =>  @source.events } %>
+   <%= render :partial => 'events/list', :locals => { :events =>  @source.events.order(:start_time) } %>
 </p>
 
 <%= link_to 'Back', organization_sources_path %> |
