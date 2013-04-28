@@ -60,7 +60,8 @@ class SourcesController < ApplicationController
   end
 
   def import_all # Controller for cron imports
-    fresh_sources = Source.all.reject{ |s| s.events.future.length < 1 } # Could add some random element here to make sure we're not hitting all the sources
+    #fresh_sources = Source.all.reject{ |s| s.events.future.length < 1 } # Could add some random element here to make sure we're not hitting all the sources
+    fresh_sources = Source.all
     errors = []
 
     fresh_sources.each do |source|
