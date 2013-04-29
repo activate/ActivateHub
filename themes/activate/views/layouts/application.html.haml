@@ -95,12 +95,13 @@
       .row-fluid
         .sidebar.span3
           = yield :sidebar
-          .subnav.box
-            -# Pick a subnav
-            = render(:partial => 'events/subnav') if link_class[:events] == 'active'
-            = render(:partial => 'venues/subnav') if link_class[:venues] == 'active'
-            = render(:partial => 'sources/subnav') if link_class[:import] == 'active'
-            = render(:partial => 'organizations/subnav') if link_class[:organizations] == 'active'
+          - link_class.select {|k,v| v=="active"}.keys.each do |section|
+            - content_for :subnav do
+              = render(:partial => "#{section}/subnav")
+          - if content_for(:subnav).strip.length > 0
+            .subnav.box
+              = yield :subnav
+
         .content.span9
           - if content_for?(:breadcrumbs)
             %ul.breadcrumb
