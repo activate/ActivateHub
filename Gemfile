@@ -71,6 +71,7 @@ group :development, :test do
 
   gem 'ruby-debug', :platform => :mri_18
   gem 'ruby-debug19', :platform => :mri_19
+  gem 'pry'
 end
 
 # Some dependencies are activated through server settings.
