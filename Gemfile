@@ -153,6 +153,7 @@ group :development, :test do
       gem 'ruby-debug'
     end
   end
+  gem 'pry'
 end
 
 # Some dependencies are activated through server settings.
