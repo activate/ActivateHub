@@ -11,8 +11,16 @@ class ApplicationController < ActionController::Base
   # Setup theme
   layout "application"
   theme THEME_NAME # DEPENDENCY: lib/theme_reader.rb
+  before_filter :current_site
 
 protected
+
+  def current_site
+    @current_site = Site.find_by_domain request.domain
+    if !@current_site
+      redirect_to "http://activatehub.org/"
+    end
+  end
 
   #---[ Helpers ]---------------------------------------------------------
 
