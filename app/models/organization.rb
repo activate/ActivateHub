@@ -1,4 +1,5 @@
 class Organization < ActiveRecord::Base
+  belongs_to :site
   has_many :events # we might want :dependent => :destroy later
   has_many :sources, :dependent => :destroy
   has_and_belongs_to_many :topics
