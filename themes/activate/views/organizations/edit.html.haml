@@ -3,6 +3,8 @@
 = semantic_form_for(@organization) do |f|
   = f.inputs do
     = f.input :name
+    = f.input :contact_name
+    = f.input :email
     = f.input :url
     = f.input :topics, :input_html => { :class => 'required chzn-select-create' }
   = f.buttons do
