@@ -10,7 +10,6 @@
 .rvmrc
 .vagrant
 Gemfile.local
-Gemfile.lock
 Makefile
 Vagrantfile.local
 config/database~custom.yml
@@ -25,7 +24,6 @@ coverage.info*
 coverage/*
 db/*.sqlite3
 db/*.sqlite3.*
-db/schema.rb
 index/*
 log/*
 nbproject/*
