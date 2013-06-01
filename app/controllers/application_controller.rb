@@ -17,6 +17,7 @@ protected
 
   def current_site
     @current_site = Site.find_by_domain request.domain
+    ActiveRecord::Base.current_site = @current_site
     if !@current_site
       redirect_to "http://activatehub.org/"
     end

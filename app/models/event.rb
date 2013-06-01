@@ -39,6 +39,8 @@ class Event < ActiveRecord::Base
   include DecodeHtmlEntitiesHack
 
   # Associations
+  scope_to_current_site
+  belongs_to :site
   belongs_to :venue, :counter_cache => true
   belongs_to :source
   belongs_to :organization

@@ -27,6 +27,7 @@ class Source < ActiveRecord::Base
   has_and_belongs_to_many :types
   belongs_to :organization
   belongs_to :site
+  scope_to_current_site
 
   scope :listing, :order => 'created_at DESC'
 

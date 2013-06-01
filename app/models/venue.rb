@@ -44,6 +44,7 @@ class Venue < ActiveRecord::Base
   has_many :events, :dependent => :nullify
   belongs_to :source
   belongs_to :site
+  scope_to_current_site
 
   # Triggers
   strip_whitespace! :title, :description, :address, :url, :street_address, :locality, :region, :postal_code, :country, :email, :telephone
