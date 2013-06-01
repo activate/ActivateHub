@@ -15,6 +15,12 @@ class Organization < ActiveRecord::Base
     :allow_nil => true,
     :message => "is invalid (did you include the http:// part?)"
 
+  validates_format_of :email,
+    :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/,
+    :allow_blank => true,
+    :allow_nil => true,
+    :message => "is invalid (did you include the @ part?)"
+
   default_scope :order => 'LOWER(name) ASC'
 
   def title
