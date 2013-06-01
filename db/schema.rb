@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130601201436) do
+ActiveRecord::Schema.define(:version => 20130601225531) do
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -19,14 +19,15 @@ ActiveRecord::Schema.define(:version => 20130601201436) do
     t.datetime "start_time"
     t.integer  "venue_id"
     t.string   "url"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "source_id"
     t.integer  "duplicate_of_id"
     t.datetime "end_time"
     t.string   "rrule"
     t.text     "venue_details"
     t.integer  "organization_id"
+    t.integer  "site_id"
   end
 
   create_table "events_topics", :id => false, :force => true do |t|
@@ -42,8 +43,9 @@ ActiveRecord::Schema.define(:version => 20130601201436) do
   create_table "organizations", :force => true do |t|
     t.string   "name"
     t.string   "url"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "site_id"
     t.string   "contact_name"
     t.string   "email"
   end
@@ -54,7 +56,7 @@ ActiveRecord::Schema.define(:version => 20130601201436) do
   end
 
   create_table "rails_admin_histories", :force => true do |t|
-    t.string   "message"
+    t.text     "message"
     t.string   "username"
     t.integer  "item"
     t.string   "table"
@@ -66,14 +68,22 @@ ActiveRecord::Schema.define(:version => 20130601201436) do
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
 
+  create_table "sites", :force => true do |t|
+    t.string   "name"
+    t.string   "domain"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "sources", :force => true do |t|
     t.string   "title"
     t.string   "url"
     t.datetime "imported_at"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "reimport"
     t.integer  "organization_id"
+    t.integer  "site_id"
   end
 
   create_table "sources_types", :id => false, :force => true do |t|
@@ -102,30 +112,50 @@ ActiveRecord::Schema.define(:version => 20130601201436) do
 
   create_table "topics", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "site_id"
   end
 
   create_table "types", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "site_id"
   end
 
   create_table "updates", :force => true do |t|
     t.integer  "source_id"
     t.text     "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  create_table "users", :force => true do |t|
+    t.string   "email",                                 :default => "", :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                         :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at",                                            :null => false
+    t.datetime "updated_at",                                            :null => false
+  end
+
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "venues", :force => true do |t|
     t.string   "title"
     t.text     "description"
     t.string   "address"
     t.string   "url"
-    t.datetime "created_at",                                                       :null => false
-    t.datetime "updated_at",                                                       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "street_address"
     t.string   "locality"
     t.string   "region"
@@ -141,6 +171,7 @@ ActiveRecord::Schema.define(:version => 20130601201436) do
     t.boolean  "wifi",                                          :default => false
     t.text     "access_notes"
     t.integer  "events_count"
+    t.integer  "site_id"
   end
 
   create_table "versions", :force => true do |t|

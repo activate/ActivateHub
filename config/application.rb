@@ -123,6 +123,9 @@ module Calagator
       # Activate search engine
       require 'search_engine'
       SearchEngine.kind = SECRETS.search_engine
+
+      # Enable Asset Pipeline
+      config.assets.enabled = true
     end
 
     # Set timezone for OS
