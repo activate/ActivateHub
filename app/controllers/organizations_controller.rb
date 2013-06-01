@@ -80,4 +80,17 @@ class OrganizationsController < ApplicationController
       end
     end
   end
+
+    # DELETE /organizations/1
+  # DELETE /organizations/1.xml
+  def destroy
+    @organization = Organization.find(params[:id])
+    Organization.destroy(params[:id])
+
+    respond_to do |format|
+      format.html { redirect_to(organizations_url, :flash => {:success => "\"#{@organization.title}\" has been deleted"}) }
+      format.xml  { head :ok }
+    end
+  end
+
 end
