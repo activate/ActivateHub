@@ -3,6 +3,8 @@
   = semantic_form_for(@organization, :html => {:id => 'organization_form', :class => 'standard_form'}) do |f|
     = f.inputs :name => "Create Organization" do
       = f.input :name, :label => "Name", :hint => "the organization's full name"
+      = f.input :contact_name, :label => "Contact Name", :hint => "person that can be contacted in the organization"
+      = f.input :email, :label => "Email", :hint => "we may use this to contact the organization"
       = f.input :url, :label => "Homepage", :hint => 'for example, http://awesome-nonprofit.org'
       = f.input :topics, :input_html => { :class => 'required chzn-select-create', 'data-placeholder' => "Choose or add your own..." }
       - focus_on '#organization_name'
