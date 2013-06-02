@@ -54,6 +54,7 @@ gem 'haml'
 gem 'formtastic-bootstrap', :git => 'git://github.com/activate/formtastic-bootstrap.git'
 gem 'devise'
 gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git', :branch => "rails-3.0"
+gem 'newrelic_rpm'
 
 # gem 'paper_trail_manager', :path => '../paper_trail_manager'
 gem 'paper_trail_manager'
