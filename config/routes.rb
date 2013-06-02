@@ -1,4 +1,8 @@
 Calagator::Application.routes.draw do
+  devise_for :users
+
+  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+
   match 'omfg' => 'site#omfg'
   match 'hello' => 'site#hello'
 
@@ -53,4 +57,6 @@ Calagator::Application.routes.draw do
 
   match '/import_all' => 'sources#import_all'
   match '/:controller(/:action(/:id))'
+
+  root :to => "home#index"
 end

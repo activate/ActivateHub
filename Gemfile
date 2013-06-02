@@ -82,12 +82,13 @@ gem 'formtastic', '2.0.2' # 2.1 and above change the syntax significantly :(
 gem 'validation_reflection', :git => 'git://github.com/ncri/validation_reflection.git', :ref => '60320e6beb088808fd625a8d958dbd0d2661d494'
 gem 'acts-as-taggable-on', '2.3.3'
 gem 'themes_for_rails', '0.5.1'
-gem 'jquery-rails', '1.0.19'
+gem 'jquery-rails', '2.1'
 gem 'progress_bar', '0.4.0'
 gem 'exception_notification', '2.6.1'
 gem 'rails3-jquery-autocomplete'
 gem 'haml'
 gem 'formtastic-bootstrap', :git => 'git@github.com:activate/formtastic-bootstrap.git'
+gem 'rails_admin', '0.4.8'
 
 # gem 'paper_trail_manager', :git => 'https://github.com/igal/paper_trail_manager.git'
 # gem 'paper_trail_manager', :path => '../paper_trail_manager'
@@ -165,3 +166,6 @@ when 'sunspot'
   gem 'sunspot_rails', sunspot_version
   gem 'sunspot_solr',  sunspot_version
 end
+
+
+gem "devise"
