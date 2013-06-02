@@ -16,11 +16,16 @@ class ApplicationController < ActionController::Base
 protected
 
   def current_site
-    @current_site = Site.find_by_domain request.domain
-    ActiveRecord::Base.current_site = @current_site
-    if !@current_site
-      redirect_to "http://activatehub.org/"
+    unless request.path =~ %r"^/(admin)|(users)"
+      @current_site = Site.find_by_domain request.domain
+      if !@current_site
+        redirect_to "http://activatehub.org/"
+      end
+    else
+      @current_site = nil
     end
+
+    ActiveRecord::Base.current_site = @current_site
   end
 
   #---[ Helpers ]---------------------------------------------------------
