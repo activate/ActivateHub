@@ -87,7 +87,7 @@ gem 'progress_bar', '0.4.0'
 gem 'exception_notification', '2.6.1'
 gem 'rails3-jquery-autocomplete'
 gem 'haml'
-gem 'formtastic-bootstrap', :git => 'git@github.com:activate/formtastic-bootstrap.git'
+gem 'formtastic-bootstrap', :git => 'git://github.com/activate/formtastic-bootstrap.git'
 gem 'rails_admin', '0.4.8'
 
 # gem 'paper_trail_manager', :git => 'https://github.com/igal/paper_trail_manager.git'
