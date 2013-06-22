@@ -2,9 +2,12 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
-# If you have a Gemfile, require the gems listed there, including any gems
-# you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env) if defined?(Bundler)
+if defined?(Bundler)
+  # If you precompile assets before deploying to production, use this line
+  Bundler.require(*Rails.groups(:assets => %w(development test)))
+  # If you want your assets lazily compiled in production, use this line
+  # Bundler.require(:default, :assets, Rails.env)
+end
 
 module Calagator
   class Application < Rails::Application
@@ -87,6 +90,13 @@ module Calagator
     config.cache_store = :file_store, cache_path
     FileUtils.mkdir_p(cache_path)
 
+    #---[ Asset Pipeline ]--------------------------------------------------
+    # Enable the asset pipeline
+    config.assets.enabled = true
+
+    # Version of your assets, change this if you want to expire all your assets
+    config.assets.version = '1.0'
+
     #---[ Secrets and settings ]--------------------------------------------
 
     config.before_initialize do
@@ -123,9 +133,6 @@ module Calagator
       # Activate search engine
       require 'search_engine'
       SearchEngine.kind = SECRETS.search_engine
-
-      # Enable Asset Pipeline
-      config.assets.enabled = true
     end
 
     # Set timezone for OS
