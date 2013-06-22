@@ -164,7 +164,7 @@ group :assets do
   # gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
+  gem 'therubyracer', :platforms => :ruby
 
   # Minify assets.  Requires a javascript runtime, such as 'therubyracer'
   # above. You will also need to set 'config.assets.compress' to true in
