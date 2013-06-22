@@ -8,6 +8,7 @@
 .dev
 .dtach
 .rvmrc
+.sass-cache
 .vagrant
 Gemfile.local
 Makefile
