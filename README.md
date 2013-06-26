@@ -1,7 +1,7 @@
 Activation Calendar
 ===================
 
-Goal: A calendar of all the Progressive, Educational, Volunteer-Oriented events in your city, filterable by event type, topic and neighborhood - [more info](http://activatehub.org/)
+Goal: A calendar of all the Progressive, Educational, Volunteer-Oriented events in your city, filterable by event type, topic and neighborhood - [more info](http://activatehub.org/).  For issues, see [Pivotal Tracker](https://www.pivotaltracker.com/projects/365511).
 
 Why
 ---
