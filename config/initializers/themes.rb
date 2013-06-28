@@ -1,5 +1,5 @@
 ThemesForRails.config do |config|
-  # your static assets on Rails.root/themes/pink/assets/{stylesheets,javascripts,images}
+  # Put static assets in Rails.root/themes/your-theme-name/{stylesheets,javascripts,images}
   config.assets_dir = ":root/themes/:name"
 
   # UPSTREAM BUG: the themes:create_cache rake task in the ThemesForRails
