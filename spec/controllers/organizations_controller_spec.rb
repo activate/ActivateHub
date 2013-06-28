@@ -10,8 +10,10 @@ describe OrganizationsController do
   end
 
   describe "GET 'show'" do
+    let(:organization) { create(:organization) }
+
     it "should be successful" do
-      get 'show'
+      get 'show', :id => organization.id
       response.should be_success
     end
   end
@@ -24,8 +26,10 @@ describe OrganizationsController do
   end
 
   describe "GET 'edit'" do
+    let(:organization) { create(:organization) }
+
     it "should be successful" do
-      get 'edit'
+      get 'edit', :id => organization.id
       response.should be_success
     end
   end

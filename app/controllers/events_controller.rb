@@ -63,6 +63,7 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.xml
   def create
+    params[:event] ||= {}
     params[:event][:type_ids] = create_missing_refs(params[:event][:type_ids], Type)
     params[:event][:topic_ids] = create_missing_refs(params[:event][:topic_ids], Topic)
 
@@ -104,6 +105,7 @@ class EventsController < ApplicationController
     @event.associate_with_venue(venue_ref(params))
     has_new_venue = @event.venue && @event.venue.new_record?
 
+    params[:event] ||= {}
     params[:event][:type_ids] = create_missing_refs(params[:event][:type_ids], Type)
     params[:event][:topic_ids] = create_missing_refs(params[:event][:topic_ids], Topic)
 

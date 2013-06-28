@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Organization do
+  subject(:organization) { Factory.build(:organization) }
 
   # Tests for Organization:
   # - We should be able to create a basic org instance given just a name.
@@ -8,6 +9,8 @@ describe Organization do
   # - Creating an organization with 'viagra' as name should fail.
   # - Creating an organization without a name is not possible.
   # - If the email is included, it should be valid
+
+  it { should be_valid }
 
   describe "in general" do
     before(:each) do

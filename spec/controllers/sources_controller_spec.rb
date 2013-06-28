@@ -1,70 +1,56 @@
 require 'spec_helper'
 
 describe SourcesController do
-  describe "using import logic" do
-    before(:each) do
-      @venue = mock_model(Venue,
-        :source => nil,
-        :source= => true,
-        :save! => true,
-        :duplicate_of_id =>nil)
+  let(:organization) { create(:organization) }
 
-      @event = mock_model(Event,
-        :title => "Super Event",
-        :source= => true,
-        :save! => true,
-        :venue => @venue,
-        :start_time => Time.now+1.week,
-        :end_time => nil,
-        :duplicate_of_id => nil)
+  def default_url_options
+    super.merge!({ :organization_id => organization.id })
+  end
 
-      @source = Source.new(:url => "http://my.url/")
-      @source.stub!(:save!).and_return(true)
-      @source.stub!(:to_events).and_return([@event])
+  describe "POST :import" do
+    let(:source) { build(:source, :organization => organization) }
+    let(:source_attrs) { source.attributes.reject {|k,v| v.nil? } }
 
-      Source.stub!(:new).and_return(@source)
-      Source.stub!(:find_or_create_by_url).and_return(@source)
+    context "with a non-unique URL" do
+      before(:each) { create(:source, :url => source.url) }
+
+      it "should not create a new source object" do
+        expect {
+          post :import, :source => source_attrs
+        }.to_not change { Source.count }
+      end
+
+      it "should persist changs to the source object" do
+        post :import, :source => { :url => source.url, :title => "undisclosed" }
+        assigns(:source).reload.title.should eq "undisclosed"
+      end
+
+      it "should try to import assocated events" do
+        Source.any_instance.should_receive(:create_events!)
+        post :import, :source => source_attrs
+      end
     end
 
-    it "should provide a way to create new sources" do
-      get :new
-      assigns(:source).should be_a_kind_of Source
-      assigns(:source).should be_a_new_record
-    end
+    context "with a unique URL" do
+      it "should save a new source object" do
+        expect {
+          post :import, :source => source_attrs
+        }.to change { Source.count }.by(1)
+      end
 
-    it "should save the source object when creating events" do
-      @source.should_receive(:save!)
-      post :import, :source => {:url => @source.url}
-      flash[:success].should match /Imported/i
-    end
-
-    it "should assign newly-created events to the source" do
-      @event.should_receive(:save!)
-      post :import, :source => {:url => @source.url}
-    end
-
-    it "should assign newly created venues to the source" do
-      @venue.should_receive(:save!)
-      post :import, :source => {:url => @source.url}
-    end
-
-    it "should limit the number of created events to list in the flash" do
-      excess = 5
-      events = (1..(SourcesController::MAXIMUM_EVENTS_TO_DISPLAY_IN_FLASH+excess))\
-        .inject([]){|result,i| result << @event; result}
-      @source.should_receive(:to_events).and_return(events)
-      post :import, :source => {:url => @source.url}
-      flash[:success].should match /And #{excess} other events/si
+      it "should try to import assocated events" do
+        Source.any_instance.should_receive(:create_events!)
+        post :import, :source => source_attrs
+      end
     end
 
     describe "is given problematic sources" do
       before do
-        @source = stub_model(Source)
-        Source.should_receive(:find_or_create_from).and_return(@source)
+        Source.should_receive(:find_or_create_from).and_return(source)
       end
 
       def assert_import_raises(exception)
-        @source.should_receive(:create_events!).and_raise(exception)
+        source.should_receive(:create_events!).and_raise(exception)
         post :import, :source => {:url => "http://invalid.host"}
       end
 
@@ -88,324 +74,260 @@ describe SourcesController do
         flash[:failure].should match /requires authentication/
       end
     end
+
+    it "should limit the number of created events to list in the flash" do
+      max_display = SourcesController::MAXIMUM_EVENTS_TO_DISPLAY_IN_FLASH
+      events = 1.upto(max_display + 5).map { build_stubbed(:event) }
+      Source.any_instance.should_receive(:to_events).and_return(events)
+
+      post :import, :source => { :url => source.url }
+      flash[:success].should match /And 5 other events/si
+    end
   end
 
-
-  describe "handling GET /sources" do
-
-    before(:each) do
-      @source = mock_model(Source)
-      Source.stub!(:listing).and_return([@source])
-    end
-
-    def do_get
+  describe "GET :index" do
+    it "should be successful" do
       get :index
-    end
-
-    it "should be successful" do
-      do_get
       response.should be_success
     end
 
-    it "should render index template" do
-      do_get
-      response.should render_template :index
-    end
-
-    it "should find sources" do
-      Source.should_receive(:listing).and_return([@source])
-      do_get
-    end
-
-    it "should assign the found sources for the view" do
-      do_get
-      assigns[:sources].should eq [@source]
-    end
-  end
-
-  describe "handling GET /sources.xml" do
-
-    before(:each) do
-      @sources = mock("Array of Sources", :to_xml => "XML")
-      Source.stub!(:find).and_return(@sources)
-    end
-
-    def do_get
-      @request.env["HTTP_ACCEPT"] = "application/xml"
+    it "should assign the sources to @sources" do
+      source = create(:source, :organization => organization)
       get :index
+      assigns(:sources).should eq [source]
     end
 
+    context ":format => :html" do
+      it "should render the :index template" do
+        get :index, :format => :html
+        expect(response).to render_template(:index)
+      end
+    end
+
+    context ":format => :xml" do
+      it "should render the found sources as xml" do
+        get :index, :format => :xml
+        response.content_type.should eq 'application/xml'
+      end
+    end
+  end
+
+  describe "GET :show" do
+    context "source doesn't exist" do
+      it "should redirect to the new source page" do
+        get :show, :id => 'MI7'
+        response.should redirect_to(new_organization_source_path)
+      end
+
+      it "should provide a failure message" do
+        get :show, :id => 'MI7'
+        expect(flash.keys).to include(:failure)
+      end
+    end
+
+    context "source exists" do
+      let(:source) { create(:source, :organization => organization) }
+
+      it "should be successful" do
+        get :show, :id => source.id
+        response.should be_success
+      end
+
+      it "should assign the source to @source" do
+        get :show, :id => source.id
+        assigns(:source).should eq source
+      end
+
+      context ":format => :html" do
+        it "should render the :show template" do
+          get :show, :id => source.id, :format => :html
+          expect(response).to render_template(:show)
+        end
+      end
+
+      context ":format => :xml" do
+        it "should render the source as xml" do
+          get :show, :id => source.id, :format => :xml
+          response.content_type.should eq 'application/xml'
+        end
+      end
+    end
+  end
+
+  describe "GET :new" do
     it "should be successful" do
-      do_get
-      response.should be_success
-    end
-
-    it "should find all sources" do
-      Source.should_receive(:listing).and_return(@sources)
-      do_get
-    end
-
-    it "should render the found sources as xml" do
-      do_get
-      response.content_type.should eq 'application/xml'
-    end
-  end
-
-  describe "show" do
-    it "should redirect when asked for unknown source" do
-      Source.should_receive(:find).and_raise(ActiveRecord::RecordNotFound.new)
-      get :show, :id => "1"
-
-      response.should be_redirect
-    end
-  end
-
-  describe "handling GET /sources/1" do
-
-    before(:each) do
-      @source = mock_model(Source)
-      Source.stub!(:find).and_return(@source)
-    end
-
-    def do_get
-      get :show, :id => "1"
-    end
-
-    it "should be successful" do
-      do_get
-      response.should be_success
-    end
-
-    it "should render show template" do
-      do_get
-      response.should render_template :show
-    end
-
-    it "should find the source requested" do
-      Source.should_receive(:find).with("1", :include => [:events, :venues]).and_return(@source)
-      do_get
-    end
-
-    it "should assign the found source for the view" do
-      do_get
-      assigns[:source].should eq @source
-    end
-  end
-
-  describe "handling GET /sources/1.xml" do
-
-    before(:each) do
-      @source = mock_model(Source, :to_xml => "XML")
-      Source.stub!(:find).and_return(@source)
-    end
-
-    def do_get
-      @request.env["HTTP_ACCEPT"] = "application/xml"
-      get :show, :id => "1"
-    end
-
-    it "should be successful" do
-      do_get
-      response.should be_success
-    end
-
-    it "should find the source requested" do
-      Source.should_receive(:find).with("1", :include => [:events, :venues]).and_return(@source)
-      do_get
-    end
-
-    it "should render the found source as xml" do
-      @source.should_receive(:to_xml).and_return("XML")
-      do_get
-      response.body.should eq "XML"
-    end
-  end
-
-  describe "handling GET /sources/new" do
-
-    before(:each) do
-      @source = mock_model(Source)
-      Source.stub!(:new).and_return(@source)
-    end
-
-    def do_get
       get :new
-    end
-
-    it "should be successful" do
-      do_get
       response.should be_success
     end
 
-    it "should render new template" do
-      do_get
-      response.should render_template :new
+    it "should assign the newly initialized source to @source" do
+      get :new
+      assigns(:source).should be_present
     end
 
-    it "should create an new source" do
-      Source.should_receive(:new).and_return(@source)
-      do_get
+    it "@source should be a new record" do
+      get :new
+      expect(assigns(:source).new_record?).to be_true
     end
 
-    it "should not save the new source" do
-      @source.should_not_receive(:save)
-      do_get
-    end
-
-    it "should assign the new source for the view" do
-      do_get
-      assigns[:source].should eq @source
+    context ":format => :html" do
+      it "should render the :new template" do
+        get :new, :format => :html
+        expect(response).to render_template(:new)
+      end
     end
   end
 
-  describe "handling GET /sources/1/edit" do
-
-    before(:each) do
-      @source = mock_model(Source)
-      Source.stub!(:find).and_return(@source)
+  describe "GET :edit" do
+    context "source doesn't exist" do
+      it "should raise an error" do
+        expect { get :edit, :id => 'MI7' }.to raise_error
+      end
     end
 
-    def do_get
-      get :edit, :id => "1"
-    end
+    context "source exists" do
+      let(:source) { create(:source, :organization => organization) }
 
-    it "should be successful" do
-      do_get
-      response.should be_success
-    end
+      it "should be successful" do
+        get :edit, :id => source.id
+        response.should be_success
+      end
 
-    it "should render edit template" do
-      do_get
-      response.should render_template :edit
-    end
+      it "should assign the source to @source" do
+        get :edit, :id => source.id
+        assigns(:source).should eq source
+      end
 
-    it "should find the source requested" do
-      Source.should_receive(:find).and_return(@source)
-      do_get
-    end
-
-    it "should assign the found Source for the view" do
-      do_get
-      assigns[:source].should eq @source
+      context ":format => :html" do
+        it "should render the :edit template" do
+          get :edit, :id => source.id, :format => :html
+          expect(response).to render_template(:edit)
+        end
+      end
     end
   end
 
-  describe "handling POST /sources" do
+  describe "POST :create" do
+    context "with valid source attributes" do
+      # attributes_for(:source) doesn't return what I expect w/ this version of FG
+      let(:source_attrs) { build(:source, :organization => organization).attributes }
 
-    before(:each) do
-      @source = mock_model(Source, :to_param => "1")
-      Source.stub!(:new).and_return(@source)
+      it "should save the source object" do
+        expect {
+          post :create, :source => source_attrs
+        }.to change { Source.count }.by(1)
+      end
+
+      it "should assign the source to @source" do
+        post :create, :source => source_attrs
+        assigns(:source).should_not be_nil
+      end
+
+      it "should redirect to the source show page" do
+        post :create, :source => source_attrs
+
+        path = organization_source_path(
+          :organization_id => organization.id,
+          :id => assigns(:source).id
+        )
+
+        expect(response).to redirect_to(path)
+      end
     end
 
-    describe "with successful save" do
+    context "with invalid source attributes" do
+      it "should not save the source object" do
+        expect { post :create, :source => {} }.to_not change { Source.count }
+      end
 
-      def do_post
-        @source.should_receive(:save).and_return(true)
+      it "should render the :new template" do
         post :create, :source => {}
+        expect(response).to render_template(:new)
       end
-
-      it "should create a new source" do
-        Source.should_receive(:new).with({}).and_return(@source)
-        do_post
-      end
-
-      it "should redirect to the new source" do
-        do_post
-        response.should redirect_to(source_url("1"))
-      end
-
-    end
-
-    describe "with failed save" do
-
-      def do_post
-        @source.should_receive(:save).and_return(false)
-        post :create, :source => {}
-      end
-
-      it "should re-render 'new'" do
-        do_post
-        response.should render_template :new
-      end
-
     end
   end
 
-  describe "handling PUT /sources/1" do
-
-    before(:each) do
-      @source = mock_model(Source, :to_param => "1")
-      Source.stub!(:find).and_return(@source)
+  describe "PUT :update" do
+    context "source doesn't exist" do
+      it "should raise an error" do
+        expect { put :update, :id => 'MI7' }.to raise_error
+      end
     end
 
-    describe "with successful update" do
+    context "source exists" do
+      let(:source) { create(:source, :organization => organization) }
 
-      def do_put
-        @source.should_receive(:update_attributes).and_return(true)
-        put :update, :id => "1"
+      it "should assign the source to @source" do
+        put :update, :id => source.id, :source => source.attributes
+        assigns(:source).should_not be_nil
       end
 
-      it "should find the source requested" do
-        Source.should_receive(:find).with("1").and_return(@source)
-        do_put
+      context "source changes are valid" do
+        it "should persist changs to the source object" do
+          put :update, :id => source.id, :source => { :title => "undisclosed" }
+          assigns(:source).reload.title.should eq "undisclosed"
+        end
+
+        it "should redirect to the source show page" do
+          put :update, :id => source.id, :source => source.attributes
+
+          path = organization_source_path(
+            :organization_id => organization.id,
+            :id => assigns(:source).id
+          )
+
+          expect(response).to redirect_to(path)
+        end
       end
 
-      it "should update the found source" do
-        do_put
-        assigns(:source).should eq @source
+      context "source changes are invalid" do
+        it "should not persist changes to the source object" do
+          put :update, :id => source.id, :source => { :url => "" }
+          assigns(:source).reload.url.should == source.url
+        end
+
+        it "should render the :edit template" do
+          put :update, :id => source.id, :source => { :url => "" }
+          expect(response).to render_template(:edit)
+        end
+
+        it "should provide an error message" do
+          put :update, :id => source.id, :source => { :url => "" }
+          expect(flash.keys).to include(:error)
+        end
       end
-
-      it "should assign the found source for the view" do
-        do_put
-        assigns(:source).should eq @source
-      end
-
-      it "should redirect to the source" do
-        do_put
-        response.should redirect_to(source_url("1"))
-      end
-
-    end
-
-    describe "with failed update" do
-
-      def do_put
-        @source.should_receive(:update_attributes).and_return(false)
-        put :update, :id => "1"
-      end
-
-      it "should re-render 'edit'" do
-        do_put
-        response.should render_template :edit
-      end
-
     end
   end
 
-  describe "handling DELETE /sources/1" do
-
-    before(:each) do
-      @source = mock_model(Source, :destroy => true)
-      Source.stub!(:find).and_return(@source)
+  describe "DELETE :destroy" do
+    context "source doesn't exist" do
+      it "should raise an error" do
+        expect { delete :destroy, :id => 'MI7' }.to raise_error
+      end
     end
 
-    def do_delete
-      delete :destroy, :id => "1"
-    end
+    context "source exists" do
+      let(:source) { create(:source, :organization => organization) }
 
-    it "should find the source requested" do
-      Source.should_receive(:find).with("1").and_return(@source)
-      do_delete
-    end
+      it "should remove the object from the database" do
+        source # initialize now, let(...) is lazy
 
-    it "should call destroy on the found source" do
-      @source.should_receive(:destroy)
-      do_delete
-    end
+        expect {
+          delete :destroy, :id => source.id
+        }.to change { Source.count }.by(-1)
+      end
 
-    it "should redirect to the sources list" do
-      do_delete
-      response.should redirect_to(sources_url)
+      it "should call destroy on source object (not delete)" do
+        # we want to ensure any destroy hooks are triggered (paper trail, etc)
+        Source.any_instance.should_receive(:destroy)
+        delete :destroy, :id => source.id
+      end
+
+      it "should redirect to the index page" do
+        delete :destroy, :id => source.id
+        expect(response).to redirect_to(organization_sources_url)
+      end
     end
   end
+
 end

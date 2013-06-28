@@ -42,6 +42,12 @@ Spork.prefork do
     # Disable these so transactions can be used by the database cleaner
     config.use_transactional_fixtures = false
 
+    # Allows us to use create(:user) instead of FactoryGirl.create :user
+    config.include FactoryGirl::Syntax::Methods
+
+    # custom helpers and mixins, see spec/support/*
+    config.include ControllerHelper, :type => :controller
+
     # Database cleaner
     config.before(:suite) do
       DatabaseCleaner.strategy = :transaction
@@ -50,6 +56,12 @@ Spork.prefork do
 
     config.before(:each) do
       DatabaseCleaner.start
+
+      # data is tenantized by site, so we need to ensure a site exists for
+      # all tests and that it matches the request.domain used for controller
+      # and functional tests.
+      ENV['TEST_REQ_HOST'] = 'activate.test'
+      Site.create(:name => 'Test Site', :domain => ENV['TEST_REQ_HOST'])
     end
 
     config.after(:each) do
