@@ -125,6 +125,10 @@ group :development, :test do
     gem 'guard-rspec', '~> 1.2.1'
     gem 'guard-spork', '~> 1.1.0'
 
+    # Better Errors (interactive web debugging)
+    gem 'better_errors'
+    gem 'binding_of_caller'
+
     # Guard notifier
     case RUBY_PLATFORM
     when /-*darwin.*/ then gem 'growl'
