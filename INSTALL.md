@@ -46,7 +46,6 @@ To run Calagator in `production` mode, which runs more quickly, but doesn't relo
 
     ```
     bundle exec rake assets:precompile
-    bundle exec rake themes:create_cache
     ```
 
 The Calagator.org site runs on [Ubuntu Linux](http://ubuntu.com/), [Phusion REE (Ruby Enterprise Edition)](http://rubyenterpriseedition.com/) and [Phusion Passenger](http://www.modrails.com/).
