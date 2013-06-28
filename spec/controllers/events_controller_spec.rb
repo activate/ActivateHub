@@ -220,25 +220,25 @@ describe EventsController do
           it "should use the default if given a malformed parameter" do
             get :index, :date => "omgkittens"
             assigns["#{@date_kind}_date"].should eq controller.send("default_#{@date_kind}_date")
-            response.should have_selector(".flash_failure", :content => 'malformed')
+            response.should have_selector(".alert", :content => 'malformed')
           end
 
           it "should use the default if given a missing parameter" do
             get :index, :date => {:foo => "bar"}
             assigns["#{@date_kind}_date"].should eq controller.send("default_#{@date_kind}_date")
-            response.should have_selector(".flash_failure", :content => 'missing')
+            response.should have_selector(".alert", :content => 'missing')
           end
 
           it "should use the default if given an empty parameter" do
             get :index, :date => {@date_kind => ""}
             assigns["#{@date_kind}_date"].should eq controller.send("default_#{@date_kind}_date")
-            response.should have_selector(".flash_failure", :content => 'empty')
+            response.should have_selector(".alert", :content => 'empty')
           end
 
           it "should use the default if given an invalid parameter" do
             get :index, :date => {@date_kind => "omgkittens"}
             assigns["#{@date_kind}_date"].should eq controller.send("default_#{@date_kind}_date")
-            response.should have_selector(".flash_failure", :content => 'invalid')
+            response.should have_selector(".alert", :content => 'invalid')
           end
 
           it "should use the value if valid" do
@@ -289,7 +289,7 @@ describe EventsController do
 
   describe "#show" do
     it "should show an event" do
-      event = Event.new(:start_time => now)
+      event = create(:event, :start_time => now)
       Event.should_receive(:find).and_return(event)
 
       get "show", :id => 1234
@@ -297,7 +297,7 @@ describe EventsController do
     end
 
     it "should redirect from a duplicate event to its master" do
-      master = Factory.build(:event, :id => 4321)
+      master = create(:event, :id => 4321)
       event = Event.new(:start_time => now, :duplicate_of => master)
       Event.should_receive(:find).and_return(event)
 
@@ -323,7 +323,9 @@ describe EventsController do
         :event => {
           "title"       => "MyVenue",
           "url"         => "http://my.venue",
-          "description" => "Wheeeee"
+          "description" => "Wheeeee",
+          "type_ids"    => [],
+          "topic_ids"   => [],
         },
         :end_time       => "",
         :start_time     => ""
@@ -646,7 +648,7 @@ describe EventsController do
       get 'duplicates', :type => 'omgwtfbbq'
 
       response.should be_success
-      response.should have_selector('.failure', :content => 'omgwtfbbq')
+      response.should have_selector('.alert', :content => 'omgwtfbbq')
     end
 
   end

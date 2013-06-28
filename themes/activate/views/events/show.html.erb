@@ -1,7 +1,9 @@
 <% tabindex_on '#search_field' %>
 
-<% content_for :discovery_insert do %>
-  <link rel="alternate" type="application/x-wiki" title="Edit this page" href="<%= edit_event_url(@event) %>" />
+<% if @event.id? %>
+  <% content_for :discovery_insert do %>
+    <link rel="alternate" type="application/x-wiki" title="Edit this page" href="<%= edit_event_url(@event) %>" />
+  <% end %>
 <% end %>
 
 <% content_for :javascript_insert do %>
@@ -37,7 +39,7 @@
           <%# TODO: Do we actually want to keep providing this? %>
           <%= text_area_tag 'hCalendar',
             h(
-              render :partial => 'hcal.html.erb',
+              render :partial => 'hcal',
                         :locals => {
                           :event => @event,
                           :show_year => true
