@@ -15,6 +15,7 @@ Factory.define :source do |f|
 end
 
 Factory.define :venue do |f|
+  f.site { Site.find_by_domain(ENV['TEST_REQ_HOST']) }
   f.sequence(:title) { |n| "Venue #{n}" }
   f.sequence(:description) { |n| "Description of Venue #{n}." }
   f.sequence(:address) { |n| "Address #{n}" }
@@ -34,6 +35,7 @@ Factory.define :venue do |f|
 end
 
 Factory.define :event, :class => Event do |f|
+  f.site { Site.find_by_domain(ENV['TEST_REQ_HOST']) }
   f.sequence(:title) { |n| "Event #{n}" }
   f.sequence(:description) { |n| "Description of Event #{n}." }
   f.start_time { Time.now + 1.hour }
