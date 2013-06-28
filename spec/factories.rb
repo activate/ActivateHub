@@ -1,3 +1,19 @@
+Factory.define :site do |f|
+  f.name 'My Site'
+  f.domain 'my.site'
+end
+
+Factory.define :organization do |f|
+  f.site { Site.find_by_domain(ENV['TEST_REQ_HOST']) }
+  f.name 'My Org'
+end
+
+Factory.define :source do |f|
+  f.site { Site.find_by_domain(ENV['TEST_REQ_HOST']) }
+  f.url 'http://a.valid.url'
+  f.association :organization
+end
+
 Factory.define :venue do |f|
   f.sequence(:title) { |n| "Venue #{n}" }
   f.sequence(:description) { |n| "Description of Venue #{n}." }

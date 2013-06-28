@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Source, "in general" do
+  subject(:source) { Factory.build(:source) }
+
   before(:each) do
     @event = mock_model(Event,
       :title => "Title",
@@ -11,6 +13,8 @@ describe Source, "in general" do
       :venue => nil,
       :duplicate_of_id => nil)
   end
+
+  it { should be_valid }
 
   it "should create events for source from URL" do
     @event.should_receive(:save!)

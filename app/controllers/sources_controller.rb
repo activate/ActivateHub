@@ -95,11 +95,13 @@ class SourcesController < ApplicationController
   # GET /sources/1
   # GET /sources/1.xml
   def show
+    organization_id = params[:organization_id]
+
     begin
       @source = Source.find(params[:id], :include => [:events, :venues])
     rescue ActiveRecord::RecordNotFound => e
       flash[:failure] = e.to_s if params[:id] != "import"
-      return redirect_to(new_source_path)
+      return redirect_to(new_organization_source_path(:organization_id => organization_id))
     end
 
     respond_to do |format|
@@ -136,7 +138,7 @@ class SourcesController < ApplicationController
     respond_to do |format|
       if @source.save
         flash[:notice] = 'Source was successfully created.'
-        format.html { redirect_to( organization_source_path(@source) ) }
+        format.html { redirect_to( organization_source_path(:organization_id => @source.organization_id, :id => @source.id) ) }
         format.xml  { render :xml => @source, :status => :created, :location => @source }
       else
         format.html { render :action => "new" }
