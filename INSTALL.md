@@ -12,7 +12,7 @@ You will need to:
   * [Install RubyGems](http://rubyforge.org/projects/rubygems/) 1.3.x or newer, a tool for managing software packages for Ruby.
   * [Install SQLite3](http://www.sqlite.org/), a database engine. Your operating system may already have it installed or offer it as a pre-built package.
   * [Install Bundler](http://gembundler.com/), a Ruby dependency management tool. You should run `gem install bundler` as root or an administrator after installing Ruby and RubyGems.
-  * Checkout the source code. Run `git clone git://github.com/calagator/calagator.git`, which will create a `calagator` directory with the source code. Go into this directory and run the remaining commands from there.
+  * Checkout the source code. Run `git clone git://github.com/activate/ActivateHub.git`, which will create an `ActivateHub` directory with the source code. Go into this directory and run the remaining commands from there.
   * Install Bundler-managed gems, the actual libraries that this application uses, like Ruby on Rails. You should run `bundle`, which may take a long time to complete.
   * Optionally specify the theme to use, see the **Customizing** section for details.
   * Optionally setup API keys for external services so that maps will be displayed, see the **API Keys** section for details.

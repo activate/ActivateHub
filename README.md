@@ -1,5 +1,5 @@
-Activation Calendar
-===================
+ActivateHub
+===========
 
 Goal: A calendar of all the Progressive, Educational, Volunteer-Oriented events in your city, filterable by event type, topic and neighborhood - [more info](http://activatehub.org/).  For issues, see [Pivotal Tracker](https://www.pivotaltracker.com/projects/365511).
 
@@ -18,33 +18,33 @@ The stable releases this software are tagged with version numbers, such as `v0.2
 Installing
 ----------
 
-Read [INSTALL.md](https://github.com/activate/activation_calendar/blob/master/INSTALL.md) for details on installing the software.
+Read [INSTALL.md](https://github.com/activate/ActivateHub/blob/master/INSTALL.md) for details on installing the software.
 
 
 Contributing
 ------------
 
-Bug fixes and features are welcomed. Please fork the source code and submit a pull request: <http://github.com/calagator/calagator/tree/master>
+Bug fixes and features are welcomed. Please fork the source code and submit a pull request: <http://github.com/activate/ActivateHub>
 
 
 Calagator
 ---------
 
-Activation Calendar is based on the [Calagator](http://calagator.org/) project [source code](http://github.com/calagator/calagator/). We merge frequently to stay close to the Calagator source. Where possible, [bugfixes](http://code.google.com/p/calagator/issues/list) should be sent back upstream, via a [pull request](http://help.github.com/pull-requests/). The Calagator [mailing list](http://groups.google.com/group/pdx-tech-calendar/) is a great resource for communicating upstream.
+ActivateHub is based on the [Calagator](http://calagator.org/) project [source code](http://github.com/calagator/calagator/). We merge frequently to stay close to the Calagator source. Where possible, [bugfixes](http://code.google.com/p/calagator/issues/list) should be sent back upstream, via a [pull request](http://help.github.com/pull-requests/). The Calagator [mailing list](http://groups.google.com/group/pdx-tech-calendar/) is a great resource for communicating upstream.
 
 Contributors
 ------------
 
-This free, open source software was made possible by a group of volunteers that put many hours of hard work into it. See the [CONTRIBUTORS.md](https://github.com/activate/activation_calendar/blob/master/CONTRIBUTORS.md) file for details.
+This free, open source software was made possible by a group of volunteers that put many hours of hard work into it. See the [CONTRIBUTORS.md](https://github.com/activate/ActivateHub/blob/master/CONTRIBUTORS.md) file for details.
 
 
 License
 -------
 
-This program is provided under an MIT open source license, read the [LICENSE.txt](https://github.com/activate/activation_calendar/blob/master/LICENSE.txt) file for details.
+This program is provided under an MIT open source license, read the [LICENSE.txt](https://github.com/activate/ActivateHub/blob/master/LICENSE.txt) file for details.
 
 
 Copyright
 ---------
 
-Copyright (c) 2012 Activation Calendar
+Copyright (c) 2012 ActivateHub

@@ -1,5 +1,5 @@
-Activation Calendar
-===================
+ActivateHub
+===========
 
 Setup
 -----
