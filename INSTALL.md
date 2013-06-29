@@ -1,4 +1,4 @@
-Calagator
+ActivateHub
 =========
 
 
@@ -22,7 +22,7 @@ You will need to:
 Development
 -----------
 
-To run Calagator in `development` mode, which automatically reloads code as you change it:
+To run ActivateHub in `development` mode, which automatically reloads code as you change it:
 
   * Follow the **Setup** instructions above.
   * Initialize your database, run `bundle exec rake db:migrate db:test:prepare`
@@ -35,7 +35,7 @@ To run Calagator in `development` mode, which automatically reloads code as you 
 Production
 ----------
 
-To run Calagator in `production` mode, which runs more quickly, but doesn't reload code:
+To run ActivateHub in `production` mode, which runs more quickly, but doesn't reload code:
 
   * Follow the **Setup** instructions above. Don't forget to do things like create the theme and secrets files.
   * Setup a firewall to protect ports used by your search engine, see the **Search engine** section for details.
@@ -48,13 +48,13 @@ To run Calagator in `production` mode, which runs more quickly, but doesn't relo
     bundle exec rake assets:precompile
     ```
 
-The Calagator.org site runs on [Ubuntu Linux](http://ubuntu.com/), [Phusion REE (Ruby Enterprise Edition)](http://rubyenterpriseedition.com/) and [Phusion Passenger](http://www.modrails.com/).
+The ActivateHub.org site runs on [Ubuntu Linux](http://ubuntu.com/), [Phusion REE (Ruby Enterprise Edition)](http://rubyenterpriseedition.com/) and [Phusion Passenger](http://www.modrails.com/).
 
 
 Customization
 -------------
 
-If you want to customize your Calagator, do NOT just start modifying files in `app`, `public` and `themes/default`. Please read the instructions in `themes/README.txt` for how to use the theming system.
+If you want to customize your ActivateHub, do NOT just start modifying files in `app`, `public` and `themes/default`. Please read the instructions in `themes/README.txt` for how to use the theming system.
 
 
 Security and secrets.yml
