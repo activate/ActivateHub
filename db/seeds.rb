@@ -6,17 +6,14 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Daley', :city => cities.first)
 
-Site.destroy_all
-User.destroy_all
-Type.destroy_all
-Topic.destroy_all
 
-site = Site.create({ name: "activate_dev", domain: "localhost" })
+if Rails.env.development?
+   User.create!({ email: "dev@example.org", password: "activate" })
+end
 
+site = Site.create!({ name: "activate_dev", domain: "localhost" })
 
-User.create({ email: "dev@example.org", password: "activate" })
-
-Type.create(
+Type.create!(
  [
    { name: 'volunteer', site_id: site.id },
    { name: 'social', site_id: site.id },
@@ -25,9 +22,9 @@ Type.create(
    { name: 'rally', site_id: site.id },
    { name: 'other', site_id: site.id },
    { name: 'film screening', site_id: site.id }
- ]);
+ ])
 
- Topic.create(
+ Topic.create!(
   [
    { name: 'animal rights', site_id: site.id },
    { name: 'arts', site_id: site.id  },
@@ -45,5 +42,5 @@ Type.create(
    { name: 'walking', site_id: site.id },
    { name: 'transit', site_id: site.id },
    { name: 'humanitarian aid', site_id: site.id },
-   { name: 'war and peace', site_id: site.id },
-  ]);
+   { name: 'war and peace', site_id: site.id }
+  ])
