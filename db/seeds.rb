@@ -5,13 +5,37 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Daley', :city => cities.first)
-
+require 'date'
 
 if Rails.env.development?
    User.create!({ email: "dev@example.org", password: "activate" })
 end
 
 site = Site.create!({ name: "activate_dev", domain: "localhost" })
+
+venue = Venue.create!({
+   title: "Danny's House",
+   description: "Danny's Totally Rad Pad",
+   postal_code: "97277",
+   country: "USA",
+   email: "carting@example.org",
+   telephone: "(555)501-1234",
+   site_id: site.id })
+
+Organization.create!({
+   name: "Danny's Awesome Go-Cart Extravaganza",
+   url: "http://www.example.org/gocart",
+   contact_name: "Danny Boy",
+   email: "danny@example.org",
+   site_id: site.id })
+
+Event.create!({
+   title: "Danny's Birthday",
+   description: "Come celebrate Danny's 40th birthday!",
+   start_time: DateTime.now,
+   venue_id: venue.id,
+   site_id: site.id
+})
 
 Type.create!(
  [
