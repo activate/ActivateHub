@@ -3,12 +3,13 @@
 
 source 'https://rubygems.org'
 
-if !ENV['IGNORE_RUBY_VER']
+unless ENV['IGNORE_RUBY_VER']
   # ensures everybody has same version of ruby this app uses in production.
   # heroku requires ruby version on own line (greps for version, not evals)
   ruby '1.9.3'
 end
 
+# FIXME: added Aug 5, 2012 -- this may be out of date
 unless defined?($BUNDLER_INTERPRETER_CHECKED)
   if defined?(JRUBY_VERSION)
     puts "WARNING: JRuby cannot run Calagator. Its version of Nokogiri is incompatible with 'loofah', 'mofo' and other things. Although basic things like running the console and starting the server work, you'll run into problems as soon as you try to add/edit records or import hCalendar events."
@@ -18,14 +19,6 @@ unless defined?($BUNDLER_INTERPRETER_CHECKED)
   end
   $BUNDLER_INTERPRETER_CHECKED = true
 end
-
-basedir = File.dirname(__FILE__)
-
-# Use "syck" YAML engine on Ruby 1.9.2 with early versions (e.g. p180) because
-# the default "psyche" engine is broken -- it doesn't support merge keys,
-# produce output it can't parse, etc.
-if defined?(Syck::Syck) and defined?(YAML::ENGINE)
-  YAML::ENGINE.yamler = 'syck'
 
 #---[ Database Adapter ]----------------------------------------------------
 
@@ -81,6 +74,7 @@ gem 'rails3-jquery-autocomplete'
 gem 'haml'
 gem 'formtastic-bootstrap', :git => 'git://github.com/activate/formtastic-bootstrap.git'
 gem 'rails_admin', '0.4.8'
+gem 'devise'
 
 # gem 'paper_trail_manager', :git => 'https://github.com/igal/paper_trail_manager.git'
 # gem 'paper_trail_manager', :path => '../paper_trail_manager'
@@ -128,28 +122,6 @@ group :development, :test do
     end
   end
 
-  # Optional libraries add debugging and code coverage functionality, but are not
-  # needed otherwise. These are not activated by default because they may cause
-  # Ruby or RVM to hang, complicate installation, and upset travis-ci. To
-  # activate them, create a `.dev` file and rerun Bundler, e.g.:
-  #
-  #   touch .dev && bundle
-  if File.exist?(File.join(File.dirname(File.expand_path(__FILE__)), ".dev"))
-    platform :mri_18 do
-      gem 'ruby-debug'
-      gem 'rcov'
-    end
-
-    platform :mri_19 do
-      gem 'debugger'
-      gem 'debugger-ruby_core_source'
-      gem 'simplecov'
-    end
-
-    platform :jruby do
-      gem 'ruby-debug'
-    end
-  end
   gem 'pry'
 end
 
@@ -169,7 +141,7 @@ group :assets do
 end
 
 # Some dependencies are activated through server settings.
-require "#{basedir}/lib/secrets_reader"
+require "#{File.dirname(__FILE__)}/lib/secrets_reader"
 secrets = SecretsReader.read(:silent => true)
 case secrets.search_engine
 when 'sunspot'
@@ -177,6 +149,3 @@ when 'sunspot'
   gem 'sunspot_rails', sunspot_version
   gem 'sunspot_solr',  sunspot_version
 end
-
-
-gem "devise"

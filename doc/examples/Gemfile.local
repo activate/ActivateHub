@@ -29,18 +29,28 @@
 # gem 'activerecord-jdbcsqlite3-adapter'
 
 
-#---[ Optional Gems (add your stuff here) ]---------------------------------
+#---[ Additional Gems (add your stuff here) ]-------------------------------
 
 group :development, :test do
-  #gem 'foreman'
+  # gem 'foreman'
 
-  #gem 'pry-debugger'
-  #gem 'pry-highlight'
-  #gem 'pry-rescue'
-  #gem 'pry-stack_explorer'
+  # gem 'pry-debugger'
+  # gem 'pry-highlight'
+  # gem 'pry-rescue'
+  # gem 'pry-stack_explorer'
 
-  #gem 'watchr', :require => false
-  #gem 'spork', :require => false
+  # gem 'watchr', :require => false
+  # gem 'spork', :require => false
+
+  # platform :mri_19 do
+  #   gem 'debugger'
+  #   gem 'debugger-ruby_core_source'
+  #   gem 'simplecov'
+  # end
+
+  # platform :jruby do
+  #   gem 'ruby-debug'
+  # end
 end
 
 #---[ internal, move along... ]---------------------------------------------
