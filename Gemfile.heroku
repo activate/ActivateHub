@@ -1,0 +1,24 @@
+# Gemfile modifications needed by Heroku
+#
+# To regenerate the Gemfile.heroku.lock file:
+#
+#   $> BUNDLE_GEMFILE="Gemfile.heroku" bundle install
+#
+
+#---[ Heroku Settings ]-----------------------------------------------------
+
+# prevents sqlite3 gem from getting into lock file (heroku can't compile it)
+DB_ADAPTER = 'postgresql'
+
+
+#---[ internal, move along... ]---------------------------------------------
+
+base_dir = File.dirname(__FILE__) # top-level project directory
+
+# we need to start with common lock file to avoid upgrading everything
+unless File.exist? "#{base_dir}/#{__FILE__}.lock"
+  require 'fileutils'
+  FileUtils.cp "#{base_dir}/Gemfile.lock", "#{__FILE__}.lock"
+end
+
+eval File.read("#{base_dir}/Gemfile")
