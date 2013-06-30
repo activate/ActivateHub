@@ -2,9 +2,12 @@
 # database.yml customizer
 # =======================
 #
+# if you're using bundler, this should already be set
+ENV['DB_ADAPTER'] ||= 'sqlite3'
+
 # Load database configuration from this custom file if it exists:
 custom  = "#{File.dirname(__FILE__)}/config/database~custom.yml"
 # ...otherwise, load database configuration from this default file:
-default = "#{File.dirname(__FILE__)}/config/database~sqlite3.sample.yml"
+default = "#{File.dirname(__FILE__)}/config/database~#{ENV['DB_ADAPTER']}.sample.yml"
 %>
 <%= ERB.new(File.read(File.exist?(custom) ? custom : default)).result() %>

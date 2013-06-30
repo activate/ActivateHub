@@ -171,6 +171,7 @@ GEM
       rails (~> 3.0)
       rake
       will_paginate (~> 3.0.pre2)
+    pg (0.15.1)
     polyglot (0.3.3)
     progress_bar (0.4.0)
       highline (~> 1.6.1)
@@ -320,6 +321,7 @@ DEPENDENCIES
   multi_json
   paper_trail (= 2.6.3)
   paper_trail_manager (>= 0.2.0)
+  pg
   progress_bar (= 0.4.0)
   pry
   rails (= 3.2.13)

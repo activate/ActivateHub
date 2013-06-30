@@ -26,29 +26,31 @@ basedir = File.dirname(__FILE__)
 # produce output it can't parse, etc.
 if defined?(Syck::Syck) and defined?(YAML::ENGINE)
   YAML::ENGINE.yamler = 'syck'
+
+#---[ Database Adapter ]----------------------------------------------------
+
+# env defined adapter takes precedence, then Gemfile.local override
+ENV['DB_ADAPTER'] ||= defined?(DB_ADAPTER) && DB_ADAPTER
+
+# otherwise, assume postgresql for prod/preview, sqlite3 for everything else
+ENV['DB_ADAPTER'] ||= begin
+  is_production = %w(production preview).include?(ENV['RAILS_ENV'])
+  is_production ? 'postgresql' : 'sqlite3'
 end
 
-# Database driver
-require 'erb'
-require 'yaml'
-filename = File.join(File.dirname(__FILE__), 'config', 'database.yml')
-raise "Can't find database configuration at: #{filename}" unless File.exist?(filename)
-databases = YAML.load(ERB.new(File.read(filename)).result)
-railsenv = ENV['RAILS_ENV'] || 'development'
-raise "Can't find database configuration for environment '#{railsenv}' in: #{filename}" unless databases[railsenv]
-adapter = databases[railsenv]['adapter']
-raise "Can't find database adapter for environment '#{railsenv}' in: #{filename}" unless databases[railsenv]['adapter']
-case adapter
-when 'pg', 'postgresql'
-  gem 'pg'
-when 'mysql2'
-  gem 'mysql2', '~> 0.3.11'
-when 'jdbcsqlite3'
-  gem 'jdbc-sqlite3'
-  gem 'activerecord-jdbcsqlite3-adapter'
-else
-  gem adapter
+case ENV['DB_ADAPTER']
+  when 'custom'     then # will load gems manually
+  when 'postgresql' then # will always get installed, see below
+  when 'mysql'      then gem 'mysql2', '~> 0.3.11'
+  when 'sqlite3'    then gem 'sqlite3'
+  else raise "unknown database adapter: #{ENV['DB_ADAPTER']}"
 end
+
+# really want 'pg' (postgresql) to stay in Gemfile.lock, for production, so
+# will only allow override if different lock file (i.e. Gemfile.local.lock)
+gem 'pg' unless defined?(DB_ADAPTER) && DB_ADAPTER != 'postgresql'
+
+#---[ Core Gems ]-----------------------------------------------------------
 
 # Run-time dependencies
 gem 'rails', '3.2.13'

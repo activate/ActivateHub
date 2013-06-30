@@ -18,6 +18,17 @@
 # !!!   $> BUNDLE_GEMFILE="" bundle install
 #
 
+#---[ Developer Settings ]--------------------------------------------------
+
+# install only the mysql adapter (can be 'mysql', 'sqlite3' or 'postgresql')
+# DB_ADAPTER = 'mysql'
+
+# manually specify adapters (example uses sqlite for jruby)
+# DB_ADAPTER = 'custom'
+# gem 'jdbc-sqlite3'
+# gem 'activerecord-jdbcsqlite3-adapter'
+
+
 #---[ Optional Gems (add your stuff here) ]---------------------------------
 
 group :development, :test do
