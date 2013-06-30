@@ -22,16 +22,8 @@ end
 
 #---[ Database Adapter ]----------------------------------------------------
 
-# env defined adapter takes precedence, then Gemfile.local override
-ENV['DB_ADAPTER'] ||= defined?(DB_ADAPTER) && DB_ADAPTER
-
-# otherwise, assume postgresql for prod/preview, sqlite3 for everything else
-ENV['DB_ADAPTER'] ||= begin
-  is_production = %w(production preview).include?(ENV['RAILS_ENV'])
-  is_production ? 'postgresql' : 'sqlite3'
-end
-
-case ENV['DB_ADAPTER']
+# custom Gemfile override, then env var, falling back to sqlite3
+case defined?(DB_ADAPTER) ? DB_ADAPTER : ENV['DB_ADAPTER'] || 'sqlite3'
   when 'custom'     then # will load gems manually
   when 'postgresql' then # will always get installed, see below
   when 'mysql'      then gem 'mysql2', '~> 0.3.11'
