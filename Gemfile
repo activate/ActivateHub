@@ -1,18 +1,11 @@
-#===[ Gemfile usage ]===================================================
-#
-# This Gemfile activates the following gems in an unusual way:
-#
-# * The database gem is retrieved from the `config/database.yml` file.
-# * The debugger and code coverage are only activated if a `.dev` file exists.
-# * The Sunspot indexer is only activated if enabled in the secrets file.
-# * Additional gems may be loaded from a `Gemfile.local` file if it exists.
-
-#=======================================================================
+# If you are running a development environment and need to disable any
+# optional gems or add additional tools, see doc/examples/Gemfile.local
 
 source 'https://rubygems.org'
 
-# the ruby directive is required by heroku
 if !ENV['IGNORE_RUBY_VER']
+  # ensures everybody has same version of ruby this app uses in production.
+  # heroku requires ruby version on own line (greps for version, not evals)
   ruby '1.9.3'
 end
 
@@ -34,14 +27,6 @@ basedir = File.dirname(__FILE__)
 if defined?(Syck::Syck) and defined?(YAML::ENGINE)
   YAML::ENGINE.yamler = 'syck'
 end
-
-# Load additional gems from "Gemfile.local" if it exists, has same format as this file.
-begin
-  data = File.read("#{basedir}/Gemfile.local")
-rescue Errno::ENOENT
-  # Ignore
-end
-eval data if data
 
 # Database driver
 require 'erb'

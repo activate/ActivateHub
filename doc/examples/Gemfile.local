@@ -1,0 +1,45 @@
+# This file is to help developers who need to disable optional gems or
+# add additional tools that are part of their development workflow.
+#
+# To get started, copy this file to the top-level project directory and
+# then set your BUNDLE_GEMFILE environment variable to Gemfile.local:
+#
+#   $> cp doc/examples/Gemfile Gemfile.local
+#   $> export BUNDLE_GEMFILE=$PWD/Gemfile.local # BASH, may vary by shell
+#
+# For rvm, you can set the environment varaible in the project's .rvmrc
+# For rbenv, see: https://github.com/sstephenson/rbenv-vars
+#
+#
+# !!! IMPORTANT: if you add any new gems that are needed by this project,
+# !!! they must be added to the Gemfile, not this file. After adding a gem
+# !!! to the Gemfile, you will also need to update the main Gemfile.lock:
+# !!!
+# !!!   $> BUNDLE_GEMFILE="" bundle install
+#
+
+#---[ Optional Gems (add your stuff here) ]---------------------------------
+
+group :development, :test do
+  #gem 'foreman'
+
+  #gem 'pry-debugger'
+  #gem 'pry-highlight'
+  #gem 'pry-rescue'
+  #gem 'pry-stack_explorer'
+
+  #gem 'watchr', :require => false
+  #gem 'spork', :require => false
+end
+
+#---[ internal, move along... ]---------------------------------------------
+
+base_dir = File.dirname(__FILE__) # top-level project directory
+
+# we need to start with common lock file to avoid upgrading everything
+unless File.exist? "#{base_dir}/#{__FILE__}.lock"
+  require 'fileutils'
+  FileUtils.cp "#{base_dir}/Gemfile.lock", "#{__FILE__}.lock"
+end
+
+eval File.read("#{base_dir}/Gemfile")

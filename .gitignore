@@ -10,7 +10,7 @@
 .rvmrc
 .sass-cache
 .vagrant
-Gemfile.local
+/Gemfile.local*
 Makefile
 Vagrantfile.local
 config/database~custom.yml
