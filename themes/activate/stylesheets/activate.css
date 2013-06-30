@@ -27,3 +27,7 @@
 .footer p {
   color: #555;
 }
+
+.empty {
+  background-color: rgb(200, 200, 200) !important;
+}
