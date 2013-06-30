@@ -20,9 +20,7 @@ skipped = 0
   <% else %>
     <li class='blank_list'>
       <i>No events yet...</i>
-      <p>
-      Know of any? <b><%= link_to "add one!", new_event_path %></b>
-      </p>
+      <p> Know of any? <b><%= link_to "add one!", new_event_path %></b> </p>
     </li>
   <% end %>
   <% if skipped > 0 %>
