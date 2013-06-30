@@ -5,13 +5,47 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Daley', :city => cities.first)
-
+require 'date'
+require 'faker'
 
 if Rails.env.development?
    User.create!({ email: "dev@example.org", password: "activate" })
 end
 
 site = Site.create!({ name: "activate_dev", domain: "localhost" })
+
+# Creates 20 random venue, organizations, and event database entries
+counter = 20
+
+while counter > 0
+   venue = Venue.create!({
+      title: Faker::Company::name,
+      description: Faker::Lorem::paragraph(sentence_count=2),
+      postal_code: Faker::Address::zip_code,
+      country: Faker::Address::country,
+      email: Faker::Internet::safe_email,
+      telephone: Faker::PhoneNumber::phone_number,
+      site_id: site.id
+   })
+
+   Organization.create!({
+      name: Faker::Company::name,
+      url: Faker::Internet::url,
+      contact_name: Faker::Name::name,
+      email: Faker::Internet::safe_email,
+      site_id: site.id
+   })
+
+   Event.create!({
+      title: Faker::Lorem::sentence(word_count=2),
+      description: Faker::Lorem::paragraph(sentence_count=2),
+      start_time: DateTime.now + rand(15),
+      venue_id: venue.id,
+      site_id: site.id
+   })
+   counter -= 1
+   sleep 1 # Prevents hitting API call limit
+end
 
 Type.create!(
  [
