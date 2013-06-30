@@ -11,6 +11,11 @@
 
 source 'https://rubygems.org'
 
+# the ruby directive is required by heroku
+if !ENV['IGNORE_RUBY_VER']
+  ruby '1.9.3'
+end
+
 unless defined?($BUNDLER_INTERPRETER_CHECKED)
   if defined?(JRUBY_VERSION)
     puts "WARNING: JRuby cannot run Calagator. Its version of Nokogiri is incompatible with 'loofah', 'mofo' and other things. Although basic things like running the console and starting the server work, you'll run into problems as soon as you try to add/edit records or import hCalendar events."
