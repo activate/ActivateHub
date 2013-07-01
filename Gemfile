@@ -99,22 +99,13 @@ group :development, :test do
     # Deployment
     gem 'capistrano', '2.12.0'
     gem 'capistrano-ext', '1.2.1'
-
-    # Guard and plugins
-    gem 'guard', '~> 1.3.0'
-    gem 'guard-rspec', '~> 1.2.1'
-    gem 'guard-spork', '~> 1.1.0'
-
-    # Better Errors (interactive web debugging)
-    gem 'better_errors'
-    gem 'binding_of_caller'
-
-    # Guard notifier
-    case RUBY_PLATFORM
-    when /-*darwin.*/ then gem 'growl'
-    when /-*linux.*/ then gem 'libnotify'
-    end
   end
+end
+
+group :development do
+  # Better Errors (interactive web debugging)
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 # Gems used only for assets and not required
