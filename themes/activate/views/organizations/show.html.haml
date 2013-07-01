@@ -18,8 +18,17 @@
     = render :partial => 'shared/topics', :locals => {:topics => @organization.topics}
 
 %p
-  %b Events:
+  %b Upcoming Events:
   = render :partial => 'events/list', :locals => { :events =>  @organization.events.future.sort_by(&:start_time) }
+
+%p
+  %b Past Events:
+  - if @organization.events.past.empty?
+    %ul.event_list
+      %li
+        %i No past events
+  - else
+    = @organization.events.past.sort_by(&:start_time)
 
 - content_for :sidebar do
   .box
