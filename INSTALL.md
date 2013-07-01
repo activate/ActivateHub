@@ -51,6 +51,22 @@ To run ActivateHub in `production` mode, which runs more quickly, but doesn't re
 The ActivateHub.org site runs on [Ubuntu Linux](http://ubuntu.com/), [Phusion REE (Ruby Enterprise Edition)](http://rubyenterpriseedition.com/) and [Phusion Passenger](http://www.modrails.com/).
 
 
+Database
+-------------
+
+First-time database setup run:
+
+  ```
+  rake db:setup
+  ```
+
+If database has existing data run:
+
+  ```
+  rake db:reset
+  ```
+
+
 Customization
 -------------
 
@@ -66,6 +82,7 @@ Spam Blacklist
 --------------
 
 A default set of blacklist words is provided in config/blacklist.txt. You can create your own by adding a config/blacklist-local.txt file with one regular expression per line (see config/blacklist.txt for examples).
+
 
 API Keys
 --------
