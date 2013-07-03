@@ -69,7 +69,7 @@ end
 base_dir = File.dirname(__FILE__) # top-level project directory
 
 # we need to start with common lock file to avoid upgrading everything
-unless File.exist? "#{base_dir}/#{__FILE__}.lock"
+unless File.exist? "#{__FILE__}.lock"
   require 'fileutils'
   FileUtils.cp "#{base_dir}/Gemfile.lock", "#{__FILE__}.lock"
 end
