@@ -1,7 +1,27 @@
-Updated from http://code.google.com/p/calagator/wiki/Contributors on 2009-09-14
+## Contributors (ActivateHub)
 
-Contributors
-============
+These people have contributed to ActivateHub's design and implementation:
+
+  * Daniel Hedlund
+  * Eric Drechsel
+  * Gabriela Rodriguez
+  * Jordan Skarbek
+  * Lindsay Epstein
+  * Peter Welte
+  * Scott Duncombe
+  * Lucas (theoretick)
+
+For the most up to date list of people who have made commits to ActivateHub:
+
+```
+git log a6d5ee8678377dcfe9d4e06494c77ca0318a14f2~1.. --format='  * %aN <%aE>' \
+  | awk '{arr[$0]++} END{for (i in arr){print arr[i], i;}}' \
+  | cut -d\  -f2- \
+  | sort
+```
+
+
+## Contributors (Calagator)
 
 These people have contributed to Calagator's design and implementation:
 
