@@ -58,7 +58,6 @@ protected
     end
   end
 
-<<<<<<< HEAD
   # find missing/nonnumeric ids in list and look them up/create them, setting id
   def create_missing_refs(list, model)
     list ||= []

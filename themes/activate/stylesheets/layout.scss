@@ -252,7 +252,7 @@ ul.event_list .list_date {
 .location .wifi_callout {
   margin-top: .5em;
   padding-left: 20px;
-  background: url('/images/transmit_blue.png') no-repeat;
+  background: image-url("transmit_blue.png") no-repeat;
   font-weight: bold;
   color: #6098E6
 }
@@ -268,7 +268,7 @@ ul.event_list .list_date {
   font-weight: bold;
   padding-left: 20px;
   line-height: 16px;
-  background: url('/images/information.png') no-repeat;
+  background: image-url("information.png") no-repeat;
 }
 
 .single_venue .location .adr,
