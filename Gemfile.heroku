@@ -7,6 +7,9 @@
 
 #---[ Heroku Settings ]-----------------------------------------------------
 
+# enable serving of static assets on production
+ENV['STATIC_ASSETS'] = 'true'
+
 # prevents sqlite3 gem from getting into lock file (heroku can't compile it)
 DB_ADAPTER = 'postgresql'
 
