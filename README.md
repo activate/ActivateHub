@@ -47,4 +47,4 @@ This program is provided under an MIT open source license, read the [LICENSE.txt
 Copyright
 ---------
 
-Copyright (c) 2012 ActivateHub
+Copyright (c) 2011-2013 ActivateHub

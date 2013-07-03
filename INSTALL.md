@@ -48,8 +48,6 @@ To run ActivateHub in `production` mode, which runs more quickly, but doesn't re
     bundle exec rake assets:precompile
     ```
 
-The ActivateHub.org site runs on [Ubuntu Linux](http://ubuntu.com/), [Phusion REE (Ruby Enterprise Edition)](http://rubyenterpriseedition.com/) and [Phusion Passenger](http://www.modrails.com/).
-
 
 Database
 -------------
