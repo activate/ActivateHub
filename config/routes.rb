@@ -53,8 +53,6 @@ Calagator::Application.routes.draw do
   match '/index' => 'site#index'
   match '/index.:format' => 'site#index'
 
-  themes_for_rails
-
   match '/import_all' => 'sources#import_all'
   match '/:controller(/:action(/:id))'
 

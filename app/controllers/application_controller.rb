@@ -10,8 +10,9 @@ class ApplicationController < ActionController::Base
 
   # Setup theme
   layout "application"
-  theme THEME_NAME # DEPENDENCY: lib/theme_reader.rb
+
   before_filter :current_site
+  before_filter :set_theme
 
 protected
 
@@ -57,6 +58,7 @@ protected
     end
   end
 
+<<<<<<< HEAD
   # find missing/nonnumeric ids in list and look them up/create them, setting id
   def create_missing_refs(list, model)
     list ||= []
@@ -70,6 +72,10 @@ protected
         i[:id]
       end
     end
+  end
+
+  def set_theme
+    prepend_view_path "themes/#{THEME_NAME}/views"
   end
 end
 

@@ -1,12 +1,16 @@
+<<<<<<< HEAD
 ThemesForRails.config do |config|
   # Put static assets in Rails.root/themes/your-theme-name/{stylesheets,javascripts,images}
   config.assets_dir = ":root/themes/:name"
+=======
+Calagator::Application.configure do
+  # add theme-specific asset directories to the asset pipeline
+  theme_dir   = Rails.root.join('themes', ::THEME_NAME)
+  asset_paths = Dir[theme_dir.join('{javascripts,stylesheets,images}')]
+  config.assets.paths.prepend(*asset_paths)
+>>>>>>> c83e59b... Full asset pipeline support for themes, remove themes_for_rails [THEME]
 
-  # UPSTREAM BUG: the themes:create_cache rake task in the ThemesForRails
-  # gem has a bug when trying to figure out where to copy assets; it
-  # assumes the themes directory is a relative path w/o a ':root'
-  # placeholder, even though the gem's default is ':root/themes'. This
-  # line can be removed once it has been determined that the rake task
-  # has been fixed upstream.
-  config.themes_dir = 'themes'
+  # assets to include from theme when compiling assets (rake assets:precompile)
+  config.assets.precompile += %w(theme.js theme.css)
+  config.assets.precompile += ::SETTINGS.precompile_assets || []
 end
