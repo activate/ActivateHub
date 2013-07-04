@@ -11,7 +11,7 @@
         <i> No past events</i>
       </li>
     <% else %>
-      <%= @type.events.past.sort_by(&:start_time) %>
-      <% end %>
+      <%= render :partial => 'events/list', :locals => { :events => @type.events.past.reorder('start_time desc') } %>
+    <% end %>
 
 </p>
