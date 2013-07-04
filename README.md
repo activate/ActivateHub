@@ -1,7 +1,7 @@
 ActivateHub
 ===========
 
-Goal: A calendar of all the Progressive, Educational, Volunteer-Oriented events in your city, filterable by event type, topic and neighborhood - [more info](http://activatehub.org/).  For issues, see [Pivotal Tracker](https://www.pivotaltracker.com/projects/365511).
+Goal: A calendar of all the Progressive, Educational, Volunteer-Oriented events in your city, filterable by event type, topic and neighborhood - [more info](http://activatehub.org/).  
 
 Why
 ---
@@ -25,6 +25,15 @@ Contributing
 ------------
 
 Bug fixes and features are welcomed. Please fork the source code and submit a pull request: <http://github.com/activate/ActivateHub>
+
+For issues, see [Pivotal Tracker](https://www.pivotaltracker.com/projects/365511).
+
+Current top priorities:
+
+* The calendar view becomes cluttered if there are more than about five events per day. We'd like to [limit the number of events shown](https://www.pivotaltracker.com/s/projects/857973/stories/19976477), and provide something like a "+ more" link to view all events for a given day.  We also need to add an [extra pixel or two](https://www.pivotaltracker.com/story/show/52593473) between events. Currently we use the [FullCalendar](http://arshaw.com/fullcalendar/) jQuery plug-in to display the events. 
+* Events need a static URL (currently, events have a new URL after each import, making promotion difficult). We need to find and update events rather than delete and recreate on reimport.
+*  Multi-city support partially exists but needs more testing.  We also want to provide a per-city admin interface (it should be easy to moderate content in just one city).
+
 
 
 Calagator
