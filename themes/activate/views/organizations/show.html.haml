@@ -28,7 +28,7 @@
       %li
         %i No past events
   - else
-    = @organization.events.past.sort_by(&:start_time)
+    = render :partial => 'events/list', :locals => { :events => @organization.events.past.reorder('start_time desc') }
 
 - content_for :sidebar do
   .box
