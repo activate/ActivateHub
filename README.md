@@ -3,7 +3,8 @@ ActivateHub
 
 A calendar of all the Progressive, Educational, Activist-Oriented events in your city, filterable by event type or topic. Also includes a list of local organizations, filterable by topics they work on. - [more info](http://activatehub.org/).  For issues, see [Pivotal Tracker](https://www.pivotaltracker.com/projects/365511).
 
-Mission:  Create tools that support the work of all NGOs and grassroots organizers, and empowers people to change their world.
+Mission:  Create tools that support the work of all NGOs and grassroots organizers, and empower people to change their world.
+
 
 Why 
 ---
