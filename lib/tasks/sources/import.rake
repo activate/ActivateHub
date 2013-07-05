@@ -1,27 +1,39 @@
 namespace :sources do
-  task 'import:all', [:site] => :environment do |t,args|
-    unless site = Site.find_by_domain(args[:site])
-      raise "could not find site with domain '#{args[:site]}'"
+  task 'import:all', [:domain] => :tenantized_environment do |t,args|
+    site = ActiveRecord::Base.current_site
+    Source.scoped.each do |source|
+      new_args = [site.domain, source.id]
+      Rake::Task['sources:import'].tap(&:reenable).invoke(*new_args)
+    end
+  end
+
+  task :import, [:domain,:source_id] => :tenantized_environment do |t,args|
+    unless source = Source.find(args[:source_id])
+      raise "could not find source with id '#{args[:source_id]}'"
+    end
+
+    title = "#{source.name} (id: #{source.id}):"
+    puts '='*76, title, '-'*title.length
+
+    begin
+      raise ActiveRecord::RecordInvalid if source.invalid?
+      result = reimport_source(source)
+      puts reimport_summary(source, result)
+      puts
+
+    rescue => e
+      # Could have more robust error handling here
+      puts "#{e.class.name}: #{e.message}:", e.backtrace
+      puts
+    end
+  end
+
+  task :tenantized_environment, [:domain] => :environment do |t,args|
+    unless site = Site.find_by_domain(args[:domain])
+      raise "could not find site with domain '#{args[:domain]}'"
     end
 
     ActiveRecord::Base.current_site = site
-
-    Source.scoped.each do |source|
-      title = "#{source.name} (id: #{source.id}):"
-      puts '='*76, title, '-'*title.length
-
-      begin
-        raise ActiveRecord::RecordInvalid if source.invalid?
-        result = reimport_source(source)
-        puts reimport_summary(source, result)
-        puts
-
-      rescue => e
-        # Could have more robust error handling here
-        puts "#{e.class.name}: #{e.message}:", e.backtrace
-        puts
-      end
-    end
   end
 
   def reimport_source(source, start_time = nil)
