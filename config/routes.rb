@@ -53,7 +53,6 @@ Calagator::Application.routes.draw do
   match '/index' => 'site#index'
   match '/index.:format' => 'site#index'
 
-  match '/import_all' => 'sources#import_all'
   match '/:controller(/:action(/:id))'
 
   root :to => "home#index"
