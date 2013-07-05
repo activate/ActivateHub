@@ -1,9 +1,12 @@
 ActivateHub
 ===========
 
-Goal: A calendar of all the Progressive, Educational, Volunteer-Oriented events in your city, filterable by event type, topic and neighborhood - [more info](http://activatehub.org/).  
+A calendar of all the Progressive, Educational, Activist-Oriented events in your city, filterable by event type or topic. Also includes a list of local organizations, filterable by topics they work on. - [more info](http://activatehub.org/).
 
-Why
+Mission:  Create tools that support the work of all NGOs and grassroots organizers, and empower people to change their world.
+
+
+Why 
 ---
 
 By releasing this code under a liberal MIT open source license, we hope to empower other people so they can better organize and participate in more events that support free sharing of information, open society, and involved citizenry.
@@ -40,6 +43,7 @@ Calagator
 ---------
 
 ActivateHub is based on the [Calagator](http://calagator.org/) project [source code](http://github.com/calagator/calagator/). We merge frequently to stay close to the Calagator source. Where possible, [bugfixes](http://code.google.com/p/calagator/issues/list) should be sent back upstream, via a [pull request](http://help.github.com/pull-requests/). The Calagator [mailing list](http://groups.google.com/group/pdx-tech-calendar/) is a great resource for communicating upstream.
+
 
 Contributors
 ------------
