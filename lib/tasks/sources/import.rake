@@ -29,7 +29,7 @@ namespace :sources do
     start_time ||= Time.zone.now + 1.hour
 
     # list of events we expect source to return f no changes since last pull.
-    orig_events = source.events.where('start_time >= ?', start_time)
+    orig_events = source.events.where('start_time >= ?', start_time).to_a
 
     # unfiltered list of events pulled from the source
     # FIXME: it would be nice to identify and report on the parser used
@@ -46,16 +46,17 @@ namespace :sources do
     created_venues, existing_venues, invalid_venues = [], [], []
 
     valid_events.each do |event|
-      venue = event.venue
-      if venue.new_record?
-        if venue.save
-          created_venues << venue
+      if venue = event.venue
+        if venue.new_record?
+          if venue.save
+            created_venues << venue
+          else
+            invalid_venues << venue
+          end
         else
-          invalid_venues << venue
+          # FIXME: do we know for certain venues can't get updated?
+          existing_venues << venue
         end
-      else
-        # FIXME: do we know for certain venues can't get updated?
-        existing_venues << venue
       end
 
       if event.new_record?
@@ -136,7 +137,7 @@ namespace :sources do
       h[state.to_s] = re[state].map do |event|
         # FIXME: timezone associated with event might not always be site's timezone
         desc = "#{event.start_time.to_date}: #{event.title} (id: #{event.id})"
-        event.valid? ? desc : { desc => event.errors.full_messages }
+        state == :invalid ? { desc => event.errors.full_messages } : desc
       end
       h
     end
@@ -144,7 +145,7 @@ namespace :sources do
     venue_dump = [:invalid,:created,:existing].inject({}) do |h,state|
       h[state.to_s] = rv[state].map do |venue|
         desc = "#{venue.title} (id: #{venue.id})"
-        venue.valid? ? desc : { desc => venue.errors.full_messages }
+        state == :invalid ? { desc => venue.errors.full_messages } : desc
       end
       h
     end
