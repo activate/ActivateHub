@@ -346,6 +346,7 @@ class Event < ActiveRecord::Base
     event = Event.new
 
     event.source       = source
+    event.organization = source.organization
     event.title        = abstract_event.title
     event.description  = abstract_event.description
     event.start_time   = abstract_event.start_time.blank? ? nil : Time.parse(abstract_event.start_time.to_s)
