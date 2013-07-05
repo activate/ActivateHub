@@ -47,6 +47,12 @@ namespace :sources do
 
     valid_events.each do |event|
       if venue = event.venue
+        # venues are built and associated before other events have a chance to
+        # save their venue, which opens the door to duplicate venues, re-find
+        if matching_venues = venue.find_exact_duplicates
+          event.venue = venue = matching_venues.first.progenitor
+        end
+
         if venue.new_record?
           if venue.save
             created_venues << venue
@@ -66,7 +72,7 @@ namespace :sources do
         event.end_time.localtime if event.end_time
 
         event.types = source.types
-        event.topics = event.organization.topics
+        event.topics = event.organization.topics if event.organization
 
         if event.save
           created_events << event
