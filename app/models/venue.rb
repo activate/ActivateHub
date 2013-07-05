@@ -69,7 +69,7 @@ class Venue < ActiveRecord::Base
 
   # Duplicates
   include DuplicateChecking
-  duplicate_checking_ignores_attributes    :source_id, :version, :closed, :wifi, :access_notes, :events_count
+  duplicate_checking_ignores_attributes    :source_id, :version, :closed, :wifi, :access_notes, :events_count, :description, :address, :url, :street_address, :locality, :region, :postal_code, :country, :latitude, :longitude, :email, :telephone
   duplicate_squashing_ignores_associations :tags, :base_tags, :taggings
 
   # Named scopes
