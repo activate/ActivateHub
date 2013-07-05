@@ -8,6 +8,7 @@ This organization has no sources yet.
 <table>
   <tr>
     <th>Manage</th>
+    <th>Source Name</th>
     <th>URL</th>
   </tr>
 
@@ -17,6 +18,7 @@ This organization has no sources yet.
       <%= link_to 'Show', organization_source_path(params[:organization_id], source) %> | 
       <%= link_to 'Destroy', organization_source_path(params[:organization_id], source), :confirm => 'Are you sure?', :method => :delete %>
     </td>
+    <td><%= source.name %></td>
     <td><%= source_url_link source %></td>
   </tr>
   <% end %>
