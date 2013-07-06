@@ -10,6 +10,7 @@
 .rvmrc
 .sass-cache
 .vagrant
+/.rbenv-vars
 /Gemfile.local*
 Makefile
 Vagrantfile.local
