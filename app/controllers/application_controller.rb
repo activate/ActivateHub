@@ -20,7 +20,7 @@ protected
     if request.path =~ %r"^/(admin)|(users)"
       @current_site = nil
     else
-      @current_site = Site.find_by_domain request.domain
+      @current_site = Site.find_by_domain request.host
       if !@current_site
         redirect_to "http://activatehub.org/"
       end
