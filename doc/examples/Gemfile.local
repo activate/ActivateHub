@@ -20,6 +20,9 @@
 
 #---[ Developer Settings ]--------------------------------------------------
 
+# use a custom api key for the Google Maps API (Geokit::Geocoders::google)
+# ENV['GOOGLE_API_KEY'] = 'Google' # 'Google' works if host is 'localhost'
+
 # install only the mysql adapter (can be 'mysql', 'sqlite3' or 'postgresql')
 # DB_ADAPTER = 'mysql'
 
