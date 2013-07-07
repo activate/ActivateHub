@@ -1,0 +1,7 @@
+/* until we can clean up the other css files so the theme.scss (require_self)
+ * can come last and override upstream/vendor css files, this will have to do
+ */
+
+.fc-event {
+  margin: 2px 1px;
+}
