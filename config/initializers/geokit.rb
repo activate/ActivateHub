@@ -2,6 +2,10 @@ require 'geokit'
 
 # CALAGATOR: Differences from the defaults are tagged like this below.
 
+# remap Google V3 geocoder so we can reference it in provider list, see:
+# https://github.com/geokit/geokit/issues/86
+Geokit::Geocoders::Google3Geocoder = Geokit::Geocoders::GoogleGeocoder3
+
 # These defaults are used in GeoKit::Mappable.distance_to and in acts_as_mappable
 GeoKit::default_units = :miles
 GeoKit::default_formula = :sphere
@@ -37,7 +41,7 @@ GeoKit::Geocoders::yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
 # the gmaps_on_rails plugin happy.
 #
 keys_path = Rails.root.join('config','geocoder_api_keys.yml')
-if ENV['GOOGLE_APPLICATION_ID']
+if ENV['GOOGLE_API_KEY']
   GeoKit::Geocoders::google = GOOGLE_APPLICATION_ID = ENV['GOOGLE_API_KEY']
 elsif File.exist? keys_path
   geocoder_api_keys = YAML.load_file(keys_path)
@@ -71,4 +75,4 @@ GeoKit::Geocoders::geocoder_ca = false
 #
 # CALAGATOR: was [:google, :us], but this is all we need since we're Google-only.
 #
-GeoKit::Geocoders::provider_order = [:google]
+GeoKit::Geocoders::provider_order = [:google3]
