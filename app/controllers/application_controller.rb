@@ -18,7 +18,7 @@ protected
 
   def current_site
     if request.path =~ %r"^/(admin)|(users)"
-      @current_site = nil
+      @current_site = Site.new(:name => "ActivateHub", :domain => request.host)
     else
       @current_site = Site.find_by_domain request.host
       if !@current_site

@@ -50,6 +50,16 @@ RailsAdmin.config do |config|
   # Now you probably need to tour the wiki a bit: https://github.com/sferik/rails_admin/wiki
   # Anyway, here is how RailsAdmin saw your application's models when you ran the initializer:
 
+  config.model 'Site' do
+    include_all_fields
+
+    field :timezone, :enum do
+      enum do
+        ActiveSupport::TimeZone.all.map(&:name)
+      end
+    end
+  end
+
 
 
   ###  Event  ###
