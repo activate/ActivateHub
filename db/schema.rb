@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130630184240) do
+ActiveRecord::Schema.define(:version => 20130707033958) do
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(:version => 20130630184240) do
     t.datetime "start_time"
     t.integer  "venue_id"
     t.string   "url"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "source_id"
     t.integer  "duplicate_of_id"
     t.datetime "end_time"
@@ -43,8 +43,8 @@ ActiveRecord::Schema.define(:version => 20130630184240) do
   create_table "organizations", :force => true do |t|
     t.string   "name"
     t.string   "url"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "site_id"
     t.string   "contact_name"
     t.string   "email"
@@ -72,16 +72,21 @@ ActiveRecord::Schema.define(:version => 20130630184240) do
   create_table "sites", :force => true do |t|
     t.string   "name"
     t.string   "domain"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "tagline"
+    t.string   "timezone"
+    t.float    "map_latitude"
+    t.float    "map_longitude"
+    t.integer  "map_zoom"
   end
 
   create_table "sources", :force => true do |t|
     t.string   "title"
     t.string   "url"
     t.datetime "imported_at"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "reimport"
     t.integer  "organization_id"
     t.integer  "site_id"
@@ -113,23 +118,23 @@ ActiveRecord::Schema.define(:version => 20130630184240) do
 
   create_table "topics", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "site_id"
   end
 
   create_table "types", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "site_id"
   end
 
   create_table "updates", :force => true do |t|
     t.integer  "source_id"
     t.text     "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", :force => true do |t|
@@ -155,8 +160,8 @@ ActiveRecord::Schema.define(:version => 20130630184240) do
     t.text     "description"
     t.string   "address"
     t.string   "url"
-    t.datetime "created_at",                                                       :null => false
-    t.datetime "updated_at",                                                       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "street_address"
     t.string   "locality"
     t.string   "region"
