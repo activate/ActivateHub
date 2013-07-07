@@ -1,6 +1,6 @@
 cache_if(@perform_caching, CacheObserver.daily_key_for("events_atom", request)) do
   atom_feed("xmlns:georss".to_sym => "http://www.georss.org/georss") do |feed|
-    feed.title("#{SETTINGS.name}#{': ' + @page_title if @page_title}")
+    feed.title("#{@current_site.name}#{': ' + @page_title if @page_title}")
     unless @events.size == 0
       feed.updated(@events.present? ? @events.sort_by(&:updated_at).last.updated_at : Time.now)
 

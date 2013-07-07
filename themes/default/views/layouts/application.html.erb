@@ -6,12 +6,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>
       <%= "#{@page_title} » " if @page_title -%>
-      <%= SETTINGS.name -%>: <%= SETTINGS.tagline -%>
+      <%= @current_site.name -%>: <%= @current_site.tagline -%>
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=true">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <link rel='search' type='application/opensearchdescription+xml' href='/opensearch.xml' title='<%= SETTINGS.name %>' />
+    <link rel='search' type='application/opensearchdescription+xml' href='/opensearch.xml' title='<%= @current_site.name %>' />
 
     <!-- Stylesheets, static -->
     <%= stylesheet_link_tag 'application', 'theme', :media => :all %>
@@ -40,7 +40,7 @@
 
   <div id="outer">
     <div id="global_header">
-      <a href="/" id="project_title"><%= SETTINGS.name %></a>
+      <a href="/" id="project_title"><%= @current_site.name %></a>
 
       <div id="top_menu">
          <div id='app_menu'>
@@ -80,7 +80,7 @@
     </div>
 
     <div id="top_footer">
-      <%= URI.parse(SETTINGS.url).host %>
+      <%= @current_site.domain %>
       <%= source_code_version %>
       &nbsp;
       &nbsp;

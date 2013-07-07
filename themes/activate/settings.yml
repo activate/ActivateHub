@@ -1,11 +1,11 @@
 # Site's name:
-name: 'Activate PDX'
+name: 'ActivateHub'
 
 # Site's tagline:
-tagline: "Portland's Progressive Calendar"
+tagline: "Change your calendar, Change your world"
 
 # Site's URL with trailing slash:
-url: 'http://activatepdx.org/'
+url: 'http://activatehub.org/'
 
 # Default timezone, run "rake -D time" for information on how to display known timezones:
 timezone: 'Pacific Time (US & Canada)'

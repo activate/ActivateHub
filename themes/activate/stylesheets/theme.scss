@@ -9,6 +9,13 @@
 
    /* Footer (style from Bootstrap)
 -------------------------------------------------- */
+.sidebar .description {
+  text-align: center;
+  padding: 10px;
+  h3 { font-size: 14px }
+  p { margin: 10px 0px; }
+}
+
 .footer {
   background-color: #eee;
   padding: 15px 0;
