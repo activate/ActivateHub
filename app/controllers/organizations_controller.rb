@@ -1,6 +1,10 @@
 class OrganizationsController < ApplicationController
   def index
-    @organizations = Organization.all
+    if params[:topic]
+      @organizations = Organization.joins(:topics).where(:topics => { :name => 'community' })
+    else
+      @organizations = Organization.scoped
+    end
   end
 
   # GET /organizations/1

@@ -92,6 +92,8 @@
           - if content_for(:subnav).strip.length > 0
             .subnav.box
               = yield :subnav
+          - if content_for?(:sidebar_filters)
+            = yield :sidebar_filters
 
         .content.span9
           - if content_for?(:breadcrumbs)
