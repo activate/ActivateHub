@@ -317,4 +317,3 @@ DEPENDENCIES
   validation_reflection!
   warbler
   webrat (= 0.7.3)
-  will_paginate (= 3.0.3)

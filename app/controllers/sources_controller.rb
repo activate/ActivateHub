@@ -65,7 +65,7 @@ class SourcesController < ApplicationController
     @sources = Source.where('organization_id' => params[:organization_id])
 
     respond_to do |format|
-      format.html { @sources = @sources.paginate(:page => params[:page], :per_page => params[:per_page]) }
+      format.html { @sources = @sources.page(params[:page]).per(params[:per_page]) }
       format.xml  { render :xml => @sources }
     end
   end

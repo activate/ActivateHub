@@ -47,7 +47,7 @@ gem 'htmlentities', '4.3.1'
 gem 'paper_trail', '2.6.3'
 gem 'ri_cal', '0.8.8'
 gem 'rubyzip', '0.9.9', :require =>  'zip/zip'
-gem 'will_paginate', '3.0.3'
+gem 'kaminari', '~> 0.14'
 gem 'httparty', '0.8.3'
 gem 'multi_json' # Use whichever version 'httparty' wants, needed for our specs
 gem 'loofah', '1.2.1'

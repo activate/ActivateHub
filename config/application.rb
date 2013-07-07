@@ -40,9 +40,6 @@ module Calagator
     require 'ext/time_today'
     require 'ext/time_get_zone'
 
-    # Adds Array#paginate
-    require 'will_paginate/array'
-
     #---[ Plugins ]---------------------------------------------------------
 
     # Load these plugins first, or they won't work
