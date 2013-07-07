@@ -91,8 +91,11 @@ class SourcesController < ApplicationController
   # GET /sources/new
   # GET /sources/new.xml
   def new
-    @source = Source.new
+    @organization = Organization.find(params[:organization_id])
+    @source = @organization.sources.build
+
     @source.url = params[:url] if params[:url].present?
+    @source.topics = @organization.topics
 
     respond_to do |format|
       format.html # new.html.erb
@@ -109,6 +112,7 @@ class SourcesController < ApplicationController
   # POST /sources
   # POST /sources.xml
   def create
+    params[:source][:topic_ids] = create_missing_refs(params[:source][:topic_ids], Topic)
     params[:source][:type_ids] = create_missing_refs(params[:source][:type_ids], Type)
 
     @source = Source.new(params[:source])

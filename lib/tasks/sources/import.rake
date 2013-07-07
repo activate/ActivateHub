@@ -84,7 +84,7 @@ namespace :sources do
         event.end_time.localtime if event.end_time
 
         event.types = source.types
-        event.topics = event.organization.topics if event.organization
+        event.topics = source.topics
 
         if event.save
           created_events << event

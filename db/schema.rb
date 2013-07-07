@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130707094725) do
+ActiveRecord::Schema.define(:version => 20130707104341) do
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -91,6 +91,14 @@ ActiveRecord::Schema.define(:version => 20130707094725) do
     t.integer  "organization_id"
     t.integer  "site_id"
   end
+
+  create_table "sources_topics", :id => false, :force => true do |t|
+    t.integer "source_id"
+    t.integer "topic_id"
+  end
+
+  add_index "sources_topics", ["source_id"], :name => "index_sources_topics_on_source_id"
+  add_index "sources_topics", ["topic_id"], :name => "index_sources_topics_on_topic_id"
 
   create_table "sources_types", :id => false, :force => true do |t|
     t.integer "source_id"

@@ -24,6 +24,7 @@ class Source < ActiveRecord::Base
   has_many :events,  :dependent => :destroy
   has_many :venues,  :dependent => :destroy
   has_many :updates, :dependent => :destroy
+  has_and_belongs_to_many :topics
   has_and_belongs_to_many :types
   belongs_to :organization
   belongs_to :site
@@ -85,12 +86,15 @@ class Source < ActiveRecord::Base
       event.start_time.localtime
       event.end_time.localtime if event.end_time
 
+      if self.topics.any?
+        event.topics = self.topics
+      end
+
       if self.types.any?
         event.types = self.types
       end
 
       if self.organization
-        event.topics = self.organization.topics if self.organization.topics.any?
         event.organization = self.organization
       end
 

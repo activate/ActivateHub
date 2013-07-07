@@ -7,9 +7,18 @@
   <%= source_url_link @source %>
 </p>
 
+<% unless @source.topics.blank? -%>
+  <p>
+    <b>Topics:</b>
+    <%= render :partial => 'shared/topics', :locals => {:topics => @source.topics} %>
+  </p>
+<% end %>
+
 <% unless @source.types.blank? -%>
-  <b>Types:</b>
+  <p>
+    <b>Types:</b>
     <%= render :partial => 'shared/types', :locals => {:types => @source.types} %>
+  </p>
 <% end %>
 
 <p>
