@@ -294,6 +294,7 @@ DEPENDENCIES
   jquery-rails (= 2.1)
   jruby-openssl
   jruby-rack
+  kaminari (~> 0.14)
   loofah (= 1.2.1)
   loofah-activerecord!
   multi_json
