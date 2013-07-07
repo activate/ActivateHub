@@ -17,13 +17,15 @@ class ApplicationController < ActionController::Base
 protected
 
   def current_site
-    if request.path =~ %r"^/(admin)|(users)"
+    @current_site = Site.find_by_domain request.host
+
+    if !@current_site && request.path =~ %r"^/(admin)|(users)"
+      # no site registered, fake one for now to let admins into rails_admin
       @current_site = Site.new(:name => "ActivateHub", :domain => request.host)
-    else
-      @current_site = Site.find_by_domain request.host
-      if !@current_site
-        redirect_to "http://activatehub.org/"
-      end
+    end
+
+    unless @current_site
+      redirect_to "http://activatehub.org/"
     end
 
     ActiveRecord::Base.current_site = @current_site
