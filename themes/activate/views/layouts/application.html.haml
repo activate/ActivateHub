@@ -31,8 +31,9 @@
       = auto_discovery_link_tag(:atom, events_url(:format => 'atom'), :title => 'Atom: All Events' )
       / Auto-discovery, inserted
       = yield :discovery_insert
-      %link{:href => image_path('favicon.ico'), :rel => "icon"}/
-      %link{:href => image_path("site-icon.png"), :rel => "apple-touch-icon"}/
+      %link{:href => image_path('/favicon.ico'), :rel => "icon"}/
+      %link{:href => image_path("/favicon.ico"), :rel => "shortcut icon"}/
+      %link{:href => image_path("/favicon.png"), :rel => "apple-touch-icon"}/
 
     - if Rails.env == 'production'
       :javascript
