@@ -7,8 +7,6 @@ class Organization < ActiveRecord::Base
 
   # Validations
   validates :name, presence: true
-  validates :contact_name, presence: true
-  validates :email, presence: true
 
   include ValidatesBlacklistOnMixin
   validates_blacklist_on :name, :url

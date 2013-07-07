@@ -6,8 +6,6 @@ end
 Factory.define :organization do |f|
   f.site { Site.find_by_domain(ENV['TEST_REQ_HOST']) }
   f.name 'My Org'
-  f.contact_name "Can O'dour"
-  f.email 'gar-leek@moomoo.test'
 end
 
 Factory.define :source do |f|
