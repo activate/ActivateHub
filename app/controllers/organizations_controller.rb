@@ -1,7 +1,7 @@
 class OrganizationsController < ApplicationController
   def index
     if params[:topic]
-      @organizations = Organization.joins(:topics).where(:topics => { :name => 'community' })
+      @organizations = Organization.joins(:topics).where(:topics => { :name => params[:topic] })
     else
       @organizations = Organization.scoped
     end
