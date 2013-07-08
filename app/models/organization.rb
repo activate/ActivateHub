@@ -23,7 +23,7 @@ class Organization < ActiveRecord::Base
     :allow_nil => true,
     :message => "is invalid (did you include the @ part?)"
 
-  default_scope :order => 'LOWER(name) ASC'
+  default_scope :order => 'LOWER(organizations.name) ASC'
 
   def title
     @name
