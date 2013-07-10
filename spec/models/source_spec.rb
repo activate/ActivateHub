@@ -56,7 +56,7 @@ describe Source, "when associated with an organization" do
  it "should set types, topics, & organization on imported events (within create_events)" do
 
   # Setup a source with some topics
-  source = Source.new(:url => "http://my.url/", :organization => @organization, :types => @types)
+  source = Source.new(:url => "http://my.url/", :organization => @organization, :types => @types, :topics => @topics)
 
   # stub to_events to return mocked event
   source.should_receive(:to_events).and_return([@event])
@@ -64,7 +64,7 @@ describe Source, "when associated with an organization" do
   # setup expectations that the output event has types, topics, and organization set
   output_event = @event.dup
   output_event.should_receive(:types=).with(@types)
-  output_event.should_receive(:topics=).with(@organization.topics)
+  output_event.should_receive(:topics=).with(@topics)
   output_event.should_receive(:organization=).with(@organization)
 
   # Go! (Run the code and verify the above expectations)

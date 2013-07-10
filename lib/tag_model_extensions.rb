@@ -18,10 +18,6 @@ module TagModelExtensions
       'person' => 'http://epdx.org/people/%s',
       'project' => 'http://epdx.org/projects/%s',
     },
-    'upcoming' => {
-      'event' => "http://upcoming.yahoo.com/event/%s",
-      'venue' => "http://upcoming.yahoo.com/venue/%s"
-    },
       'plancast' => {
       'activity' => "http://plancast.com/a/%s",
       'plan' => "http://plancast.com/p/%s"
@@ -60,16 +56,16 @@ module TagModelExtensions
   # key-value pairs. It may also contain an :url if one is known.
   #
   # Machine tags describe references to remote resources. For example, a
-  # Calagator event imported from an Upcoming event may have a machine
-  # linking it back to the Upcoming event.
+  # Calagator event imported from an Lanyrd event may have a machine
+  # linking it back to the Lanyrd event.
   #
   # Example:
-  #   # A tag named "upcoming:event=1234" will produce this machine tag:
+  #   # A tag named "lanyrd:event=1234" will produce this machine tag:
   #   tag.machine_tag == {
-  #     :namespace => "upcoming",
+  #     :namespace => "lanyrd",
   #     :predicate => "event",
   #     :value     => "1234",
-  #     :url       => "http://upcoming.yahoo.com/event/1234",
+  #     :url       => "http://lanyrd.com/1234",
   def machine_tag
     if components = self.name.match(MACHINE_TAG_PATTERN)
       namespace, predicate, value = components.captures
