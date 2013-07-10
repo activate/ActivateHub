@@ -47,3 +47,33 @@
 .empty {
   background-color: rgb(200, 200, 200) !important;
 }
+
+/******************
+  nav overrides
+******************/
+
+@media (min-width: 821px) {
+
+  body {
+    padding-top: 85px !important; /* this needs to be dynamic */
+  }
+
+  .navbar .brand img {
+    width: 100px !important;
+    height: 47px !important;
+    padding: 5px !important;
+  }
+
+  .nav > li {
+    font-size: 14px !important;
+  }
+
+  .nav > li > a {
+    line-height: 34px !important; /* this needs to be dynamic */
+  }
+
+  .navbar .navbar-search {
+    padding-top: 10px; /* this needs to be dynamic */
+  }
+
+}
