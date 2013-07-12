@@ -16,7 +16,7 @@
         },
         events: function(start, end, callback) {
           $.ajax({
-            url: 'events.json',
+            url: <%= events_path(:format => :json).to_json.html_safe %>,
             dataType: 'json',
             data: {
               // format request for calagator
