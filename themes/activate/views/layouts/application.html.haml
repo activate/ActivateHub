@@ -96,8 +96,8 @@
           - if content_for?(:sidebar_filters)
             = yield :sidebar_filters
 
-        - if content_for?(:custom_content)
-          = yield :custom_content
+        - if @custom_content
+          = yield
         - else
           .content.span9
             - if content_for?(:breadcrumbs)

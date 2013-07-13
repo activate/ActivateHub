@@ -1,6 +1,5 @@
 <% tabindex_on '#search_field' %>
 
-<%= cache_if(@perform_caching, CacheObserver.daily_key_for("events_index", request)) do %>
 <% content_for :sidebar do %>
   <div class="description alert alert-info" style="<%= params[:date] ? 'display:none;' : ''%>">
     <%= render :partial => "site/description" %>
@@ -53,7 +52,7 @@
   </div>
 <% end %>
 
-<% content_for :custom_content do %>
+<%= cache_if(@perform_caching, CacheObserver.daily_key_for("events_index", request)) do %>
   <div class='events-view'>
     <div id="whats_happening">
       <h2>You are here. Go somewhere!
@@ -66,6 +65,5 @@
 
     <%= render :partial => 'events/calendar', :locals => { :events => @events } %>
   </div>
-<% end %>
 
 <% end %>

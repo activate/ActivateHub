@@ -50,12 +50,12 @@ Calagator::Application.routes.draw do
     match 'css/:name' => 'site#style'
     match 'css/:name.:format' => 'site#style'
 
-    match '/' => 'site#index', :as => :root
+    match '/' => 'events#index', :as => :root
     match '/index' => 'site#index'
     match '/index.:format' => 'site#index'
 
     match '/:controller(/:action(/:id))'
 
-    root :to => "home#index"
+    root :to => "events#index"
   end
 end

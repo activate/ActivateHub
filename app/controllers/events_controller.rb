@@ -19,6 +19,7 @@ class EventsController < ApplicationController
 
     @perform_caching = params[:order].blank? && params[:date].blank?
 
+    @custom_content = true
     @page_title = "Events"
 
     render_events(@events)
