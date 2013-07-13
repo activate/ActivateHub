@@ -278,6 +278,7 @@ DEPENDENCIES
   bluecloth (= 2.2.0)
   capistrano (= 2.12.0)
   capistrano-ext (= 1.2.1)
+  coffee-rails (~> 3.2.1)
   columnize (= 0.3.6)
   database_cleaner (~> 0.8.0)
   devise
