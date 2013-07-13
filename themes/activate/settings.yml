@@ -15,8 +15,6 @@ precompile_assets:
   - 'mobile.css'
   - 'print.css'
   - 'site.css'
-  - 'fullcalendar.css'
-  - 'fullcalendar.min.js'
 
 # Google map to display on /venues page:
 venues_google_map_options:

@@ -1,0 +1,99 @@
+:ruby
+  # Arguments:
+  # * events => Event record scope
+
+  today = Time.zone.today
+
+  num_days, num_slots = 45, 5
+  start_date = (events.first.try(:start_date) || today.beginning_of_month).beginning_of_week(:sunday)
+  end_date = (events.map(&:end_date).max || (start_date + num_days.days)).end_of_week(:sunday)
+
+  # creates empty event slots for each day we will show on the calendar
+  days = Hash[(start_date..end_date).map{|date| [date, Array.new(num_slots)] }]
+
+  # FIXME: re-ordering by start_time should be assumed to happen in controller (but isn't?)
+  # FIXME: would also be nice to order by 'start_date asc, end_date desc' so we can be sure
+  # multi-day events are at top of each days' event list
+  events.reorder('start_time asc, end_time desc').each do |event|
+    event_start, event_end = event.start_time.to_date, event.end_time.to_date
+
+    # really long events are probably mistyped, spam or otherwise annoying
+    # FIXME: prevent long events from being created in the first place?
+    next if event_end - event_start > 7 # days
+
+    # event start_time or end_time must fall within calendar date range
+    next if event_start > end_date || event_end < start_date
+
+    event_pos = nil # cache position so multi-day events use same slot
+    (event_start..event_end).each do |date|
+      # skip any days that wander outside our calendar range
+      day = days[date] or next
+
+      if event_pos
+        # event already started on a previous day
+        if date.wday == 0 # sunday
+          # at start of week, redefine event on calendar
+          day[event_pos] = event
+        else
+          # event flows into this day, reserve so other events can't take
+          day[event_pos] = false
+        end
+      elsif event_pos = day.find_index(&:nil?) || day.count
+        # found empty slot or created a new slot if needed
+        day[event_pos] = event
+      end
+    end
+  end
+
+.calendar-container
+  .week-header
+    .day Sun
+    .day Mon
+    .day Tue
+    .day Wed
+    .day Thu
+    .day Fri
+    .day Sat
+  - days.each_slice(7) do |week|
+    - month_change = week.last[0].day <= 7
+    .week{:class => (month_change ? 'w1' : '')}
+      - week.each do |day,events|
+        - if day.day == 1
+          .month-header
+            .month= day.strftime('%B')
+            .year= day.year
+        - new_events = events.select {|e| e.present? && e.start_date == day }
+        .day{:class => "d#{day.day} #{day == today ? 'today' : ''} #{new_events.none? ? 'no-new-events' : ''}"}
+          .date
+            .wday= day.strftime('%A')
+            .month= day.strftime('%b')
+            .dom= day.day
+            .year= day.year
+          - events.each_with_index do |event,idx|
+            - if event
+              - span = [event.days(day), (7 - day.wday)].min
+              .slot{:class => "s#{span} #{idx > 4 ? 'extra' : ''}"}
+                .event{'data-event-id' => event.id, :class => (event.start_date == day ? 'new-event' : '')}
+                  .event-title= link_to event.title, event_path(:id => event.id)
+                  .event-organization
+                    - if event.organization
+                      .organization-label with
+                      = link_to event.organization.name, organization_path(:id => event.organization.id)
+                  .event-time-abs= normalize_time(event.start_time, event.end_time, :format => :text)
+                  .event-time-rel= normalize_time(event.start_time, event.end_time, :context => event.start_date, :format => :text)
+                  .event-venue
+                    - if event.venue
+                      .venue-label Venue:
+                      .venue-at @
+                      = link_to event.venue.title, venue_path(:id => event.venue.id)
+                  .event-description= Loofah::Helpers::strip_tags(event.description) if event.description
+                  .event-topics-types
+                    - event.topics.each do |topic|
+                      = link_to topic.name, '#', :class => 'topic'
+                    - event.types.each do |type|
+                      = link_to type.name, '#', :class => 'type'
+            - else
+              .slot.empty-slot{:class => (idx > 4 ? 'extra' : '')}
+          - if (more_events = events.from(5)).any?
+            .show-more= link_to "+ #{more_events.count} more", '#'
+      .clear

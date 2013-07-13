@@ -1,0 +1,284 @@
+@media (min-width: 821px) {
+  .events_index {
+    .sidebar {
+      position: fixed;
+      top: 85px;
+      left: 20px;
+    }
+
+    .view-switcher {
+      margin-right: 20px;
+      display: inline;
+      font-size: 16px;
+      vertical-align: middle;
+      float: right;
+
+      li {
+        display: inline-block;
+        border-left: solid 1px #ccc;
+        padding: 0px 8px 0px 10px;
+        margin: 0px !important;
+      }
+
+      li:first-child {
+        border-left: none;
+      }
+
+      .selected {
+        pointer-events: none;
+        color: #333;
+      }
+    }
+  }
+
+  .sidebar {
+    width: 300px !important;
+  }
+
+  .events-view {
+    margin-left: 325px;
+  }
+}
+@media (max-width: 820px) {
+  .sidebar, .view-switcher { display: none !important; }
+}
+
+.list-container {
+  .week-header, .month-header, .event-time-abs, .event-description, .venue-label, .show-more, .no-new-events {
+    display: none;
+  }
+
+  .day {
+    .date {
+      width: 100px;
+      margin-right: 20px;
+      float: left;
+      text-align: right;
+
+      .wday { font-weight: bold; }
+      .month, .dom, .year { display: inline; }
+    }
+  }
+
+  .event {
+    margin: 20px 20px 20px 140px;
+    display: none;
+  }
+
+  .event.new-event {
+    display: block;
+  }
+
+  .event-title {
+    font-weight: bold;
+  }
+
+  .event-time-rel, .event-organization, .event-venue, .event-topics-types {
+    display: block;
+  }
+
+  .event-organization .organization-label, .venue-at {
+    display: inline;
+  }
+
+  .event-organization {
+    font-style: italic;
+    font-size: 11px;
+  }
+
+  .event-time-rel {
+    clear: left;
+    float: left;
+    padding-right: 3px;
+  }
+
+  .event-topics-types {
+    clear: left;
+  }
+}
+
+.calendar-container {
+  margin: 20px 0px;
+
+  div, a {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+
+  .week-header {
+    .day {
+      border: none;
+      min-height: 30px;
+      font-weight: bold;
+      padding: 5px;
+    }
+  }
+
+  .month-header {
+    padding: 5px;
+    border-top: 3px solid #333;
+    text-align: right;
+    display: inline-block;
+    margin-top: -1px;
+    margin-left: -1px;
+    width: 20%;
+    position: absolute;
+    right: 0px;
+
+    .month {
+      line-height: 24px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .year {
+      line-height: 18px;
+      font-size: 14px;
+      font-style: italic;
+    }
+  }
+
+  .week {
+    white-space: nowrap;
+    position: relative;
+    clear: left;
+  }
+
+  .day {
+    border-top: 1px solid #ddd;
+
+    width: 12.5%;
+    min-height: 190px;
+    padding: 5px 0px 10px 0px;
+    float: left;
+
+    .date {
+      margin: 0px 5px 5px 5px;
+      .wday, .month, .year { display: none }
+    }
+  }
+
+  .slot, .show-more {
+    height: 30px;
+    width: 100%;
+    padding: 2px;
+    position: relative;
+  }
+
+  .show-more {
+    padding: 5px 10px;
+  }
+
+  .event {
+    position: absolute;
+    width: 100%;
+    z-index: 800;
+    padding: 2px;
+
+    .event-time-abs, .event-time-rel, .event-organization, .event-venue, .event-description, .event-topics-types {
+      display: none;
+    }
+  }
+
+  .event-title {
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+
+    display: block;
+    border: 1px solid #cce;
+    background-color: #dde;
+    line-height: 25px;
+    padding: 0px 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 11px;
+  }
+
+  .event-title {
+    a:link, a:visited, a:active {
+      text-decoration: none;
+    }
+  }
+
+  .event .hover {
+    border: 1px solid #88c;
+    background-color: #bbf;
+    a { color: #058; }
+  }
+
+    .d1, .d2, .d3, .d4, .d5, .d6, .d7 {
+      margin-top: -1px;
+      border-top: 3px solid #333;
+      .event {
+        margin-top: -1px;
+      }
+    }
+
+  .d1 {
+    border-left: 1px dashed #333;
+  }
+
+  .today {
+    background-color: #ffa;
+  }
+
+  .past {
+    color: #ccc;
+  }
+
+  .extra {
+    display: none;
+  }
+
+  .s1 { width: 100%; }
+  .s2 { width: 200%; }
+  .s3 { width: 300%; }
+  .s4 { width: 400%; }
+  .s5 { width: 500%; }
+  .s6 { width: 600%; }
+  .s7 { width: 700%; }
+}
+
+.event-summary {
+  overflow: hidden;
+
+  .event-title {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .event-time-rel, .venue-at {
+    display: none;
+  }
+
+  .event-location {
+    font-size: 12px;
+  }
+
+  .event-organization {
+    font-style: italic;
+    .organization-label {
+      display: inline;
+    }
+  }
+
+  .event-venue {
+    display: block;
+    margin: 10px 0px;
+
+    .venue-label {
+      display: inline;
+      font-weight: bold;
+    }
+  }
+
+  .event-description {
+    margin: 10px 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 16px;
+    max-height: 304px;
+  }
+}

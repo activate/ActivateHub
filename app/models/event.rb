@@ -548,6 +548,19 @@ EOF
     end
   end
 
+  def start_date
+    @start_date ||= start_time.to_date
+  end
+
+  def end_date
+    @end_date ||= end_time.to_date
+  end
+
+  def days(start_date = nil)
+    # FIXME: what is end_date is at midnight?
+    (end_date - (start_date || self.start_date)).to_i + 1
+  end
+
 protected
 
   def end_time_later_than_start_time

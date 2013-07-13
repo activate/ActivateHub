@@ -96,16 +96,19 @@
           - if content_for?(:sidebar_filters)
             = yield :sidebar_filters
 
-        .content.span9
-          - if content_for?(:breadcrumbs)
-            %ul.breadcrumb
-              %li
-                %a{:href => "#"} Home
-                %span.divider /
-              = yield :breadcrumbs
-          -# flash[:success] = "yay: success"; flash[:failure] = "meh <em>meh!</em>: failure"; flash[:notice] = "note: notice"; flash[:error] = "meh: error"; flash[:warn] = "look!: warning"
-          = render :partial => "shared/flash_messages", :locals => {:flash => flash}
-          = yield
+        - if content_for?(:custom_content)
+          = yield :custom_content
+        - else
+          .content.span9
+            - if content_for?(:breadcrumbs)
+              %ul.breadcrumb
+                %li
+                  %a{:href => "#"} Home
+                  %span.divider /
+                = yield :breadcrumbs
+            -# flash[:success] = "yay: success"; flash[:failure] = "meh <em>meh!</em>: failure"; flash[:notice] = "note: notice"; flash[:error] = "meh: error"; flash[:warn] = "look!: warning"
+            = render :partial => "shared/flash_messages", :locals => {:flash => flash}
+            = yield
     %footer.footer
       = render(:partial => 'site/footer')
     #email-signup.modal.hide.fade
