@@ -72,7 +72,7 @@
           - events.each_with_index do |event,idx|
             - if event
               - span = [event.days(day), (7 - day.wday)].min
-              .slot{:class => "s#{span} #{idx > 4 ? 'extra' : ''}"}
+              .slot{:class => "s#{span} #{idx > 3 && events.count > 5 ? 'extra' : ''}"}
                 .event{'data-event-id' => event.id, :class => (event.start_date == day ? 'new-event' : '')}
                   .event-title= link_to event.title, event_path(:id => event.id)
                   .event-organization
@@ -93,7 +93,7 @@
                     - event.types.each do |type|
                       = link_to type.name, '#', :class => 'type'
             - else
-              .slot.empty-slot{:class => (idx > 4 ? 'extra' : '')}
+              .slot.empty-slot{:class => (idx > 3 && events.count > 5 ? 'extra' : '')}
           - if (more_events = events.from(5)).any?
-            .show-more= link_to "+ #{more_events.count} more", '#'
+            .show-more= link_to "+ #{more_events.count + 1} more", '#'
       .clear
