@@ -553,7 +553,11 @@ EOF
   end
 
   def end_date
-    @end_date ||= end_time.to_date
+    @end_date ||= begin
+      # subtract a second from end time to prevent ending on midnight
+      end_time = self.end_time ? self.end_time - 1.second : self.start_time
+      end_time.to_date
+    end
   end
 
   def days(start_date = nil)

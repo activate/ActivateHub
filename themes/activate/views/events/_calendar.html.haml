@@ -6,7 +6,7 @@
 
   num_days, num_slots = 45, 5
   start_date = (events.first.try(:start_date) || today.beginning_of_month).beginning_of_week(:sunday)
-  end_date = (events.map(&:end_date).max || (start_date + num_days.days)).end_of_week(:sunday)
+  end_date = (events.map(&:end_date).compact.max || (start_date + num_days.days)).end_of_week(:sunday)
 
   # creates empty event slots for each day we will show on the calendar
   days = Hash[(start_date..end_date).map{|date| [date, Array.new(num_slots)] }]
@@ -15,7 +15,7 @@
   # FIXME: would also be nice to order by 'start_date asc, end_date desc' so we can be sure
   # multi-day events are at top of each days' event list
   events.reorder('start_time asc, end_time desc').each do |event|
-    event_start, event_end = event.start_time.to_date, event.end_time.to_date
+    event_start, event_end = event.start_date, event.end_date
 
     # really long events are probably mistyped, spam or otherwise annoying
     # FIXME: prevent long events from being created in the first place?
