@@ -21,12 +21,14 @@ $ ->
       $('.calendar-container').removeClass('calendar-container').addClass('list-container')
       $('.view-switcher a').removeClass('selected')
       $(this).addClass('selected')
+      $.cookie('events_view', 'list', expires: 14)
       false
 
     $('.switch-calendar').click ->
       $('.list-container').removeClass('list-container').addClass('calendar-container')
       $('.view-switcher a').removeClass('selected')
       $(this).addClass('selected')
+      $.cookie('events_view', 'calendar', expires: 14)
       false
 
     $('.sidebar .show-more-actions').click ->
@@ -36,6 +38,7 @@ $ ->
       false
 
   $(window).resize ->
-    if document.width > 820
+    # switch to calendar view if not mobile and no explicit preference
+    if document.width > 820 and $.cookie('events_view') != 'list'
       $('.switch-calendar').click()
   $(window).trigger('resize')
