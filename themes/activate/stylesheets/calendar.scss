@@ -41,6 +41,19 @@
 }
 @media (max-width: 820px) {
   .sidebar, .view-switcher { display: none !important; }
+  #whats_happening h2 {
+    font-size: 18px;
+  }
+
+  .date {
+    width: 75px !important;
+    margin-right: 5px !important;
+  }
+
+  .event {
+    margin-left: 85px !important;
+    padding: 0px 0px 20px 0px !important;
+  }
 }
 
 .list-container {
