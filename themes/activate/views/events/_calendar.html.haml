@@ -62,7 +62,7 @@
           .month-header
             .month= day.strftime('%B')
             .year= day.year
-        - new_events = events.select {|e| e.present? && e.start_date == day }
+        - new_events = events.select {|e| e.present? && e.start_date == day && e.end_date >= today }
         .day{:class => "d#{day.day} #{day == today ? 'today' : ''} #{new_events.none? ? 'no-new-events' : ''}"}
           .date
             .wday= day.strftime('%A')
