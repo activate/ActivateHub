@@ -7,13 +7,6 @@ class EventsController < ApplicationController
     @start_date = date_or_default_for(:start)
     @end_date = date_or_default_for(:end)
 
-    # calendar view looks bad unless we go back to the start of the month,
-    # so let's do that unless an explicit date range is specified
-    unless params[:date]
-      @start_date = @start_date.beginning_of_month.beginning_of_week
-      @end_date = @end_date.end_of_week
-    end
-
     query = Event.non_duplicates.ordered_by_ui_field(params[:order]).includes(:venue, :tags)
     @events = query.within_dates(@start_date, @end_date)
 
@@ -268,12 +261,12 @@ class EventsController < ApplicationController
 
   # Return the default start date.
   def default_start_date
-    Time.zone.today
+    Time.zone.today.beginning_of_month.beginning_of_week
   end
 
   # Return the default end date.
   def default_end_date
-    Time.zone.today + 3.months
+    (default_start_date + 2.months).end_of_month.end_of_week
   end
 
   # Return a date parsed from user arguments or a default date. The +kind+
