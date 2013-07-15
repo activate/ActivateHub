@@ -52,7 +52,7 @@
   </div>
 <% end %>
 
-<%= cache_if(@perform_caching, CacheObserver.daily_key_for("events_index", request)) do %>
+<% cache_if(@perform_caching, CacheObserver.daily_key_for("events_index", request)) do %>
   <div class='events-view'>
     <div id="whats_happening">
       <h2>You are here. Go somewhere!
