@@ -36,6 +36,6 @@ $ ->
       false
 
   $(window).resize ->
-    if document.width <= 820
-      $('.switch-list').click()
+    if document.width > 820
+      $('.switch-calendar').click()
   $(window).trigger('resize')
