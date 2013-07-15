@@ -63,7 +63,7 @@
       </h2>
     </div>
 
-    <%= render :partial => 'events/calendar', :locals => { :events => @events } %>
+    <%= render :partial => 'events/calendar', :locals => { :events => @events, :start_date => @start_date, :end_date => @end_date } %>
   </div>
 
 <% end %>

@@ -261,12 +261,12 @@ class EventsController < ApplicationController
 
   # Return the default start date.
   def default_start_date
-    Time.zone.today.beginning_of_month.beginning_of_week
+    Time.zone.today.beginning_of_week(:sunday)
   end
 
   # Return the default end date.
   def default_end_date
-    (default_start_date + 2.months).end_of_month.end_of_week
+    (default_start_date + 2.months).end_of_month.end_of_week(:sunday)
   end
 
   # Return a date parsed from user arguments or a default date. The +kind+
