@@ -73,7 +73,7 @@
             - if event
               - span = [event.days(day), (7 - day.wday)].min
               .slot{:class => "s#{span} #{idx > 3 && events.count > 5 ? 'extra' : ''}"}
-                .event{'data-event-id' => event.id, :class => (event.start_date == day ? 'new-event' : '')}
+                .event{'data-event-id' => event.id, :class => "#{(event.start_date == day ? 'new-event' : '')} #{event.end_date < today ? 'past' : ''}"}
                   .event-title= link_to event.title, event_path(:id => event.id)
                   .event-organization
                     - if event.organization

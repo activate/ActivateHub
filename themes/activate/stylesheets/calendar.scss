@@ -225,7 +225,17 @@
   }
 
   .past {
-    color: #ccc;
+    .event-title {
+      border-color: #ddd;
+      background-color: #eee;
+      a { color: #aaa; }
+    }
+
+    .hover {
+      border-color: #ccc;
+      background-color: #ddd;
+      a { color: #888; }
+    }
   }
 
   .extra {
