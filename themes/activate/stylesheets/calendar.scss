@@ -191,9 +191,13 @@
     background-color: #dde;
     line-height: 25px;
     padding: 0px 5px;
-    overflow: hidden;
-    text-overflow: ellipsis;
     font-size: 11px;
+
+    a {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   .event-title {
@@ -205,6 +209,7 @@
   .event .hover {
     border: 1px solid #88c;
     background-color: #bbf;
+    cursor: pointer;
     a { color: #058; }
   }
 
