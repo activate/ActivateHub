@@ -28,6 +28,26 @@ describe Source, "in general" do
     source = Source.new(:url => '\not valid/')
     lambda{ source.to_events }.should raise_error(ActiveRecord::RecordInvalid, /Url has invalid format/i)
   end
+
+  context "scopes" do
+    it ":enabled should return only enabled sources" do
+      create_list(:source, 2, :enabled => true)
+      create_list(:source, 3, :enabled => false)
+      Source.enabled.count.should eq 2
+    end
+
+    it ":disabled should return only disabled sources" do
+      create_list(:source, 2, :enabled => true)
+      create_list(:source, 3, :enabled => false)
+      Source.disabled.count.should eq 3
+    end
+  end
+
+  describe "#enabled" do
+    it "should be enabled by default" do
+      Source.new.enabled.should be_true
+    end
+  end
 end
 
 describe Source, "when associated with an organization" do

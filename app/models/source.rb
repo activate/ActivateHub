@@ -31,6 +31,8 @@ class Source < ActiveRecord::Base
   scope_to_current_site
 
   scope :listing, :order => 'created_at DESC'
+  scope :enabled, where(:enabled => true)
+  scope :disabled, where(:enabled => false)
 
   has_paper_trail
 

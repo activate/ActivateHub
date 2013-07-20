@@ -1,7 +1,7 @@
 namespace :sources do
   task 'import:all', [:domain] => :tenantized_environment do |t,args|
     site = ActiveRecord::Base.current_site
-    Source.scoped.each do |source|
+    Source.enabled.each do |source|
       new_args = [site.domain, source.id]
       Rake::Task['sources:import'].tap(&:reenable).invoke(*new_args)
     end
@@ -10,6 +10,10 @@ namespace :sources do
   task :import, [:domain,:source_id] => :tenantized_environment do |t,args|
     unless source = Source.find(args[:source_id])
       raise "could not find source with id '#{args[:source_id]}'"
+    end
+
+    unless source.enabled?
+      raise "source is currently flagged as disabled"
     end
 
     title = "#{source.name} (id: #{source.id}):"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130712205256) do
+ActiveRecord::Schema.define(:version => 20130720021739) do
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -86,11 +86,12 @@ ActiveRecord::Schema.define(:version => 20130712205256) do
     t.string   "title"
     t.string   "url"
     t.datetime "imported_at"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.boolean  "reimport"
     t.integer  "organization_id"
     t.integer  "site_id"
+    t.boolean  "enabled",         :default => true
   end
 
   create_table "sources_topics", :id => false, :force => true do |t|
