@@ -52,6 +52,8 @@
   </div>
 <% end %>
 
+<%= render :partial => "shared/flash_messages", :locals => {:flash => flash} %>
+
 <% cache_if(@perform_caching, CacheObserver.daily_key_for("events_index", request)) do %>
   <div class='events-view'>
     <div id="whats_happening">

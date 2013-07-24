@@ -237,7 +237,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.html # *.html.erb
       format.kml  # *.kml.erb
-      format.ics  { ical_export(events) }
+      format.ics  { ical_export(events.respond_to?(:future) ? events.future : events) }
       format.atom { render :template => 'events/index' }
       format.xml  { render :xml  => events.to_xml(:include => :venue) }
       format.json { render :json => events.to_json(:include => :venue), :callback => params[:callback] }

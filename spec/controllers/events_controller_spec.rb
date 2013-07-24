@@ -8,7 +8,7 @@ describe EventsController do
       it "should produce HTML" do
         get :index, :format => "html"
 
-        response.should have_selector "table.event_table"
+        response.should have_selector ".events-view"
       end
     end
 
@@ -724,9 +724,9 @@ describe EventsController do
         end
 
         it "should render matching events" do
-          have_selector "table.event_table" do
-            have_selector ".vevent a.summary", :href => event_url(results[:past])
-            have_selector ".vevent a.summary", :href => event_url(results[:current])
+          have_selector ".events-view" do
+            have_selector ".event-title a", :href => event_url(results[:past])
+            have_selector ".event-title a", :href => event_url(results[:current])
           end
         end
 

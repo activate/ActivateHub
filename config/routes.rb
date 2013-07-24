@@ -1,7 +1,7 @@
 Calagator::Application.routes.draw do
   devise_for :users
 
-  scope '(:calendar_type)' do
+  scope '(:calendar_type)', :defaults => { :calendar_type => nil } do
     mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
     match 'omfg' => 'site#omfg'

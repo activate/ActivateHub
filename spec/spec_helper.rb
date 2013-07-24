@@ -61,7 +61,8 @@ Spork.prefork do
       # all tests and that it matches the request.domain used for controller
       # and functional tests.
       ENV['TEST_REQ_HOST'] = 'activate.test'
-      Site.create(:name => 'Test Site', :domain => ENV['TEST_REQ_HOST'])
+      site = Site.create(:name => 'Test Site', :domain => ENV['TEST_REQ_HOST'])
+      ActiveRecord::Base.current_site = site
     end
 
     config.after(:each) do
