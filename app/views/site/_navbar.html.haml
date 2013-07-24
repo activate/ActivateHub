@@ -1,0 +1,20 @@
+#navbar-logo
+  = link_to root_path, :title => @current_site.name do
+    = image_tag 'navbar-logo.png'
+
+#navbar-menu
+  %ul
+    %li{:class => link_class[:events]}= link_to t('.menu.events'), events_path
+    %li{:class => link_class[:organizations]}= link_to t('.menu.organizations'), organizations_path
+    %li{:class => link_class[:venues]}= link_to t('.menu.venues'), venues_path
+    %li= link_to t('.menu.new_event'), new_event_path
+
+#navbar-toggle
+  %a{:data => { :toggle => 'collapse', :target => '#navbar-menu' }}
+    %span.icon-bar
+    %span.icon-bar
+    %span.icon-bar
+
+#navbar-search
+  = form_tag search_events_path, :method => :get do
+    = text_field_tag 'query', @query, :placeholder => t('.search.placeholder')

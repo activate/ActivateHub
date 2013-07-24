@@ -2,4 +2,15 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  site_title: "%{page_title} » %{site_name} : %{tagline}"
+
+  site:
+    navbar:
+      menu:
+        events: "Events"
+        organizations: "Organizations"
+        venues: "Venues"
+        new_event: "Add Event"
+
+      search:
+        placeholder: "Search events..."

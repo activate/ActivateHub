@@ -1,5 +1,102 @@
 /*
  *= require reset
- *= require common
- *= require formtastic
  */
+
+@import "colors";
+@import "layout";
+
+/*---[ global ]-------------------------------------------------------------*/
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: $text-color;
+}
+
+a:link, a:visited, a:active {
+  color: $link-color;
+  text-decoration: none;
+}
+
+a:hover {
+  color: $link-hover;
+  text-decoration: underline;
+}
+
+input[type=text], input[type=url], textarea {
+  padding: 5px;
+  border: 1px solid $edge-color;
+  color: $text-color;
+}
+
+
+
+/*---[ navbar ]-------------------------------------------------------------*/
+
+#navbar {
+  background-color: $navbar-bgcolor;
+
+  a:link, a:visited, a:active {
+    text-decoration: none;
+    color: $navbar-link-color;
+  }
+
+  a:hover {
+    color: $navbar-link-hover;
+  }
+
+  /* navbar shadow which gives navbar a raised-up look */
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+#navbar-logo {
+  padding: 0px 10px;
+}
+
+#navbar-menu {
+  a {
+    padding: 0px 15px;
+    vertical-align: middle;
+    font-size: 15px;
+  }
+
+  .active a {
+    background-color: $navbar-active-bgcolor;
+    color: $navbar-active-color;
+  }
+}
+
+#navbar-toggle {
+  padding: 0px 20px;
+
+  a {
+    border: 1px solid $navbar-link-color;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  a:hover {
+    border: 1px solid $navbar-link-hover;
+  }
+
+  .icon-bar {
+    display: block;
+    width: 18px;
+    height: 2px;
+    margin: 3px 5px;
+    background-color: $navbar-link-hover;
+  }
+}
+
+#navbar-search {
+  padding: 0px 20px;
+}
+
+
+/*---[ sidebar ]------------------------------------------------------------*/
+/*---[ footer ]-------------------------------------------------------------*/

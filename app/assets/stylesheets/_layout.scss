@@ -1,0 +1,54 @@
+$navbar-height: 60px;
+
+#navbar {
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  height: $navbar-height;
+  line-height: $navbar-height;
+  white-space: nowrap;
+}
+
+#navbar-logo {
+  float: left;
+
+  img {
+    display: inline;
+    vertical-align: middle;
+  }
+}
+
+#navbar-menu {
+  height: $navbar-height;
+  float: left;
+
+  ul, ul li {
+    display: inline;
+  }
+
+  a {
+    float: left;
+    display: block;
+    height: $navbar-height;
+    line-height: $navbar-height;
+  }
+}
+
+#navbar-toggle {
+  height: $navbar-height;
+  float: right;
+  display: none;
+
+  a {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+#navbar-search {
+  float: right;
+}
+
+#main {
+  margin: ($navbar-height + 20px) 20px 20px 20px;
+}
