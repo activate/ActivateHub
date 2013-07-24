@@ -2,7 +2,7 @@ module SquashManyDuplicatesMixin
   def self.included(mixee)
     mixee.class_eval do
 
-      # POST /venues/squash_multiple_duplicates
+      # POST /venues/squash_many_duplicates
       def squash_many_duplicates
         # Derive model class from controller name
         model_class = self.controller_name.singularize.titleize.constantize

@@ -13,7 +13,7 @@ Calagator::Application.routes.draw do
 
     resources :events do
       collection do
-        post :squash_multiple_duplicates
+        post :squash_many_duplicates
         get :search
         get :duplicates
       end
@@ -36,7 +36,7 @@ Calagator::Application.routes.draw do
 
     resources :venues do
       collection do
-        post :squash_multiple_duplicates
+        post :squash_many_duplicates
         get :map
         get :duplicates
       end
