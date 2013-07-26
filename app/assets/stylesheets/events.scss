@@ -1,0 +1,308 @@
+@import "variables";
+
+.view-switcher {
+  float: right;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: bold;
+
+  li {
+    display: inline-block;
+    border-left: solid 1px $edge-color;
+    padding: 0px 8px 0px 10px;
+  }
+
+  li:first-child {
+    border-left: none;
+  }
+
+  .selected {
+    pointer-events: none;
+    color: $text-color;
+  }
+}
+
+
+/*---[ list view ]----------------------------------------------------------*/
+
+.events-view.list {
+  // elements needed for calendar but not list view
+  .week-header, .month-header, .show-more {
+    display: none;
+  }
+
+  // elements needed for sidebar summary but not list view
+  .event-time-abs, .event-description, .venue-label {
+    display: none;
+  }
+
+  // hide any mention of a day that has no events
+  .no-new-events {
+    display: none;
+  }
+
+  .date { // date header to left of events for that day
+    width: $list-date-width;
+    float: left;
+    text-align: right;
+
+    .wday { font-weight: bold; }
+    .month, .dom, .year { display: inline; }
+  }
+
+  .event {
+    margin-left: $list-date-width + 40px;
+    padding-bottom: 20px; // padding instead of margin so no :hover gaps between events
+  }
+
+  // only show first occurrence of event in list view (mult. entries to support calendar)
+  .event { display: none; }
+  .event.new-event { display: block; }
+
+  .event-title {
+    font-weight: bold;
+  }
+
+  .event-organization {
+    font-style: italic;
+    font-size: 11px;
+
+    .organization-label {
+      display: inline;
+    }
+  }
+
+  .event-time-rel {
+    display: inline;
+  }
+
+  .event-venue {
+    display: inline;
+
+    .venue-at {
+      display: inline;
+    }
+  }
+}
+
+
+/*---[ calendar view ]------------------------------------------------------*/
+
+.events-view.calendar {
+  overflow: auto; // magic; keeps 'clear:left' from clearing sidebar
+  margin-top: 20px;
+
+  .date {
+    .wday, .month, .year { display: none }
+  }
+
+  .event-time-abs, .event-time-rel, .event-organization, .event-venue, .event-description, .event-topics-types {
+    display: none;
+  }
+
+  .extra {
+    display: none;
+  }
+
+  // make width/height represent size of div w/o adding "padding" values to it
+  div, a {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+
+  .day-header {
+    float: left;
+    width: 13%;
+    padding: 5px;
+    font-weight: bold;
+  }
+
+  .month-header {
+    position: absolute;
+    right: 20px;
+    float: right;
+    display: inline-block;
+    width: 15%;
+    height: $cal-day-min-height;
+    border-top: 3px solid $cal-month-edge-color;
+    padding: 5px;
+    text-align: right;
+
+    .month {
+      font-size: 20px;
+      line-height: 24px;
+      font-weight: bold;
+    }
+
+    .year {
+      font-size: 14px;
+      line-height: 18px;
+      font-style: italic;
+    }
+  }
+
+  .week {
+    clear: left;
+  }
+
+  .day {
+    float: left;
+    width: 13%;
+    min-height: $cal-day-min-height;
+    margin-top: 1px;
+    border-top: 1px solid $cal-week-edge-color;
+    padding: 1px 0px 10px 0px;
+
+    .date {
+      margin: 5px;
+    }
+  }
+
+  .day.today {
+    background-color: $cal-today-bgcolor;
+  }
+
+  .d1, .d2, .d3, .d4, .d5, .d6, .d7 {
+    border-top: 3px solid $cal-month-edge-color;
+    margin-top: 0px;
+    padding-top: 0px;
+  }
+
+  .d1 {
+    border-left: 1px dashed $cal-month-edge-color;
+
+    // FIXME: hacks to get event borders to be properly aligned for events
+    // that start on the 1st of a month; alignment gets messed up due to
+    // the dashed border introduced to signify boundary and the use of
+    // relative (slot)/absolute (event) positioning so events are displayed
+    // on top of the month boundary line instead of under it. may not work
+    // with all month and event length combinations. come up with better fix
+    .event { padding-right: 0px; }
+    .s1 .event { padding-right: 2px; }
+    .s2 .event { padding-right: 1px; }
+  }
+
+  // hide the "between days" month divider if 1st of month at start of week
+  .d1.wday0 { border-left: none; }
+
+  .slot {
+    position: relative;
+    height: $cal-slot-height;
+    width: 100%;
+  }
+
+  // width of each slot (s{n} where n represents the number of days slot spans
+  .s1 { width: 100%; }
+  .s2 { width: 200%; }
+  .s3 { width: 300%; }
+  .s4 { width: 400%; }
+  .s5 { width: 500%; }
+  .s6 { width: 600%; }
+  .s7 { width: 700%; }
+
+  .event {
+    position: absolute;
+    z-index: 5;
+    width: 100%;
+    padding: 2px;
+  }
+
+  .event-title {
+    a {
+      display: block;
+      height: $cal-slot-height - 4px;
+      background-color: $cal-event-bgcolor;
+      padding: 0px 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: $cal-slot-height - 6px; // height - border
+      font-size: 11px;
+      text-decoration: none;
+
+      border: 1px solid $cal-event-border;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+    }
+
+    a:hover {
+      border: 1px solid $cal-event-hover-border;
+      background-color: $cal-event-hover-bgcolor;
+      cursor: pointer;
+      color: $cal-event-hover-text-color;
+    }
+  }
+
+  .past .event-title {
+    a {
+      border-color: $cal-event-past-border;
+      background-color: $cal-event-past-bgcolor;
+      color: $cal-event-past-text-color;
+    }
+
+    a:hover {
+      border-color: $cal-event-past-hover-border;
+      background-color: $cal-event-past-hover-bgcolor;
+      color: $cal-event-past-hover-text-color;
+    }
+  }
+
+  .show-more {
+    line-height: $cal-slot-height;
+    padding: 0px 10px;
+    font-size: 13px;
+  }
+}
+
+
+/*---[ sidebar details ]----------------------------------------------------*/
+
+#sidebar-event-details {
+  position: absolute;
+  display: none;
+  top: 0px;
+  width: $sidebar-width - 22px;
+  overflow: hidden;
+
+  .event-time-rel, .venue-at {
+    display: none;
+  }
+
+  .event-title {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .event-location {
+    font-size: 12px;
+  }
+
+  .event-location {
+    font-size: 12px;
+  }
+
+  .event-organization {
+    font-style: italic;
+    .organization-label {
+      display: inline;
+    }
+  }
+
+  .event-venue {
+    margin: 10px 0px;
+
+    .venue-label {
+      display: inline;
+      font-weight: bold;
+    }
+  }
+
+  .event-description {
+    margin: 10px 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 16px;
+    max-height: 304px;
+  }
+}

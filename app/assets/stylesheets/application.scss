@@ -1,16 +1,23 @@
 /*
  *= require reset
+ *= require layout
+ *= require events
+ *= require_self
  */
 
-@import "colors";
-@import "layout";
+@import "variables";
 
 /*---[ global ]-------------------------------------------------------------*/
 
 body {
+  background-color: $background-color;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   color: $text-color;
+}
+
+h1, h2, h3, h4 {
+  font-weight: bold;
 }
 
 a:link, a:visited, a:active {
@@ -30,73 +37,103 @@ input[type=text], input[type=url], textarea {
 }
 
 
-
-/*---[ navbar ]-------------------------------------------------------------*/
-
-#navbar {
-  background-color: $navbar-bgcolor;
-
-  a:link, a:visited, a:active {
-    text-decoration: none;
-    color: $navbar-link-color;
-  }
-
-  a:hover {
-    color: $navbar-link-hover;
-  }
-
-  /* navbar shadow which gives navbar a raised-up look */
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-}
-
-#navbar-logo {
-  padding: 0px 10px;
-}
-
-#navbar-menu {
-  a {
-    padding: 0px 15px;
-    vertical-align: middle;
-    font-size: 15px;
-  }
-
-  .active a {
-    background-color: $navbar-active-bgcolor;
-    color: $navbar-active-color;
-  }
-}
-
-#navbar-toggle {
-  padding: 0px 20px;
-
-  a {
-    border: 1px solid $navbar-link-color;
-    padding: 5px;
-    cursor: pointer;
-  }
-
-  a:hover {
-    border: 1px solid $navbar-link-hover;
-  }
-
-  .icon-bar {
-    display: block;
-    width: 18px;
-    height: 2px;
-    margin: 3px 5px;
-    background-color: $navbar-link-hover;
-  }
-}
-
-#navbar-search {
-  padding: 0px 20px;
-}
-
-
 /*---[ sidebar ]------------------------------------------------------------*/
+
+#sidebar-welcome {
+  border: 1px solid $welcome-edge-color;
+  background-color: $welcome-bgcolor;
+  text-align: center;
+
+  .welcome-title {
+    margin-bottom: 10px;
+    white-space: pre-line;
+    color: $welcome-title-color;
+  }
+
+  .welcome-text {
+    margin: 10px;
+    color: $welcome-text-color;
+  }
+}
+
+#sidebar-filters {
+  .topics-list, .types-list {
+    margin-bottom: 10px;
+  }
+
+  .date-filter-form {
+    margin-bottom: 10px;
+
+    .field, .buttons {
+      clear: left;
+    }
+
+    .label {
+      float: left;
+      line-height: 30px;
+      text-align: right;
+      width: 40px;
+
+      label {
+        vertical-align: middle;
+      }
+    }
+    .value {
+      margin-left: 50px;
+
+      input {
+        width: 120px;
+      }
+    }
+
+    .buttons {
+      margin: 5px 50px;
+      a { margin-left: 5px; }
+    }
+  }
+}
+
+
 /*---[ footer ]-------------------------------------------------------------*/
+
+/*---[ general ]------------------------------------------------------------*/
+
+.topic, .type {
+  display: inline-block;
+  margin: 2px 0px;
+  padding: 2px 4px;
+  font-size: 11px;
+  line-height: 11px;
+  text-transform: uppercase;
+
+  font-weight: bold;
+  opacity: 0.75;
+
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+.topic:hover, .type:hover {
+  opacity: 1.0;
+  text-decoration: none;
+}
+
+.topic {
+  border: 1px solid $topic-bgcolor;
+  background-color: $topic-bgcolor;
+}
+
+.topic:link, .topic:active, .topic:visited {
+  color: $topic-link-color;
+}
+
+.type:link, .type:active, .type:visited {
+  color: $topic-link-color;
+}
+
+.type {
+  border: 1px solid $type-bgcolor;
+  background-color: $type-bgcolor;
+  color: $type-link-color;
+}

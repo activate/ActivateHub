@@ -1,0 +1,62 @@
+/*---[ global ]-------------------------------------------------------------*/
+
+$link-color: #08c;
+$link-hover: #057;
+
+$background-color: #fff;
+$text-color: #333;
+$edge-color: #ddd;
+
+
+/*---[ layout ]-------------------------------------------------------------*/
+
+$navbar-height: 60px;
+$sidebar-width: 300px;
+
+$navbar-bgcolor: #333;
+$navbar-link-color: #999;
+$navbar-link-hover: #fff;
+$navbar-active-bgcolor: #1a1a1a;
+$navbar-active-color: #fff;
+
+$sidebar-bgcolor: #f2f2f2;
+$sidebar-edge-color: $edge-color;
+
+
+/*---[ events ]-------------------------------------------------------------*/
+
+$list-date-width: 100px; // width of date header (to left of events for that day)
+$cal-day-min-height: 190px; // give calendar days a common size
+$cal-slot-height: 30px; // a slot on the calendar an event can fit in
+
+$welcome-bgcolor: #d9edf7;
+$welcome-edge-color: #bce8f1;
+$welcome-title-color: $text-color;
+$welcome-text-color: #3a87ad;
+
+$cal-month-edge-color: #333;
+$cal-week-edge-color: #ddd;
+$cal-today-bgcolor: #ffa;
+
+$cal-event-bgcolor: #dde;
+$cal-event-border: #ccc;
+$cal-event-text-color: $text-color;
+$cal-event-hover-bgcolor: #bbf;
+$cal-event-hover-border: #88c;
+$cal-event-hover-text-color: #058;
+
+$cal-event-past-bgcolor: #eee;
+$cal-event-past-border: #ddd;
+$cal-event-past-text-color: #aaa;
+$cal-event-past-hover-bgcolor: #ddd;
+$cal-event-past-hover-border: #ccc;
+$cal-event-past-hover-text-color: #888;
+
+
+/*---[ tags, topics and types ]---------------------------------------------*/
+
+$topic-bgcolor: #468847;
+$topic-link-color: #fff;
+
+$type-bgcolor: #f89406;
+$type-link-color: #fff;

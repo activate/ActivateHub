@@ -14,3 +14,45 @@ en:
 
       search:
         placeholder: "Search events..."
+
+    welcome:
+      title: "Change Your Calendar,\nChange Your World"
+      text: |
+        Search for events and organizations in your community. Get educated,
+        get involved, and start making a difference!
+
+  events:
+    filters:
+      topics:
+        title: "Topics"
+      types:
+        title: "Types"
+      date:
+        title: "Date Range"
+        start: "From"
+        end: "To"
+        submit: "Filter"
+        reset: "Reset"
+
+    exports:
+      subscriptions:
+        title: "Subscribe To"
+        ical: "iCalendar feed"
+        atom: "Atom feed"
+        gcal: "Google Calendar"
+      downloads:
+        title: "Export To"
+        ical: "iCalendar file"
+
+    index:
+      title: "You are here. Go somewhere!"
+      switcher:
+        list: "List"
+        calendar: "Calendar"
+
+    calendar:
+      # month and week names are defined in en.formats.yml
+      organization_label: "with"
+      venue_label: "Venue:"
+      venue_at: "@"
+      show_more: "+ %{count} more"

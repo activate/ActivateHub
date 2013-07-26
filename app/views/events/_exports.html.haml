@@ -1,0 +1,9 @@
+%h3.subscriptions-title= t('.subscriptions.title')
+%ul.subscriptions-list
+  %li= link_to t('.subscriptions.ical'), icalendar_feed_link
+  %li= link_to t('.subscriptions.atom'), atom_feed_link
+  %li= link_to t('.subscriptions.gcal'), google_events_subscription_link
+
+%h3.downloads-title= t('.downloads.title')
+%ul.downloads-list
+  %li= link_to t('.downloads.ical'), icalendar_export_link

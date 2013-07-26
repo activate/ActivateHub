@@ -1,0 +1,20 @@
+:ruby
+  events_view ||= cookies[:events_view] || 'list'
+
+
+- content_for :sidebar do
+  #sidebar-welcome.sidebar-box= render 'site/welcome'
+  #sidebar-filters.sidebar-box= render 'filters'
+  #sidebar-exports.sidebar-box= render 'exports'
+  #sidebar-event-details.sidebar-box
+
+.view-switcher
+  %ul
+    %li= link_to t('.switcher.calendar'), { :view => 'calendar' }, :class => (events_view == 'calendar' ? 'selected' : ''), :data => { :view => 'calendar' }
+    %li= link_to t('.switcher.list'), { :view => 'list' }, :class => (events_view == 'list' ? 'selected' : ''), :data => { :view => 'list' }
+
+%h2.main-title
+  = t('.title')
+
+= cache_if(@perform_caching, CacheObserver.daily_key_for('events-index', request)) do
+  .events-view{:class => events_view}= render 'events/calendar', :events => @events, :start_date => @start_date, :end_date => @end_date

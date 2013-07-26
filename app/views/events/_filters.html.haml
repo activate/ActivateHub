@@ -1,0 +1,17 @@
+%h3.topics-title= t('.topics.title')
+= render 'site/topics_list'
+
+%h3.types-title= t('.types.title')
+= render 'site/types_list'
+
+%h3.date-filter-title= t('.date.title')
+= form_for events_url, :as => :date, :method => :get, :html => { :class => 'date-filter-form' } do |f|
+  .field
+    .label= f.label :start, t('.date.start')
+    .value= f.text_field :start, :value => @start_date.strftime('%Y-%m-%d')
+  .field
+    .label= f.label :end, t('.date.end')
+    .value= f.text_field :end, :value => @end_date.strftime('%Y-%m-%d')
+  .buttons
+    = f.submit t('.date.submit')
+    = link_to t('.date.reset'), events_url
