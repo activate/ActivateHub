@@ -22,6 +22,10 @@
   }
 }
 
+.events-view {
+  overflow: auto; // magic; keeps 'clear:left' from clearing sidebar
+  margin-top: 20px;
+}
 
 /*---[ list view ]----------------------------------------------------------*/
 
@@ -89,9 +93,6 @@
 /*---[ calendar view ]------------------------------------------------------*/
 
 .events-view.calendar {
-  overflow: auto; // magic; keeps 'clear:left' from clearing sidebar
-  margin-top: 20px;
-
   .date {
     .wday, .month, .year { display: none }
   }
