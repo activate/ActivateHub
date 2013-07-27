@@ -259,9 +259,9 @@
 /*---[ sidebar details ]----------------------------------------------------*/
 
 #sidebar-event-details {
-  position: absolute;
+  position: fixed;
   display: none;
-  top: 0px;
+  top: $navbar-height + 20px;
   width: $sidebar-width - 22px;
   overflow: hidden;
 

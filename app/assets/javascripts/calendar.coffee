@@ -22,8 +22,9 @@ $ ->
       false
 
     $('.event').mouseenter ->
-      height = $('#sidebar').outerHeight() - 42 # account for padding and border
-      $('#sidebar-event-details').css('min-height', height).html($(this).clone()).show()
+      $('#sidebar .sidebar-box').hide()
+      $('#sidebar-event-details').html($(this).clone()).show()
 
     $('.event').mouseleave ->
+      $('#sidebar .sidebar-box').show()
       $('#sidebar-event-details').hide()
