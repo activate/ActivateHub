@@ -67,9 +67,9 @@ gem 'formtastic-bootstrap', :git => 'git://github.com/activate/formtastic-bootst
 gem 'rails_admin', '0.4.8'
 gem 'devise'
 
-# gem 'paper_trail_manager', :git => 'https://github.com/igal/paper_trail_manager.git'
+gem 'paper_trail_manager', :git => 'https://github.com/dhedlund/paper_trail_manager.git', :ref => 'ba8e2dafb3d196950cdc62949b197a779e491779'
 # gem 'paper_trail_manager', :path => '../paper_trail_manager'
-gem 'paper_trail_manager', '>= 0.2.0'
+# gem 'paper_trail_manager', '>= 0.2.0'
 
 platform :jruby do
   gem 'activerecord-jdbc-adapter'
