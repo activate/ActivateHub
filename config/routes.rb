@@ -31,9 +31,6 @@ Calagator::Application.routes.draw do
       end
     end
 
-    match 'topics/:name' => 'topics#show', :as => :event_topic
-    match 'types/:name' => 'types#show', :as => :event_type
-
     resources :venues do
       collection do
         post :squash_many_duplicates

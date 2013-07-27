@@ -4,6 +4,20 @@
 en:
   site_title: "%{page_title} » %{site_name} : %{tagline}"
 
+  filters:
+    topic:
+      title: "Topics"
+      reset: "clear"
+    type:
+      title: "Types"
+      reset: "clear"
+    date:
+      title: "Date Range"
+      start: "From"
+      end: "To"
+      submit: "Filter"
+      reset: "Reset"
+
   site:
     navbar:
       menu:
@@ -22,18 +36,6 @@ en:
         get involved, and start making a difference!
 
   events:
-    filters:
-      topics:
-        title: "Topics"
-      types:
-        title: "Types"
-      date:
-        title: "Date Range"
-        start: "From"
-        end: "To"
-        submit: "Filter"
-        reset: "Reset"
-
     exports:
       subscriptions:
         title: "Subscribe To"

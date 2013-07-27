@@ -128,6 +128,18 @@ input[type=text], input[type=url], textarea {
   color: $topic-link-color;
 }
 
+.topic.empty {
+  background-color: transparent;
+  color: $topic-bgcolor;
+  border-color: transparent;
+}
+
+.topic.empty:hover {
+  background-color: $topic-bgcolor;
+  border-color: $topic-bgcolor;
+  color: $topic-link-color;
+}
+
 .type:link, .type:active, .type:visited {
   color: $topic-link-color;
 }
@@ -136,4 +148,20 @@ input[type=text], input[type=url], textarea {
   border: 1px solid $type-bgcolor;
   background-color: $type-bgcolor;
   color: $type-link-color;
+}
+
+.type.empty {
+  background-color: transparent;
+  color: $type-bgcolor;
+  border-color: transparent;
+}
+
+.type.empty:hover {
+  background-color: $type-bgcolor;
+  border-color: $type-bgcolor;
+  color: $type-link-color;
+}
+
+.clear-topic, .clear-type {
+  font-style: italic;
 }

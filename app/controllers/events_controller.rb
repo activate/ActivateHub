@@ -10,7 +10,15 @@ class EventsController < ApplicationController
     query = Event.non_duplicates.ordered_by_ui_field(params[:order]).includes(:venue, :tags)
     @events = query.within_dates(@start_date, @end_date)
 
-    @perform_caching = params[:order].blank? && params[:date].blank?
+    if @topic = params[:topic].presence
+      @events = @events.joins(:topics).where('topics.name = ?', @topic)
+    end
+
+    if @type = params[:type].presence
+      @events = @events.joins(:types).where('types.name = ?', @type)
+    end
+
+    @perform_caching = [:order,:date,:topic,:type].all? {|n| params[n].blank? }
 
     @custom_content = true
     @page_title = "Events"

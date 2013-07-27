@@ -1,0 +1,19 @@
+:ruby
+  # an explicitly passed in nil title means to skip, so check if defined
+  unless defined?(title) then title = t('.title') end
+
+
+- if title
+  %h3.topics-title= title
+
+.topics-list
+  - Topic.order(:name).each do |topic|
+    - next if topic.events.future.none? # skip topics w/o events
+
+    - if !@topic || @topic == topic.name
+      = link_to topic[:name], params.merge(:topic => topic[:name]), :class => 'topic'
+    - else
+      = link_to topic[:name], params.merge(:topic => topic[:name]), :class => 'topic empty'
+
+  - if @topic
+    = link_to t('.reset'), params.merge(:topic => nil), :class => 'clear-topic'

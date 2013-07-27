@@ -1,4 +1,0 @@
-.topics-list
-  - Topic.order(:name).each do |topic|
-    - next if topic.events.future.none?
-    %a.topic{:href => event_topic_path(:name => topic[:name])}= topic[:name]

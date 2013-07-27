@@ -1,4 +1,0 @@
-.types-list
-  - Type.order(:name).each do |type|
-    - next if type.events.future.none?
-    %a.type{:href => event_type_path(:name => type[:name])}= type[:name]
