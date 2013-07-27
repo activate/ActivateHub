@@ -32,7 +32,7 @@ class Event < ActiveRecord::Base
   # days, rather than hours.
   MIN_MULTIDAY_DURATION = 20.hours
 
-  has_paper_trail
+  has_paper_trail :meta => { :site_id => :site_id }
   acts_as_taggable
 
   xss_foliate :strip => [:title], :sanitize => [:description, :venue_details]

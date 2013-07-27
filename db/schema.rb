@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130720021739) do
+ActiveRecord::Schema.define(:version => 20130727043249) do
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -197,6 +197,7 @@ ActiveRecord::Schema.define(:version => 20130720021739) do
     t.string   "whodunnit"
     t.text     "object"
     t.datetime "created_at"
+    t.integer  "site_id"
   end
 
   add_index "versions", ["item_type", "item_id"], :name => "index_versions_on_item_type_and_item_id"
