@@ -1,5 +1,5 @@
 :ruby
-  events_view ||= cookies[:events_view] || 'list'
+  events_view ||= params[:view] || cookies[:events_view] || 'list'
 
 
 - content_for :sidebar do
