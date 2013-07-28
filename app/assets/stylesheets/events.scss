@@ -227,7 +227,7 @@
       border-radius: 5px;
     }
 
-    a:hover {
+    a:hover, .hover {
       border: 1px solid $cal-event-hover-border;
       background-color: $cal-event-hover-bgcolor;
       cursor: pointer;
@@ -242,7 +242,7 @@
       color: $cal-event-past-text-color;
     }
 
-    a:hover {
+    a:hover, .hover {
       border-color: $cal-event-past-hover-border;
       background-color: $cal-event-past-hover-bgcolor;
       color: $cal-event-past-hover-text-color;
