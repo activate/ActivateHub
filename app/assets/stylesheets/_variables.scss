@@ -12,6 +12,7 @@ $edge-color: #ddd;
 
 $navbar-height: 60px;
 $sidebar-width: 300px;
+$main-width: 700px;
 
 $navbar-bgcolor: #333;
 $navbar-link-color: #999;
@@ -21,6 +22,10 @@ $navbar-active-color: #fff;
 
 $sidebar-bgcolor: #f2f2f2;
 $sidebar-edge-color: $edge-color;
+
+$important-edge-color: #f89406;
+$important-title-color: #f89406;
+$important-text-color: $text-color;
 
 
 /*---[ events ]-------------------------------------------------------------*/
@@ -51,6 +56,17 @@ $cal-event-past-text-color: #aaa;
 $cal-event-past-hover-bgcolor: #ddd;
 $cal-event-past-hover-border: #ccc;
 $cal-event-past-hover-text-color: #888;
+
+
+/*---[ venues ]-------------------------------------------------------------*/
+
+$venue-card-width: $main-width;
+$venue-card-height: 250px;
+$venue-card-details-width: 350px;
+
+$venue-closed-text-color: #c33;
+$venue-card-details-bgcolor: rgba(255,255,255,0.8);
+$venue-card-details-text-color: $text-color;
 
 
 /*---[ tags, topics and types ]---------------------------------------------*/

@@ -307,3 +307,55 @@
     max-height: 304px;
   }
 }
+
+
+/*---[ events show ]--------------------------------------------------------*/
+
+.events-show {
+  .event-title {
+    line-height: 32px;
+    font-size: 24px;
+    font-weight: normal;
+  }
+
+  .event-time-abs {
+    line-height: 18px;
+    font-size: 14px;
+  }
+
+  .event-venue-title, .event-website-title, .event-description-title {
+    margin: 20px 0px 0px 0px;
+    line-height: 20px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .event-venue {
+    max-width: $main-width;
+
+    .venue-notes-container {
+      margin-top: 10px;
+      padding: 0px 10px;
+      border-left: 5px solid $important-edge-color;
+    }
+
+    .venue-notes-title {
+      color: $important-title-color;
+    }
+
+    .venue-notes {
+      color: $important-text-color;
+    }
+  }
+
+  .event-description {
+    max-width: $main-width;
+    line-height: 18px;
+    font-size: 12px;
+    text-align: justify;
+
+    p {
+      margin-bottom: 15px;
+    }
+  }
+}

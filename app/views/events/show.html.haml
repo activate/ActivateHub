@@ -1,0 +1,10 @@
+- content_for :discovery_insert do
+  %link{:rel => 'alternative', :type => 'application/x-wiki', :href => edit_event_path, :title => t('.discovery_edit_title')}
+
+- content_for :sidebar do
+  #sidebar-welcome.sidebar-box= render 'site/welcome'
+  #sidebar-wiki-props.sidebar-box= render 'site/wiki_props', :object => @event
+  #sidebar-event-export.sidebar-box= render 'events/item_exports', :event => @event
+
+
+= render 'events/item', :event => @event

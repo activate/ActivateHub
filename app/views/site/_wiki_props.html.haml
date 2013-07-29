@@ -1,0 +1,14 @@
+:ruby
+  object ||= raise ArgumentError, "object is required in view partial #{__FILE__}"
+  object_name = object.class.name.downcase
+
+
+%h3.wiki-props-title= t('.title', :obj => object_name)
+
+.wiki-actions
+  - edit_link = link_to t('.edit'), edit_polymorphic_path(object)
+  - clone_link = link_to t('.clone'), polymorphic_path([:clone, object])
+  - delete_link = link_to t('.delete'), polymorphic_path(object), :method => :delete, :confirm => t('.delete_confirm', :obj => object_name)
+  = t('.actions', :edit => edit_link, :clone => clone_link, :delete => delete_link, :obj => object_name).html_safe
+
+.wiki-metadata= datestamp(object)

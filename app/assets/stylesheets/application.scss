@@ -2,6 +2,7 @@
  *= require reset
  *= require layout
  *= require events
+ *= require venues
  *= require_self
  */
 
@@ -93,10 +94,25 @@ input[type=text], input[type=url], textarea {
   }
 }
 
+#sidebar-wiki-props {
+  text-align: center;
+
+  .wiki-actions {
+    margin-bottom: 10px;
+  }
+
+  .wiki-metadata {
+    margin: 10px 0px;
+    border-top: 1px solid $edge-color;
+    padding-top: 10px;
+    font-size: 11px;
+  }
+}
+
 
 /*---[ footer ]-------------------------------------------------------------*/
 
-/*---[ general ]------------------------------------------------------------*/
+/*---[ topics and types ]---------------------------------------------------*/
 
 .topic, .type {
   display: inline-block;
@@ -165,3 +181,6 @@ input[type=text], input[type=url], textarea {
 .clear-topic, .clear-type {
   font-style: italic;
 }
+
+
+/*---[ general ]------------------------------------------------------------*/

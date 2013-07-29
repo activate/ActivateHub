@@ -1,0 +1,43 @@
+:ruby
+  # The XHTML in this view file tries to include support for the hCalendar
+  # and schema.org Place & PostalAddress microformats.  For more information:
+  #   - http://microformats.org/wiki/hcalendar
+  #   - http://schema.org/docs/documents.html
+  #   - http://schema.org/Place
+  #   - http://schema.org/PostalAddress
+
+  venue ||= raise ArgumentError, "venue is required in view partial #{__FILE__}"
+
+
+.venue-card.location.vcard{:class => "#{venue.closed? ? 'closed' : ''} #{venue.location ? 'has-location' : ''}", :itemprop => 'location', :itemscope => 'itemscope', :itemtype => 'http://schema.org/Place'}
+  - if venue.location
+    .venue-map= google_map venue, :controls => [:type], :center => [venue.latitude + 0.003, venue.longitude]
+
+  .venue-card-details
+    - if venue.wifi?
+      .public-wifi
+
+    .venue-title
+      = link_to (venue.id? ? venue_url(venue) : '#') do
+        %span.fn.org{:itemprop => 'name'}= venue.title
+
+    .venue-address.adr{:itemprop => 'address', :itemscope => 'itemscope', :itemtype => 'http://schema.org/PostalAddress'}
+      - if venue.street_address.present?
+        .street-address{:itemprop => 'streetAddress'}>= venue.street_address
+      - if venue.locality.present?
+        .locality{:itemprop => 'addressLocality'}>= venue.locality
+      - if venue.region.present?
+        %span.addr-sep= ', '
+        .region{:itemprop => 'addressRegion'}>= venue.region
+      - if venue.postal_code.present?
+        %span.addr-sep= ' '
+        .postal-code{:itemprop => 'postalCode'}>= venue.postal_code
+      - if venue.country.present?
+        %span.addr-sep= ', '
+        .country-name{:itemprop => 'addressCountry'}>= venue.country
+
+      - if venue.has_full_address?
+        .google-maps-link (#{link_to t('.google_maps_link'), google_maps_url(venue.full_address)})
+
+    - if venue.closed?
+      .venue-closed= t('.closed')

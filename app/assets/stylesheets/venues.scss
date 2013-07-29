@@ -1,0 +1,80 @@
+@import "variables";
+
+.venue-card {
+  .venue-title {
+    height: 18px;
+    line-height: 18px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .street-address {
+    clear: left;
+  }
+
+  .locality, .region, .postal-code, .country-name, .google-maps-link {
+    display: inline;
+  }
+
+  .google-maps-link {
+    padding-left: 5px;
+
+    a {
+      font-style: italic;
+    }
+  }
+
+  .venue-closed {
+    font-weight: bold;
+    font-style: italic;
+    color: $venue-closed-text-color;
+  }
+}
+
+.venue-card.has-location {
+  position: relative;
+  overflow: visible;
+  max-width: $venue-card-width;
+  min-height: $venue-card-height - 2px;
+  margin: 5px 0px 10px 0px;
+  background-color: $background-color;
+  border: 1px solid $link-color;
+  border-left-width: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+
+  #google_map {
+    position: relative;
+    float: right;
+    width: 100%;
+    height: $venue-card-height - 2px;
+  }
+
+  .venue-card-details {
+    position: absolute;
+    max-width: $venue-card-details-width;
+    margin: 10px;
+    padding: 10px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    background-color: $venue-card-details-bgcolor;
+    color: $venue-card-details-text-color;
+
+  }
+
+  .venue-title {
+    overflow: hidden;
+    max-width: $venue-card-details-width - 30px;
+    text-overflow: ellipsis;
+  }
+
+  .public-wifi {
+    width: 16px;
+    height: 16px;
+    margin-left: 10px;
+    float: right;
+    background: image-url('public_wifi-16x16.png') no-repeat;
+  }
+}

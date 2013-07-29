@@ -1,0 +1,8 @@
+:ruby
+  event ||= raise ArgumentError, "event is required in view partial #{__FILE__}"
+
+
+%h3.downloads-title= t('.downloads.title')
+%ul.downloads-list
+  %li.download-gcal= link_to t('.downloads.gcal'), google_event_export_link(event), :target => '_blank'
+  %li.download-ical= link_to t('.downloads.ical'), url_for(:format => :ics)
