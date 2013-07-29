@@ -20,6 +20,9 @@ class EventsController < ApplicationController
 
     @perform_caching = [:order,:date,:topic,:type].all? {|n| params[n].blank? }
 
+    @topics = Topic.order(:name)
+    @types = Type.order(:name)
+
     @custom_content = true
     @page_title = "Events"
 

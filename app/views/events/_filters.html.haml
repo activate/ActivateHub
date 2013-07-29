@@ -1,3 +1,8 @@
-= render 'filters/topic'
-= render 'filters/type'
+:ruby
+  # skip topics and types w/o any future events
+  @topics = @topics.select {|t| t.events.future.any? }
+  @types = @types.select {|t| t.events.future.any? }
+
+= render 'filters/topic', :topics => @topics, :selected => @topic
+= render 'filters/type', :types => @types, :selected => @type
 = render 'filters/date'

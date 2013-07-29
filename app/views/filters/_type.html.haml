@@ -1,4 +1,7 @@
 :ruby
+  types ||= raise ArgumentError, "types is required in view partial #{__FILE__}"
+  selected ||= nil
+
   # an explicitly passed in nil title means to skip, so check if defined
   unless defined?(title) then title = t('.title') end
 
@@ -7,13 +10,11 @@
   %h3.types-title= title
 
 .types-list<
-  - Type.order(:name).each do |type|
-    - next if type.events.future.none? # skip types w/o events
-
-    - if !@type || @type == type.name
+  - types.each do |type|
+    - if !selected || selected == type.name
       = link_to type[:name], params.merge(:type => type[:name]), :class => 'type'
     - else
       = link_to type[:name], params.merge(:type => type[:name]), :class => 'type empty'
 
-  - if @type
+  - if selected
     = link_to t('.reset'), params.merge(:type => nil), :class => 'clear-type'

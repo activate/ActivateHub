@@ -1,10 +1,12 @@
 class OrganizationsController < ApplicationController
   def index
-    if params[:topic]
-      @organizations = Organization.joins(:topics).where(:topics => { :name => params[:topic] })
-    else
-      @organizations = Organization.scoped
+    @organizations = Organization.order(:name)
+
+    if @topic = params[:topic].presence
+      @organizations = @organizations.joins(:topics).where('topics.name = ?', @topic)
     end
+
+    @topics = Topic.joins(:organizations).order(:name).uniq_by(&:name)
   end
 
   # GET /organizations/1

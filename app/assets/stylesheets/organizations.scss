@@ -1,0 +1,31 @@
+@import "variables";
+
+
+/*---[ organizations index ]------------------------------------------------*/
+
+.organizations-view {
+  width: $main-width;
+  overflow: auto; // magic; keeps 'clear:left' from clearing sidebar
+  margin-top: 20px;
+
+  .organization {
+    clear: left;
+    overflow: auto;
+    list-style: none;
+    padding-bottom: 20px;
+  }
+
+  .organization-name {
+    font-weight: bold;
+  }
+
+  .organization-url {
+    font-size: 11px;
+    font-style: italic;
+  }
+
+  .organization-url-label {
+    float: left;
+    padding-right: 5px;
+  }
+}

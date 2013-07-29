@@ -84,6 +84,11 @@ en:
       venue_at: "@"
       show_more: "+ %{count} more"
 
+  organizations:
+    index:
+      title: "Organizations"
+      url_label: "Website:"
+
   venues:
     card:
       closed: "This venue is no longer open for business."
