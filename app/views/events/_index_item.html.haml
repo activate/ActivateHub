@@ -1,0 +1,27 @@
+:ruby
+  event ||= raise ArgumentError, "event is required in view partial #{__FILE__}"
+  now ||= Time.zone.now # optional, used to add 'past' or 'future' class to event
+  unless defined?(new) then new = true end # if first time encountered, for repeats over week boundary
+
+  event_classes = "#{new ? 'new-event' : ''} #{event.end_time < now ? 'past' : 'future'}"
+
+
+.event{'data-event-id' => event.id, :class => event_classes}
+  .event-title= link_to event.title, event_path(:id => event.id)
+  .event-organization
+    - if event.organization
+      .organization-label= t('.organization_label')
+      = link_to event.organization.name, organization_path(:id => event.organization.id)
+  .event-time-abs= normalize_time(event.start_time, event.end_time, :format => :text)
+  .event-time-rel= normalize_time(event.start_time, event.end_time, :context => event.start_date, :format => :text)
+  .event-venue
+    - if event.venue
+      .venue-label= t('.venue_label')
+      .venue-at= t('.venue_at')
+      = link_to event.venue.title, venue_path(:id => event.venue.id)
+  .event-description= Loofah::Helpers::strip_tags(event.description) if event.description
+  .event-topics-types<
+    - event.topics.each do |topic|
+      = link_to topic.name, '#', :class => 'topic'
+    - event.types.each do |type|
+      = link_to type.name, '#', :class => 'type'

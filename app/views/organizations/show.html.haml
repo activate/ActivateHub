@@ -1,0 +1,7 @@
+- content_for :sidebar do
+  #sidebar-welcome.sidebar-box= render 'site/welcome'
+  #sidebar-wiki-props.sidebar-box= render 'site/wiki_props', :object => @organization, :clone => false
+  #sidebar-event-details.sidebar-box
+
+
+= render 'organizations/item', :organization => @organization

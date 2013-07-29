@@ -34,11 +34,13 @@ en:
         get involved, and start making a difference!
     wiki_props:
       title: "This page is community managed!"
-      actions: "You can %{edit}, %{clone} or %{delete} this %{obj}."
       edit: "edit"
       clone: "clone"
       delete: "delete"
       delete_confirm: "Are you sure you want to delete this %{obj}?"
+      actions: "You can %{edit}, %{clone} or %{delete} this %{obj}."
+      actions_no_clone: "You can %{edit} or %{delete} this %{obj}."
+
 
   events:
     appropriateness: >
@@ -77,17 +79,30 @@ en:
       website: "Website"
       description: "Description"
       venue_notes: "Important Venue Notes"
-    calendar:
-      # month and week names are defined in en.formats.yml
+    index_item:
       organization_label: "with"
       venue_label: "Venue:"
       venue_at: "@"
+    calendar:
+      # month and week names are defined in en.formats.yml
       show_more: "+ %{count} more"
 
   organizations:
     index:
       title: "Organizations"
       url_label: "Website:"
+    item:
+      url:
+        title: "Website"
+      description:
+        title: "Description"
+        none: "This organization doesn't have a description. Can you add one?"
+      future_events:
+        title: "Future Events"
+        none: "- No events -"
+      past_events:
+        title: "Past Events"
+        none: "- No events -"
 
   venues:
     card:

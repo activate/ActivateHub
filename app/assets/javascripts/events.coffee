@@ -15,7 +15,7 @@ $ ->
     $('.view-switcher a').click ->
       $('.view-switcher a').removeClass('selected')
       $(this).addClass('selected')
-      $container = $('.events-view')
+      $container = $('.events-list')
       $container.removeClass('list calendar')
       $container.addClass($(this).data('view'));
       $.cookie('events_view', $(this).data('view'), expires: 14, path: '/')

@@ -1,7 +1,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.cookie
-//= require calendar
+//= require events
+//= require organizations
 //= require_self
 
 $(document).ready(function(){

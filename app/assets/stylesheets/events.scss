@@ -22,14 +22,14 @@
   }
 }
 
-.events-view {
+.events-list {
   overflow: auto; // magic; keeps 'clear:left' from clearing sidebar
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 /*---[ list view ]----------------------------------------------------------*/
 
-.events-view.list {
+.events-list.list {
   // elements needed for calendar but not list view
   .week-header, .month-header, .show-more {
     display: none;
@@ -40,10 +40,8 @@
     display: none;
   }
 
-  // hide any mention of a day that has no events
-  .no-new-events {
-    display: none;
-  }
+  // only show days that have at least one event
+  .day.no-events { display: none; }
 
   .date { // date header to left of events for that day
     width: $list-date-width;
@@ -89,10 +87,21 @@
   }
 }
 
+// hide any past events on main event list
+.events-index .events-list.list {
+  .day.no-future-events {
+    display: none;
+  }
+
+  .event.past {
+    display: none;
+  }
+}
+
 
 /*---[ calendar view ]------------------------------------------------------*/
 
-.events-view.calendar {
+.events-list.calendar {
   .date {
     .wday, .month, .year { display: none }
   }
@@ -350,6 +359,7 @@
 
   .event-description {
     max-width: $main-width;
+    margin-bottom: 20px;
     line-height: 18px;
     font-size: 12px;
     text-align: justify;
@@ -357,5 +367,9 @@
     p {
       margin-bottom: 15px;
     }
+  }
+
+  .event-topics-types {
+    margin-top: -10px;
   }
 }

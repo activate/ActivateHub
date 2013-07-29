@@ -1,18 +1,18 @@
 :ruby
-  # Arguments:
-  # * events => Event record scope
-  # * start_date => first date to include in calendar view
-  # * end_date => last date to include in calendar view
+  events ||= raise ArgumentError, "event is required in view partial #{__FILE__}"
+  start_date ||= events.map(&:start_date).min
+  end_date   ||= events.map(&:end_date).max
+  today ||= Time.zone.today
+  slots ||= 5
 
-  num_slots = 5
-  today = Time.zone.today
+  now = Time.zone.now
 
   # ensure dates start and end on week boundaries and are dates, not times
   start_date = start_date.to_date.beginning_of_week(:sunday)
   end_date = end_date.to_date.end_of_week(:sunday)
 
   # creates empty event slots for each day we will show on the calendar
-  days = Hash[(start_date..end_date).map{|date| [date, Array.new(num_slots)] }]
+  days = Hash[(start_date..end_date).map{|date| [date, Array.new(slots)] }]
 
   # FIXME: re-ordering by start_time should be assumed to happen in controller (but isn't?)
   # FIXME: would also be nice to order by 'start_date asc, end_date desc' so we can be sure
@@ -59,8 +59,9 @@
         .month-header
           .month= t('date.month_names')[day.month]
           .year= day.year
-      - new_events = events.select {|e| e.present? && e.start_date == day && e.end_date >= today }
-      .day{:class => "d#{day.day} wday#{day.wday} #{day == today ? 'today' : ''} #{new_events.none? ? 'no-new-events' : ''}"}
+      - new_events = events.select {|e| e.present? && e.start_date == day }
+      - future_events = new_events.select {|e| e.end_time >= now }
+      .day{:class => "d#{day.day} wday#{day.wday} #{day == today ? 'today' : ''} #{future_events.any? ? 'has-future-events' : 'no-future-events'} #{new_events.any? ? 'has-events' : 'no-events'}"}
         .date
           .wday= t('date.day_names')[day.wday]
           .month= t('date.abbr_month_names')[day.month]
@@ -69,27 +70,9 @@
         - events.each_with_index do |event,idx|
           - if event
             - span = [event.days(day), (7 - day.wday)].min
-            .slot{:class => "s#{span} #{idx > num_slots-2 && events.count > num_slots ? 'extra' : ''}"}
-              .event{'data-event-id' => event.id, :class => "#{(event.start_date == day ? 'new-event' : '')} #{event.end_date < today ? 'past' : ''}"}
-                .event-title= link_to event.title, event_path(:id => event.id)
-                .event-organization
-                  - if event.organization
-                    .organization-label= t('.organization_label')
-                    = link_to event.organization.name, organization_path(:id => event.organization.id)
-                .event-time-abs= normalize_time(event.start_time, event.end_time, :format => :text)
-                .event-time-rel= normalize_time(event.start_time, event.end_time, :context => event.start_date, :format => :text)
-                .event-venue
-                  - if event.venue
-                    .venue-label= t('.venue_label')
-                    .venue-at= t('.venue_at')
-                    = link_to event.venue.title, venue_path(:id => event.venue.id)
-                .event-description= Loofah::Helpers::strip_tags(event.description) if event.description
-                .event-topics-types<
-                  - event.topics.each do |topic|
-                    = link_to topic.name, '#', :class => 'topic'
-                  - event.types.each do |type|
-                    = link_to type.name, '#', :class => 'type'
+            .slot{:class => "s#{span} #{idx > slots-2 && events.count > slots ? 'extra' : ''}"}
+              = render 'events/index_item', :event => event, :today => today, :new => (day && event.start_date)
           - else
-            .slot.empty-slot{:class => (idx > num_slots-2 && events.count > num_slots ? 'extra' : '')}
-        - if (more_events = events.from(num_slots)).any?
+            .slot.empty-slot{:class => (idx > slots-2 && events.count > slots ? 'extra' : '')}
+        - if (more_events = events.from(slots)).any?
           .show-more= link_to t('.show_more', :count => more_events.count+1), '#'

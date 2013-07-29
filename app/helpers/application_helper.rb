@@ -102,7 +102,7 @@ module ApplicationHelper
   # returns html markup with source (if any), imported/created time, and - if modified - modified time
   def datestamp(item)
     stamp = "This item was "
-    if item.source.nil?
+    if !item.respond_to?(:source) || item.source.nil?
       stamp << "added directly to #{SETTINGS.name}"
     else
       stamp << "imported from "

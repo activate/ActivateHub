@@ -29,3 +29,47 @@
     padding-right: 5px;
   }
 }
+
+
+/*---[ organizations show ]-------------------------------------------------*/
+
+.organizations-show {
+  .organization-title {
+    line-height: 32px;
+    font-size: 24px;
+    font-weight: normal;
+  }
+
+  .organization-url-title, .organization-description-title, .future-events-title, .past-events-title {
+    margin: 20px 0px 0px 0px;
+    line-height: 20px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .organization-description {
+    max-width: $main-width;
+    margin-bottom: 20px;
+    line-height: 18px;
+    font-size: 12px;
+    text-align: justify;
+  }
+
+  .organization-topics {
+    margin-top: -10px;
+  }
+
+  .future-events, .past-events {
+    margin: 10px 0px 20px 0px;
+
+    .no-events {
+      font-style: italic;
+      margin-left: 20px;
+    }
+  }
+
+  .day.no-events {
+    display: block;
+  }
+}
+

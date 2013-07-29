@@ -17,4 +17,4 @@
   = t('.title')
 
 - cache_if(@perform_caching, CacheObserver.daily_key_for('events-index', request)) do
-  .events-view{:class => events_view}= render 'events/calendar', :events => @events, :start_date => @start_date, :end_date => @end_date
+  .events-list{:class => events_view}= render 'events/calendar', :events => @events, :start_date => @start_date, :end_date => @end_date
