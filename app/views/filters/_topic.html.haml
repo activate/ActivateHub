@@ -6,7 +6,7 @@
 - if title
   %h3.topics-title= title
 
-.topics-list
+.topics-list<
   - Topic.order(:name).each do |topic|
     - next if topic.events.future.none? # skip topics w/o events
 

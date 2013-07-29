@@ -6,7 +6,7 @@
 - if title
   %h3.types-title= title
 
-.types-list
+.types-list<
   - Type.order(:name).each do |type|
     - next if type.events.future.none? # skip types w/o events
 

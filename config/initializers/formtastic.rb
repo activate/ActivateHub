@@ -1,15 +1,5 @@
 # encoding: utf-8
 
-# --------------------------------------------------------------------------------------------------
-# Please note: If you're subclassing Formtastic::FormBuilder, Formtastic uses
-# class_attribute for these configuration attributes instead of the deprecated
-# class_inheritable_attribute. The behaviour is slightly different with subclasses (especially
-# around attributes with Hash or Array) values, so make sure you understand what's happening.
-# See the documentation for class_attribute in ActiveSupport for more information.
-# --------------------------------------------------------------------------------------------------
-
-Formtastic::Helpers::FormHelper.builder = FormtasticBootstrap::FormBuilder
-
 # Set the default text field size when input is a string. Default is nil.
 # Formtastic::FormBuilder.default_text_field_size = 50
 
@@ -21,7 +11,7 @@ Formtastic::Helpers::FormHelper.builder = FormtasticBootstrap::FormBuilder
 
 # Should all fields be considered "required" by default?
 # Defaults to true.
-Formtastic::FormBuilder.all_fields_required_by_default = false
+# Formtastic::FormBuilder.all_fields_required_by_default = true
 
 # Should select fields have a blank option/prompt by default?
 # Defaults to true.
@@ -59,27 +49,30 @@ Formtastic::FormBuilder.all_fields_required_by_default = false
 # Formtastic::FormBuilder.collection_label_methods = [
 #   "to_label", "display_name", "full_name", "name", "title", "username", "login", "value", "to_s"]
 
-# Additionally, you can customize the order for specific types of inputs.
-# This is configured on a type basis and if a type is not found it will
-# fall back to the default order as defined by #inline_order
-# Formtastic::FormBuilder.custom_inline_order[:checkbox] = [:errors, :hints, :input]
-# Formtastic::FormBuilder.custom_inline_order[:select] = [:hints, :input, :errors]
-
 # Specifies if labels/hints for input fields automatically be looked up using I18n.
 # Default value: true. Overridden for specific fields by setting value to true,
 # i.e. :label => true, or :hint => true (or opposite depending on initialized value)
-# Formtastic::FormBuilder_lookups_by_default = false
+# Formtastic::FormBuilder.i18n_lookups_by_default = false
+Formtastic::FormBuilder.i18n_lookups_by_default = true
+
+# Specifies if I18n lookups of the default I18n Localizer should be cached to improve performance.
+# Defaults to true.
+# Formtastic::FormBuilder.i18n_cache_lookups = false
+
+# Specifies the class to use for localization lookups. You can create your own
+# class and use it instead by subclassing Formtastic::Localizer (which is the default).
+# Formtastic::FormBuilder.i18n_localizer = MyOwnLocalizer
 
 # You can add custom inputs or override parts of Formtastic by subclassing Formtastic::FormBuilder and
 # specifying that class here.  Defaults to Formtastic::FormBuilder.
 # Formtastic::Helpers::FormHelper.builder = MyCustomBuilder
 
+# You can opt-in to Formtastic's use of the HTML5 `required` attribute on `<input>`, `<select>` 
+# and `<textarea>` tags by setting this to true (defaults to false).
+# Formtastic::FormBuilder.use_required_attribute = false
 
-# Hack to disable Formtastic's HTML5 'required' attributes until Chrome properly supports the novalidate option.
-module NoHtmlRequired
-  def input_html_options_with_no_html_5_required_attribute
-    input_html_options_without_no_html_5_required_attribute.merge(:required => nil)
-  end
-end
-Formtastic::Inputs::Base::Html.send(:include, NoHtmlRequired)
-Formtastic::Inputs::Base::Html.send(:alias_method_chain, :input_html_options, :no_html_5_required_attribute)
+# You can opt-in to new HTML5 browser validations (for things like email and url inputs) by setting
+# this to true. Doing so will add a `novalidate` attribute to the `<form>` tag.
+# See http://diveintohtml5.org/forms.html#validation for more info.
+# Formtastic::FormBuilder.perform_browser_validations = true
+Formtastic::FormBuilder.perform_browser_validations = true

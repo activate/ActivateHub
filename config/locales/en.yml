@@ -29,7 +29,7 @@ en:
         placeholder: "Search events..."
     welcome:
       title: "Change Your Calendar,\nChange Your World"
-      text: |
+      text: >
         Search for events and organizations in your community. Get educated,
         get involved, and start making a difference!
     wiki_props:
@@ -41,6 +41,12 @@ en:
       delete_confirm: "Are you sure you want to delete this %{obj}?"
 
   events:
+    appropriateness: >
+      Please use responsibly: only add events that contribute towards
+      betterment of your community and tag appropriately. Excessive or
+      improper tagging will get your organization flagged. Remember:
+      YOU impact the user experience, and WE help bring more people to
+      your cause.
     exports:
       subscriptions:
         title: "Subscribe To"
@@ -62,6 +68,10 @@ en:
         calendar: "Calendar"
     show:
       discovery_edit_title: "Edit this page"
+    new:
+      title: "Create an Event"
+    edit:
+      title: "Edit an Event"
     item:
       venue: "Venue"
       website: "Website"

@@ -35,7 +35,7 @@
       .event-description.description{:itemprop => 'description'}
         = format_description(event.description)
 
-    .event-topics-types
+    .event-topics-types<
       - if event.topics.any?
         - event.topics.order(:name).each do |topic|
           = link_to topic[:name], params.merge(:topic => topic[:name]), :class => 'topic'

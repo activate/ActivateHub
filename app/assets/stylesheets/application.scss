@@ -116,14 +116,14 @@ input[type=text], input[type=url], textarea {
 
 .topic, .type {
   display: inline-block;
-  margin: 2px 0px;
+  margin: 2px;
   padding: 2px 4px;
   font-size: 11px;
   line-height: 11px;
   text-transform: uppercase;
-
   font-weight: bold;
   opacity: 0.75;
+  cursor: pointer;
 
   border-radius: 5px;
   -moz-border-radius: 5px;
@@ -138,6 +138,7 @@ input[type=text], input[type=url], textarea {
 .topic {
   border: 1px solid $topic-bgcolor;
   background-color: $topic-bgcolor;
+  color: $topic-link-color;
 }
 
 .topic:link, .topic:active, .topic:visited {

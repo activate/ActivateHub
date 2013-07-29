@@ -84,7 +84,7 @@
                     .venue-at= t('.venue_at')
                     = link_to event.venue.title, venue_path(:id => event.venue.id)
                 .event-description= Loofah::Helpers::strip_tags(event.description) if event.description
-                .event-topics-types
+                .event-topics-types<
                   - event.topics.each do |topic|
                     = link_to topic.name, '#', :class => 'topic'
                   - event.types.each do |type|

@@ -28,6 +28,38 @@ $important-title-color: #f89406;
 $important-text-color: $text-color;
 
 
+/*---[ forms ]--------------------------------------------------------------*/
+
+$form-label-width: 100px;
+
+$form-border: $edge-color;
+$form-field-text-color: $text-color;
+$form-field-bgcolor: $background-color;
+$form-highlight-border: rgba(82, 168, 236, 0.8);
+$form-hint-text-color: #888;
+$form-error-text-color: #d00;
+
+$form-dropdown-edge-color: rgba(82, 168, 236, 0.8);
+$form-dropdown-bgcolor: $background-color;
+$form-dropdown-text-color: $text-color;
+$form-dropdown-highlight-border: $link-color;
+$form-dropdown-highlight-bgcolor: #d9edf7;
+$form-dropdown-highlight-text-color: #058;
+
+$form-cal-edge-color: rgba(82, 168, 236, 0.8);
+$form-cal-bgcolor: $background-color;
+$form-cal-text-color: $text-color;
+$form-cal-day-border: $edge-color;
+$form-cal-day-bgcolor: $background-color;
+$form-cal-day-text-color: $text-color;
+$form-cal-day-highlight-border: $link-color;
+$form-cal-day-highlight-bgcolor: #d9edf7;
+$form-cal-day-highlight-text-color: #058;
+$form-cal-today-border: #cc8;
+$form-cal-today-bgcolor: #ffa;
+$form-cal-today-text-color: $text-color;
+
+
 /*---[ events ]-------------------------------------------------------------*/
 
 $list-date-width: 100px; // width of date header (to left of events for that day)
