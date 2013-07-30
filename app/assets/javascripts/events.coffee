@@ -21,10 +21,16 @@ $ ->
       $.cookie('events_view', $(this).data('view'), expires: 14, path: '/')
       false
 
+
+  if $('.events-index, .organizations-show, .venues-show')[0]
+
     $('.event').mouseenter ->
       $("[data-event-id=#{$(this).data('event-id')}] .event-title a").addClass('hover')
-      $('#sidebar .sidebar-box').hide()
-      $('#sidebar-event-details').html($(this).clone()).show()
+      $('#sidebar .sidebar-box:not(#sidebar-welcome)').hide()
+      $navbar = $('#navbar'); $welcome = $('#sidebar-welcome')
+      threshold = $welcome.offset().top + $welcome.outerHeight() - $navbar.outerHeight()
+      position = if $(window).scrollTop() > threshold then 'fixed' else 'static'
+      $('#sidebar-event-details').html($(this).clone()).css('position', position).show()
 
     $('.event').mouseleave ->
       $("[data-event-id=#{$(this).data('event-id')}] .event-title a").removeClass('hover')
