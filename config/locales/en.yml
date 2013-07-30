@@ -97,12 +97,17 @@ en:
       description:
         title: "Description"
         none: "This organization doesn't have a description. Can you add one?"
+    show:
       future_events:
         title: "Future Events"
         none: "- No events -"
       past_events:
         title: "Past Events"
         none: "- No events -"
+    new:
+      title: "Create an Organization"
+    edit:
+      title: "Edit an Organization"
 
   venues:
     card:

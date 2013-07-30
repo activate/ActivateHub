@@ -1,6 +1,21 @@
 @import 'variables';
 
 
+.preview-title {
+  float: left;
+  padding-right: 20px;
+  font-size: 20px;
+  color: $form-error-text-color;
+}
+
+.preview-separator {
+  max-width: $main-width;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px dashed $edge-color;
+}
+
+
 /*---[ general formtastic rules ]-------------------------------------------*/
 
 .formtastic {
@@ -22,6 +37,12 @@
     margin: 0px 0px 0px (0 - $form-label-width - 20px);
     line-height: 30px;
     font-size: 14px;
+  }
+
+  .error {
+    label.label, legend.label {
+      color: $form-error-text-color;
+    }
   }
 
   .inputs {
@@ -86,6 +107,11 @@
     }
   }
 
+  .required label abbr {
+    margin-left: 5px;
+    color: #f00;
+  }
+
   .inline-hints {
     color: $form-hint-text-color;
     font-size: 12px;
@@ -99,6 +125,10 @@
   .errors {
     display: inline;
     list-style: none;
+  }
+
+  .trap {
+    display: none;
   }
 }
 
@@ -233,42 +263,62 @@
   }
 }
 
-
-/*---[ event forms ]--------------------------------------------------------*/
-
-.events-new, .events-edit, .events-create, .events-update {
-  .appropriateness {
-    margin: 10px 0px;
-    padding: 0px 10px;
-    border-left: 5px solid $welcome-edge-color;
-    color: $welcome-text-color;
-    text-align: justify;
+.topics-select {
+  .topic {
+    background-color: transparent;
+    color: $topic-bgcolor;
+    border-color: transparent;
   }
 
-  .address-unknown {
-    font-style: italic;
+  .topic:hover {
+    background-color: $topic-bgcolor;
+    border-color: $topic-bgcolor;
+    color: $topic-link-color;
   }
 
-  .event-preview-title {
-    float: left;
-    padding-right: 20px;
-    font-size: 20px;
-    color: $form-error-text-color;
-  }
-
-  .event-preview {
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 1px dashed $link-color;
+  .topic.selected {
+    border: 1px solid $topic-bgcolor;
+    background-color: $topic-bgcolor;
+    color: $topic-link-color;
   }
 }
 
-.event-form {
-  .required label abbr {
-    margin-left: 5px;
-    color: #f00;
+.types-select {
+  .type {
+    background-color: transparent;
+    color: $type-bgcolor;
+    border-color: transparent;
   }
 
+  .type:hover {
+    background-color: $type-bgcolor;
+    border-color: $type-bgcolor;
+    color: $type-link-color;
+  }
+
+  .type.selected {
+    border: 1px solid $type-bgcolor;
+    background-color: $type-bgcolor;
+    color: $type-link-color;
+  }
+}
+
+
+/*---[ event forms ]--------------------------------------------------------*/
+
+.appropriateness {
+  margin: 10px 0px;
+  padding: 0px 10px;
+  border-left: 5px solid $welcome-edge-color;
+  color: $welcome-text-color;
+  text-align: justify;
+}
+
+.address-unknown {
+  font-style: italic;
+}
+
+.event-form {
   .date_picker, .time_picker {
     display: inline-block;
     max-width: 23%;
@@ -279,48 +329,9 @@
     width: 5%;
     text-align: center;
   }
-
-  .trap {
-    display: none;
-  }
-
-  .topics-list {
-    .topic {
-      background-color: transparent;
-      color: $topic-bgcolor;
-      border-color: transparent;
-    }
-
-    .topic:hover {
-      background-color: $topic-bgcolor;
-      border-color: $topic-bgcolor;
-      color: $topic-link-color;
-    }
-
-    .topic.selected {
-      border: 1px solid $topic-bgcolor;
-      background-color: $topic-bgcolor;
-      color: $topic-link-color;
-    }
-  }
-
-  .types-list {
-    .type {
-      background-color: transparent;
-      color: $type-bgcolor;
-      border-color: transparent;
-    }
-
-    .type:hover {
-      background-color: $type-bgcolor;
-      border-color: $type-bgcolor;
-      color: $type-link-color;
-    }
-
-    .type.selected {
-      border: 1px solid $type-bgcolor;
-      background-color: $type-bgcolor;
-      color: $type-link-color;
-    }
-  }
 }
+
+
+/*---[ organization forms ]-------------------------------------------------*/
+
+

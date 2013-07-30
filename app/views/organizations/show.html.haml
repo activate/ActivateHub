@@ -1,3 +1,8 @@
+:ruby
+  future_events = @organization.events.future.reorder('start_time asc').limit(10)
+  past_events = @organization.events.past.reorder('start_time desc').limit(10)
+
+
 - content_for :sidebar do
   #sidebar-welcome.sidebar-box= render 'site/welcome'
   #sidebar-wiki-props.sidebar-box= render 'site/wiki_props', :object => @organization, :clone => false
@@ -5,3 +10,17 @@
 
 
 = render 'organizations/item', :organization => @organization
+
+%h2.future-events-title= t('.future_events.title')
+.future-events.events-list.list
+  - if future_events.any?
+    = render 'events/calendar', :events => future_events
+  - else
+    .no-events= t('.future_events.none')
+
+%h2.past-events-title= t('.past_events.title')
+.past-events.events-list.list
+  - if past_events.any?
+    = render 'events/calendar', :events => past_events
+  - else
+    .no-events= t('.past_events.none')

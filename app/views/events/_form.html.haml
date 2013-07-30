@@ -13,10 +13,6 @@
   = javascript_include_tag 'forms'
 
 
-- if params[:preview] && event.valid?
-  %h2.event-preview-title Preview
-  .event-preview.events-show= render 'events/item', :event => event
-
 .event-form
   = semantic_form_for event, :html => { :id => 'event-form' } do |f|
     = f.inputs :name => 'Event Details' do
@@ -58,7 +54,7 @@
 
     = f.actions do
       = f.action :submit, :label => 'Preview', :button_html => { :name => 'preview' }
-      = f.action :submit, :label => 'Create Event'
+      = f.action :submit
 
 
 :javascript
@@ -125,7 +121,7 @@
 
     // toggleable topic list using a hidden multi-select to track state
     var $topics_select = $("#event_topic_ids").hide();
-    var $topics_list = $('<div>').addClass('topics-list').insertAfter($topics_select);
+    var $topics_list = $('<div>').addClass('topics-select').insertAfter($topics_select);
     $topics_select.children('option').each(function(idx,option) {
       var $option = $(option);
       var $topic = $('<a>').addClass('topic').data('val', $option.val()).html($option.html())
@@ -138,7 +134,7 @@
 
     // toggleable type list using a hidden multi-select to track state
     var $types_select = $("#event_type_ids").hide();
-    var $types_list = $('<div>').addClass('types-list').insertAfter($types_select);
+    var $types_list = $('<div>').addClass('types-select').insertAfter($types_select);
     $types_select.children('option').each(function(idx,option) {
       var $option = $(option);
       var $type = $('<a>').addClass('type').data('val', $option.val()).html($option.html())

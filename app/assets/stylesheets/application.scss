@@ -35,6 +35,7 @@ a:hover {
 input[type=text], input[type=url], textarea {
   padding: 5px;
   border: 1px solid $edge-color;
+  background-color: $background-color;
   color: $text-color;
 }
 
@@ -186,3 +187,9 @@ input[type=text], input[type=url], textarea {
 
 
 /*---[ general ]------------------------------------------------------------*/
+
+// how to visually highlight when a i18n translation is missing
+.translation_missing {
+  color: $error-text-color;
+  text-decoration: overline;
+}

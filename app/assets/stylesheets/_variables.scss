@@ -7,6 +7,8 @@ $background-color: #fff;
 $text-color: #333;
 $edge-color: #ddd;
 
+$light-text-color: #888;
+$error-text-color: #d00;
 
 /*---[ layout ]-------------------------------------------------------------*/
 
@@ -37,7 +39,7 @@ $form-field-text-color: $text-color;
 $form-field-bgcolor: $background-color;
 $form-highlight-border: rgba(82, 168, 236, 0.8);
 $form-hint-text-color: #888;
-$form-error-text-color: #d00;
+$form-error-text-color: $error-text-color;
 
 $form-dropdown-edge-color: rgba(82, 168, 236, 0.8);
 $form-dropdown-bgcolor: $background-color;

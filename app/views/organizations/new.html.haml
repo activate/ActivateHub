@@ -1,0 +1,9 @@
+- if params[:preview] && @organization.valid?
+  %h2.preview-title Preview
+  .organization-preview.organizations-show= render 'organizations/item', :organization => @organization
+  .preview-separator
+
+%h2.main-title= t('.title')
+
+#main-content
+  = render 'form', :organization => @organization

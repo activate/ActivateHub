@@ -1,3 +1,8 @@
+- if params[:preview] && @event.valid?
+  %h2.preview-title Preview
+  .event-preview.events-show= render 'events/item', :event => @event
+  .preview-separator
+
 %h2.main-title= t('.title')
 
 #main-content

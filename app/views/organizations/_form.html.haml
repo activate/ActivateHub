@@ -1,0 +1,49 @@
+:ruby
+  organization ||= raise ArgumentError, "organization is required in view partial #{__FILE__}"
+
+
+- content_for :css_insert do
+  = stylesheet_link_tag 'forms'
+
+- content_for :javascript_insert do
+  = javascript_include_tag 'forms'
+
+
+.organization-form
+  = semantic_form_for organization, :html => { :id => 'organization-form' } do |f|
+    = f.inputs 'Organization Details' do
+      = f.input :name
+      = f.input :url
+      = f.input :description
+
+    = f.inputs 'Contact Details' do
+      = f.input :contact_name
+      = f.input :email
+
+    = f.inputs 'Extra Details' do
+      = f.input :topics
+
+    %li.trap
+      = label 'trap', 'field', "Leave this field blank or we'll think you're a robot."
+      = text_field_tag 'trap_field', params[:trap_field]
+
+    = f.actions do
+      = f.action :submit, :label => 'Preview', :button_html => { :name => 'preview' }
+      = f.action :submit
+
+
+:javascript
+  $(document).ready(function(){
+    // toggleable topic list using a hidden multi-select to track state
+    var $topics_select = $("#organization_topic_ids").hide();
+    var $topics_list = $('<div>').addClass('topics-select').insertAfter($topics_select);
+    $topics_select.children('option').each(function(idx,option) {
+      var $option = $(option);
+      var $topic = $('<a>').addClass('topic').data('val', $option.val()).html($option.html())
+      if ($option.attr('selected')) { $topic.addClass('selected'); }
+      $topic.appendTo($topics_list);
+      $topic.click(function() {
+        $option.attr('selected', ($(this).toggleClass('selected').hasClass('selected') && 'selected'));
+      });
+    });
+  });

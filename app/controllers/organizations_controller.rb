@@ -57,11 +57,12 @@ class OrganizationsController < ApplicationController
     end
 
     respond_to do |format|
-      if !evil_robot && @organization.save
+      if !evil_robot && params[:preview].nil? && @organization.save
         flash[:success] = 'Organization was successfully created.'
         format.html { redirect_to( organization_path(@organization) ) }
         format.xml  { render :xml => @organization, :status => :created, :location => @organization }
       else
+        @organization.valid? if params[:preview]
         format.html { render :action => "new" }
         format.xml  { render :xml => @organization.errors, :status => :unprocessable_entity }
       end
@@ -75,12 +76,20 @@ class OrganizationsController < ApplicationController
 
     @organization = Organization.find(params[:id])
 
+    if evil_robot = !params[:trap_field].blank?
+      flash[:failure] = "<h3>Evil Robot</h3> We didn't update this organization because we think you're an evil robot. If you're really not an evil robot, look at the form instructions more carefully. If this doesn't work please file a bug report and let us know."
+    end
+
     respond_to do |format|
-      if @organization.update_attributes(params[:organization])
+      if !evil_robot && params[:preview].nil? && @organization.update_attributes(params[:organization])
         flash[:success] = 'Organization was successfully updated.'
         format.html { redirect_to( organization_path(@organization) ) }
         format.xml  { head :ok }
       else
+        if params[:preview]
+          @organization.attributes = params[:organization]
+          @organization.valid?
+        end
         format.html { render :action => "edit" }
         format.xml  { render :xml => @organization.errors, :status => :unprocessable_entity }
       end

@@ -55,6 +55,11 @@
     text-align: justify;
   }
 
+  .no-content {
+    color: $light-text-color;
+    font-style: italic;
+  }
+
   .organization-topics {
     margin-top: -10px;
   }
