@@ -35,8 +35,10 @@
   label.label, legend.label {
     float: left;
     margin: 0px 0px 0px (0 - $form-label-width - 20px);
+    width: $form-label-width;
     line-height: 30px;
     font-size: 14px;
+    text-align: right;
   }
 
   .error {
@@ -47,11 +49,12 @@
 
   .inputs {
     ol {
-      margin: 20px 0px 20px 30px;
+      margin: 20px 0px 20px 20px;
+      border-left: 1px dotted $edge-color;
     }
 
     li.input {
-      margin: 20px 0px 20px ($form-label-width + 20px);
+      margin: 20px 0px 20px ($form-label-width + 30px);
       list-style: none;
     }
 
