@@ -19,6 +19,9 @@ class OrganizationsController < ApplicationController
       return redirect_to(new_organization_path)
     end
 
+    @future_events = @organization.events.future.non_duplicates.reorder('start_time asc').limit(10)
+    @past_events = @organization.events.past.non_duplicates.reorder('start_time desc').limit(10)
+
     @page_title = @organization.name
 
     respond_to do |format|

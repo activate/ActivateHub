@@ -1,0 +1,24 @@
+:ruby
+  venue ||= raise ArgumentError, "venue is required in view partial #{__FILE__}"
+
+
+.venue-item
+  .venue
+    .venue-title= venue.title
+
+    %h2.venue-location-title= t('.location.title')
+    .venue-location{:class => (venue.location ? 'has-location' : '')}
+      = render 'venues/card', :venue => venue
+
+      - if venue.access_notes?
+        .venue-access-notes-container
+          %h3.venue-access-notes-title= t('.access_notes.title')
+          .venue-access-notes= venue.access_notes.presence
+
+    - if venue.url?
+      %h2.venue-url-title= t('.url.title')
+      .venue-url= link_to venue.url, venue.url
+
+    %h2.venue-description-title= t('.description.title')
+    .venue-description{:class => (venue.description? ? '' : 'no-content')}
+      = venue.description.presence || t('.description.none')

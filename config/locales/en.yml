@@ -133,3 +133,20 @@ en:
         title: "Export Venues"
         kml: "KML"
         json: "JSON"
+    show:
+      future_events:
+        title: "Future Events"
+        none: "- No events -"
+      past_events:
+        title: "Past Events"
+        none: "- No events -"
+    item:
+      location:
+        title: "Location"
+      access_notes:
+        title: "Important Venue Notes"
+      url:
+        title: "Website"
+      description:
+        title: "Description"
+        none: "This venue doesn't have a description. Can you add one?"

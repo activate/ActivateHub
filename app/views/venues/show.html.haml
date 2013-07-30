@@ -1,10 +1,10 @@
 - content_for :sidebar do
   #sidebar-welcome.sidebar-box= render 'site/welcome'
-  #sidebar-wiki-props.sidebar-box= render 'site/wiki_props', :object => @organization, :clone => false
+  #sidebar-wiki-props.sidebar-box= render 'site/wiki_props', :object => @venue, :clone => false
   #sidebar-event-details.sidebar-box
 
 
-= render 'organizations/item', :organization => @organization
+= render 'venues/item', :venue => @venue
 
 %h2.future-events-title= t('.future_events.title')
 .future-events.events-list.list
