@@ -1,16 +1,19 @@
 :ruby
   object ||= raise ArgumentError, "object is required in view partial #{__FILE__}"
+  ns ||= []
   unless defined?(clone) then clone = true end
+
+  ns << object # ns is just the object w/ namespace object(s) - [organization, source]
   object_name = object.class.name.downcase
 
 %h3.wiki-props-title= t('.title', :obj => object_name)
 
 .wiki-actions
-  - edit_link = link_to t('.edit'), edit_polymorphic_path(object)
-  - delete_link = link_to t('.delete'), polymorphic_path(object), :method => :delete, :confirm => t('.delete_confirm', :obj => object_name)
+  - edit_link = link_to t('.edit'), edit_polymorphic_path(ns)
+  - delete_link = link_to t('.delete'), polymorphic_path(ns), :method => :delete, :confirm => t('.delete_confirm', :obj => object_name)
 
   - if clone
-    - clone_link = link_to t('.clone'), polymorphic_path([:clone, object])
+    - clone_link = link_to t('.clone'), polymorphic_path([:clone, *ns])
     = t('.actions', :edit => edit_link, :clone => clone_link, :delete => delete_link, :obj => object_name).html_safe
   - else
     = t('.actions_no_clone', :edit => edit_link, :delete => delete_link, :obj => object_name).html_safe

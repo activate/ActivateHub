@@ -169,3 +169,15 @@ en:
   sources:
     index_item:
       url_label: "Pulling From:"
+    item:
+      url:
+        title: "Calendar URL"
+      organization:
+        title: "Organization"
+    show:
+      future_events:
+        title: "Future Events"
+        none: "- No events -"
+      past_events:
+        title: "Past Events"
+        none: "- No events -"

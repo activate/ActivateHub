@@ -1,0 +1,20 @@
+:ruby
+  source ||= raise ArgumentError, "source is required in view partial #{__FILE__}"
+
+
+.source-item
+  .source
+    .source-title= source.title
+
+  %h2.source-url-title= t('.url.title')
+  .source-url= link_to source.url, source.url
+
+  - if organization = source.organization
+    %h2.source-organization-title= t('.organization.title')
+    .source-organization= link_to organization.name, organization_path(organization)
+
+  .source-topics-types<
+    - source.topics.each do |topic|
+      = link_to topic.name, '#', :class => 'topic'
+    - source.types.each do |type|
+      = link_to type.name, '#', :class => 'type'

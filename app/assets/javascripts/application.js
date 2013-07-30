@@ -4,4 +4,5 @@
 //= require events
 //= require organizations
 //= require venues
+//= require sources
 //= require_self

@@ -82,6 +82,9 @@ class SourcesController < ApplicationController
       return redirect_to(new_organization_source_path(:organization_id => organization_id))
     end
 
+    @future_events = @source.events.future.non_duplicates.reorder('start_time asc').limit(10)
+    @past_events = @source.events.past.non_duplicates.reorder('start_time desc').limit(10)
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @source }

@@ -1,0 +1,34 @@
+@import "variables";
+
+
+/*---[ sources show ]-------------------------------------------------------*/
+
+.sources-show {
+  .source-item {
+    margin-bottom: 20px;
+  }
+
+  .source-title {
+    line-height: 32px;
+    font-size: 24px;
+    font-weight: normal;
+  }
+
+  .source-url {
+    max-width: $main-width;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .source-url-title, .source-organization-title, .future-events-title, .past-events-title {
+    margin: 20px 0px 0px 0px;
+    line-height: 20px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .source-topics-types {
+    margin-top: 10px;
+  }
+}
