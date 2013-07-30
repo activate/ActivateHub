@@ -3841,20 +3841,44 @@ button.btn.small, input[type="submit"].btn.small {
 .breadcrumb .active a {
   color: #333333;
 }
+
 .pagination {
-  height: 36px;
-  margin: 18px 0;
+  display: inline-block;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+  margin: 10px inherit;
+
+  a, .gap, .current {
+    display: inline-block;
+    padding: 10px 15px;
+    line-height: 18px;
+    font-size: 13px;
+    vertical-align: middle;
+  }
+
+  .current {
+    font-weight: bold;
+    line-height: 18px;
+    font-size: 16px;
+  }
+
+  a:hover {
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    background-color: #ffc;
+    padding: 10px 14px;
+    text-decoration: none;
+  }
 }
+
+/*
 .pagination ul {
   display: inline-block;
-  *display: inline;
-  /* IE7 inline-block hack */
-
-  *zoom: 1;
-  *display: inline;
-  /* IE7 inline-block hack */
-
-  *zoom: 1;
   margin-left: 0;
   margin-bottom: 0;
   -webkit-border-radius: 3px;
@@ -3873,7 +3897,7 @@ button.btn.small, input[type="submit"].btn.small {
 .pagination li {
   display: inline;
 }
-.pagination a {
+.pagination a, .pagination .current, .pagination.gap {
   float: left;
   padding: 0 14px;
   line-height: 34px;
@@ -3884,7 +3908,7 @@ button.btn.small, input[type="submit"].btn.small {
 .pagination a:hover, .pagination .active a {
   background-color: #f5f5f5;
 }
-.pagination .active a {
+.pagination .current, .pagination .gap {
   color: #999999;
   cursor: default;
 }
@@ -3893,7 +3917,7 @@ button.btn.small, input[type="submit"].btn.small {
   background-color: transparent;
   cursor: default;
 }
-.pagination li:first-child a {
+.pagination a:first-child {
   border-left-width: 1px;
   -webkit-border-radius: 3px 0 0 3px;
   -moz-border-radius: 3px 0 0 3px;
@@ -3902,7 +3926,7 @@ button.btn.small, input[type="submit"].btn.small {
   -moz-border-radius: 3px 0 0 3px;
   border-radius: 3px 0 0 3px;
 }
-.pagination li:last-child a {
+.pagination a:last-child {
   -webkit-border-radius: 0 3px 3px 0;
   -moz-border-radius: 0 3px 3px 0;
   border-radius: 0 3px 3px 0;
@@ -3916,6 +3940,8 @@ button.btn.small, input[type="submit"].btn.small {
 .pagination-right {
   text-align: right;
 }
+*/
+
 .pager {
   margin-left: 0;
   margin-bottom: 18px;

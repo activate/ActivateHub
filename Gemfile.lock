@@ -13,6 +13,17 @@ GIT
   specs:
     validation_reflection (1.0.0)
 
+GIT
+  remote: https://github.com/dhedlund/paper_trail_manager.git
+  revision: ba8e2dafb3d196950cdc62949b197a779e491779
+  ref: ba8e2dafb3d196950cdc62949b197a779e491779
+  specs:
+    paper_trail_manager (0.2.0)
+      kaminari (~> 0.14.1)
+      paper_trail (~> 2.0)
+      rails (~> 3.0)
+      rake
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -145,11 +156,6 @@ GEM
     paper_trail (2.6.3)
       activerecord (~> 3.0)
       railties (~> 3.0)
-    paper_trail_manager (0.2.0)
-      paper_trail (~> 2.0)
-      rails (~> 3.0)
-      rake
-      will_paginate (~> 3.0.pre2)
     pg (0.15.1)
     polyglot (0.3.3)
     progress_bar (0.4.0)
@@ -257,7 +263,6 @@ GEM
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
       rack-test (>= 0.5.3)
-    will_paginate (3.0.3)
 
 PLATFORMS
   ruby
@@ -292,7 +297,7 @@ DEPENDENCIES
   loofah-activerecord!
   multi_json
   paper_trail (= 2.6.3)
-  paper_trail_manager (>= 0.2.0)
+  paper_trail_manager!
   pg
   progress_bar (= 0.4.0)
   pry-rails

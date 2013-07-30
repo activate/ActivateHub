@@ -32,7 +32,7 @@ class Venue < ActiveRecord::Base
   include SearchEngine
   include StripWhitespace
 
-  has_paper_trail
+  has_paper_trail :meta => { :site_id => :site_id }
   acts_as_taggable
 
   include VersionDiff

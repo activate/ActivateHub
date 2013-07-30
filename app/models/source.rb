@@ -37,7 +37,7 @@ class Source < ActiveRecord::Base
   scope :enabled, where(:enabled => true)
   scope :disabled, where(:enabled => false)
 
-  has_paper_trail
+  has_paper_trail :meta => { :site_id => :site_id }
 
   xss_foliate
   include DecodeHtmlEntitiesHack
