@@ -16,6 +16,10 @@
     %meta{:itemprop => 'endDate', :content => event.end_time.utc.iso8601}
 
     .event-time-abs.date= normalize_time(event)
+    - if organization = event.organization
+      .event-organization
+        .event-organization-label= t('.organization_label')
+        = link_to organization.name, organization_path(organization)
 
     - if event.venue
       %h2.event-venue-title= t('.venue')

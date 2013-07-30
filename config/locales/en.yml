@@ -75,6 +75,7 @@ en:
     edit:
       title: "Edit an Event"
     item:
+      organization_label: "With"
       venue: "Venue"
       website: "Website"
       description: "Description"
