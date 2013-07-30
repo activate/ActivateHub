@@ -111,6 +111,9 @@ en:
       title: "Edit an Organization"
 
   venues:
+    appropriateness: >
+      The more information we have about your venue, the easier it will be
+      for people to find it.
     card:
       closed: "This venue is no longer open for business."
       google_maps_link: "map"
@@ -150,3 +153,7 @@ en:
       description:
         title: "Description"
         none: "This venue doesn't have a description. Can you add one?"
+    new:
+      title: "Create a Venue"
+    edit:
+      title: "Edit a Venue"

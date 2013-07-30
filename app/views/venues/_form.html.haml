@@ -1,0 +1,42 @@
+:ruby
+  venue ||= raise ArgumentError, "venue is required in view partial #{__FILE__}"
+
+
+- content_for :css_insert do
+  = stylesheet_link_tag 'forms'
+
+- content_for :javascript_insert do
+  = javascript_include_tag 'forms'
+
+
+.venue-form
+  = semantic_form_for venue, :html => { :id => 'venue-form' } do |f|
+    = f.inputs 'Venue Details' do
+      = f.input :title, :label => 'Venue Name'
+      = f.input :street_address, :label => 'Street Address'
+      = f.input :locality, :label => 'City'
+      = f.input :region, :label => 'State'
+      = f.input :postal_code, :label => 'Zip Code'
+      = f.input :access_notes, :input_html => { :rows => 4 }, :label => 'Access Notes', :hint => "Details about accessing the venue or accessibility restrictions visitors may want to know about."
+
+    = f.inputs 'Contact Details' do
+      = f.input :url, :label => 'Website'
+      = f.input :email
+      = f.input :telephone
+
+    = f.inputs 'Extra Details' do
+      = f.input :description, :input_html => { :rows => 12 }, :hint => "Format text using #{link_to("Markdown", "http://www.simpleeditions.com/59001/markdown-an-introduction", :target => "_blank")} and HTML".html_safe
+      = f.input :wifi, :label => "This venue has public wireless internet access"
+      - unless venue.new_record?
+        = f.input :closed, :label => "This venue is no longer open for business"
+
+    %li.trap
+      = label 'trap', 'field', "Leave this field blank or we'll think you're a robot."
+      = text_field_tag 'trap_field', params[:trap_field]
+
+    - if params[:from_event].present?
+      = hidden_field_tag :from_event, params[:from_event]
+
+    = f.actions do
+      = f.action :submit, :label => 'Preview', :button_html => { :name => 'preview' }
+      = f.action :submit

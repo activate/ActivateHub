@@ -1,0 +1,10 @@
+- if params[:preview] && @venue.valid?
+  %h2.preview-title Preview
+  .venue-preview.venues-show= render 'venues/item', :venue => @venue
+  .preview-separator
+
+%h2.main-title= t('.title')
+
+#main-content
+  .appropriateness= t('venues.appropriateness')
+  = render 'form', :venue => @venue

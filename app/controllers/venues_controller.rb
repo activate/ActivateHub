@@ -103,11 +103,12 @@ class VenuesController < ApplicationController
     end
 
     respond_to do |format|
-      if !evil_robot && @venue.save
+      if !evil_robot && params[:preview].nil? && @venue.save
         flash[:success] = 'Venue was successfully created.'
         format.html { redirect_to( venue_path(@venue) ) }
         format.xml  { render :xml => @venue, :status => :created, :location => @venue }
       else
+        @venue.geocode if params[:preview] && @venue.valid?
         format.html { render :action => "new" }
         format.xml  { render :xml => @venue.errors, :status => :unprocessable_entity }
       end
@@ -125,7 +126,7 @@ class VenuesController < ApplicationController
     end
 
     respond_to do |format|
-      if !evil_robot && @venue.update_attributes(params[:venue])
+      if !evil_robot && params[:preview].nil? && @venue.update_attributes(params[:venue])
         flash[:success] = 'Venue was successfully updated.'
         format.html { 
           if(!params[:from_event].blank?)
@@ -136,6 +137,10 @@ class VenuesController < ApplicationController
           }
         format.xml  { head :ok }
       else
+        if params[:preview]
+          @venue.attributes = params[:venue]
+          @venue.geocode if @venue.valid?
+        end
         format.html { render :action => "edit" }
         format.xml  { render :xml => @venue.errors, :status => :unprocessable_entity }
       end

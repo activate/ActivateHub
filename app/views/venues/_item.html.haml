@@ -3,7 +3,7 @@
 
 
 .venue-item
-  .venue
+  .venue{:class => (venue.closed? ? 'closed' : '')}
     .venue-title= venue.title
 
     %h2.venue-location-title= t('.location.title')

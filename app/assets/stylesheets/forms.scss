@@ -15,6 +15,14 @@
   border-bottom: 1px dashed $edge-color;
 }
 
+.appropriateness {
+  margin: 10px 0px;
+  padding: 0px 10px;
+  border-left: 5px solid $welcome-edge-color;
+  color: $welcome-text-color;
+  text-align: justify;
+}
+
 
 /*---[ general formtastic rules ]-------------------------------------------*/
 
@@ -91,6 +99,17 @@
       list-style: none;
 
       input { display: none; }
+    }
+
+    .boolean label {
+      display: block;
+      line-height: 20px;
+
+      input[type=checkbox] {
+        width: auto;
+        vertical-align: middle;
+        margin-right: 10px;
+      }
     }
   }
 
@@ -308,14 +327,6 @@
 
 
 /*---[ event forms ]--------------------------------------------------------*/
-
-.appropriateness {
-  margin: 10px 0px;
-  padding: 0px 10px;
-  border-left: 5px solid $welcome-edge-color;
-  color: $welcome-text-color;
-  text-align: justify;
-}
 
 .address-unknown {
   font-style: italic;
