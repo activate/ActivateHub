@@ -147,3 +147,28 @@
 #main-content {
   max-width: $main-width;
 }
+
+
+/*---[ footer ]-------------------------------------------------------------*/
+
+#footer {
+  margin-top: 60px;
+  padding: 15px 0px;
+  border-top: 1px solid $footer-edge-color;
+  -webkit-box-shadow: inset 0 5px 15px rgba(0,0,0,0.025);
+  -moz-box-shadow: inset 0 5px 15px rgba(0,0,0,0.025);
+  box-shadow: inset 0 5px 15px rgba(0,0,0,0.025);
+  background-color: $footer-bgcolor;
+  color: $footer-text-color;
+  text-align: center;
+
+  #copyright, #branding {
+    white-space: nowrap;
+  }
+
+  #copyright {
+    padding-right: 20px;
+    margin-right: 20px;
+    border-right: 1px solid $footer-edge-color;
+  }
+}

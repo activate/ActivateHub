@@ -44,6 +44,10 @@ en:
       title: "This page is community managed!"
       add: "create"
       actions: "You can %{add} a new %{obj}."
+    footer:
+      copyright: "&copy; 2011-2013 Social Action Network LLC"
+      branding: >
+        Branding by <a href="http://www.alicianagel.com/">Alicia Nagel Creative, LLC</a>
 
   events:
     appropriateness: >
