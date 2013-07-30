@@ -101,6 +101,11 @@ en:
       description:
         title: "Description"
         none: "This organization doesn't have a description. Can you add one?"
+      sources:
+        title: "Linked Calendars"
+        show: "Show Linked Calendars"
+        add: "Link a New Calendar"
+        none: "- No calendar sources -"
     show:
       future_events:
         title: "Future Events"
@@ -160,3 +165,7 @@ en:
       title: "Create a Venue"
     edit:
       title: "Edit a Venue"
+
+  sources:
+    index_item:
+      url_label: "Pulling From:"

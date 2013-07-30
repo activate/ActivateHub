@@ -40,7 +40,17 @@
     font-weight: normal;
   }
 
-  .organization-url-title, .organization-description-title, .future-events-title, .past-events-title {
+  .organization-source-actions {
+    font-style: italic;
+    margin-top: -5px;
+    margin-bottom: 20px;
+
+    .show-sources, .add-source {
+      display: inline;
+    }
+  }
+
+  .organization-url-title, .organization-description-title, .organization-sources-title, .future-events-title, .past-events-title {
     margin: 20px 0px 0px 0px;
     line-height: 20px;
     font-size: 16px;
@@ -62,6 +72,40 @@
 
   .organization-topics {
     margin-top: -10px;
+  }
+
+  .organization-sources-container {
+    display: none;
+  }
+
+  .organization-sources {
+    margin: 10px 0px 20px 20px;
+
+    .source-title {
+      font-weight: bold;
+    }
+
+    .source-url {
+      max-width: $main-width;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 11px;
+      font-style: italic;
+    }
+
+    .source-url-label {
+      float: left;
+      padding-right: 5px;
+    }
+
+    .source.disabled {
+      display: none;
+    }
+
+    .no-sources {
+      font-style: italic;
+    }
   }
 
   .future-events, .past-events {

@@ -1,0 +1,16 @@
+:ruby
+  source ||= raise ArgumentError, "source is required in view partial #{__FILE__}"
+
+.source{:class => (source.enabled? ? 'enabled' : 'disabled')}
+  .source-title= link_to source.name, organization_source_path(:organization_id => source.organization_id, :id => source.id)
+  .source-url
+    .source-url-label= t('.url_label')
+    = link_to source.url, source.url
+
+  .source-topics<
+    - source.topics.each do |topic|
+      = link_to topic.name, '#', :class => 'topic'
+
+  .source-types<
+    - source.types.each do |type|
+      = link_to type.name, '#', :class => 'type'
