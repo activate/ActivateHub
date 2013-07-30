@@ -1,0 +1,103 @@
+// FIXME: copy-and-pasted from old stylesheet, needs clean up
+
+.changes-index {
+  #main {
+    margin-left: 20px;
+  }
+
+  h1 {
+    clear: left;
+    font-size: 30px;
+    line-height: 36px;
+    padding-bottom: 17px;
+    margin: 18px 0px;
+    border-bottom: 1px solid #eee;
+  }
+
+  table {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  p {
+    margin: 10px 0px;
+  }
+}
+
+.changes_feed a {
+  margin-bottom: 2em;
+}
+
+.changes_table {}
+  .changes_table .changes_header {
+    background-color: #BECDD3; }
+  .changes_table .change_row { }
+    .changes_table .change_row td {
+      margin-bottom: 2em;
+      border-bottom: 2px solid #CCC;
+      text-align: left;
+      vertical-align: text-top; }
+    .changes_table .change_row .change_time {
+      width: 10%; }
+    .changes_table .change_row .change_detail_key {
+      width: 15%;
+      padding: .25em; }
+    .changes_table .change_row .change_detail_value {
+      width: 40%;
+      padding: .25em; }
+    .changes_table .change_row .change_detail_separator {
+      width: 5%; }
+    .changes_table .change_row .odd {
+      background-color: #ddd; }
+    .changes_table .change_row .even {
+      background-color: #eee; }
+    .changes_table .change_row .change_details .event,
+    .changes_table .change_row .change_details .rollback {
+      display: inline-block;
+      padding: 0 4px;
+      color: #fff;
+      font-weight: bold; }
+    .changes_table .change_row .change_details .event {
+      text-transform: uppercase; }
+    .changes_table .change_row .change_details .rollback {
+      float: right;
+      background: #999;
+    }
+    .changes_table .change_row.create .event {
+      background: #5AA351; }
+    .changes_table .change_row.destroy .event {
+      background: #A35164; }
+    .changes_table .change_row.update .event {
+      background: #5174A3; }
+
+
+.events-duplicates {
+  #main {
+    margin-left: 20px;
+  }
+
+  h1 {
+    clear: left;
+    font-size: 30px;
+    line-height: 36px;
+    padding-bottom: 17px;
+    margin: 18px 0px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .sidebar {
+    float: left;
+
+    ul {
+      margin-left: 20px;
+    }
+  }
+
+  form {
+    margin-left: 250px;
+  }
+
+  td {
+    min-width: 75px;
+  }
+}
