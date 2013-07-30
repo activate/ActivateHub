@@ -12,7 +12,7 @@
 .venue-card.location.vcard{:class => "#{venue.closed? ? 'closed' : ''} #{venue.location ? 'has-location' : ''}", :itemprop => 'location', :itemscope => 'itemscope', :itemtype => 'http://schema.org/Place'}
   - if venue.location
     .venue-map
-      = google_map venue, :controls => [:type], :center => [venue.latitude + 0.003, venue.longitude]
+      = google_map venue, :controls => [], :center => [venue.latitude + 0.003, venue.longitude]
       :javascript
         $(window).load(initialize_google_map_google_map);
 

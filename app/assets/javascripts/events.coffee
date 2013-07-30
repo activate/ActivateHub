@@ -22,9 +22,8 @@ $ ->
       false
 
 
-  if $('.events-index, .organizations-show, .venues-show')[0]
-
-    $('.event').mouseenter ->
+  if $('.events-index, .organizations-show, .venues-show')[0] and $(window).width() > 820
+    $('body .event').mouseenter ->
       $("[data-event-id=#{$(this).data('event-id')}] .event-title a").addClass('hover')
       $('#sidebar .sidebar-box:not(#sidebar-welcome)').hide()
       $navbar = $('#navbar'); $welcome = $('#sidebar-welcome')
@@ -32,7 +31,7 @@ $ ->
       position = if $(window).scrollTop() > threshold then 'fixed' else 'static'
       $('#sidebar-event-details').html($(this).clone()).css('position', position).show()
 
-    $('.event').mouseleave ->
+    $('body .event').mouseleave ->
       $("[data-event-id=#{$(this).data('event-id')}] .event-title a").removeClass('hover')
       $('#sidebar .sidebar-box').show()
       $('#sidebar-event-details').hide()

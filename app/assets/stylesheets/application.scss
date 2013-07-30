@@ -7,6 +7,7 @@
  *= require sources
  *= require admin
  *= require_self
+ *= require mobile
  */
 
 @import "variables";
@@ -189,6 +190,10 @@ input[type=text], input[type=url], textarea {
 
 
 /*---[ general ]------------------------------------------------------------*/
+
+#query {
+  display: none;
+}
 
 // how to visually highlight when a i18n translation is missing
 .translation_missing {

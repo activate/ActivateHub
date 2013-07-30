@@ -56,6 +56,10 @@
     font-size: 15px;
   }
 
+  a:hover {
+    background-color: $navbar-bgcolor-hover;
+  }
+
   .active a {
     background-color: $navbar-active-bgcolor;
     color: $navbar-active-color;

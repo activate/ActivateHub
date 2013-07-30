@@ -4,7 +4,7 @@
 /*---[ organizations index ]------------------------------------------------*/
 
 .organizations-view {
-  width: $main-width;
+  max-width: $main-width;
   overflow: auto; // magic; keeps 'clear:left' from clearing sidebar
   margin-top: 20px;
 
@@ -80,6 +80,10 @@
 
   .organization-sources {
     margin: 10px 0px 20px 20px;
+
+    .source {
+      margin-bottom: 20px;
+    }
 
     .source-title {
       font-weight: bold;
