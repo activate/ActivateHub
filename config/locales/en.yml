@@ -40,7 +40,10 @@ en:
       delete_confirm: "Are you sure you want to delete this %{obj}?"
       actions: "You can %{edit}, %{clone} or %{delete} this %{obj}."
       actions_no_clone: "You can %{edit} or %{delete} this %{obj}."
-
+    wiki_props_index:
+      title: "This page is community managed!"
+      add: "create"
+      actions: "You can %{add} a new %{obj}."
 
   events:
     appropriateness: >

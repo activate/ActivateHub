@@ -4,6 +4,7 @@
 
 - content_for :sidebar do
   #sidebar-welcome.sidebar-box= render 'site/welcome'
+  #sidebar-wiki-props.sidebar-box= render 'site/wiki_props_index', :collection => @venues
   #sidebar-exports.sidebar-box= render 'venues/exports'
 
 
