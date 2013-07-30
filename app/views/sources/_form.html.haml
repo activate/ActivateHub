@@ -1,0 +1,58 @@
+:ruby
+  source ||= raise ArgumentError, "source is required in view partial #{__FILE__}"
+
+
+- content_for :css_insert do
+  = stylesheet_link_tag 'forms'
+
+- content_for :javascript_insert do
+  = javascript_include_tag 'forms'
+
+
+.source-form
+  = semantic_form_for [*source.organization, source], :html => { :id => 'source-form' } do |f|
+    = f.inputs 'Calendar / Event Details' do
+      = f.input :url, :label => 'URL', :wrapper_html => { :class => (source.persisted? ? 'readonly' : '') }, :input_html => { :readonly => source.persisted? }, :hint => "Import one or more events from a feed or web page in one of the following formats:<br/>#{SourceParser.labels.to_sentence}".html_safe
+      = f.input :title, :label => 'Name', :hint => 'Give it a name people can understand, such as "Tree Planting Events"'
+
+    = f.inputs :name => 'Extra Details' do
+      = f.input :topics
+      = f.input :types
+      = f.input :organization_id, :as => :hidden
+
+    %li.trap
+      = label 'trap', 'field', "Leave this field blank or we'll think you're a robot."
+      = text_field_tag 'trap_field', params[:trap_field]
+
+    = f.actions do
+      = f.action :submit
+
+
+:javascript
+  $(document).ready(function(){
+    // toggleable topic list using a hidden multi-select to track state
+    var $topics_select = $("#source_topic_ids").hide();
+    var $topics_list = $('<div>').addClass('topics-select').insertAfter($topics_select);
+    $topics_select.children('option').each(function(idx,option) {
+      var $option = $(option);
+      var $topic = $('<a>').addClass('topic').data('val', $option.val()).html($option.html())
+      if ($option.attr('selected')) { $topic.addClass('selected'); }
+      $topic.appendTo($topics_list);
+      $topic.click(function() {
+        $option.attr('selected', ($(this).toggleClass('selected').hasClass('selected') && 'selected'));
+      });
+    });
+
+    // toggleable type list using a hidden multi-select to track state
+    var $types_select = $("#source_type_ids").hide();
+    var $types_list = $('<div>').addClass('types-select').insertAfter($types_select);
+    $types_select.children('option').each(function(idx,option) {
+      var $option = $(option);
+      var $type = $('<a>').addClass('type').data('val', $option.val()).html($option.html())
+      if ($option.attr('selected')) { $type.addClass('selected'); }
+      $type.appendTo($types_list);
+      $type.click(function() {
+        $option.attr('selected', ($(this).toggleClass('selected').hasClass('selected') && 'selected'));
+      });
+    });
+  });

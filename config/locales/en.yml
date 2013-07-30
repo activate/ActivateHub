@@ -181,3 +181,7 @@ en:
       past_events:
         title: "Past Events"
         none: "- No events -"
+    new:
+      title: "Link a new Calendar or Event"
+    edit:
+      title: "Edit a Linked Calendar / Event"

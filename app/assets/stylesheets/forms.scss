@@ -90,6 +90,12 @@
       outline: 0;
     }
 
+    input[readonly=readonly] {
+      border-color: transparent;
+      padding-left: 0px;
+      pointer-events: none;
+    }
+
     ol.choices-group {
       display: inline;
     }
@@ -99,6 +105,12 @@
       list-style: none;
 
       input { display: none; }
+    }
+
+    .readonly {
+      label, input {
+        pointer-events: none;
+      }
     }
 
     .boolean label {

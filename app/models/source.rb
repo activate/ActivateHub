@@ -30,6 +30,9 @@ class Source < ActiveRecord::Base
   belongs_to :site
   scope_to_current_site
 
+  validates :url, :presence => true
+  validates :title, :presence => true
+
   scope :listing, :order => 'created_at DESC'
   scope :enabled, where(:enabled => true)
   scope :disabled, where(:enabled => false)
