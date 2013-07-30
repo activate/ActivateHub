@@ -1,0 +1,4 @@
+%h3.downloads-title= t('.downloads.title')
+%ul.downloads-list
+  %li= link_to t('.downloads.kml'), url_for(:format => :kml)
+  %li= link_to t('.downloads.json'), url_for(:format => :json)

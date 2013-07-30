@@ -56,11 +56,11 @@ en:
         atom: "Atom feed"
         gcal: "Google Calendar"
       downloads:
-        title: "Export To"
+        title: "Export Events"
         ical: "iCalendar file"
     item_exports:
       downloads:
-        title: "Export To"
+        title: "Export Event"
         ical: "iCalendar file"
         gcal: "Google Calendar"
     index:
@@ -115,3 +115,20 @@ en:
       google_maps_link: "map"
       public_wifi: "WiFi" #Public WiFi"
       access_notes: "Access Notes"
+    index:
+      title: "Venues"
+      switcher:
+        list: "List"
+        map: "Map"
+      show_all: "Show All Venues"
+      most_active:
+        title: "Most Active"
+        events_count: "%{count} events"
+      newest:
+        title: "Newest"
+        age: "Added %{age} ago"
+    exports:
+      downloads:
+        title: "Export Venues"
+        kml: "KML"
+        json: "JSON"

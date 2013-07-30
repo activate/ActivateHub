@@ -1,0 +1,99 @@
+:ruby
+  venues_view ||= params[:view] || cookies[:venues_view] || 'list'
+
+
+- content_for :sidebar do
+  #sidebar-welcome.sidebar-box= render 'site/welcome'
+  #sidebar-exports.sidebar-box= render 'venues/exports'
+
+
+.view-switcher
+  %ul
+    %li= link_to t('.switcher.list'), params.merge(:view => 'list'), :class => (venues_view == 'list' ? 'selected' : ''), :data => { :view => 'list' }
+    %li= link_to t('.switcher.map'), params.merge(:view => 'map'), :class => (venues_view == 'map' ? 'selected' : ''), :data => { :view => 'map' }
+
+%h2.main-title= t('.title')
+
+.venues-view{:class => "#{venues_view} #{params[:all] ? 'all' : ''}"}
+  .show-all-venues{:style => (params[:all] || params[:view] == 'map' ? 'display:none' : '')}= link_to t('.show_all'), params.merge(:all => 1)
+
+  .most-active-venues
+    %h3.most-active-title= t('.most_active.title')
+    - @most_active_venues.each do |venue|
+      %ul.venues-list
+        %li.venue
+          .venue-title= link_to venue.title, venue_path(venue)
+          .venue-events-count= t('.most_active.events_count', :count => venue.events_count)
+
+  .newest-venues
+    %h3.newest-title= t('.newest.title')
+    %ul.venues-list
+      - @newest_venues.each do |venue|
+        %li.venue
+          .venue-title= link_to venue.title, venue_path(venue)
+          .venue-age= t('.newest.age', :age => time_ago_in_words(venue.created_at))
+
+  .all-venues
+    %ul.venues-list
+      - for venue in @venues
+        %li.venue
+          .venue-title= link_to venue.title, venue_path(venue)
+          .venue-address= venue.address
+
+  .venues-map= google_map @venues, @current_site.venues_google_map_options
+
+:ruby
+  # <% tabindex_on '#search_field' %>
+  # <div id="venues_index">
+  # <h1>Venues</h1>
+  # <div id='venues_search'>
+  #   <h2>Find a venue:</h2>
+  #   <%= form_tag venues_path, :method => 'get' do %>
+  #     <div class='keywords'>
+  #       <%= label_tag :query, "Keywords" %>
+  #       <%= text_field_tag :query, params[:query] %>
+  #     </div>
+  #     <div class='wifi'>
+  #       <%= check_box_tag :wifi, '1', params[:wifi] %>
+  #       <%= label_tag :wifi, "Public WiFi" %>
+  #     </div>
+
+  #     <div class='submit'>
+  #       <%= submit_tag "Search" %>
+  #     </div>
+  #   <% end %>
+  # </div>
+
+  # <% if @venues %>
+  #   <div id='venues_search_results'>
+  #     <div id='list_description'>
+  #       <% if @tag %>
+  #         <h2>Showing <strong><%= @venues.size %></strong> venues tagged with <strong><%= @tag %></strong></h2>
+  #       <% else -%>
+  #         <h2>
+  #           <% if @venues.size == 0 -%>
+  #             Sorry, there are no venues
+  #           <% else -%>
+  #             Showing <%= "all " if params[:all] %><strong><%= @venues.size %></strong> <%= 'venue'.pluralize(@venues.size) %>
+  #           <% end %>
+  #           <% if params[:query].present? %>
+  #             matching &#8220;<%= params[:query] %>&#8221;
+  #           <% end %>
+  #           <%= "with public WiFi" if params[:wifi] %>
+  #         </h2>
+  #       <% end -%>
+  #     </div>
+
+  #     <ul>
+  #       <% for venue in @venues %>
+  #         <li>
+  #           <%= link_to(venue.title, venue_url(venue)) %>
+  #           <% if venue.has_full_address? %>
+  #             <p class='detail'><%= venue.full_address %></p>
+  #           <% end %>
+  #         </li>
+  #       <% end %>
+  #     </ul>
+  #   </div>
+  # <% else %>
+  # </div>

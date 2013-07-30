@@ -10,11 +10,10 @@
 
 .view-switcher
   %ul
-    %li= link_to t('.switcher.calendar'), { :view => 'calendar' }, :class => (events_view == 'calendar' ? 'selected' : ''), :data => { :view => 'calendar' }
-    %li= link_to t('.switcher.list'), { :view => 'list' }, :class => (events_view == 'list' ? 'selected' : ''), :data => { :view => 'list' }
+    %li= link_to t('.switcher.calendar'), params.merge(:view => 'calendar'), :class => (events_view == 'calendar' ? 'selected' : ''), :data => { :view => 'calendar' }
+    %li= link_to t('.switcher.list'), params.merge(:view => 'list'), :class => (events_view == 'list' ? 'selected' : ''), :data => { :view => 'list' }
 
-%h2.main-title
-  = t('.title')
+%h2.main-title= t('.title')
 
 - cache_if(@perform_caching, CacheObserver.daily_key_for('events-index', request)) do
   .events-list{:class => events_view}= render 'events/calendar', :events => @events, :start_date => @start_date, :end_date => @end_date

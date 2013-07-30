@@ -1,5 +1,5 @@
 $ ->
-  if $('.organizations-show')[0] # only enable on organizatio nshow page
+  if $('.organizations-show')[0] # only enable on organization show page
     $('.event').mouseenter ->
       $("[data-event-id=#{$(this).data('event-id')}] .event-title a").addClass('hover')
       $('#sidebar .sidebar-box').hide()

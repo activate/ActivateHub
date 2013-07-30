@@ -22,7 +22,7 @@ class VenuesController < ApplicationController
     if params[:tag].present? # searching by tag
       @tag = params[:tag]
       @venues = scoped_venues.tagged_with(@tag)
-    elsif params.has_key?(:query) || params.has_key?(:term) || params[:all] == '1' # searching by query
+    else
       scoped_venues = scoped_venues.with_public_wifi if params[:wifi]
 
       if params[:term].present? # for the ajax autocomplete widget
@@ -32,12 +32,10 @@ class VenuesController < ApplicationController
       end
 
       @venues = scoped_venues.order('lower(title)').where(conditions)
-    else # default view
-      @most_active_venues = scoped_venues.limit(10).order('events_count DESC')
-      @newest_venues = scoped_venues.limit(10).order('created_at DESC')
     end
 
-    @page_title = "Venues"
+    @most_active_venues = scoped_venues.where('events_count is not null').limit(10).order('events_count DESC')
+    @newest_venues = scoped_venues.limit(10).order('created_at DESC')
 
     respond_to do |format|
       format.html # index.html.erb
