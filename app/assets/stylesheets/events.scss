@@ -226,6 +226,7 @@
       padding: 0px 5px;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
       line-height: $cal-slot-height - 6px; // height - border
       font-size: 11px;
       text-decoration: none;
