@@ -1,6 +1,6 @@
 :ruby
   types ||= raise ArgumentError, "types is required in view partial #{__FILE__}"
-  selected ||= nil
+  selected = selected ? [*selected] : nil # force into array if just a single value
 
   # an explicitly passed in nil title means to skip, so check if defined
   unless defined?(title) then title = t('.title') end
@@ -11,7 +11,7 @@
 
 .types-list<
   - types.each do |type|
-    - if !selected || selected == type.name
+    - if !selected || selected.include?(type.name)
       = link_to type[:name], params.merge(:type => type[:name]), :class => 'type'
     - else
       = link_to type[:name], params.merge(:type => type[:name]), :class => 'type empty'

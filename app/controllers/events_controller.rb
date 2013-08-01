@@ -10,12 +10,14 @@ class EventsController < ApplicationController
     query = Event.non_duplicates.ordered_by_ui_field(params[:order]).includes(:venue, :tags)
     @events = query.within_dates(@start_date, @end_date)
 
-    if @topic = params[:topic].presence
-      @events = @events.joins(:topics).where('topics.name = ?', @topic)
+    if topic = params[:topic].presence
+      @selected_topics = topic.split(',')
+      @events = @events.joins(:topics).where('topics.name' => @selected_topics)
     end
 
-    if @type = params[:type].presence
-      @events = @events.joins(:types).where('types.name = ?', @type)
+    if type = params[:type].presence
+      @selected_types = type.split(',')
+      @events = @events.joins(:types).where('types.name' => @selected_types)
     end
 
     @perform_caching = [:order,:date,:topic,:type].all? {|n| params[n].blank? }

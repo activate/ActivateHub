@@ -3,6 +3,6 @@
   @topics = @topics.select {|t| t.events.future.any? }
   @types = @types.select {|t| t.events.future.any? }
 
-= render 'filters/topic', :topics => @topics, :selected => @topic
-= render 'filters/type', :types => @types, :selected => @type
+= render 'filters/topic', :topics => @topics, :selected => @selected_topics
+= render 'filters/type', :types => @types, :selected => @selected_types
 = render 'filters/date'

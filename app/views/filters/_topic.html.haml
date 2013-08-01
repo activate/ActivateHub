@@ -1,6 +1,6 @@
 :ruby
   topics ||= raise ArgumentError, "topics is required in view partial #{__FILE__}"
-  selected ||= nil
+  selected = selected ? [*selected] : nil # force into array if just a single value
 
   # an explicitly passed in nil title means to skip, so check if defined
   unless defined?(title) then title = t('.title') end
@@ -11,7 +11,7 @@
 
 .topics-list<
   - topics.each do |topic|
-    - if !selected || selected == topic.name
+    - if !selected || selected.include?(topic.name)
       = link_to topic[:name], params.merge(:topic => topic[:name]), :class => 'topic'
     - else
       = link_to topic[:name], params.merge(:topic => topic[:name]), :class => 'topic empty'
