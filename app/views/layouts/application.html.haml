@@ -1,9 +1,6 @@
 !!! XML
 !!!
 
-:ruby
-  mobile_max_width = 820 # px
-
 %html
   %head
     %title= t('site_title', :page_title => @page_title, :site_name => @current_site.name, :tagline => @current_site.tagline)
@@ -19,7 +16,7 @@
     %link{:href => "/opensearch.xml", :rel => "search", :title => @current_site.name, :type => "application/opensearchdescription+xml"}
 
     = stylesheet_link_tag 'application', 'theme', :media => :all
-    = stylesheet_link_tag 'mobile', :media => mobile_stylesheet_media("only screen and (max-device-width: #{mobile_max_width}px)")
+    = stylesheet_link_tag 'mobile', :media => :screen
     = yield :css_insert
 
     = javascript_include_tag 'application', 'theme'
