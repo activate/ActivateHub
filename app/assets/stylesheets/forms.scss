@@ -78,6 +78,10 @@
       font-size: 14px;
     }
 
+    input[type=checkbox] {
+      border: none;
+    }
+
     input:hover, textarea:hover, select:hover {
       border-color: $form-highlight-border;
     }
