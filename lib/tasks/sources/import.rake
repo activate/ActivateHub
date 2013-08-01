@@ -30,6 +30,8 @@ namespace :sources do
       puts "#{e.class.name}: #{e.message}:", e.backtrace
       puts
     end
+
+    CacheObserver.expire_all
   end
 
   task :tenantized_environment, [:site] => :environment do |t,args|

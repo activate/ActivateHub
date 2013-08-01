@@ -25,7 +25,7 @@
 
 .events-list {
   overflow: auto; // magic; keeps 'clear:left' from clearing sidebar
-  clear: both;
+  clear: right;
   margin-top: 10px;
 }
 
