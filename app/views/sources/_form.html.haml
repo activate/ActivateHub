@@ -1,6 +1,8 @@
 :ruby
   source ||= raise ArgumentError, "source is required in view partial #{__FILE__}"
 
+  # polymorphic form path breaks when source is not new record (find_or_create)
+  source = source.dup
 
 - content_for :css_insert do
   = stylesheet_link_tag 'forms'
@@ -10,7 +12,7 @@
 
 
 .source-form
-  = semantic_form_for [*source.organization, source], :html => { :id => 'source-form' } do |f|
+  = semantic_form_for [:import, *source.organization, source], :html => { :id => 'source-form' } do |f|
     = f.inputs 'Calendar / Event Details' do
       = f.input :url, :label => 'URL', :wrapper_html => { :class => (source.persisted? ? 'readonly' : '') }, :input_html => { :readonly => source.persisted? }, :hint => "Import one or more events from a feed or web page in one of the following formats:<br/>#{SourceParser.labels.to_sentence}".html_safe
       = f.input :title, :label => 'Name', :hint => 'Give it a name people can understand, such as "Tree Planting Events"'
