@@ -2,7 +2,11 @@
   source ||= raise ArgumentError, "source is required in view partial #{__FILE__}"
 
   # polymorphic form path breaks when source is not new record (find_or_create)
-  source = source.dup
+  if source.id
+    orig_source, source = source, source.dup
+    source.topics = orig_source.topics
+    source.types = orig_source.types
+  end
 
 - content_for :css_insert do
   = stylesheet_link_tag 'forms'
