@@ -1,5 +1,5 @@
 :ruby
-  events_view ||= params[:view] || cookies[:events_view] || 'list'
+  events_view ||= params[:view] || cookies[:events_view] || 'calendar'
 
 
 - content_for :sidebar do
@@ -15,5 +15,6 @@
 
 %h2.main-title= t('.title')
 
-- cache_if(@perform_caching, CacheObserver.daily_key_for('events-index', request)) do
-  .events-list{:class => events_view}= render 'events/calendar', :events => @events, :start_date => @start_date, :end_date => @end_date
+.events-list{:class => events_view}
+  - cache_if(@perform_caching, CacheObserver.daily_key_for('events-index', request)) do
+    = render 'events/calendar', :events => @events, :start_date => @start_date, :end_date => @end_date
