@@ -1,6 +1,6 @@
 :ruby
   organization ||= raise ArgumentError, "organization is required in view partial #{__FILE__}"
-  sources = organization.sources
+  sources = organization.sources.enabled
 
 
 .organization-item
