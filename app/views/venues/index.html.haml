@@ -39,6 +39,6 @@
       - for venue in @venues
         %li.venue
           .venue-title= link_to venue.title, venue_path(venue)
-          .venue-address= venue.address
+          .venue-address= venue.full_address
 
   .venues-map= google_map @venues, @current_site.venues_google_map_options
