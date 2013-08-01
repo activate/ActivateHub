@@ -1,6 +1,10 @@
 :ruby
   events_view ||= params[:view] || cookies[:events_view] || 'calendar'
 
+  # widget overridable view elements
+  page_title = params[:title] || t('.title') # "?title=" should hide title
+  event_views = params[:views] ? params[:views].split(',') : %w( calendar list )
+
 
 - content_for :sidebar do
   #sidebar-welcome.sidebar-box= render 'site/welcome'
@@ -8,12 +12,15 @@
   #sidebar-filters.sidebar-box= render 'events/filters'
   #sidebar-exports.sidebar-box= render 'events/exports'
 
-.view-switcher
-  %ul
-    %li= link_to t('.switcher.calendar'), params.merge(:view => 'calendar'), :class => (events_view == 'calendar' ? 'selected' : ''), :data => { :view => 'calendar' }
-    %li= link_to t('.switcher.list'), params.merge(:view => 'list'), :class => (events_view == 'list' ? 'selected' : ''), :data => { :view => 'list' }
+- if event_views.any?
+  .view-switcher
+    %ul
+      - if event_views.include?('calendar')
+        %li= link_to t('.switcher.calendar'), params.merge(:view => 'calendar'), :class => "switch-calendar #{(events_view == 'calendar' ? 'selected' : '')}", :data => { :view => 'calendar' }
+      - if event_views.include?('list')
+        %li= link_to t('.switcher.list'), params.merge(:view => 'list'), :class => "switch-list #{(events_view == 'list' ? 'selected' : '')}", :data => { :view => 'list' }
 
-%h2.main-title= t('.title')
+%h2.main-title= page_title
 
 .events-list{:class => events_view}
   - cache_if(@perform_caching, CacheObserver.daily_key_for('events-index', request)) do

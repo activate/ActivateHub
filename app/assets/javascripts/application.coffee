@@ -15,7 +15,7 @@ $ ->
     $('#sidebar').insertAfter('#main').show()
 
     # force user to list view if resolution not acceptable for calendar view
-    $('.events-index .events-list').removeClass('calendar').addClass('list')
+    $('.events-index .switch-list').click()
 
     $('#navbar-toggle').click ->
       if $('#navbar-menu').is(':visible')

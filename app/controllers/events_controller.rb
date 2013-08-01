@@ -24,9 +24,12 @@ class EventsController < ApplicationController
     @types = Type.order(:name)
 
     @custom_content = true
-    @page_title = "Events"
 
-    render_events(@events)
+    if params[:widget]
+      render :layout => 'widget'
+    else
+      render_events(@events)
+    end
   end
 
   # GET /events/1

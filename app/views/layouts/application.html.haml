@@ -2,7 +2,7 @@
 !!!
 
 :ruby
-  mobile_max_width = 960 # px
+  mobile_max_width = 820 # px
 
 %html
   %head
@@ -32,7 +32,7 @@
     = render 'site/tracking'
     = yield(:tracking) if content_for?(:tracking)
 
-  %body{:class => "#{controller.controller_name}-#{action_name}"}
+  %body{:class => "#{controller.controller_name}-#{action_name} application"}
     #navbar= render 'site/navbar'
     #sidebar= render 'site/sidebar'
     #main= yield

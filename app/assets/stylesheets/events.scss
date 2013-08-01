@@ -5,6 +5,7 @@
   font-size: 16px;
   line-height: 18px;
   font-weight: bold;
+  margin-bottom: 20px;
 
   li {
     display: inline-block;
@@ -24,6 +25,7 @@
 
 .events-list {
   overflow: auto; // magic; keeps 'clear:left' from clearing sidebar
+  clear: both;
   margin-top: 10px;
 }
 
