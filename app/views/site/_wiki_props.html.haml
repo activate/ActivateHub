@@ -1,7 +1,7 @@
 :ruby
   object ||= raise ArgumentError, "object is required in view partial #{__FILE__}"
   ns ||= []
-  unless defined?(clone) then clone = true end
+  clone = clone.nil? ? true : clone
 
   ns << object # ns is just the object w/ namespace object(s) - [organization, source]
   object_name = object.class.name.downcase
