@@ -23,5 +23,6 @@
 %h2.main-title= page_title
 
 .events-list{:class => events_view}
-  - cache_if(@perform_caching, CacheObserver.daily_key_for('events-index', request)) do
+  - cache_key = "events-index-topic:#{params[:topic]}-type:#{params[:type]}"
+  - cache_if(@perform_caching, CacheObserver.daily_key_for(cache_key, request)) do
     = render 'events/calendar', :events => @events, :start_date => @start_date, :end_date => @end_date

@@ -20,7 +20,7 @@ class EventsController < ApplicationController
       @events = @events.joins(:types).where('types.name' => @selected_types)
     end
 
-    @perform_caching = [:order,:date,:topic,:type].all? {|n| params[n].blank? }
+    @perform_caching = [:order,:date].all? {|n| params[n].blank? }
 
     @topics = Topic.order(:name)
     @types = Type.order(:name)
