@@ -17,11 +17,15 @@ $sidebar-width: 300px;
 $main-width: 700px;
 
 $navbar-bgcolor: #333;
-$navbar-bgcolor-hover: #555;
+$navbar-bgcolor-hover: rgba(85, 85, 85, 0.4);
+$navbar-gradient1: #333;
+$navbar-gradient2: #222;
 $navbar-link-color: #999;
 $navbar-link-hover: #fff;
 $navbar-active-bgcolor: #1a1a1a;
 $navbar-active-color: #fff;
+$navbar-toggle-border: #aaa;
+$navbar-toggle-highlight-border: #ddd;
 
 $sidebar-bgcolor: #f2f2f2;
 $sidebar-edge-color: $edge-color;

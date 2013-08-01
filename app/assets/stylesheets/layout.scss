@@ -22,6 +22,14 @@
     color: $navbar-link-hover;
   }
 
+  background-image: -moz-linear-gradient(top, $navbar-gradient1, $navbar-gradient2);
+  background-image: -ms-linear-gradient(top, $navbar-gradient1, $navbar-gradient2);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from($navbar-gradient1), to($navbar-gradient2));
+  background-image: -webkit-linear-gradient(top, $navbar-gradient1, $navbar-gradient2);
+  background-image: linear-gradient(top, $navbar-gradient1, $navbar-gradient2);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$navbar-gradient1', endColorstr='$navbar-gradient2', GradientType=0);
+
   /* navbar shadow which gives navbar a raised-up look */
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
@@ -39,7 +47,6 @@
 }
 
 #navbar-menu {
-  height: $navbar-height;
   float: left;
 
   ul, ul li {
@@ -68,29 +75,6 @@
 
 #navbar-toggle {
   display: none;
-  float: right;
-  height: $navbar-height;
-  padding: 0px 20px;
-
-  a {
-    display: inline-block;
-    vertical-align: middle;
-    border: 1px solid $navbar-link-color;
-    padding: 5px;
-    cursor: pointer;
-  }
-
-  a:hover {
-    border: 1px solid $navbar-link-hover;
-  }
-
-  .icon-bar {
-    display: block;
-    width: 18px;
-    height: 2px;
-    margin: 3px 5px;
-    background-color: $navbar-link-hover;
-  }
 }
 
 #navbar-search {

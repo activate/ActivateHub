@@ -16,3 +16,10 @@ $ ->
 
     # force user to list view if resolution not acceptable for calendar view
     $('.events-index .events-list').removeClass('calendar').addClass('list')
+
+    $('#navbar-toggle').click ->
+      if $('#navbar-menu').is(':visible')
+        $('#navbar-menu').slideUp('fast')
+      else
+        $('#navbar-menu').slideDown('fast')
+      false
