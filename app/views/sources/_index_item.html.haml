@@ -7,10 +7,8 @@
     .source-url-label= t('.url_label')
     = link_to source.url, source.url
 
-  .source-topics<
+  .source-topics-types<
     - source.topics.each do |topic|
       = link_to topic.name, '#', :class => 'topic'
-
-  .source-types<
     - source.types.each do |type|
       = link_to type.name, '#', :class => 'type'
