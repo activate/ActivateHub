@@ -72,6 +72,7 @@
       select: function(event, ui) {
         $('input.autocomplete').val( ui.item.title );
         $("#event_venue_id").val( ui.item.id );
+        $("#event_venue_details").val( ui.item.access_notes );
 
         return false;
       }
