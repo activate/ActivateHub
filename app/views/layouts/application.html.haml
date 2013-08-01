@@ -35,5 +35,10 @@
   %body{:class => "#{controller.controller_name}-#{action_name} application"}
     #navbar= render 'site/navbar'
     #sidebar= render 'site/sidebar'
-    #main= yield
+
+    #main
+      - flash.each do |klass,msg|
+        .flash-msg{:class => klass}!= msg
+      = yield
+
     #footer= render 'site/footer'

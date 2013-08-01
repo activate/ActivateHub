@@ -199,3 +199,29 @@ input[type=text], input[type=url], textarea {
   color: $error-text-color;
   text-decoration: overline;
 }
+
+.flash-msg {
+  margin: 10px 0px 20px 0px;
+  padding: 10px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  font-size: 14px;
+
+  // use notice color scheme by default (in case we encounter unknown class)
+  border: 1px solid $flash-notice-border;
+  background-color: $flash-notice-bgcolor;
+  color: $flash-notice-text-color;
+}
+
+.flash-msg.failure {
+  border: 1px solid $flash-failure-border;
+  background-color: $flash-failure-bgcolor;
+  color: $flash-failure-text-color;
+}
+
+.flash-msg.success {
+  border: 1px solid $flash-success-border;
+  background-color: $flash-success-bgcolor;
+  color: $flash-success-text-color;
+}
