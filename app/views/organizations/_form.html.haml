@@ -13,7 +13,7 @@
   = semantic_form_for organization, :html => { :id => 'organization-form' } do |f|
     = f.inputs 'Organization Details' do
       = f.input :name
-      = f.input :url
+      = f.input :url, :label => 'Website'
       = f.input :description
 
     = f.inputs 'Contact Details' do
