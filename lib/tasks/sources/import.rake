@@ -110,7 +110,8 @@ namespace :sources do
     end
 
     # remove any events associated w/ source, not returned during this fetch
-    removed_events = (orig_events - existing_events).each(&:destroy)
+    # FIXME: removed_events = (orig_events - existing_events).each(&:destroy)
+    removed_events = []
 
     # strip out duplicate venues created as part of this re-import
     all_venues = [] # keep track of venues we've seen so far
