@@ -675,20 +675,20 @@ describe EventsController do
 
     describe "by tag" do
       it "should be able to only return events matching specific tag" do
-        Event.should_receive(:tagged_with).with("foo", :order => "events.start_time").and_return([])
+        Event.should_receive(:tagged_with).with("foo", :order => "events.start_time").and_return(Event.where('1 = 0'))
 
         post :search, :tag => "foo"
       end
 
       it "should warn if user tries ordering tags by score" do
-        Event.should_receive(:tagged_with).with("foo", :order => "events.start_time").and_return([])
+        Event.should_receive(:tagged_with).with("foo", :order => "events.start_time").and_return(Event.where('1 = 0'))
 
         post :search, :tag => "foo", :order => "score"
         flash[:failure].should_not be_blank
       end
 
       it "should warn if user tries ordering tags by invalid order" do
-        Event.should_receive(:tagged_with).with("foo", :order => "events.start_time").and_return([])
+        Event.should_receive(:tagged_with).with("foo", :order => "events.start_time").and_return(Event.where('1 = 0'))
 
         post :search, :tag => "foo", :order => "kittens"
         flash[:failure].should_not be_blank

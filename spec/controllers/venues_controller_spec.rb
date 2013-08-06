@@ -140,7 +140,7 @@ describe VenuesController do
     end
 
     it "should be able to return events matching specific tag" do
-      Venue.should_receive(:tagged_with).with("foo").and_return([])
+      Venue.should_receive(:tagged_with).with("foo").and_return(Venue.where('1 = 0'))
       get :index, :tag => "foo"
     end
 
