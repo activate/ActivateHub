@@ -10,8 +10,9 @@ end
 
 Factory.define :source do |f|
   f.site { Site.find_by_domain(ENV['TEST_REQ_HOST']) }
+  f.title 'My Source'
   f.url 'http://a.valid.url'
-  f.association :organization
+  #f.association :organization
 end
 
 Factory.define :venue do |f|

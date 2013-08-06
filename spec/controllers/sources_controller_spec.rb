@@ -80,7 +80,7 @@ describe SourcesController do
       events = 1.upto(max_display + 5).map { build_stubbed(:event) }
       Source.any_instance.should_receive(:to_events).and_return(events)
 
-      post :import, :source => { :url => source.url }
+      post :import, :source => { :url => source.url, :title => 'My Title' }
       flash[:success].should match /And 5 other events/si
     end
   end

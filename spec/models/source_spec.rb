@@ -19,7 +19,7 @@ describe Source, "in general" do
   it "should create events for source from URL" do
     @event.should_receive(:save!)
 
-    source = Source.new(:url => "http://my.url/")
+    source = build(:source, :url => "http://my.url/")
     source.should_receive(:to_events).and_return([@event])
     source.create_events!.should eq [@event]
   end
@@ -76,7 +76,7 @@ describe Source, "when associated with an organization" do
  it "should set types, topics, & organization on imported events (within create_events)" do
 
   # Setup a source with some topics
-  source = Source.new(:url => "http://my.url/", :organization => @organization, :types => @types, :topics => @topics)
+  source = build(:source, :url => "http://my.url/", :organization => @organization, :types => @types, :topics => @topics)
 
   # stub to_events to return mocked event
   source.should_receive(:to_events).and_return([@event])

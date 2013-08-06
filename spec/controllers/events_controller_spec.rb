@@ -8,7 +8,7 @@ describe EventsController do
       it "should produce HTML" do
         get :index, :format => "html"
 
-        response.should have_selector ".events-view"
+        response.should have_selector ".events-index"
       end
     end
 
@@ -220,25 +220,25 @@ describe EventsController do
           it "should use the default if given a malformed parameter" do
             get :index, :date => "omgkittens"
             assigns["#{@date_kind}_date"].should eq controller.send("default_#{@date_kind}_date")
-            response.should have_selector(".alert", :content => 'malformed')
+            response.should have_selector(".failure", :content => 'malformed')
           end
 
           it "should use the default if given a missing parameter" do
             get :index, :date => {:foo => "bar"}
             assigns["#{@date_kind}_date"].should eq controller.send("default_#{@date_kind}_date")
-            response.should have_selector(".alert", :content => 'missing')
+            response.should have_selector(".failure", :content => 'missing')
           end
 
           it "should use the default if given an empty parameter" do
             get :index, :date => {@date_kind => ""}
             assigns["#{@date_kind}_date"].should eq controller.send("default_#{@date_kind}_date")
-            response.should have_selector(".alert", :content => 'empty')
+            response.should have_selector(".failure", :content => 'empty')
           end
 
           it "should use the default if given an invalid parameter" do
             get :index, :date => {@date_kind => "omgkittens"}
             assigns["#{@date_kind}_date"].should eq controller.send("default_#{@date_kind}_date")
-            response.should have_selector(".alert", :content => 'invalid')
+            response.should have_selector(".failure", :content => 'invalid')
           end
 
           it "should use the value if valid" do
@@ -433,7 +433,7 @@ describe EventsController do
                         :preview => "Preview",
                         :venue_name => "This venue had better not exist"
         response.should render_template :new
-        response.should have_selector '#event_preview'
+        response.should have_selector '.event-preview'
         event.should be_valid
       end
 
@@ -648,7 +648,7 @@ describe EventsController do
       get 'duplicates', :type => 'omgwtfbbq'
 
       response.should be_success
-      response.should have_selector('.alert', :content => 'omgwtfbbq')
+      response.should have_selector('.failure', :content => 'omgwtfbbq')
     end
 
   end

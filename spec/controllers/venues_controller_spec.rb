@@ -31,7 +31,7 @@ describe VenuesController do
     get 'duplicates', :type => 'omgwtfbbq'
 
     response.should be_success
-    response.should have_selector('.alert', :content => 'omgwtfbbq')
+    response.should have_selector('.failure', :content => 'omgwtfbbq')
   end
 
   describe "when creating venues" do
@@ -67,8 +67,8 @@ describe VenuesController do
 
       it "should assign @most_active_venues and @newest_venues by default" do
         get :index
-        assigns[:most_active_venues].should be_present
-        assigns[:newest_venues].should be_present
+        assigns[:most_active_venues].should_not be_nil
+        assigns[:newest_venues].should_not be_nil
       end
 
       it "should not included closed venues" do
@@ -205,11 +205,11 @@ describe VenuesController do
         end
 
         it "should have a future event" do
-          response.should have_selector("#events #future_events .summary", :content => @future_event.title)
+          response.should have_selector(".future-events .event-title", :content => @future_event.title)
         end
 
         it "should have a past event" do
-          response.should have_selector("#events #past_events .summary", :content => @past_event.title)
+          response.should have_selector(".past-events .event-title", :content => @past_event.title)
         end
       end
     end
