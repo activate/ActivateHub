@@ -65,6 +65,7 @@ gem 'rails3-jquery-autocomplete'
 gem 'haml'
 gem 'rails_admin', '0.4.8'
 gem 'devise'
+gem 'dalli'
 
 gem 'paper_trail_manager', :git => 'https://github.com/dhedlund/paper_trail_manager.git', :ref => 'ba8e2dafb3d196950cdc62949b197a779e491779'
 # gem 'paper_trail_manager', :path => '../paper_trail_manager'

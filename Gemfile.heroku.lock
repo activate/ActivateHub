@@ -84,6 +84,7 @@ GEM
       execjs
     coffee-script-source (1.6.2)
     columnize (0.3.6)
+    dalli (2.6.4)
     database_cleaner (0.8.0)
     debug_inspector (0.0.2)
     devise (1.5.4)
@@ -277,6 +278,7 @@ DEPENDENCIES
   capistrano-ext (= 1.2.1)
   coffee-rails (~> 3.2.1)
   columnize (= 0.3.6)
+  dalli
   database_cleaner (~> 0.8.0)
   devise
   exception_notification (= 2.6.1)

@@ -42,6 +42,14 @@ Calagator::Application.configure do
 
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
+  if memcachier_servers = ENV['MEMCACHIER_SERVERS'].presence
+    config.cache_store = :dalli_store, memcachier_servers.split(','), {
+      :username => ENV['MEMCACHIER_USERNAME'],
+      :password => ENV['MEMCACHIER_PASSWORD'],
+    }
+  else
+    config.cache_store = :dalli_store
+  end
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
