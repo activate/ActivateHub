@@ -32,6 +32,11 @@ en:
       text: >
         Search for events and organizations in your community. Get educated,
         get involved, and start making a difference!
+        <form method="get" action="http://activatehub.us4.list-manage1.com/subscribe">
+          <input type="hidden" name="u" value="e60bb687d7e9506a113b83dce" />
+          <input type="hidden" name="id" value="d9bc31ac22" />
+          <button style="padding:10px 15px">Newsletter Sign-up</button>
+        </form>
     wiki_props:
       title: "This page is community managed!"
       edit: "edit"
