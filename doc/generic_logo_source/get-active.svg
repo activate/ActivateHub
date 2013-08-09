@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="150"
+   height="150"
+   id="svg5128"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="get-active.svg"
+   inkscape:export-filename="/home/shark/dev/ActivateHub/doc/generic_logo_source/og-image.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs5130" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="35.794371"
+     inkscape:cy="-104.14444"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showborder="true"
+     borderlayer="false"
+     inkscape:showpageshadow="true"
+     showguides="false"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1391"
+     inkscape:window-height="876"
+     inkscape:window-x="49"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1">
+    <sodipodi:guide
+       orientation="0,1"
+       position="117.32143,110.53571"
+       id="guide5196" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="107.14286,133.75"
+       id="guide5198" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5133">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-902.36218)">
+    <g
+       id="g5200"
+       transform="translate(1.9999998,-0.3899921)">
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot5038"
+         style="font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:PT Sans;-inkscape-font-specification:PT Sans"
+         transform="matrix(0.30389917,0,0,0.30389917,-26.831713,990.67168)"><flowRegion
+           id="flowRegion5040"><rect
+             id="rect5042"
+             width="347.97174"
+             height="249.82585"
+             x="209.26971"
+             y="-222.24768" /></flowRegion><flowPara
+           id="flowPara5044"
+           style="font-family:Roboto;-inkscape-font-specification:Roboto">Get Active.</flowPara></flowRoot>      <switch
+         id="switch5100"
+         transform="matrix(0.3204065,0,0,0.3204065,22.838623,924.39818)">
+        <foreignObject
+           id="foreignObject5102"
+           height="1"
+           width="1"
+           y="0"
+           x="0"
+           requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/" />
+        <g
+           id="g5104"
+           i:extraneous="self">
+          <path
+             id="path5106"
+             d="m 263.406,226.139 c 0,-35.051 0,-171.298 0,-171.298 H 253.941 61.859 L 41.055,67.14 v 246.999 h 212.887 v -22.035 h 30.598 c -0.001,0 -21.134,-16.965 -21.134,-65.965 z m -14,-37 H 212.965 V 150.14 h 36.441 v 38.999 z M 160.215,105.14 v 39 h -40.75 v -39 h 40.75 z m 6,0 h 40.75 v 39 h -40.75 v -39 z m -90.356,0 h 37.605 v 39 H 75.859 v -39 z m 0,45.001 h 37.605 V 189.14 H 75.859 v -38.999 z m 0,44.998 h 37.605 v 31.008 c 0,2.792 0.059,5.451 0.166,7.994 H 75.859 v -39.002 z m 43.606,31.008 v -31.008 h 40.75 v 31.008 c 0,2.792 0.059,5.451 0.166,7.994 h -40.745 c -0.111,-2.53 -0.171,-5.187 -0.171,-7.994 z m 0,-37.008 V 150.14 h 40.75 v 38.999 h -40.75 z m 46.75,-38.998 h 40.75 v 38.999 h -40.75 v -38.999 z m 83.191,-6 h -36.441 v -39 h 36.441 v 39 z m -135.412,96 c 1.581,19.828 6.476,31.323 11.354,37.963 H 86.224 C 85.272,277.26 83.679,275.477 82.007,272 79.486,266.76 76.54,257.077 75.967,240.141 h 38.027 z m 19.349,37.963 c -4.706,-4.322 -11.4,-14.504 -13.334,-37.963 h 40.735 c 1.581,19.828 6.476,31.323 11.354,37.963 h -38.755 z m 46.75,0 c -4.706,-4.322 -11.4,-14.504 -13.334,-37.963 h 40.735 c 1.581,19.828 6.476,31.323 11.354,37.963 h -38.755 z m -13.707,-43.963 c -0.11,-2.53 -0.171,-5.188 -0.171,-7.994 v -31.008 h 40.75 v 31.008 c 0,2.792 0.059,5.451 0.166,7.994 h -40.745 z m 46.579,-7.994 v -31.008 h 36.441 v 31 6.006 c 0,0.672 0.011,1.332 0.018,1.996 h -36.288 c -0.111,-2.53 -0.171,-5.187 -0.171,-7.994 z m 26.976,73.992 H 55.055 V 75.127 l 6.805,-4.022 c 0,37.728 0,130.511 0,163.042 0,54 21.133,57.957 21.133,57.957 h 156.949 v 8.035 z m 14,-22.035 h -14 -13.099 c -4.706,-4.322 -11.4,-14.504 -13.334,-37.963 h 36.072 c 0.635,14.755 3.059,27.463 7.253,37.963 h -2.892 z"
+             inkscape:connector-curvature="0" />
+        </g>
+      </switch>
+    </g>
+  </g>
+</svg>
