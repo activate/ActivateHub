@@ -4,17 +4,17 @@ class AddSiteIdToVersions < ActiveRecord::Migration
 
     # associates version objects with site for items not yet deleted
     ActiveRecord::Base.connection.execute <<-SQL
-      UPDATE versions v SET site_id = (
-        SELECT i.site_id FROM events i WHERE i.id = v.item_id
-      ) WHERE v.item_type = 'Event';
+      UPDATE versions SET site_id = (
+        SELECT i.site_id FROM events i WHERE i.id = versions.item_id
+      ) WHERE versions.item_type = 'Event';
 
-      UPDATE versions v SET site_id = (
-        SELECT i.site_id FROM venues i WHERE i.id = v.item_id
-      ) WHERE v.item_type = 'Venue';
+      UPDATE versions SET site_id = (
+        SELECT i.site_id FROM venues i WHERE i.id = versions.item_id
+      ) WHERE versions.item_type = 'Venue';
 
-      UPDATE versions v SET site_id = (
-        SELECT i.site_id FROM sources i WHERE i.id = v.item_id
-      ) WHERE v.item_type = 'Source';
+      UPDATE versions SET site_id = (
+        SELECT i.site_id FROM sources i WHERE i.id = versions.item_id
+      ) WHERE versions.item_type = 'Source';
     SQL
 
     # pull site_id from unmarshalled versioned items
