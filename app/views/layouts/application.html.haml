@@ -11,7 +11,7 @@
     - # allows the app to run in full-screen mode on iOS devices w/ black status bar
     %meta{:name => "apple-mobile-web-app-capable", :content => "yes"}
     %meta{:name => "apple-mobile-web-app-status-bar-style", :content => "black"}
-    %meta{:property => "og:image", :content => asset_path("og-image.png")}
+    %meta{:property => 'og:image', :content => root_url.chomp('/') + asset_path('og-image.png')}
 
     - # basic OpenSearch support, see: http://en.wikipedia.org/wiki/OpenSearch
     %link{:href => "/opensearch.xml", :rel => "search", :title => @current_site.name, :type => "application/opensearchdescription+xml"}
