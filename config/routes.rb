@@ -52,6 +52,10 @@ Calagator::Application.routes.draw do
     match '/index' => 'site#index'
     match '/index.:format' => 'site#index'
 
+    # deprecated routes, remove after 3 months or when too hard to maintain
+    get '/topics/:topic_name' => redirect('/events?topic=%{topic_name}') # created: 2013-08-13
+    get '/types/:type_name'   => redirect('/events?type=%{type_name}')   # created: 2013-08-13
+
     match '/:controller(/:action(/:id))'
 
     root :to => "events#index"
