@@ -7,7 +7,7 @@
     .source-title= source.title
 
   %h2.source-url-title= t('.url.title')
-  .source-url= link_to source.url, source.url
+  .source-url= link_to source.url, source.url, :target => '_blank'
 
   - if organization = source.organization
     %h2.source-organization-title= t('.organization.title')

@@ -40,7 +40,7 @@
         .country-name{:itemprop => 'addressCountry'}>= venue.country
 
       - if venue.has_full_address?
-        .google-maps-link (#{link_to t('.google_maps_link'), google_maps_url(venue.full_address)})
+        .google-maps-link (#{link_to t('.google_maps_link'), google_maps_url(venue.full_address), :target => '_blank'})
 
     - if venue.closed?
       .venue-closed= t('.closed')

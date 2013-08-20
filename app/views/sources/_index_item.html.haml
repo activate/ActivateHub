@@ -5,7 +5,7 @@
   .source-title= link_to source.name, organization_source_path(:organization_id => source.organization_id, :id => source.id)
   .source-url
     .source-url-label= t('.url_label')
-    = link_to source.url, source.url
+    = link_to source.url, source.url, :target => '_blank'
 
   .source-topics-types<
     - source.topics.each do |topic|
