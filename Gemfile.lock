@@ -253,6 +253,7 @@ GEM
       ref
     thor (0.18.1)
     tilt (1.4.1)
+    timecop (0.6.3)
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
@@ -318,6 +319,7 @@ DEPENDENCIES
   spork (~> 0.9.2)
   sqlite3
   therubyracer
+  timecop (~> 0.6.3)
   uglifier (>= 1.0.3)
   validation_reflection!
   warbler

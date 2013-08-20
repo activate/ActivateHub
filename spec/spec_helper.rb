@@ -52,6 +52,11 @@ Spork.prefork do
     config.before(:suite) do
       DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.clean_with(:deletion)
+
+      # use a fixed time so tests and fixtures can make assumptions
+      # about future events and not worry about changes in seconds, etc
+      Timecop.travel(Time.parse('2013-03-22 14:05:27'))
+      Timecop.safe_mode = true
     end
 
     config.before(:each) do
