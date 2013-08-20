@@ -94,6 +94,8 @@ group :development, :test do
   gem 'spork', '~> 0.9.2'
   gem 'database_cleaner', '~> 0.8.0'
   gem 'faker'
+  gem 'shoulda-matchers', '~> 2.3.0'
+  gem 'timecop', '~> 0.6.3'
 
   # Do not install these interactive libraries onto the continuous integration server.
   unless ENV['CI'] || ENV['TRAVIS']
