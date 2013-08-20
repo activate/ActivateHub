@@ -40,7 +40,7 @@ class SourceParser # :nodoc:
 
         # The 'venue' block in facebook's data doesn't contain the venue name, so we merge…
         data = (data['venue'] || {}).merge('name' => data['location'])
-        event.location    = to_abstract_location(data)
+        event.abstract_location = to_abstract_location(data)
 
         [event]
       end

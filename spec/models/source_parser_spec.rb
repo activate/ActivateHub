@@ -53,7 +53,7 @@ describe SourceParser, "when parsing events" do
   end
 
   it "should use first successful parser's results" do
-    events = [double(SourceParser::AbstractEvent)]
+    events = [double(AbstractEvent)]
     SourceParser::Meetup.should_receive(:to_abstract_events).and_return(false)
     SourceParser::Ical.should_receive(:to_abstract_events).and_raise(NotImplementedError)
     SourceParser::Hcal.should_receive(:to_abstract_events).and_return(events)
@@ -219,7 +219,7 @@ describe SourceParser, "checking duplicates when importing" do
 
       it "should only invoke the #{parser_name} parser when given #{url}" do
         parser = parser_name.constantize
-        parser.should_receive(:to_abstract_events).and_return([Event.new])
+        parser.should_receive(:to_abstract_events).and_return([AbstractEvent.new])
         SourceParser.parsers.reject{|p| p == parser }.each do |other_parser|
           other_parser.should_not_receive :to_abstract_events
         end

@@ -27,10 +27,10 @@ describe SourceParser::Meetup do
     end
 
     it "should populate a venue when structured data is provided" do
-      @event.location.should be_a SourceParser::AbstractLocation
-      @event.location.title.should eq "Green Dragon Bistro and Brewpub"
-      @event.location.street_address.should eq "928 SE 9th Ave"
-      @event.location.tags.should eq ["meetup:venue=774133"]
+      @event.abstract_location.should be_a AbstractLocation
+      @event.abstract_location.title.should eq "Green Dragon Bistro and Brewpub"
+      @event.abstract_location.street_address.should eq "928 SE 9th Ave"
+      @event.abstract_location.tags.should eq ["meetup:venue=774133"]
     end
   end
 end

@@ -20,14 +20,15 @@ class SourceParser # :nodoc:
             ]
           }
         ) do |data, event_id|
-          event = AbstractEvent.new
-          event.title       = data['name']
-          event.description = data['description']
-          # Meetup sends us milliseconds since the epoch in UTC
-          event.start_time  = Time.at(data['time']/1000).utc
-          event.url         = data['event_url']
-          event.location    = to_abstract_location(data['venue'])
-          event.tags        = ["meetup:event=#{event_id}", "meetup:group=#{data['group']['urlname']}"]
+          event = AbstractEvent.new(
+            :title       => data['name'],
+            :description => data['description'],
+            # Meetup sends us milliseconds since the epoch in UTC
+            :start_time  => Time.at(data['time']/1000).utc,
+            :url         => data['event_url'],
+            :abstract_location => to_abstract_location(data['venue']),
+            :tags        => ["meetup:event=#{event_id}", "meetup:group=#{data['group']['urlname']}"],
+          )
 
           [event]
         end
@@ -43,15 +44,16 @@ class SourceParser # :nodoc:
 
     def self.to_abstract_location(value, opts={})
       if value.present?
-        location = AbstractLocation.new
-        location.title   = value['name']
-        location.street_address = [value['address_1'], value['address_2'], value['address_3']].compact.join(", ")
-        location.locality = value['city']
-        location.region = value['state']
-        location.postal_code = value['zip']
-        location.country = value['country']
-        location.telephone = value['phone']
-        location.tags = ["meetup:venue=#{value['id']}"]
+        location = AbstractLocation.new(
+          :title   => value['name'],
+          :street_address => [value['address_1'], value['address_2'], value['address_3']].compact.join(", "),
+          :locality => value['city'],
+          :region => value['state'],
+          :postal_code => value['zip'],
+          :country => value['country'],
+          :telephone => value['phone'],
+          :tags => ["meetup:venue=#{value['id']}"],
+        )
       else
         location = nil
       end

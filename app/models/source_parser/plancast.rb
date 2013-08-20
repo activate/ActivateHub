@@ -29,7 +29,7 @@ class SourceParser # :nodoc:
         event.url         = (data['external_url'] || data['plan_url'])
         event.tags        = ["plancast:plan=#{event_id}"]
 
-        event.location    = to_abstract_location(data['place'], :fallback => data['where'])
+        event.abstract_location    = to_abstract_location(data['place'], :fallback => data['where'])
 
         [event]
       end

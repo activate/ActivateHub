@@ -98,7 +98,7 @@ class SourceParser # :nodoc:
               end
             end
 
-            event.location = to_abstract_location(content_venue, :fallback => component.location)
+            event.abstract_location = to_abstract_location(content_venue, :fallback => component.location)
             events << event
           end
         end

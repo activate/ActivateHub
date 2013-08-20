@@ -23,7 +23,7 @@ class SourceParser
       :start_time => :dtstart,
       :end_time => :dtend,
       :url => true,
-      :location => true
+      :abstract_location => :location,
     }
 
     # Returns a set of AbstractEvent objects.

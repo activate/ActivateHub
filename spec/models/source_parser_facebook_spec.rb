@@ -30,13 +30,13 @@ describe SourceParser::Facebook do
     end
 
     it "should populate a venue when structured data is provided" do
-      @event.location.title.should          eq "Eliot Center"
-      @event.location.street_address.should eq "1226 SW Salmon Street"
-      @event.location.locality.should       eq "Portland"
-      @event.location.region.should         eq "Oregon"
-      @event.location.country.should        eq "United States"
-      @event.location.latitude.to_s.should  eq "45.5236"
-      @event.location.longitude.to_s.should eq "-122.675"
+      @event.abstract_location.title.should          eq "Eliot Center"
+      @event.abstract_location.street_address.should eq "1226 SW Salmon Street"
+      @event.abstract_location.locality.should       eq "Portland"
+      @event.abstract_location.region.should         eq "Oregon"
+      @event.abstract_location.country.should        eq "United States"
+      @event.abstract_location.latitude.to_s.should  eq "45.5236"
+      @event.abstract_location.longitude.to_s.should eq "-122.675"
     end
   end
 

@@ -23,9 +23,9 @@ describe SourceParser::Plancast do
   end
 
   it "should populate a venue when structured data is provided" do
-    @event.location.title.should eq "Urban Airship"
-    @event.location.address.should eq "334 Northwest 11th Avenue, Portland, Oregon, United States"
-    @event.location.tags.should eq ["plancast:place=1520153"]
+    @event.abstract_location.title.should eq "Urban Airship"
+    @event.abstract_location.address.should eq "334 Northwest 11th Avenue, Portland, Oregon, United States"
+    @event.abstract_location.tags.should eq ["plancast:place=1520153"]
   end
 
 end

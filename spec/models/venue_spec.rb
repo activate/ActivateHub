@@ -153,7 +153,7 @@ describe Venue, "when checking for squashing" do
   end
 
   it "should return the progenitor if an imported venue has an exact duplicate" do
-    @abstract_location = SourceParser::AbstractLocation.new
+    @abstract_location = AbstractLocation.new
     @abstract_location.title = @slave_second.title
 
     Venue.from_abstract_location(@abstract_location).should eq @master

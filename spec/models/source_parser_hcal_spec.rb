@@ -53,9 +53,9 @@ describe SourceParser::Hcal, "with hCalendar to AbstractLocation parsing" do
     SourceParser::Hcal.stub!(:read_url).and_return(hcal_upcoming)
     abstract_events = SourceParser::Hcal.to_abstract_events(:url => "http://foo.bar/")
     abstract_event = abstract_events.first
-    abstract_location = abstract_event.location
+    abstract_location = abstract_event.abstract_location
 
-    abstract_location.should be_a_kind_of(SourceParser::AbstractLocation)
+    abstract_location.should be_a_kind_of(AbstractLocation)
     abstract_location.locality.should eq "portland"
     abstract_location.street_address.should eq "317 SW Alder St Ste 500"
     abstract_location.latitude.should be_within(0.1).of(45.5191)

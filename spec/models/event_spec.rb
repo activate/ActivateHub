@@ -102,7 +102,12 @@ describe Event do
                         :end_time => Time.zone.parse("2008-05-22"))
       Event.should_receive(:new).and_return(event)
 
-      abstract_event = SourceParser::AbstractEvent.new("EventTitle", "EventDescription", Time.zone.parse("2008-05-20"), Time.zone.parse("2008-05-22"))
+      abstract_event = AbstractEvent.new(
+        :title => "EventTitle",
+        :description => "EventDescription",
+        :start_time => Time.zone.parse("2008-05-20"),
+        :end_time => Time.zone.parse("2008-05-22"),
+      )
 
       Event.from_abstract_event(abstract_event).should eq event
     end
@@ -124,7 +129,7 @@ describe Event do
       abstract_event.url.should eq @basic_event.url
       abstract_event.description.should be_nil
 
-      abstract_event.location.title.should match "#{@basic_event.venue.title}: #{@basic_event.venue.full_address}"
+      abstract_event.abstract_location.title.should match "#{@basic_event.venue.title}: #{@basic_event.venue.full_address}"
     end
 
     it "should parse an Event into an iCalendar without a URL and generate it" do
@@ -140,7 +145,7 @@ describe Event do
       abstract_event.url.should eq @basic_event.url
       abstract_event.description.should match /Imported from: #{generated_url}/
 
-      abstract_event.location.title.should match "#{@basic_event.venue.title}: #{@basic_event.venue.full_address}"
+      abstract_event.abstract_location.title.should match "#{@basic_event.venue.title}: #{@basic_event.venue.full_address}"
     end
 
   end
@@ -749,7 +754,7 @@ describe Event do
     end
 
     it "should return the progenitor if an imported event has an exact duplicate" do
-      @abstract_event = SourceParser::AbstractEvent.new
+      @abstract_event = AbstractEvent.new
       @abstract_event.title = @slave2.title
       @abstract_event.start_time = @slave2.start_time.to_s
 

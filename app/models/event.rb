@@ -352,7 +352,7 @@ class Event < ActiveRecord::Base
     event.start_time   = abstract_event.start_time.blank? ? nil : Time.parse(abstract_event.start_time.to_s)
     event.end_time     = abstract_event.end_time.blank? ? nil : Time.parse(abstract_event.end_time.to_s)
     event.url          = abstract_event.url
-    event.venue        = Venue.from_abstract_location(abstract_event.location, source) if abstract_event.location
+    event.venue        = Venue.from_abstract_location(abstract_event.abstract_location, source) if abstract_event.abstract_location
     event.tag_list     = abstract_event.tags.join(',')
 
     duplicates = event.find_exact_duplicates

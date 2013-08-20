@@ -32,7 +32,7 @@ describe SourceParser::Ical, "when parsing events and their locations" do
 
    it "locations should be" do
     @events.each do |event|
-      event.location.should_not be_nil
+      event.abstract_location.should_not be_nil
     end
   end
 
@@ -50,7 +50,7 @@ describe SourceParser::Ical, "when parsing multiple items in an Eventful feed" d
 
   it "should find venues for events" do
     @events.each do |event|
-      event.location.title.should_not be_nil
+      event.abstract_location.title.should_not be_nil
     end
   end
 
@@ -64,7 +64,7 @@ describe SourceParser::Ical, "when parsing multiple items in an Eventful feed" d
     # Make sure each of the above events has the expected street address
     event_titles_and_street_addresses.each do |event_title, street_address|
       @events.find { |event|
-        event.title == event_title && event.location.street_address == street_address
+        event.title == event_title && event.abstract_location.street_address == street_address
         }.should_not be_nil
       end
   end

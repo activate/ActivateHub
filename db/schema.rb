@@ -11,7 +11,60 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130727043249) do
+ActiveRecord::Schema.define(:version => 20130818074448) do
+
+  create_table "abstract_events", :force => true do |t|
+    t.integer  "site_id"
+    t.integer  "source_id"
+    t.integer  "event_id"
+    t.string   "external_id"
+    t.string   "url"
+    t.string   "title"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.text     "description"
+    t.string   "venue_title"
+    t.integer  "abstract_location_id"
+    t.text     "tags"
+    t.string   "result"
+    t.text     "error_msg"
+    t.text     "raw_event"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  add_index "abstract_events", ["event_id"], :name => "index_abstract_events_on_event_id"
+  add_index "abstract_events", ["site_id", "source_id", "external_id"], :name => "abstract_events_by_external_id"
+  add_index "abstract_events", ["site_id", "source_id", "start_time"], :name => "abstract_events_by_start_time"
+
+  create_table "abstract_locations", :force => true do |t|
+    t.integer  "site_id"
+    t.integer  "source_id"
+    t.integer  "venue_id"
+    t.string   "external_id"
+    t.string   "url"
+    t.string   "title"
+    t.text     "description"
+    t.string   "address"
+    t.string   "street_address"
+    t.string   "locality"
+    t.string   "region"
+    t.string   "postal_code"
+    t.string   "country"
+    t.decimal  "latitude",       :precision => 7, :scale => 4
+    t.decimal  "longitude",      :precision => 7, :scale => 4
+    t.string   "email"
+    t.string   "telephone"
+    t.text     "tags"
+    t.string   "result"
+    t.text     "error_msg"
+    t.text     "raw_venue"
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+  end
+
+  add_index "abstract_locations", ["site_id", "source_id", "external_id"], :name => "index_abstract_locations_by_external_id"
+  add_index "abstract_locations", ["venue_id"], :name => "index_abstract_locations_on_venue_id"
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -62,7 +115,7 @@ ActiveRecord::Schema.define(:version => 20130727043249) do
     t.integer  "item"
     t.string   "table"
     t.integer  "month",      :limit => 2
-    t.integer  "year",       :limit => 5
+    t.integer  "year",       :limit => 8
     t.datetime "created_at",              :null => false
     t.datetime "updated_at",              :null => false
   end
