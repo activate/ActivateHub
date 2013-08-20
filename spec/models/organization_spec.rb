@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Organization do
-  subject(:organization) { Factory.build(:organization) }
+  subject(:organization) { build(:organization) }
 
   # Tests for Organization:
   # - Creating an organization with 'viagra' as name should fail.

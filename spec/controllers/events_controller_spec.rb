@@ -27,8 +27,8 @@ describe EventsController do
 
       describe "with events" do
         before do
-          Factory(:event_with_venue)
-          Factory(:event_with_venue)
+          create(:event_with_venue)
+          create(:event_with_venue)
 
           get :index, :format => "xml"
 
@@ -78,7 +78,7 @@ describe EventsController do
 
       describe "with events" do
         before do
-          @event = Factory(:event_with_venue)
+          @event = create(:event_with_venue)
           @venue = @event.venue
 
           post :index, :format => "json"
@@ -124,8 +124,8 @@ describe EventsController do
 
       describe "with events" do
         before do
-          Factory(:event_with_venue)
-          Factory(:event_with_venue)
+          create(:event_with_venue)
+          create(:event_with_venue)
 
           post :index, :format => "atom"
 
@@ -174,8 +174,8 @@ describe EventsController do
 
       describe "with events" do
         before do
-          @current_event = Factory(:event, :start_time => today + 1.hour)
-          @past_event = Factory(:event, :start_time => today - 1.hour)
+          @current_event = create(:event, :start_time => today + 1.hour)
+          @past_event = create(:event, :start_time => today - 1.hour)
 
           post :index, :format => "ics"
         end
@@ -330,8 +330,8 @@ describe EventsController do
         :end_time       => "",
         :start_time     => ""
       }
-      @venue = Factory.build(:venue, :id => 12)
-      @event = Factory.build(:event, :id => 34, :venue => @venue)
+      @venue = build(:venue, :id => 12)
+      @event = build(:event, :id => 34, :venue => @venue)
     end
 
     describe "#new" do
@@ -347,8 +347,8 @@ describe EventsController do
 
       it "should create a new event without a venue" do
         Event.should_receive(:new).with(@params[:event]).and_return(@event)
-        @event.stub!(:associate_with_venue).with(@params[:venue_name])
-        @event.stub!(:venue).and_return(nil)
+        @event.stub(:associate_with_venue).with(@params[:venue_name])
+        @event.stub(:venue).and_return(nil)
         @event.should_receive(:save).and_return(true)
 
         post "create", @params
@@ -359,7 +359,7 @@ describe EventsController do
         @params[:event]["venue_id"] = @venue.id.to_s
         Event.should_receive(:new).with(@params[:event]).and_return(@event)
         @event.should_receive(:associate_with_venue).with(@venue.id)
-        @event.stub!(:venue).and_return(@venue)
+        @event.stub(:venue).and_return(@venue)
         @event.should_receive(:save).and_return(true)
 
         post "create", @params
@@ -369,7 +369,7 @@ describe EventsController do
         @params[:venue_name] = "My Venue"
         Event.should_receive(:new).with(@params[:event]).and_return(@event)
         @event.should_receive(:associate_with_venue).with("My Venue")
-        @event.stub!(:venue).and_return(@venue)
+        @event.stub(:venue).and_return(@venue)
         @event.should_receive(:save).and_return(true)
 
         post "create", @params
@@ -380,7 +380,7 @@ describe EventsController do
         @params[:venue_name] = "Some Event"
         Event.should_receive(:new).with(@params[:event]).and_return(@event)
         @event.should_receive(:associate_with_venue).with(@venue.id)
-        @event.stub!(:venue).and_return(@venue)
+        @event.stub(:venue).and_return(@venue)
         @event.should_receive(:save).and_return(true)
 
         post "create", @params
@@ -389,10 +389,10 @@ describe EventsController do
       it "should create a new event for an existing venue" do
         @params[:venue_name] = "Old Venue"
         Event.should_receive(:new).with(@params[:event]).and_return(@event)
-        @event.stub!(:associate_with_venue).with(@params[:venue_name])
-        @event.stub!(:venue).and_return(@venue)
+        @event.stub(:associate_with_venue).with(@params[:venue_name])
+        @event.stub(:venue).and_return(@venue)
         @event.should_receive(:save).and_return(true)
-        @venue.stub!(:new_record?).and_return(false)
+        @venue.stub(:new_record?).and_return(false)
 
         post "create", @params
         response.should redirect_to(event_path(@event))
@@ -401,10 +401,10 @@ describe EventsController do
       it "should create a new event and new venue, and redirect to venue edit form" do
         @params[:venue_name] = "New Venue"
         Event.should_receive(:new).with(@params[:event]).and_return(@event)
-        @event.stub!(:associate_with_venue).with(@params[:venue_name])
-        @event.stub!(:venue).and_return(@venue)
+        @event.stub(:associate_with_venue).with(@params[:venue_name])
+        @event.stub(:venue).and_return(@venue)
         @event.should_receive(:save).and_return(true)
-        @venue.stub!(:new_record?).and_return(true)
+        @venue.stub(:new_record?).and_return(true)
 
         post "create", @params
         response.should redirect_to(edit_venue_url(@venue, :from_event => @event.id))
@@ -438,7 +438,7 @@ describe EventsController do
       end
 
       it "should create an event for an existing venue" do
-        venue = Factory(:venue)
+        venue = create(:venue)
 
         post "create",
           :start_time => now.strftime("%Y-%m-%d"),
@@ -463,9 +463,9 @@ describe EventsController do
 
     describe "#update" do
       before(:each) do
-        @event = Factory.build(:event_with_venue, :id => 42)
+        @event = build(:event_with_venue, :id => 42)
         @venue = @event.venue
-        Event.stub!(:find).and_return(@event)
+        Event.stub(:find).and_return(@event)
       end
 
       it "should display form for editing event" do
@@ -478,8 +478,8 @@ describe EventsController do
 
       it "should update an event without a venue" do
         Event.should_receive(:find).and_return(@event)
-        @event.stub!(:associate_with_venue).with(@params[:venue_name])
-        @event.stub!(:venue).and_return(nil)
+        @event.stub(:associate_with_venue).with(@params[:venue_name])
+        @event.stub(:venue).and_return(nil)
         @event.should_receive(:update_attributes).and_return(true)
 
         put "update", @params
@@ -490,7 +490,7 @@ describe EventsController do
         @params[:event]["venue_id"] = @venue.id.to_s
         Event.should_receive(:find).and_return(@event)
         @event.should_receive(:associate_with_venue).with(@venue.id)
-        @event.stub!(:venue).and_return(@venue)
+        @event.stub(:venue).and_return(@venue)
         @event.should_receive(:update_attributes).and_return(true)
 
         post "update", @params
@@ -500,7 +500,7 @@ describe EventsController do
         @params[:venue_name] = "Some Event"
         Event.should_receive(:find).and_return(@event)
         @event.should_receive(:associate_with_venue).with("Some Event")
-        @event.stub!(:venue).and_return(@venue)
+        @event.stub(:venue).and_return(@venue)
         @event.should_receive(:update_attributes).and_return(true)
 
         post "update", @params
@@ -511,7 +511,7 @@ describe EventsController do
         @params[:venue_name] = "Some Event"
         Event.should_receive(:find).and_return(@event)
         @event.should_receive(:associate_with_venue).with(@venue.id)
-        @event.stub!(:venue).and_return(@venue)
+        @event.stub(:venue).and_return(@venue)
         @event.should_receive(:update_attributes).and_return(true)
 
         post "update", @params
@@ -520,10 +520,10 @@ describe EventsController do
       it "should update an event and associate it with an existing venue" do
         @params[:venue_name] = "Old Venue"
         Event.should_receive(:find).and_return(@event)
-        @event.stub!(:associate_with_venue).with(@params[:venue_name])
-        @event.stub!(:venue).and_return(@venue)
+        @event.stub(:associate_with_venue).with(@params[:venue_name])
+        @event.stub(:venue).and_return(@venue)
         @event.should_receive(:update_attributes).and_return(true)
-        @venue.stub!(:new_record?).and_return(false)
+        @venue.stub(:new_record?).and_return(false)
 
         put "update", @params
         response.should redirect_to(event_path(@event))
@@ -532,10 +532,10 @@ describe EventsController do
       it "should update an event and create a new venue, and redirect to the venue edit form" do
         @params[:venue_name] = "New Venue"
         Event.should_receive(:find).and_return(@event)
-        @event.stub!(:associate_with_venue).with(@params[:venue_name])
-        @event.stub!(:venue).and_return(@venue)
+        @event.stub(:associate_with_venue).with(@params[:venue_name])
+        @event.stub(:venue).and_return(@venue)
         @event.should_receive(:update_attributes).and_return(true)
-        @venue.stub!(:new_record?).and_return(true)
+        @venue.stub(:new_record?).and_return(true)
 
         put "update", @params
         response.should redirect_to(edit_venue_url(@venue, :from_event => @event.id))
@@ -543,8 +543,8 @@ describe EventsController do
 
       it "should catch errors and redisplay the new event form" do
         Event.should_receive(:find).and_return(@event)
-        @event.stub!(:associate_with_venue)
-        @event.stub!(:venue).and_return(nil)
+        @event.stub(:associate_with_venue)
+        @event.stub(:venue).and_return(nil)
         @event.should_receive(:update_attributes).and_return(false)
 
         post "update", :id => 1234
@@ -575,9 +575,9 @@ describe EventsController do
 
     describe "#clone" do
       before do
-        @event = Factory(:event)
+        @event = create(:event)
 
-        Event.stub!(:find).and_return(@event)
+        Event.stub(:find).and_return(@event)
 
         get "clone", :id => 1
       end
@@ -610,11 +610,11 @@ describe EventsController do
     render_views
 
     it "should find current duplicates and not past duplicates" do
-      current_master = Factory(:event, :title => "Current")
-      current_duplicate = Factory(:event, :title => current_master.title)
+      current_master = create(:event, :title => "Current")
+      current_duplicate = create(:event, :title => current_master.title)
 
-      past_master = Factory(:event, :title => "Past", :start_time => now - 2.days)
-      past_duplicate = Factory(:event, :title => past_master.title, :start_time => now - 1.day)
+      past_master = create(:event, :title => "Past", :start_time => now - 2.days)
+      past_duplicate = create(:event, :title => past_master.title, :start_time => now - 1.day)
 
       get 'duplicates', :type => 'title'
 
@@ -629,8 +629,8 @@ describe EventsController do
     end
 
     it "should redirect duplicate events to their master" do
-      event_master = Factory(:event)
-      event_duplicate = Factory(:event)
+      event_master = create(:event)
+      event_duplicate = create(:event)
 
       get 'show', :id => event_duplicate.id
       response.should_not be_redirect
@@ -700,9 +700,9 @@ describe EventsController do
     describe "when returning results" do
       render_views
 
-      let(:current_event) { Factory(:event_with_venue) }
-      let(:current_event_2) { Factory(:event_with_venue) }
-      let(:past_event) { Factory(:event_with_venue) }
+      let(:current_event) { create(:event_with_venue) }
+      let(:current_event_2) { create(:event_with_venue) }
+      let(:past_event) { create(:event_with_venue) }
       let(:results) do
         {
           :current => [current_event, current_event_2],
@@ -818,7 +818,7 @@ describe EventsController do
 
   describe "#destroy" do
     it "should destroy events" do
-      event = Factory.build(:event)
+      event = build(:event)
       event.should_receive(:destroy)
       Event.should_receive(:find).and_return(event)
 

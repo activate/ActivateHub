@@ -72,41 +72,41 @@ end
 
 describe Venue, "when finding duplicates [integration test]" do
   before do
-    @existing = Factory(:venue)
+    @existing = create(:venue)
   end
 
   it "should not match totally different records" do
-    record = Factory(:venue)
+    record = create(:venue)
     Venue.find_duplicates_by(:title).should be_empty
   end
 
   it "should not match similar records when not searching by duplicated fields" do
-    record = Factory(:venue, :title => @existing.title)
+    record = create(:venue, :title => @existing.title)
     Venue.find_duplicates_by(:description).should be_empty
   end
 
   it "should match similar records when searching by duplicated fields" do
-    record = Factory(:venue, :title => @existing.title)
+    record = create(:venue, :title => @existing.title)
     Venue.find_duplicates_by(:title).should be_present
   end
 
   it "should match similar records when searching by :any" do
-    record = Factory(:venue, :title => @existing.title)
+    record = create(:venue, :title => @existing.title)
     Venue.find_duplicates_by(:title).should be_present
   end
 
   it "should not match similar records when searching by multiple fields where not all are duplicated" do
-    record = Factory(:venue, :title => @existing.title)
+    record = create(:venue, :title => @existing.title)
     Venue.find_duplicates_by([:title, :description]).should be_empty
   end
 
   it "should match similar records when searching by multiple fields where all are duplicated" do
-    record = Factory(:venue, :title => @existing.title, :description => @existing.description)
+    record = create(:venue, :title => @existing.title, :description => @existing.description)
     Venue.find_duplicates_by([:title, :description]).should be_present
   end
 
   it "should not match dissimilar records when searching by :all" do
-    record = Factory(:venue)
+    record = create(:venue)
     Venue.find_duplicates_by(:all).should be_empty
   end
 
@@ -224,8 +224,8 @@ end
 describe "Venue geocoding" do
   before do
     @venue = Venue.new(:title => "title", :address => "test")
-    @geo_failure = mock("geo", :success => false)
-    @geo_success = mock("geo", :success => true, :lat => 0.0, :lng => 0.0,
+    @geo_failure = double("geo", :success => false)
+    @geo_success = double("geo", :success => true, :lat => 0.0, :lng => 0.0,
                         :street_address => "622 SE Grand Ave.", :city => "Portland",
                         :state => "OR", :country_code => "US", :zip => "97214")
     @geocodable_address = "#{@geo_success.street_address}, #{@geo_success.city}" \
@@ -328,7 +328,7 @@ describe "Venue geocode addressing" do
     end
 
     it "should create a new version after updating" do
-      venue = Factory.create :venue
+      venue = create :venue
       venue.versions.count.should eq 1
 
       venue.title += " (change)"
@@ -338,7 +338,7 @@ describe "Venue geocode addressing" do
     end
 
     it "should store old content in past versions" do
-      venue = Factory.create :venue
+      venue = create :venue
       original_title = venue.title
 
       venue.title += " (change)"

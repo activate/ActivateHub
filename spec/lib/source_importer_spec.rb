@@ -39,7 +39,6 @@ describe SourceImporter do
     it "should try to fetch abstract events from SourceParser" do
       SourceParser.should_receive(:to_abstract_events) do |options|
         options[:url].should eq source.url
-        options[:source].should eq source
       end.and_return([])
 
       importer.fetch_upstream

@@ -86,9 +86,9 @@ end
 #   bundle install --without development:test
 group :development, :test do
   gem 'pry-rails'
-  gem 'rspec-rails', '2.11.0'
+  gem 'rspec-rails', '2.14.0'
   gem 'webrat', '0.7.3'
-  gem 'factory_girl_rails', '1.7.0' # 2.0 and above don't support Ruby 1.8.7 :(
+  gem 'factory_girl_rails', '4.2.1'
   gem 'spork', '~> 0.9.2'
   gem 'database_cleaner', '~> 0.8.0'
   gem 'faker'

@@ -35,9 +35,9 @@ Spork.prefork do
     config.mock_with :rspec
 
     # Filter out gems from backtraces
-    config.backtrace_clean_patterns << /vendor\//
-    config.backtrace_clean_patterns << /lib\/rspec\/rails/
-    config.backtrace_clean_patterns << /gems\//
+    config.backtrace_exclusion_patterns << /vendor\//
+    config.backtrace_exclusion_patterns << /lib\/rspec\/rails/
+    config.backtrace_exclusion_patterns << /gems\//
 
     # Disable these so transactions can be used by the database cleaner
     config.use_transactional_fixtures = false

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Source, "in general" do
-  subject(:source) { Factory.build(:source) }
+  subject(:source) { build(:source) }
 
   before(:each) do
     @event = mock_model(Event,
@@ -53,8 +53,8 @@ end
 describe Source, "when associated with an organization" do
   before(:each) do
 
-    @topics =  [Topic.new(:name => 'fun'), Topic.new(:name => 'loving')]
-    @types = [Type.new(:name => 'random'), Type.new(:name => 'tests')]
+    @topics =  build_list(:topic, 2)
+    @types = build_list(:type, 2)
 
     @organization = mock_model(Organization,
       :name => "Test Org Title",
@@ -82,13 +82,12 @@ describe Source, "when associated with an organization" do
   source.should_receive(:to_events).and_return([@event])
 
   # setup expectations that the output event has types, topics, and organization set
-  output_event = @event.dup
-  output_event.should_receive(:types=).with(@types)
-  output_event.should_receive(:topics=).with(@topics)
-  output_event.should_receive(:organization=).with(@organization)
+  @event.should_receive(:types=).with(@types)
+  @event.should_receive(:topics=).with(@topics)
+  @event.should_receive(:organization=).with(@organization)
 
   # Go! (Run the code and verify the above expectations)
-  source.create_events!.should == [output_event]
+  source.create_events!.should eq [@event]
   end
 end
 

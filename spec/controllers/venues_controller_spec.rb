@@ -9,8 +9,8 @@ describe VenuesController do
   end
 
   it "should redirect duplicate venues to their master" do
-    venue_master = Factory(:venue)
-    venue_duplicate = Factory(:venue)
+    venue_master = create(:venue)
+    venue_duplicate = create(:venue)
 
     # No redirect when they're unique
     get 'show', :id => venue_duplicate.id
@@ -43,8 +43,8 @@ describe VenuesController do
 
   describe "when updating venues" do
     before do
-      @venue = Factory.build(:venue, :versions => [])
-      Venue.stub!(:find).and_return(@venue)
+      @venue = build(:venue, :versions => [])
+      Venue.stub(:find).and_return(@venue)
     end
 
     it "should stop evil robots" do
@@ -55,9 +55,9 @@ describe VenuesController do
 
   describe "when rendering the venues index" do
     before do
-      @open_venue = Factory(:venue, :title => 'Open Town', :description => 'baz', :wifi => false)
-      @closed_venue = Factory(:venue, :title => 'Closed Down', :closed => true, :wifi => false)
-      @wifi_venue = Factory(:venue, :title => "Internetful", :wifi => true)
+      @open_venue = create(:venue, :title => 'Open Town', :description => 'baz', :wifi => false)
+      @closed_venue = create(:venue, :title => 'Closed Down', :closed => true, :wifi => false)
+      @wifi_venue = create(:venue, :title => "Internetful", :wifi => true)
     end
 
     describe "with no parameters" do
@@ -165,8 +165,8 @@ describe VenuesController do
     describe "in JSON format" do
       describe "with events" do
         before do
-          @venue = Factory.build(:venue, :id => 123)
-          Venue.stub!(:find).and_return(@venue)
+          @venue = build(:venue, :id => 123)
+          Venue.stub(:find).and_return(@venue)
         end
 
         it "should produce JSON" do
@@ -190,9 +190,9 @@ describe VenuesController do
     describe "in HTML format" do
       describe "venue with future and past events" do
         before do
-          @venue = Factory(:venue)
-          @future_event = Factory(:event, :venue => @venue)
-          @past_event = Factory(:event, :venue => @venue,
+          @venue = create(:venue)
+          @future_event = create(:event, :venue => @venue)
+          @past_event = create(:event, :venue => @venue,
             :start_time => Time.now - 1.week + 1.hour,
             :end_time => Time.now - 1.week + 2.hours)
 
@@ -219,7 +219,7 @@ describe VenuesController do
   describe "DELETE" do
     describe "when deleting a venue without events" do
       before do
-        @venue = Factory(:venue)
+        @venue = create(:venue)
       end
 
       shared_examples_for "destroying a Venue record without events" do
@@ -261,7 +261,7 @@ describe VenuesController do
 
     describe "when deleting a venue with events" do
       before do
-        @event = Factory(:event_with_venue)
+        @event = create(:event_with_venue)
         @venue = @event.venue
       end
 
