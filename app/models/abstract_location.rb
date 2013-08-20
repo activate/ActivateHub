@@ -6,6 +6,7 @@ class AbstractLocation < ActiveRecord::Base
 
   validates :site_id, :presence => true
   validates :source_id, :presence => true
+  validates :title, :presence => true
 
   serialize :tags, Array
 

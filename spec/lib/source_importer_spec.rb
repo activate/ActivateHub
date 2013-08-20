@@ -55,6 +55,20 @@ describe SourceImporter do
       importer.fetch_upstream
       importer.abstract_events.should have(1).item
     end
+
+    it "should associate source with abstract events" do
+      SourceParser.stub(:to_abstract_events => [build_stubbed(:abstract_event)])
+      importer.fetch_upstream
+      importer.abstract_events.first.source.should eq source
+    end
+
+    it "should associate source with abstract locations" do
+      SourceParser.stub(:to_abstract_events => [build_stubbed(:abstract_event,
+        :abstract_location => build_stubbed(:abstract_location)
+      )])
+      importer.fetch_upstream
+      importer.abstract_locations.first.source.should eq source
+    end
   end
 
 end

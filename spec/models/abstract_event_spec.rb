@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe AbstractEvent do
-  subject(:abstract_event) { build_stubbed(:abstract_event) }
+  subject(:abstract_event) { build_stubbed(:abstract_event, :source => source) }
+  let(:source) { build_stubbed(:source) }
 
   it { should be_valid }
 
@@ -15,9 +16,19 @@ describe AbstractEvent do
 
   it { should validate_presence_of(:site_id) }
   it { should validate_presence_of(:source_id) }
-
+  it { should validate_presence_of(:title) }
+  it { should validate_presence_of(:start_time) }
+  it { should validate_presence_of(:end_time) }
 
   #---[ Instance Methods ]--------------------------------------------------
+
+  describe "#abstract_location=" do
+    it "sets the :venue_title attribute to abstract location's title" do
+      al = build_stubbed(:abstract_location, :source => source, :title => 'The Bog')
+      abstract_event.abstract_location = al
+      abstract_event.venue_title.should eq 'The Bog'
+    end
+  end
 
   describe "#tags" do
     it "should be an empty array by default" do
@@ -42,10 +53,9 @@ describe AbstractEvent do
     end
 
     it "doesn't attempt any matchers that have blank attributes" do
-      create(:abstract_event, :source => source, :external_id => nil)
       create(:abstract_event, :source => source, :external_id => '')
       ae = build(:abstract_event, :source => source, :external_id => '')
-      ae.find_existing.should be_nil
+      ae.find_existing.should_not eq abstract_event
     end
 
     it "matches using :title and :start_time attributes" do

@@ -6,9 +6,16 @@ class AbstractEvent < ActiveRecord::Base
 
   validates :site_id, :presence => true
   validates :source_id, :presence => true
+  validates :title, :presence => true
+  validates :start_time, :presence => true
+  validates :end_time, :presence => true
 
   serialize :tags, Array
 
+  def abstract_location=(abstract_location)
+    self.venue_title = abstract_location.try(:title)
+    super
+  end
 
   def find_existing
     # limit search to same source, not trying to de-dupe events, just trying
