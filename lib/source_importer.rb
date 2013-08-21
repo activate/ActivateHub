@@ -7,9 +7,6 @@ class SourceImporter
 
     @source = source
     @range_start = options[:range_start] || (Time.zone.now + 1.hour)
-
-    @abstract_events = []
-    @abstract_locations = []
   end
 
   def original_events
@@ -25,6 +22,17 @@ class SourceImporter
     # ensure all abstract events and locations are associated with the source
     @abstract_events.each {|ae| ae.source = source }
     @abstract_locations.each {|al| al.source = source }
+
+    true
+  end
+
+  def import!
+    # fetch upstream events if not tried yet
+    fetch_upstream unless abstract_events
+
+    # separate out and save abstract events that fail validation checks
+    invalid, valid = abstract_events.partition(&:invalid?)
+    invalid.each(&:save_invalid!)
 
     true
   end

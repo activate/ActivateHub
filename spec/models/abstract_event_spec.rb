@@ -20,6 +20,18 @@ describe AbstractEvent do
   it { should validate_presence_of(:start_time) }
   it { should validate_presence_of(:end_time) }
 
+  #---[ Scopes ]------------------------------------------------------------
+
+  describe "(scopes)" do
+    describe "::invalid" do
+      it "should return only invalid abstract events" do
+        create(:abstract_event)
+        build_list(:abstract_event, 2, :invalid).each(&:save_invalid!)
+        AbstractEvent.invalid.size.should eq 2
+      end
+    end
+  end
+
   #---[ Instance Methods ]--------------------------------------------------
 
   describe "#abstract_location=" do
@@ -90,6 +102,20 @@ describe AbstractEvent do
       aes = create_list(:abstract_event, 3, :source => source, :external_id => 'x')
       ae = build(:abstract_event, :source => source, :external_id => 'x')
       ae.find_existing.should eq aes.last
+    end
+  end
+
+  describe "#save_invalid!" do
+    subject(:abstract_event) { build(:abstract_event, :invalid) }
+
+    it "should persist to the database" do
+      expect { abstract_event.save_invalid! } \
+        .to change { AbstractEvent.count }.by(1)
+    end
+
+    it "should flag it as being invalid" do
+      abstract_event.save_invalid!
+      abstract_event.result.should eq 'invalid'
     end
   end
 

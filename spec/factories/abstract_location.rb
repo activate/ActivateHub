@@ -4,7 +4,7 @@ FactoryGirl.define do
   factory :abstract_location do
     site { Site.find_by_domain(ENV['TEST_REQ_HOST']) }
 
-    title 'Strawberry-Turnip Cross-Breeding Facility'
+    sequence(:title) {|n| "Underground Strawberry-Turnip Cross-Breeding Facility ##{n}" }
 
     source
   end

@@ -25,6 +25,20 @@ describe AbstractLocation do
     end
   end
 
+  describe "#save_invalid!" do
+    subject(:abstract_location) { build(:abstract_location, :invalid) }
+
+    it "should persist to the database" do
+      expect { abstract_location.save_invalid! } \
+        .to change { AbstractLocation.count }.by(1)
+    end
+
+    it "should flag it as being invalid" do
+      abstract_location.save_invalid!
+      abstract_location.result.should eq 'invalid'
+    end
+  end
+
   #-------------------------------------------------------------------------
 
 end

@@ -12,6 +12,9 @@ class AbstractEvent < ActiveRecord::Base
 
   serialize :tags, Array
 
+  scope :invalid, where(:result => 'invalid')
+
+
   def abstract_location=(abstract_location)
     self.venue_title = abstract_location.try(:title)
     super
@@ -34,6 +37,11 @@ class AbstractEvent < ActiveRecord::Base
     existing_matchers.inject(nil) do |existing,matcher_conditions|
       existing ||= abstract_events.where(matcher_conditions).order(:id).last
     end
+  end
+
+  def save_invalid!
+    self.result = 'invalid'
+    save!(:validate => false)
   end
 
 end

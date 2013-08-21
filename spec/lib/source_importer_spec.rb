@@ -70,4 +70,28 @@ describe SourceImporter do
     end
   end
 
+  describe "#import!" do
+    let(:abstract_events) { build_list(:abstract_event, 3, :future) }
+    before(:each) { SourceParser.stub(:to_abstract_events => abstract_events) }
+
+    it "fetches upstream events if not already fetched" do
+      importer.should_receive(:fetch_upstream).once.and_call_original
+      importer.import!
+    end
+
+    it "doesn't fetch upstream events if already fetched" do
+      importer.fetch_upstream
+      importer.should_receive(:fetch_upstream).never
+      importer.import!
+    end
+
+    context "with invalid events" do
+      let(:abstract_events) { build_list(:abstract_event, 2, :invalid) }
+
+      it "persists invalid abstract events (for eventual triage)" do
+        expect { importer.import! }.to change { AbstractEvent.invalid.count }.by(2)
+      end
+    end
+  end
+
 end
