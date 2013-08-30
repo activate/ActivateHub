@@ -12,5 +12,14 @@ FactoryGirl.define do
       title nil
     end
 
+    trait :w_address do
+      address 'Unlabelled'
+      street_address 'Not enough houses'
+      locality "You're getting colder"
+      region 'Likely Hell'
+      postal_code '99762'
+      country 'US'
+    end
+
   end
 end

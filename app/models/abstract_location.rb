@@ -18,6 +18,36 @@ class AbstractLocation < ActiveRecord::Base
   scope :invalid, where(:result => 'invalid')
 
 
+  def find_existing
+    # limit search to same source, not trying to de-dupe venues, just trying
+    # to be smart about looking for shifting abstract locations in same source
+    abstract_locations = self.class.where(:source_id => source.id)
+
+    existing_matchers = [
+      { :external_id => external_id },
+      { :title => title },
+      # note: lat+long not exact enough, can have mult. venues within a building
+    ]
+
+    # all matcher conditions must have a value for matcher to be valid
+    existing_matchers.reject! {|m| m.any? {|k,v| v.blank? } }
+
+    # address can be matched as long as it has street-level info
+    if street_address.present?
+      existing_matchers << {
+        :address        => address,
+        :street_address => street_address,
+        :locality       => locality,
+        :region         => region,
+        :postal_code    => postal_code,
+      }
+    end
+
+    existing_matchers.inject(nil) do |existing,matcher_conditions|
+      existing ||= abstract_locations.where(matcher_conditions).order(:id).last
+    end
+  end
+
   def rebase(abstract_location)
     orig_attributes = attributes
 

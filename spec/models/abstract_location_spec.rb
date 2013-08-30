@@ -31,6 +31,81 @@ describe AbstractLocation do
 
   #---[ Instance Methods ]--------------------------------------------------
 
+  describe "#find_existing" do
+    let(:source) { create(:source) }
+    before(:each) { create(:abstract_location, :source => source) } # ensure multiple ALs
+
+    it "only searches within the current source" do
+      existing = create(:abstract_location, :external_id => 'Rx448354')
+      aloc = build(:abstract_location, :external_id => 'Rx448354')
+      aloc.find_existing.should be_nil
+    end
+
+    it "matches using :external_id attribute" do
+      existing = create(:abstract_location, :source => source, :external_id => 'ZF')
+      aloc = build(:abstract_location, :source => source, :external_id => 'ZF')
+      aloc.find_existing.should eq existing
+    end
+
+    it "doesn't attempt any matchers that have blank attributes" do
+      create(:abstract_location, :source => source, :external_id => '')
+      aloc = build(:abstract_location, :source => source, :external_id => '')
+      aloc.find_existing.should_not eq abstract_location
+    end
+
+    it "matches using :title attribute" do
+      existing = create(:abstract_location, :source => source,
+        :title => "The mind of Schrodinger's cat",
+      )
+
+      aloc = build(:abstract_location, :source => source,
+        :title => "The mind of Schrodinger's cat",
+      )
+
+      aloc.find_existing.should eq existing
+    end
+
+    it "matches using address fields when :street_address is present" do
+      existing = create(:abstract_location, :w_address, :source => source,
+        :street_address => 'Anywhere',
+      )
+
+      aloc = build(:abstract_location, :source => source,
+        :address        => existing.address,
+        :street_address => existing.street_address,
+        :locality       => existing.locality,
+        :region         => existing.region,
+        :postal_code    => existing.postal_code,
+        # inc. country is overkill as almost guaranteed uniq without
+      )
+
+      aloc.find_existing.should eq existing
+    end
+
+    it "doesn't match using address fields when :street_address is blank" do
+      existing = create(:abstract_location, :w_address, :source => source,
+        :street_address => '',
+      )
+
+      aloc = build(:abstract_location, :source => source,
+        :address        => existing.address,
+        :street_address => existing.street_address,
+        :locality       => existing.locality,
+        :region         => existing.region,
+        :postal_code    => existing.postal_code,
+        # inc. country is overkill as almost guaranteed uniq without
+      )
+
+      aloc.find_existing.should be_nil
+    end
+
+    it "returns the most recently created match" do
+      alocs = create_list(:abstract_location, 3, :source => source, :external_id => 'k')
+      aloc = build(:abstract_location, :source => source, :external_id => 'k')
+      aloc.find_existing.should eq alocs.last
+    end
+  end
+
   describe "#rebase" do
     # start with something that would be considered identical
     let!(:existing) { abstract_location.dup }
