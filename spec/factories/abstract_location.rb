@@ -7,5 +7,10 @@ FactoryGirl.define do
     sequence(:title) {|n| "Underground Strawberry-Turnip Cross-Breeding Facility ##{n}" }
 
     source
+
+    trait :invalid do
+      title nil
+    end
+
   end
 end
