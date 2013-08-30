@@ -4,6 +4,10 @@ class AbstractEvent < ActiveRecord::Base
   belongs_to :event
   belongs_to :abstract_location
 
+  EVENT_ATTRIBUTES = [ # attributes that get copied over to events if changed
+    :url, :title, :start_time, :end_time, :description, :tags,
+  ]
+
   validates :site_id, :presence => true
   validates :source_id, :presence => true
   validates :title, :presence => true
@@ -18,6 +22,14 @@ class AbstractEvent < ActiveRecord::Base
   def abstract_location=(abstract_location)
     self.venue_title = abstract_location.try(:title)
     super
+  end
+
+  def event_attributes_changed
+    EVENT_ATTRIBUTES.select {|a| changed_attributes.key?(a.to_s) }
+  end
+
+  def event_attributes_changed?
+    event_attributes_changed.any?
   end
 
   def find_existing
@@ -37,6 +49,19 @@ class AbstractEvent < ActiveRecord::Base
     existing_matchers.inject(nil) do |existing,matcher_conditions|
       existing ||= abstract_events.where(matcher_conditions).order(:id).last
     end
+  end
+
+  def rebase(abstract_event)
+    orig_attributes = attributes
+
+    # resets this object's attributes to be identical to abstract_event
+    self.attributes = abstract_event.attributes
+    changed_attributes.clear
+
+    # apply our original attributes on top, allowing us to identify changes
+    self.attributes = orig_attributes
+
+    self
   end
 
   def save_invalid!

@@ -42,6 +42,38 @@ describe AbstractEvent do
     end
   end
 
+  describe "#event_attributes_changed" do
+    subject(:abstract_event) { AbstractEvent.new } # has no changes
+
+    it "is empty when nothing changes" do
+      abstract_event.event_attributes_changed.should eq []
+    end
+
+    it "is empty when a non event attribute changes" do
+      abstract_event.raw_event = 'Kanon!'
+      abstract_event.event_attributes_changed.should eq []
+    end
+
+    AbstractEvent::EVENT_ATTRIBUTES.each do |attribute_name|
+      it "includes attribute name  when #{attribute_name} changes" do
+        abstract_event.send("#{attribute_name}=", :foo)
+        abstract_event.event_attributes_changed.should eq [attribute_name]
+      end
+    end
+  end
+
+  describe "#event_attributes_changed?" do
+    it "is true when #event_attributes_change is not empty" do
+      abstract_event.stub(:event_attributes_changed => [:title, :description])
+      abstract_event.event_attributes_changed?.should be_true
+    end
+
+    it "is false when #event_attributes_changed is empty" do
+      abstract_event.stub(:event_attributes_changed => [])
+      abstract_event.event_attributes_changed?.should be_false
+    end
+  end
+
   describe "#tags" do
     it "should be an empty array by default" do
       AbstractEvent.new.tags.should eq([])
@@ -102,6 +134,52 @@ describe AbstractEvent do
       aes = create_list(:abstract_event, 3, :source => source, :external_id => 'x')
       ae = build(:abstract_event, :source => source, :external_id => 'x')
       ae.find_existing.should eq aes.last
+    end
+  end
+
+  describe "#rebase" do
+    # start with something that would be considered identical
+    let!(:existing) { abstract_event.dup }
+
+    context "when both abstract events have same values" do
+      it "should not report having any event field changes" do
+        abstract_event.rebase(existing)
+        abstract_event.event_attributes_changed?.should be_false
+      end
+    end
+
+    context "when non-event fields have changed" do
+      before(:each) do
+        abstract_event.raw_event = 'xyz12493875'
+        abstract_event.rebase(existing)
+      end
+
+      it "should retain that field's original value" do
+        abstract_event.raw_event.should eq 'xyz12493875'
+      end
+
+      it "should record that field as having changed" do
+        abstract_event.raw_event_changed?.should be_true
+      end
+
+      it "should not have any event field changes" do
+        abstract_event.event_attributes_changed?.should be_false
+      end
+    end
+
+    context "when event fields have changed" do
+      before(:each) do
+        abstract_event.title = 'Sandwich Making Contest'
+        abstract_event.rebase(existing)
+      end
+
+      it "should retain that field's original value" do
+        abstract_event.title.should eq 'Sandwich Making Contest'
+      end
+
+      it "should report having event field changes" do
+        abstract_event.event_attributes_changed?.should be_true
+      end
     end
   end
 
