@@ -101,3 +101,32 @@
     min-width: 75px;
   }
 }
+
+
+
+#admin-content {
+  h3 {
+    font-size: 18px;
+    margin: 20px 0px 5px 0px;
+  }
+
+  table {
+    min-width: 300px;
+
+    th, td {
+      padding: 5px 20px;
+    }
+
+    thead th {
+      font-weight: bold;
+    }
+
+    tbody td {
+      border-top: 1px dotted #ddd;
+    }
+  }
+
+  ul, ol {
+    margin-left: 20px;
+  }
+}

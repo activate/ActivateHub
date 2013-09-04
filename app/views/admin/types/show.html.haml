@@ -1,0 +1,21 @@
+%h2.main-title Type: #{@type.name}
+
+#admin-content
+  - unless @type.any_items?
+    = link_to 'Delete this type', admin_type_path(@type), :method => :delete, :confirm => 'Are you sure?'
+
+  %h3 Most Recently Created Events
+  - if @events.any?
+    %ul
+      - @events.each do |event|
+        %li= link_to "#{event.title} (#{event.start_time.to_date})", event_path(event)
+  - else
+    No events.
+
+  %h3 Sources
+  - if @sources.any?
+    %ul
+      - @sources.each do |source|
+        %li= link_to source.title, organization_source_path(source.organization, source)
+  - else
+    No sources.

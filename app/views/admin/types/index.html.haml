@@ -1,0 +1,15 @@
+%h2.main-title Types
+
+#admin-content
+  %table.index-table
+    %thead
+      %tr
+        %th Name
+        %th # Events
+        %th # Sources
+    %tbody
+      - @types.each do |type|
+        %tr
+          %td= link_to type.name, admin_type_path(type)
+          %td= type.events.size
+          %td= type.sources.size

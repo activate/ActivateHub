@@ -2,7 +2,7 @@ Calagator::Application.routes.draw do
   devise_for :users
 
   scope '(:calendar_type)', :defaults => { :calendar_type => nil } do
-    mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+    mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
 
     match 'omfg' => 'site#omfg'
     match 'hello' => 'site#hello'
@@ -39,6 +39,13 @@ Calagator::Application.routes.draw do
         get :duplicates
       end
     end
+
+    namespace :admin do
+      get '/' => :index
+
+      resources :topics, :types
+    end
+
 
     resources :versions, :only => [:edit]
     resources :changes, :controller => 'paper_trail_manager/changes'

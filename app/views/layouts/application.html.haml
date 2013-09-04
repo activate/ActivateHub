@@ -30,13 +30,13 @@
     = render 'site/tracking'
     = yield(:tracking) if content_for?(:tracking)
 
-  %body{:class => "#{controller.controller_name}-#{action_name} application"}
+  %body{:class => "#{controller.controller_path.parameterize}-#{action_name} application"}
     #navbar= render 'site/navbar'
     #sidebar= render 'site/sidebar'
 
     #main
       - flash.each do |klass,msg|
         .flash-msg{:class => klass}!= msg
-      = yield
+      = content_for?(:content) ? yield(:content) : yield
 
     #footer= render 'site/footer'
