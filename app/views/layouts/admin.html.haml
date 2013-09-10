@@ -10,6 +10,10 @@
       %li= link_to 'Create a new type', new_admin_type_path
       %li= link_to 'View all types', admin_types_path
 
+    %h3= link_to 'Venues', admin_venues_path
+    %ul
+      %li= link_to 'Venues without a location', admin_venues_path(:latitude_null => 1, :longitude_null => 1)
+
 - content_for :content do
   = yield
 

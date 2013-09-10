@@ -1,0 +1,15 @@
+%h2.main-title Venues
+
+#admin-content
+  %table.index-table
+    %thead
+      %tr
+        %th Title
+        %th # Events
+        %th Address
+    %tbody
+      - @venues.each do |venue|
+        %tr
+          %td= link_to venue.title, venue_path(venue)
+          %td= venue.events.size
+          %td= venue.full_address || venue.address

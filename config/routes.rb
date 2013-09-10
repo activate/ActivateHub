@@ -42,7 +42,7 @@ Calagator::Application.routes.draw do
   namespace :admin do
     get '/' => :index
 
-    resources :topics, :types
+    resources :topics, :types, :venues
   end
 
 
