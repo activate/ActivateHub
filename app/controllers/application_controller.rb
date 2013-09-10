@@ -34,6 +34,8 @@ protected
 
     ActiveRecord::Base.current_site = @current_site
     @calendar_type = @current_site.path_prefix
+
+    I18n.locale = @current_site.locale
   end
 
   #---[ Helpers ]---------------------------------------------------------

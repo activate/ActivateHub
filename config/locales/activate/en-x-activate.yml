@@ -1,0 +1,13 @@
+en-x-activate:
+  site:
+    welcome:
+      title: "Your Community is Calling"
+      text: "Search for events and organizations in your community."
+    footer:
+      copyright: "&copy; 2011-2013 Social Action Network LLC"
+      branding: >
+        Branding by <a href="http://www.alicianagel.com/">Alicia Nagel Creative, LLC</a>
+
+  events:
+    index:
+      title: "You are here. Go somewhere!"
