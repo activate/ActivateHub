@@ -1,22 +1,24 @@
 - content_for :sidebar do
   #sidebar-nav.sidebar-box
-    %h3= link_to 'Topics', admin_topics_path
+    %h3 Topics
     %ul
       %li= link_to 'Create a new topic', new_admin_topic_path
       %li= link_to 'View all topics', admin_topics_path
 
-    %h3= link_to 'Types', admin_types_path
+    %h3 Types
     %ul
       %li= link_to 'Create a new type', new_admin_type_path
       %li= link_to 'View all types', admin_types_path
 
     %h3 Possible Issues
     %ul
-      %li= link_to 'Venues without a location', admin_venues_path(:type => 'missing_lat_long')
+      %li= link_to 'Venues without map coordinates', admin_venues_path(:type => 'missing_lat_long')
       %li= link_to 'Events without an end time', admin_events_path(:type => 'missing_end_time')
 
     %h3 Duplicate Management
     %ul
+      %li= link_to 'Venues with a matching title', duplicates_admin_venues_path(:type => 'matching_title')
+      %li= link_to 'Venues at same map coordinates', duplicates_admin_venues_path(:type => 'matching_lat_long')
       %li= link_to 'Events with overlapping time and venue', duplicates_admin_events_path(:type => 'overlapping_venue_and_time')
 
 - content_for :content do

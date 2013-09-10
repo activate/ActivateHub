@@ -42,9 +42,9 @@ Calagator::Application.routes.draw do
   namespace :admin do
     get '/' => :index
 
-    resources :topics, :types, :venues
+    resources :topics, :types
 
-    resources :events do
+    resources :venues, :events do
       collection do
         get  :duplicates
         post :duplicates, :action => 'squash_many_duplicates'

@@ -1,0 +1,31 @@
+%h2.main-title Duplicate Venue Detector
+
+#admin-content
+  - @groupings.each do |title,grouping|
+    = form_for duplicates_admin_venues_path, :html => { :class => 'grouped-duplicates-form' } do |f|
+      %h3= title
+      %table.index-table
+        %thead
+          %tr
+            %th Master?
+            %th Duplicate?
+            %th Title
+            %th # Events
+        %tbody
+          - grouping.each do |venue|
+            %tr
+              %td= radio_button_tag 'master_id', venue.id
+              %td= check_box_tag "duplicate_id_#{venue.id}", venue.id
+              %td= link_to venue.title, venue_path(venue), :target => '_blank'
+              %td= venue.events.non_duplicates.count
+
+      = hidden_field_tag 'type', params[:type]
+      = button_tag 'Squash Duplicates', :style => 'display:none'
+
+:javascript
+  $(document).ready(function() {
+    var $forms = $('.grouped-duplicates-form');
+    $forms.find('input[type=radio]').click(function(e) {
+      $(e.target).closest('form').find('button').show();
+    });
+  });
