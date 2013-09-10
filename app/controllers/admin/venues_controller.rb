@@ -7,8 +7,8 @@ class Admin::VenuesController < AdminController
     @venues = Venue.non_duplicates
 
     # ransack-compatible param-based search (might use real gem later if enough uses)
-    if params[:latitude_null].presence && params[:longitude_null].presence
-      @venues = @venues.where(:latitude => nil, :longitude => nil)
+    if params[:type] == 'missing_lat_long'
+      @venues = @venues.where('latitude is null or longitude is null')
     end
 
     @venues = @venues.order(:title)
