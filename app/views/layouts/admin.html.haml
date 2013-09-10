@@ -10,9 +10,14 @@
       %li= link_to 'Create a new type', new_admin_type_path
       %li= link_to 'View all types', admin_types_path
 
-    %h3= link_to 'Venues', admin_venues_path
+    %h3 Possible Issues
     %ul
-      %li= link_to 'Venues without a location', admin_venues_path(:latitude_null => 1, :longitude_null => 1)
+      %li= link_to 'Venues without a location', admin_venues_path(:type => 'missing_lat_long')
+      %li= link_to 'Events without an end time', admin_events_path(:type => 'missing_end_time')
+
+    %h3 Duplicate Management
+    %ul
+      %li= link_to 'Events with overlapping time and venue', duplicates_admin_events_path(:type => 'overlapping_venue_and_time')
 
 - content_for :content do
   = yield

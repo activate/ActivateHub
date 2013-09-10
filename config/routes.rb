@@ -43,6 +43,13 @@ Calagator::Application.routes.draw do
     get '/' => :index
 
     resources :topics, :types, :venues
+
+    resources :events do
+      collection do
+        get  :duplicates
+        post :duplicates, :action => 'squash_many_duplicates'
+      end
+    end
   end
 
 
