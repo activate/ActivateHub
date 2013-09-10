@@ -14,27 +14,11 @@ class ApplicationController < ActionController::Base
   before_filter :current_site
   before_filter :set_theme
 
-  def default_url_options(options={})
-    { :calendar_type => @calendar_type }
-  end
-
 protected
 
   def current_site
-    @current_site = Site.where(:domain => request.host, :path_prefix => params[:calendar_type]).first
-
-    if !@current_site && request.path =~ %r"^/(admin)|(users)"
-      # no site registered, fake one for now to let admins into rails_admin
-      @current_site = Site.new(:name => "ActivateHub", :domain => request.host)
-    end
-
-    unless @current_site
-      return redirect_to "http://activatehub.org/"
-    end
-
+    @current_site = Site.find_by_domain!(request.host)
     ActiveRecord::Base.current_site = @current_site
-    @calendar_type = @current_site.path_prefix
-
     I18n.locale = @current_site.locale
   end
 

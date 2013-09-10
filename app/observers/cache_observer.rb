@@ -11,7 +11,7 @@ class CacheObserver < ActiveRecord::Observer
   # provides a HTTP_HOST so that caching can be done for a particular hostname.
   def self.daily_key_for(name, request=nil)
     site = ActiveRecord::Base.current_site
-    return "#{name}-#{site.domain}/#{site.path_prefix}@#{Time.now.strftime('%Y%m%d')}"
+    return "#{name}-#{site.domain}@#{Time.now.strftime('%Y%m%d')}"
   end
 
   # Expires all cached data.
