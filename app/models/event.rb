@@ -430,7 +430,7 @@ EOF
             entry.dtend   item.dates.last + 1.day
           else
             entry.dtstart item.start_time
-            entry.dtend   item.end_time || item.start_time + 1.hour
+            entry.dtend   item[:end_time] || item.start_time + 1.hour
           end
 
           if item.url.present?
@@ -550,6 +550,10 @@ EOF
 
   def start_date
     @start_date ||= start_time.to_date
+  end
+
+  def end_time
+    self[:end_time] || start_time
   end
 
   def end_date

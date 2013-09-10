@@ -11,6 +11,13 @@ describe Event do
       event = Event.new(:title => "Event title", :start_time => Time.zone.parse('2008.04.12'), :url => 'google.com')
       event.should be_valid
     end
+
+    describe "#end_time" do
+      it "default to start_time if nil" do
+        start_time = 1.week.from_now
+        Event.new(:start_time => start_time).end_time.should eq start_time
+      end
+    end
   end
 
   describe "when checking time status" do
@@ -839,7 +846,6 @@ describe Event do
 
     it "should represent an event without an end time as a 1-hour block" do
       event = Factory.build(:event, :start_time => now, :end_time => nil)
-      event.end_time.should be_blank
 
       rt = ical_roundtrip(event)
       (rt.dtend - rt.dtstart).should eq 1.hour
