@@ -10,6 +10,8 @@ class EventsController < ApplicationController
     query = Event.non_duplicates.ordered_by_ui_field(params[:order]).includes(:venue, :tags)
     @events = query.within_dates(@start_date, @end_date)
 
+    @events = @events.includes([:organization,:topics,:types])
+
     if topic = params[:topic].presence
       @selected_topics = topic.split(',')
       @events = @events.joins(:topics).where('topics.name' => @selected_topics)
