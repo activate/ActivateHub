@@ -97,7 +97,7 @@ describe Event do
       @basic_event = Event.new(
         :title => 'Web 2.0 Conference',
         :url => 'http://www.web2con.com/',
-        :start_time => Time.zone.parse('2007-10-05'),
+        :start_time => Time.zone.parse('2013-04-05'),
         :end_time => nil,
         :venue => @basic_venue)
     end

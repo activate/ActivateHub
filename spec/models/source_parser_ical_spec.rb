@@ -90,7 +90,7 @@ describe SourceParser::Ical, "with iCalendar events" do
     events.size.should eq 1
     event = events.first
     event.title.should be_blank
-    event.start_time.should eq Time.parse('Wed Jan 17 00:00:00 2007')
+    event.start_time.should eq Time.zone.parse('Thu Jan 17 00:00:00 2013')
     event.venue.should be_nil
   end
 
@@ -114,20 +114,20 @@ describe SourceParser::Ical, "with iCalendar events" do
     event = events.first
     event.title.should eq "XPDX (eXtreme Programming) at CubeSpace"
     event.description.should be_blank
-    event.start_time.should eq Time.parse("2007-10-24 18:30:00")
-    event.end_time.should eq Time.parse("2007-10-24 19:30:00")
+    event.start_time.should eq Time.zone.parse("2012-10-24 15:30:00")
+    event.end_time.should eq Time.zone.parse("2012-10-24 20:30:00")
 
     event = events[17]
     event.title.should eq "Code Sprint/Coding Dojo at CubeSpace"
     event.description.should be_blank
-    event.start_time.should eq Time.parse("2007-10-17 19:00:00")
-    event.end_time.should eq Time.parse("2007-10-17 21:00:00")
+    event.start_time.should eq Time.zone.parse("2012-10-17 20:00:00")
+    event.end_time.should eq Time.zone.parse("2012-10-17 22:00:00")
 
     event = events.last
     event.title.should eq "Adobe Developer User Group"
     event.description.should eq "http://pdxria.com/"
-    event.start_time.should eq Time.parse("2007-01-16 17:30:00")
-    event.end_time.should eq Time.parse("2007-01-16 18:30:00")
+    event.start_time.should eq Time.zone.parse("2012-01-16 17:30:00")
+    event.end_time.should eq Time.zone.parse("2012-01-16 18:30:00")
   end
 
   it "should parse non-Vcard locations" do
@@ -152,14 +152,14 @@ describe SourceParser::Ical, "when importing events with non-local times" do
     events = @source.create_events!(:skip_old => false)
     event = events.first
 
-    event.start_time.should eq Time.parse('Thu Jul 01 08:00:00 +0000 2010')
-    event.end_time.should eq Time.parse('Thu Jul 01 09:00:00 +0000 2010')
+    event.start_time.should eq Time.zone.parse('Thu Jul 01 08:00:00 +0000 2010')
+    event.end_time.should eq Time.zone.parse('Thu Jul 01 09:00:00 +0000 2010')
 
     # time should be the same after saving event to, and getting it from, database
     event.save
     e = Event.find(event)
-    e.start_time.should eq Time.parse('Thu Jul 01 08:00:00 +0000 2010')
-    e.end_time.should eq Time.parse('Thu Jul 01 09:00:00 +0000 2010')
+    e.start_time.should eq Time.zone.parse('Thu Jul 01 08:00:00 +0000 2010')
+    e.end_time.should eq Time.zone.parse('Thu Jul 01 09:00:00 +0000 2010')
   end
 
   it "should store time with TZID=GMT in UTC" do
@@ -167,8 +167,8 @@ describe SourceParser::Ical, "when importing events with non-local times" do
     events = events_from_ical_at('ical_gmt.ics')
     events.size.should eq 1
     abstract_event = events.first
-    abstract_event.start_time.should eq Time.parse('Fri May 07 08:00:00 +0000 2020')
-    abstract_event.end_time.should eq Time.parse('Fri May 07 09:00:00 +0000 2020')
+    abstract_event.start_time.should eq Time.zone.parse('Fri May 07 08:00:00 +0000 2020')
+    abstract_event.end_time.should eq Time.zone.parse('Fri May 07 09:00:00 +0000 2020')
   end
 
 end
@@ -186,7 +186,7 @@ BEGIN:VEVENT
 UID:Unit-01
 SUMMARY:Past start and no end
 DESCRIPTION:Ayanami
-DTSTART:#{(Time.now-1.year).strftime("%Y%m%d")}
+DTSTART:#{(Time.zone.now-3.months).strftime("%Y%m%d")}
 DTSTAMP:040425
 SEQ:0
 END:VEVENT
@@ -194,7 +194,7 @@ BEGIN:VEVENT
 UID:Unit-02
 SUMMARY:Current start and no end
 DESCRIPTION:Soryu
-DTSTART:#{(Time.now+1.year).strftime("%Y%m%d")}
+DTSTART:#{(Time.zone.now+3.months).strftime("%Y%m%d")}
 DTSTAMP:040425
 SEQ:1
 END:VEVENT
@@ -202,32 +202,32 @@ BEGIN:VEVENT
 UID:Unit-03
 SUMMARY:Past start and current end
 DESCRIPTION:Soryu a
-DTSTART:#{(Time.now-1.year).strftime("%Y%m%d")}
-DTEND:#{(Time.now+1.year).strftime("%Y%m%d")}
+DTSTART:#{(Time.zone.now-3.months).strftime("%Y%m%d")}
+DTEND:#{(Time.zone.now+3.months).strftime("%Y%m%d")}
 DTSTAMP:040425
 END:VEVENT
 BEGIN:VEVENT
 UID:Unit-04
 SUMMARY:Current start and current end
 DESCRIPTION:Soryu as
-DTSTART:#{Time.now.strftime("%Y%m%d")}
-DTEND:#{(Time.now+1.year).strftime("%Y%m%d")}
+DTSTART:#{Time.zone.now.strftime("%Y%m%d")}
+DTEND:#{(Time.zone.now+3.months).strftime("%Y%m%d")}
 DTSTAMP:040425
 END:VEVENT
 BEGIN:VEVENT
 UID:Unit-05
 SUMMARY:Past start and past end
 DESCRIPTION:Soryu qewr
-DTSTART:#{(Time.now-1.year).strftime("%Y%m%d")}
-DTEND:#{(Time.now-1.year).strftime("%Y%m%d")}
+DTSTART:#{(Time.zone.now-3.months).strftime("%Y%m%d")}
+DTEND:#{(Time.zone.now-3.months).strftime("%Y%m%d")}
 DTSTAMP:040425
 END:VEVENT
 BEGIN:VEVENT
 UID:Unit-06
 SUMMARY:Current start and past end
 DESCRIPTION:Not a valid event
-DTSTART:#{Time.now.strftime("%Y%m%d")}
-DTEND:#{(Time.now-1.year).strftime("%Y%m%d")}
+DTSTART:#{Time.zone.now.strftime("%Y%m%d")}
+DTEND:#{(Time.zone.now-3.months).strftime("%Y%m%d")}
 DTSTAMP:040425
 END:VEVENT
 END:VCALENDAR

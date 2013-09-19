@@ -58,7 +58,8 @@ class SourceParser # :nodoc:
       # Skip old events by default
 
       opts[:skip_old] = true unless opts[:skip_old] == false
-      cutoff = Time.now.yesterday
+      range_start = opts[:skip_old] ? 1.day.ago : 5.years.ago
+      range_end = 6.months.from_now # needed for infinite recurring events
 
       content = content_for(opts).gsub(/\r\n/, "\n")
 
@@ -73,8 +74,12 @@ class SourceParser # :nodoc:
           end
         end
         content_calendars.each do |content_calendar|
-          content_calendar.events.each_with_index do |component, index|
-            next if opts[:skip_old] && (component.dtend || component.dtstart).to_time < cutoff
+          # convert recurring events into discrete events, filter to date range
+          components = content_calendar.events.flat_map do |component|
+            component.occurrences(:overlapping => [range_start, range_end])
+          end
+
+          components.each do |component|
             event             = AbstractEvent.new
             event.title       = component.summary
             event.description = component.description
