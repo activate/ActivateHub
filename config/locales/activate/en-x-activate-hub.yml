@@ -10,3 +10,6 @@ en-x-activate-hub:
           <input type="hidden" name="id" value="d9bc31ac22" />
           <button style="padding:10px 15px">Newsletter Sign-up</button>
         </form>
+  events:
+    index:
+      title: "Your Community is Calling"
