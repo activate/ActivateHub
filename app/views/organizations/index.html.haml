@@ -14,7 +14,7 @@
       - if organization.url?
         .organization-url
           .organization-url-label= t('.url_label')
-          = link_to organization.url, organization.url
+          = link_to organization.url, organization.url, :target => '_blank'
 
       .organization-description= organization.description
 

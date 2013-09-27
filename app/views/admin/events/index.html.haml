@@ -1,0 +1,19 @@
+%h2.main-title Events
+
+#admin-content
+  %table.index-table
+    %thead
+      %tr
+        %th Title
+        %th Start Time
+        %th End Time
+        %th Venue
+    %tbody
+      - @events.each do |event|
+        %tr
+          %td= link_to event.title, event_path(event)
+          %td= event.start_time
+          %td= event.end_time
+          %td
+            - if venue = event.venue
+              = link_to event.venue.title, venue_path(venue)

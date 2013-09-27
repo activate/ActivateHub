@@ -1,0 +1,17 @@
+%h2.main-title Topics
+
+#admin-content
+  %table.index-table
+    %thead
+      %tr
+        %th Name
+        %th # Events
+        %th # Organizations
+        %th # Sources
+    %tbody
+      - @topics.each do |topic|
+        %tr
+          %td= link_to topic.name, admin_topic_path(topic)
+          %td= topic.events.size
+          %td= topic.organizations.size
+          %td= topic.sources.size

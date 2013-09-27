@@ -14,7 +14,7 @@
 
     - if organization.url?
       %h2.organization-url-title= t('.url.title')
-      .organization-url= link_to organization.url, organization.url
+      .organization-url= link_to organization.url, organization.url, :target => '_blank'
 
     %h2.organization-description-title= t('.description.title')
     .organization-description{:class => (organization.description? ? '' : 'no-content')}

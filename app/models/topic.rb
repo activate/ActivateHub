@@ -7,7 +7,14 @@ class Topic < ActiveRecord::Base
   scope_to_current_site
 
   # Validations
-  validates_presence_of :name
+  validates :name, :presence => true
+  validates :name, :uniqueness => { :scope => :site_id, :case_sensitive => false }
 
   default_scope :order => 'LOWER(topics.name) ASC'
+
+
+  def any_items?
+    events.any? || organizations.any? || sources.any?
+  end
+
 end

@@ -32,11 +32,6 @@ en:
       text: >
         Search for events and organizations in your community. Get educated,
         get involved, and start making a difference!
-        <form method="get" action="http://activatehub.us4.list-manage1.com/subscribe" target="_blank">
-          <input type="hidden" name="u" value="e60bb687d7e9506a113b83dce" />
-          <input type="hidden" name="id" value="d9bc31ac22" />
-          <button style="padding:10px 15px">Newsletter Sign-up</button>
-        </form>
     wiki_props:
       title: "This page is community managed!"
       edit: "edit"
@@ -50,9 +45,8 @@ en:
       add: "create"
       actions: "You can %{add} a new %{obj}."
     footer:
-      copyright: "&copy; 2011-2013 Social Action Network LLC"
-      branding: >
-        Branding by <a href="http://www.alicianagel.com/">Alicia Nagel Creative, LLC</a>
+      copyright:
+      branding:
 
   events:
     appropriateness: >
@@ -76,7 +70,7 @@ en:
         ical: "iCalendar file"
         gcal: "Google Calendar"
     index:
-      title: "You are here. Go somewhere!"
+      title: ""
       switcher:
         list: "List"
         calendar: "Calendar"

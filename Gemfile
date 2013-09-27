@@ -37,6 +37,8 @@ gem 'pg' unless defined?(DB_ADAPTER) && DB_ADAPTER != 'postgresql'
 
 #---[ Core Gems ]-----------------------------------------------------------
 
+gem 'thin', '~> 1.5.1'
+
 # Run-time dependencies
 gem 'rails', '3.2.13'
 gem 'rails_autolink', '1.0.9'

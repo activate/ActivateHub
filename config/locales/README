@@ -1,0 +1,23 @@
+# The "-x-foo-bar" at the end of some locales are "private use subtags";
+# they are part of the official BCP 47 ("Tags for Identifying Languages")
+# and RFC 4647 ("Matching of Language Tags") specifications for naming
+# and matching locales, see the following relevant sections for more info:
+#
+#   BCP 47 - 2.2.7.  Private Use Subtags
+#   http://tools.ietf.org/html/bcp47#section-2.2.7
+#
+#   BCP 47 - 4.6.  Considerations for Private Use Subtags
+#   http://tools.ietf.org/html/bcp47#section-4.6
+#
+#   RFC 4647 - 3.4.  Lookup
+#   http://tools.ietf.org/html/rfc4647#section-3.4
+#
+# Private use subtags allow us to define a default set of translations for
+# a language (ie. "en"), override or complement them on a per-theme basis
+# and then further override them on a per-site basis.
+#
+# **IMPORTANT:** the maximum length of each private use subtag cannot
+# exceed eight characters and must contain only letters and numbers
+# (see: http://tools.ietf.org/html/bcp47#section-2.1).  While the i18n gem
+# does not enforce this by default, you should try to follow this
+# convention and remain within the specification.

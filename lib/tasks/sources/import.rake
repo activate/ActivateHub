@@ -2,7 +2,7 @@ namespace :sources do
   task 'import:all', [:site] => :tenantized_environment do |t,args|
     site = ActiveRecord::Base.current_site
     Source.enabled.each do |source|
-      new_args = [site.site_path, source.id]
+      new_args = [site.domain, source.id]
       Rake::Task['sources:import'].tap(&:reenable).invoke(*new_args)
     end
   end
@@ -35,7 +35,7 @@ namespace :sources do
   end
 
   task :tenantized_environment, [:site] => :environment do |t,args|
-    unless site = Site.find_by_site_path(args[:site])
+    unless site = Site.find_by_domain!(args[:site])
       raise "could not find site with path '#{args[:site]}'"
     end
 

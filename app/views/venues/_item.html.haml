@@ -17,8 +17,11 @@
 
     - if venue.url?
       %h2.venue-url-title= t('.url.title')
-      .venue-url= link_to venue.url, venue.url
+      .venue-url= link_to venue.url, venue.url, :target => '_blank'
 
     %h2.venue-description-title= t('.description.title')
     .venue-description{:class => (venue.description? ? '' : 'no-content')}
       = venue.description.presence || t('.description.none')
+
+:javascript
+  $('.event-description a').attr('target', '_blank');

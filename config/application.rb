@@ -94,6 +94,16 @@ module Calagator
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
+    #---[ Locale / Translations ]-------------------------------------------
+
+    # Enable traversing up the locale hierarchy until we find a match,
+    # specifically: en-x-foo-bar -> en-x-foo -> en (not translation path)
+    config.i18n.fallbacks = true
+
+    # Include subdirectories when searching for locales
+    i18n_path = Rails.root.join('config', 'locales', '**', '*.{rb,yml}')
+    config.i18n.load_path += Dir[i18n_path]
+
     #---[ Secrets and settings ]--------------------------------------------
 
     config.before_initialize do

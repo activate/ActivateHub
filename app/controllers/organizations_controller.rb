@@ -14,6 +14,11 @@ class OrganizationsController < ApplicationController
   def show
     begin
       @organization = Organization.find(params[:id], :include => [:events])
+
+      if @organization.sources.none?
+        flash[:notice] = "This organization has no events. " +
+          view_context.link_to(t('organizations.item.sources.add'), new_organization_source_path(@organization))
+      end
     rescue ActiveRecord::RecordNotFound => e
       flash[:failure] = e.to_s
       return redirect_to(new_organization_path)

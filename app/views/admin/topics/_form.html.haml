@@ -1,0 +1,27 @@
+:ruby
+  topic ||= raise ArgumentError, "topic is required in view partial #{__FILE__}"
+
+
+- content_for :css_insert do
+  = stylesheet_link_tag 'forms'
+
+- content_for :javascript_insert do
+  = javascript_include_tag 'forms'
+
+
+.topic-form
+  = semantic_form_for [:admin, topic], :as => :topic, :html => { :id => 'topic-form' } do |f|
+    = f.inputs do
+      = f.input :name
+
+    %li.trap
+      = label 'trap', 'field', "Leave this field blank or we'll think you're a robot."
+      = text_field_tag 'trap_field', params[:trap_field]
+
+    = f.actions do
+      = f.action :submit
+
+
+:javascript
+  // FIXME: shouldn't have to work around 'topic' class css rule, should be scoped better
+  $('form').removeClass('topic');

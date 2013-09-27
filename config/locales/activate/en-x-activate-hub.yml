@@ -1,0 +1,15 @@
+en-x-activate-hub:
+  site:
+    welcome:
+      title: "Change Your Calendar,\nChange Your World"
+      text: >
+        Search for events and organizations in your community. Get educated,
+        get involved, and start making a difference!
+        <form method="get" action="http://activatehub.us4.list-manage1.com/subscribe" target="_blank">   
+          <input type="hidden" name="u" value="e60bb687d7e9506a113b83dce" />
+          <input type="hidden" name="id" value="d9bc31ac22" />
+          <button style="padding:10px 15px">Newsletter Sign-up</button>
+        </form>
+  events:
+    index:
+      title: "Your Community is Calling"

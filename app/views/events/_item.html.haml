@@ -33,7 +33,7 @@
 
     - if event.url?
       %h2.event-website-title= t('.website')
-      .event-website= link_to truncate(event.url, :length => 128), event.url, :rel => 'nofollow', :class => 'url', :itemprop => 'url'
+      .event-website= link_to truncate(event.url, :length => 128), event.url, :rel => 'nofollow', :class => 'url', :itemprop => 'url', :target => '_blank'
     - if event.description?
       %h2.event-description-title= t('.description')
       .event-description.description{:itemprop => 'description'}
@@ -46,3 +46,6 @@
       - if event.types.any?
         - event.types.order(:name).each do |type|
           = link_to type[:name], params.merge(:type => type[:name]), :class => 'type'
+
+:javascript
+  $('.event-description a').attr('target', '_blank');
