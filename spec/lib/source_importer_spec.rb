@@ -3,7 +3,14 @@ require 'spec_helper'
 describe SourceImporter do
   let(:source) { build_stubbed(:source) }
   let(:range_start) { Time.zone.now + 1.hour }
-  let(:importer) { SourceImporter.new(source, :range_start => range_start) }
+  let(:range_end) { Time.zone.now + 1.year }
+
+  let(:importer) do
+    SourceImporter.new(source,
+      :range_start => range_start,
+      :range_end   => range_end
+    )
+  end
 
   describe "#range_start" do
     it "can be provided on initialization" do
@@ -18,6 +25,19 @@ describe SourceImporter do
     end
   end
 
+  describe "#range_end" do
+    it "can be provided on initialization" do
+      expected = Time.zone.now + 3.years
+      importer = SourceImporter.new(source, :range_end => expected)
+      importer.range_end.should eq expected
+    end
+
+    it "should default to one year from now" do
+      expected = Time.zone.now + 1.year
+      SourceImporter.new(source).range_end.should eq expected
+    end
+  end
+
   describe "#original_events" do
     let(:range_start) { Time.zone.now + 1.day }
 
@@ -27,10 +47,17 @@ describe SourceImporter do
       importer.original_events.should have(2).items
     end
 
-    it "returns only events gteq to our :range_start" do
-      create(:event, :source => source, :start_time => Time.zone.now)
-      create(:event, :source => source, :start_time => range_start - 1.second)
-      create(:event, :source => source, :start_time => range_start)
+    it "returns only events with a start time gteq to our :range_start" do
+      create(:event, :source => source, :start_time => Time.zone.now)          # excluded
+      create(:event, :source => source, :start_time => range_start - 1.second) # excluded
+      create(:event, :source => source, :start_time => range_start)            # included
+      importer.original_events.should have(1).item
+    end
+
+    it "returns only events with a start time lt our :range_end" do
+      create(:event, :source => source, :start_time => range_end + 1.year)   # excluded
+      create(:event, :source => source, :start_time => range_end - 1.second) # included
+      create(:event, :source => source, :start_time => range_end)            # excluded
       importer.original_events.should have(1).item
     end
   end
@@ -46,13 +73,15 @@ describe SourceImporter do
 
     it "should filter out abstract events not in our date range" do
       SourceParser.stub(:to_abstract_events => [
-        build_stubbed(:abstract_event, :start_time => Time.zone.now),
-        build_stubbed(:abstract_event, :start_time => range_start - 1.second),
-        build_stubbed(:abstract_event, :start_time => range_start),
+        build_stubbed(:abstract_event, :start_time => Time.zone.now),          # excluded
+        build_stubbed(:abstract_event, :start_time => range_start - 1.second), # excluded
+        build_stubbed(:abstract_event, :start_time => range_start),            # included
+        build_stubbed(:abstract_event, :start_time => range_end - 1.second),   # included
+        build_stubbed(:abstract_event, :start_time => range_end),              # excluded
       ])
 
       importer.fetch_upstream
-      importer.abstract_events.should have(1).item
+      importer.abstract_events.should have(2).item
     end
 
     it "should associate source with abstract events" do
