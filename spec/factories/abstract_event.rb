@@ -17,5 +17,9 @@ FactoryGirl.define do
     trait :future do
       start_time { Time.zone.now + 7.days }
     end
+
+    trait :w_location do
+      abstract_location
+    end
   end
 end
