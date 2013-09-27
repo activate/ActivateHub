@@ -24,6 +24,7 @@ class SourceImporter
     @abstract_locations = @abstract_events.map(&:abstract_location).compact
 
     # ensure all abstract events and locations are associated with the source
+    # FIXME: should eventually be done in source parser during Abstract* init
     @abstract_events.each {|ae| ae.source = source }
     @abstract_locations.each {|al| al.source = source }
 

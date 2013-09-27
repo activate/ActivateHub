@@ -23,18 +23,18 @@ class AbstractLocation < ActiveRecord::Base
     # to be smart about looking for shifting abstract locations in same source
     abstract_locations = self.class.where(:source_id => source.id)
 
-    existing_matchers = [
+    matchers = [
       { :external_id => external_id },
       { :title => title },
       # note: lat+long not exact enough, can have mult. venues within a building
     ]
 
     # all matcher conditions must have a value for matcher to be valid
-    existing_matchers.reject! {|m| m.any? {|k,v| v.blank? } }
+    matchers.reject! {|m| m.any? {|k,v| v.blank? } }
 
     # address can be matched as long as it has street-level info
     if street_address.present?
-      existing_matchers << {
+      matchers << {
         :address        => address,
         :street_address => street_address,
         :locality       => locality,
@@ -43,9 +43,11 @@ class AbstractLocation < ActiveRecord::Base
       }
     end
 
-    existing_matchers.inject(nil) do |existing,matcher_conditions|
+    abstract_location = matchers.inject(nil) do |existing,matcher_conditions|
       existing ||= abstract_locations.where(matcher_conditions).order(:id).last
     end
+
+    abstract_location
   end
 
   def rebase(abstract_location)
