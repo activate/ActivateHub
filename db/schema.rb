@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130910114730) do
+ActiveRecord::Schema.define(:version => 20130930234907) do
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(:version => 20130910114730) do
     t.float    "map_longitude"
     t.integer  "map_zoom"
     t.string   "locale"
+    t.string   "ga_account_id"
   end
 
   create_table "sources", :force => true do |t|
