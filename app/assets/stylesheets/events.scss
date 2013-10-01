@@ -387,4 +387,19 @@
   .event-topics-types {
     margin-top: -10px;
   }
+
+  .event-share-buttons {
+    max-width: $main-width;
+    min-height: 25px;
+    margin-top: 10px;
+
+    .st-widget {
+      float: left;
+    }
+
+    // g+1 share widget has too much spacing on right-side of widget, workaround
+    .st_plusone_hcount {
+      margin-right: -10px;
+    }
+  }
 }

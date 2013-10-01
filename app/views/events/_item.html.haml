@@ -21,6 +21,8 @@
         .event-organization-label= t('.organization_label')
         = link_to organization.name, organization_path(organization)
 
+    = render 'share_buttons'
+
     - if event.venue
       %h2.event-venue-title= t('.venue')
       .event-venue{:class => (event.venue.location ? 'has-location' : '')}
