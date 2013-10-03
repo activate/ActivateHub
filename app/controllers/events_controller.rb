@@ -12,6 +12,12 @@ class EventsController < ApplicationController
 
     @events = @events.includes([:organization,:topics,:types])
 
+    if params[:organization].present?
+      organization_ids = params[:organization].to_s.split(',')
+      @selected_organizations = Organization.where(:id => organization_ids)
+      @events = @events.where(:organization_id => organization_ids)
+    end
+
     if topic = params[:topic].presence
       @selected_topics = topic.split(',')
       @events = @events.joins(:topics).where('topics.name' => @selected_topics)
