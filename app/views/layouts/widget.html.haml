@@ -4,10 +4,12 @@
 %html
   %head
     = stylesheet_link_tag 'application', 'theme', 'widget', :media => :all
-    = javascript_include_tag 'application', 'theme'
+    = javascript_include_tag 'widget', 'theme'
 
   %body{:class => "#{controller.controller_name}-#{action_name} widget"}
-    #main= yield
+    #main
+      #widget-event-details
+      = yield
 
   - # force all links to open in a new tab or window
   :javascript

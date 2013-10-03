@@ -1,3 +1,33 @@
+@import "variables";
+
 #main {
   margin: 20px;
+}
+
+#widget-event-details {
+  position: fixed;
+  top: 10px;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.9);
+  min-height: 80%;
+  max-height: 500px;
+  padding: 10px;
+
+  border: 1px solid $link-color;
+  border-left-width: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+
+  -webkit-box-shadow: 2px 2px 8px 0px rgba(0, 136, 180, 0.25);
+  -moz-box-shadow: 2px 2px 8px 0px rgba(0, 136, 180, 0.25);
+  box-shadow: 2px 2px 8px 0px rgba(0, 136, 180, 0.25);
+}
+
+#widget-event-details.pos-left {
+  left: 10px;
+}
+
+#widget-event-details.pos-right {
+  right: 10px;
 }

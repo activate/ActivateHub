@@ -271,7 +271,7 @@
 
 /*---[ sidebar details ]----------------------------------------------------*/
 
-#sidebar-event-details {
+#sidebar-event-details, #widget-event-details {
   display: none;
   top: $navbar-height + 20px;
   width: $sidebar-width - 22px;
