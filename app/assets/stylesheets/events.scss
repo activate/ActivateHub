@@ -135,6 +135,7 @@
     right: 20px;
     float: right;
     display: inline-block;
+    z-index: -1;
     width: 15%;
     height: $cal-day-min-height;
     border-top: 3px solid $cal-month-edge-color;
