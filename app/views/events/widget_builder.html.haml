@@ -1,0 +1,84 @@
+:ruby
+  event = Event.new
+
+- content_for :css_insert do
+  = stylesheet_link_tag 'forms'
+
+- content_for :javascript_insert do
+  = javascript_include_tag 'forms'
+
+
+.event-widget-preview
+  %h2.preview-title Preview
+  .event-widget-preview-iframe Loading...
+
+  %h3.event-widget-preview-embed-label Copy and paste the following to embed this widget in your site:
+  .event-widget-preview-embed
+
+  .preview-separator
+
+
+%h2.main-title Events Widget Builder
+
+#main-content
+  .event-widget-form
+    = semantic_form_for event, :html => { :id => 'event-widget-form' } do |f|
+      = f.inputs :name => 'Widget Options' do
+        = f.input :organization, :as => :select, :input_html => { :multiple => true, :size => 10 }
+        = f.input :topics, :input_html => { :size => 10 }
+        = f.input :types, :input_html => { :size => 10 }
+
+      = f.actions do
+        = f.action :submit, :label => 'Generate Widget'
+
+
+:javascript
+  var completed_title = '';
+  $(document).ready(function(){
+    $('.event-widget-preview').hide();
+
+    // toggleable topic list using a hidden multi-select to track state
+    var $topics_select = $("#event_topic_ids").hide();
+    var $topics_list = $('<div>').addClass('topics-select').insertAfter($topics_select);
+    $topics_select.children('option').each(function(idx,option) {
+      var $option = $(option);
+      var $topic = $('<a>').addClass('topic').data('val', $option.val()).html($option.html())
+      if ($option.attr('selected')) { $topic.addClass('selected'); }
+      $topic.appendTo($topics_list);
+      $topic.click(function() {
+        $option.attr('selected', ($(this).toggleClass('selected').hasClass('selected') && 'selected'));
+      });
+    });
+
+    // toggleable type list using a hidden multi-select to track state
+    var $types_select = $("#event_type_ids").hide();
+    var $types_list = $('<div>').addClass('types-select').insertAfter($types_select);
+    $types_select.children('option').each(function(idx,option) {
+      var $option = $(option);
+      var $type = $('<a>').addClass('type').data('val', $option.val()).html($option.html())
+      if ($option.attr('selected')) { $type.addClass('selected'); }
+      $type.appendTo($types_list);
+      $type.click(function() {
+        $option.attr('selected', ($(this).toggleClass('selected').hasClass('selected') && 'selected'));
+      });
+    });
+
+    $("form").submit(function(e) {
+      var topics = $('#event_topic_ids option:selected').map(function() { return $(this).text(); }).toArray().join(',');
+      var types = $('#event_type_ids option:selected').map(function() { return $(this).text(); }).toArray().join(',');
+      var organizations = ($('#event_organization_id').val()||[]).join(',');
+
+      var url = #{widget_events_path.to_json.html_safe} + '?topic=' + topics;
+      if (types) { url += '&type=' + types }
+      if (organizations) { url += '&organization=' + organizations }
+
+      var iframeHtml = '<iframe src="' + url +'" style="border: 0" width="100%" height="600" frameborder="0" scrolling="auto"></iframe>';
+
+      $('.event-widget-preview-embed').text(iframeHtml);
+      $('.event-widget-preview-iframe').html(iframeHtml);
+      $('.event-widget-preview').show();
+      $(window).scrollTop(0);
+
+      return false;
+    });
+  });

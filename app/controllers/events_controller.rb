@@ -248,6 +248,13 @@ class EventsController < ApplicationController
     end
   end
 
+  def widget_builder
+    @topics = Topic.order(:name)
+    @types = Type.order(:name)
+    @organizations = Organization.order(:name)
+  end
+
+
   protected
 
   # Export +events+ to an iCalendar file.
