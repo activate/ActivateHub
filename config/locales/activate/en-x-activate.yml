@@ -1,12 +1,18 @@
 en-x-activate:
+  assets:
+    og_logo: "og-image.png" # "open graph (ogp.me) image, needed for facebook sharing
+
   site:
+    navbar:
+      logo_link: "http://activatehub.org/"
+      logo_src: "navbar-logo.png"
+
     welcome:
       title: "Your Community is Calling"
       text: "Search for events and organizations in your community."
-    footer:
-      copyright: "&copy; 2011-2013 Social Action Network LLC"
-      branding: >
-        Branding by <a href="http://www.alicianagel.com/">Alicia Nagel Creative, LLC</a>
+    footer: >
+      <span id="copyright">&copy; 2011-2013 Social Action Network LLC</span>
+      <span id="branding">Branding by <a href="http://www.alicianagel.com/">Alicia Nagel Creative, LLC</a></span>
 
   events:
     index:

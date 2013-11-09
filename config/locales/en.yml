@@ -44,9 +44,8 @@ en:
       title: "This page is community managed!"
       add: "create"
       actions: "You can %{add} a new %{obj}."
-    footer:
-      copyright:
-      branding:
+    footer: >
+      Add copyright and other information here.
 
   events:
     appropriateness: >
