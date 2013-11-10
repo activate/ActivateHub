@@ -1,0 +1,16 @@
+- if sharethis_key = @current_site.sharethis_key.presence
+  - content_for :javascript_insert do
+    = javascript_include_tag 'http://w.sharethis.com/button/buttons.js'
+    :javascript
+      stLight.options({
+        publisher: #{sharethis_key.to_json.html_safe},
+        doNotHash: true,
+        doNotCopy: true,
+        hashAddressBar: false
+      });
+
+  .event-share-buttons
+    .st-widget.st_plusone_hcount{:displayText => 'Google +1'}
+    .st-widget.st_twitter_hcount{:displayText => 'Tweet'}
+    .st-widget.st_facebook_hcount{:displayText => 'Facebook'}
+    .st-widget.st_reddit_hcount{:displayText => 'Reddit'}

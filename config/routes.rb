@@ -16,6 +16,7 @@ Calagator::Application.routes.draw do
       get :search
       get :duplicates
       get :widget, :action => 'index', :widget => true
+      get 'widget/builder', :action => 'widget_builder'
     end
 
     member do

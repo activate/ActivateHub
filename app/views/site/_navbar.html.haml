@@ -1,6 +1,9 @@
 #navbar-logo
-  = link_to 'http://activatehub.org/', :title => @current_site.name do
-    = image_tag 'navbar-logo.png'
+  = link_to t('.logo_link', :default => '/') do
+    - if logo_src = t('.logo_src', :default => '').presence
+      = image_tag logo_src, :title => @current_site.name
+    - else
+      = @current_site.name
 
 #navbar-toggle
   %a

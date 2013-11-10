@@ -135,6 +135,7 @@
     right: 20px;
     float: right;
     display: inline-block;
+    z-index: -1;
     width: 15%;
     height: $cal-day-min-height;
     border-top: 3px solid $cal-month-edge-color;
@@ -271,7 +272,7 @@
 
 /*---[ sidebar details ]----------------------------------------------------*/
 
-#sidebar-event-details {
+#sidebar-event-details, #widget-event-details {
   display: none;
   top: $navbar-height + 20px;
   width: $sidebar-width - 22px;
@@ -386,5 +387,20 @@
 
   .event-topics-types {
     margin-top: -10px;
+  }
+
+  .event-share-buttons {
+    max-width: $main-width;
+    min-height: 25px;
+    margin-top: 10px;
+
+    .st-widget {
+      float: left;
+    }
+
+    // g+1 share widget has too much spacing on right-side of widget, workaround
+    .st_plusone_hcount {
+      margin-right: -10px;
+    }
   }
 }

@@ -1,8 +1,8 @@
-- if Rails.env.production?
+- if Rails.env.production? && @current_site.ga_account_id.present?
   :javascript
     var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-28297028-1']);      // FIXME
-    _gaq.push(['_setDomainName', 'activatehub.org']); // FIXME
+    _gaq.push(['_setAccount', #{@current_site.ga_account_id.to_json.html_safe}]);
+    _gaq.push(['_setDomainName', #{@current_site.domain.to_json.html_safe}]);
     _gaq.push(['_trackPageview']);
 
     (function() {

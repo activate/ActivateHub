@@ -12,6 +12,12 @@ class EventsController < ApplicationController
 
     @events = @events.includes([:organization,:topics,:types])
 
+    if params[:organization].present?
+      organization_ids = params[:organization].to_s.split(',')
+      @selected_organizations = Organization.where(:id => organization_ids)
+      @events = @events.where(:organization_id => organization_ids)
+    end
+
     if topic = params[:topic].presence
       @selected_topics = topic.split(',')
       @events = @events.joins(:topics).where('topics.name' => @selected_topics)
@@ -241,6 +247,13 @@ class EventsController < ApplicationController
       format.xml  { render :xml => @event }
     end
   end
+
+  def widget_builder
+    @topics = Topic.order(:name)
+    @types = Type.order(:name)
+    @organizations = Organization.order(:name)
+  end
+
 
   protected
 

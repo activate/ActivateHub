@@ -361,6 +361,20 @@
   }
 }
 
+.event-widget-preview {
+  display: none;
+
+  .event-widget-preview-embed-label {
+    clear: both;
+    margin-top: 20px;
+  }
+
+  .event-widget-preview-embed {
+    border: 1px solid $edge-color;
+    padding: 10px;
+  }
+}
+
 
 /*---[ organization forms ]-------------------------------------------------*/
 

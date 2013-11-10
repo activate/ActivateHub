@@ -1,0 +1,15 @@
+en-x-activate-oakmaker:
+  assets:
+    og_logo: "og-oaklandmakers.png" # "open graph (ogp.me) image, needed for facebook sharing
+
+  site:
+    navbar:
+      logo_link: "http://oaklandmakers.org/"
+      logo_src: "oaklandmakers-logo.png"
+
+    footer: >
+      Powered by <a href="http://activatehub.org/">Activate! Hub</a>
+
+  events:
+    index:
+      title: "You are here. Go somewhere!"
