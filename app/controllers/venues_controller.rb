@@ -27,8 +27,11 @@ class VenuesController < ApplicationController
 
       if params[:term].present? # for the ajax autocomplete widget
         conditions = ["title LIKE :query", {:query => "%#{params[:term]}%"}]
+        @venues = scoped_venues.find(:all, :order => 'lower(title)', :conditions => conditions)
       elsif params[:query].present?
-        conditions = ["title LIKE :query OR description LIKE :query", {:query => "%#{params[:query]}%"}]
+        @venues = Venue.search(params[:query], :include_closed => params[:include_closed], :wifi => params[:wifi])
+      else
+        @venues = scoped_venues.all
       end
 
       @venues = scoped_venues.order('lower(title)').where(conditions)
@@ -72,6 +75,7 @@ class VenuesController < ApplicationController
       }
       format.xml  { render :xml => @venue }
       format.json  { render :json => @venue, :callback => params[:callback] }
+      format.ics  { ical_export(@venue) }
     end
   end
 
@@ -188,5 +192,12 @@ class VenuesController < ApplicationController
       format.html # index.html.erb
       format.xml  { render :xml => @grouped_venues }
     end
+  end
+
+protected
+
+  def ical_export(venue)
+    events = venue.events.order("start_time ASC").non_duplicates
+    render(:text => Event.to_ical(events, :url_helper => lambda{|event| event_url(event)}), :mime_type => 'text/calendar')
   end
 end

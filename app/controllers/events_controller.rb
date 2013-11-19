@@ -268,7 +268,7 @@ class EventsController < ApplicationController
   # Checks if the description has too many links
   # which is probably spam
   def too_many_links?(description)
-    description.present? && description.scan(/http/).size > 3
+    description.present? && description.scan(/https?:\/\//i).size > 3
   end
 
   # Export +events+ to an iCalendar file.

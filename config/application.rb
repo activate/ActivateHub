@@ -139,7 +139,7 @@ module Calagator
 
       # Activate search engine
       require 'search_engine'
-      SearchEngine.kind = SECRETS.search_engine
+      SearchEngine.kind = Rails.env.test? ? "sql" : SECRETS.search_engine
     end
 
     # Set timezone for OS

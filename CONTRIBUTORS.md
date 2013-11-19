@@ -25,6 +25,7 @@ git log a6d5ee8678377dcfe9d4e06494c77ca0318a14f2~1.. --format='  * %aN <%aE>' \
 
 These people have contributed to Calagator's design and implementation:
 
+  * Aaron Parecki
   * Amy Farrell
   * Ann-Marie Horcher
   * Anselm Hook
@@ -36,17 +37,21 @@ These people have contributed to Calagator's design and implementation:
   * Brian Felder
   * Bryan Stearns
   * Chris Faulkner
+  * Colby Aley
   * Craig Fisk
   * Daniel Etra
+  * Daniel Hedlund
   * Don Park
   * Ed Borasky
   * Gabrielle Roth
   * Igal Koshevoy
   * Jeff Schwaber
   * Jeremy O'Leary
+  * Jesse Cooke
   * Jesse Hallett
   * Joe Cohen
   * Kevin Scaldaferri
+  * Kyle Drake
   * Lance Albertson
   * Leif Warner
   * Mark Dilley
@@ -54,6 +59,7 @@ These people have contributed to Calagator's design and implementation:
   * Michael Bunsen
   * Paige Saez
   * Pam Selle
+  * Patrick McSweeny
   * Reid Beels
   * Sam Keen
   * Sam Livingston-Gray
@@ -61,6 +67,7 @@ These people have contributed to Calagator's design and implementation:
   * Selena Deckelman
   * Simon Chiang
   * Steve Morris
+  * Seve Salazar
   * Ted Kubaska
   * Ward Cunningham
 

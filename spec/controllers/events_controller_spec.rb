@@ -433,6 +433,21 @@ describe EventsController do
         flash[:failure].should match /too many links/i
       end
 
+      it "should accept HTTP-rich presentation descriptions without too many links" do
+        @params[:event][:description] = <<-DESC
+          I hereby offer to give a presentation at the August ruby meeting about the faraday
+          gem (https://github.com/lostisland/faraday) and how compares to or compliments other
+          HTTP client libraries such as httparty (https://github.com/jnunemaker/httparty).
+
+          --
+
+          I wouldn't mind seeing a PDX.pm talk about HTTP::Tiny vs Net::HTTP::Tiny vs Net::HTTP
+          vs HTTP::Client vs HTTP::Client::Parallel
+        DESC
+        post "create", @params
+        flash[:failure].should be_nil
+      end
+
       it "should allow the user to preview the event" do
         event = Event.new(:title => "Awesomeness")
         Event.should_receive(:new).and_return(event)
@@ -477,6 +492,7 @@ describe EventsController do
       before(:each) do
         @event = Factory.build(:event_with_venue, :id => 42)
         @venue = @event.venue
+        @params.merge!(:id => 42)
         Event.stub!(:find).and_return(@event)
       end
 
@@ -505,7 +521,7 @@ describe EventsController do
         @event.stub!(:venue).and_return(@venue)
         @event.should_receive(:update_attributes).and_return(true)
 
-        post "update", @params
+        put "update", @params
       end
 
       it "should associate a venue based on a given venue name" do
@@ -515,7 +531,7 @@ describe EventsController do
         @event.stub!(:venue).and_return(@venue)
         @event.should_receive(:update_attributes).and_return(true)
 
-        post "update", @params
+        put "update", @params
       end
 
       it "should associate a venue by id when both an id and a name are provided" do
@@ -526,7 +542,7 @@ describe EventsController do
         @event.stub!(:venue).and_return(@venue)
         @event.should_receive(:update_attributes).and_return(true)
 
-        post "update", @params
+        put "update", @params
       end
 
       it "should update an event and associate it with an existing venue" do
@@ -559,7 +575,7 @@ describe EventsController do
         @event.stub!(:venue).and_return(nil)
         @event.should_receive(:update_attributes).and_return(false)
 
-        post "update", :id => 1234
+        put "update", :id => 1234
         response.should render_template :edit
       end
 
@@ -576,7 +592,7 @@ describe EventsController do
           http://example.net
           https://example.net
         DESC
-        post "update", @params
+        put "update", @params
         response.should render_template :edit
         flash[:failure].should match /too many links/i
       end
