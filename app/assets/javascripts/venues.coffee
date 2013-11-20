@@ -20,8 +20,6 @@ $ ->
         $card.height($(window).innerHeight() - $card.position().top - 30)
         $card.width($(window).innerWidth() - $card.position().left - 30)
         $('#google_map').height($card.innerHeight())
-        if !window.google_map? then initialize_google_map_google_map()
-        window.google_map.checkResize()
-      false
+      true
 
     $(window).resize()

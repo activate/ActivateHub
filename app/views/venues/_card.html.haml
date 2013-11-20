@@ -9,12 +9,38 @@
   venue ||= raise ArgumentError, "venue is required in view partial #{__FILE__}"
 
 
+- content_for :javascript_insert do
+  = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{GOOGLE_APPLICATION_ID}&sensor=false"
+
+
 .venue-card.location.vcard{:class => "#{venue.closed? ? 'closed' : ''} #{venue.location ? 'has-location' : ''}", :itemprop => 'location', :itemscope => 'itemscope', :itemtype => 'http://schema.org/Place'}
   - if venue.location
     .venue-map
-      = google_map venue, :controls => [], :center => [venue.latitude + 0.003, venue.longitude]
+      #google_map
       :javascript
-        $(window).load(initialize_google_map_google_map);
+        function initialize() {
+          var map = new google.maps.Map(document.getElementById("google_map"), {
+            center: new google.maps.LatLng(
+              #{(venue.latitude + 0.003).to_json.html_safe},
+              #{venue.longitude.to_json.html_safe}
+            ),
+            streetViewControl: false,
+            zoomControl: false,
+            zoom: 14
+          });
+
+          var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(
+              #{(venue.latitude).to_json.html_safe},
+              #{venue.longitude.to_json.html_safe}
+            ),
+            icon: 'http://maps.google.com/mapfiles/ms/icons/pink-dot.png',
+            clickable: false,
+            map: map
+          });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
 
   .venue-card-details
     - if venue.wifi?
