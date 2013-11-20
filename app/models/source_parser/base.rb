@@ -35,6 +35,7 @@ class SourceParser
     # Returns content from either the :content option or by reading a :url.
     def self.content_for(opts)
       content = opts[:content] || self.read_url(opts[:url])
+      content = content.force_encoding('utf-8')
       if content.respond_to?(:content_type) && ["application/atom+xml"].include?(content.content_type)
         return CGI::unescapeHTML(content.to_str)
       else

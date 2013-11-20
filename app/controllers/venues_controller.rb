@@ -33,8 +33,6 @@ class VenuesController < ApplicationController
       else
         @venues = scoped_venues.all
       end
-
-      @venues = scoped_venues.order('lower(title)').where(conditions)
     end
 
     @most_active_venues = scoped_venues.where('events_count is not null').limit(10).order('events_count DESC')
