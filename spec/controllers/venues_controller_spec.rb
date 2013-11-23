@@ -216,9 +216,9 @@ describe VenuesController do
 
     describe "as an iCalendar" do
       before do
-        @venue = Factory(:venue)
-        @future_event = Factory(:event, :venue => @venue, :start_time => today + 1.hour)
-        @past_event = Factory(:event, :venue => @venue, :start_time => today - 1.hour)
+        @venue = create(:venue)
+        @future_event = create(:event, :venue => @venue, :start_time => today + 1.hour)
+        @past_event = create(:event, :venue => @venue, :start_time => today - 1.hour)
 
         get :show, :id => @venue.to_param, :format => "ics"
       end
