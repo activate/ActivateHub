@@ -45,6 +45,9 @@ Spork.prefork do
     # Allows us to use create(:user) instead of FactoryGirl.create :user
     config.include FactoryGirl::Syntax::Methods
 
+    # Makes warden available in tests, provides :sign_in and :sign_out
+    config.include Devise::TestHelpers, :type => :controller
+
     # custom helpers and mixins, see spec/support/*
     config.include ControllerHelper, :type => :controller
 

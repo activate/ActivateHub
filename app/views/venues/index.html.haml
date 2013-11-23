@@ -1,10 +1,15 @@
 :ruby
   venues_view ||= params[:view] || cookies[:venues_view] || 'list'
 
+  map_options = @current_site.venues_google_map_options
+
+
+- content_for :javascript_insert do
+  = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{GOOGLE_APPLICATION_ID}&sensor=false"
 
 - content_for :sidebar do
   #sidebar-welcome.sidebar-box= render 'site/welcome'
-  #sidebar-wiki-props.sidebar-box= render 'site/wiki_props_index', :collection => @venues
+  #sidebar-wiki-props.sidebar-box= render 'site/wiki_props_index', :collection => Venue.scoped
   #sidebar-exports.sidebar-box= render 'venues/exports'
 
 
@@ -41,4 +46,46 @@
           .venue-title= link_to venue.title, venue_path(venue)
           .venue-address= venue.full_address
 
-  .venues-map= google_map @venues, @current_site.venues_google_map_options
+  .venues-map
+    - venue = @venues.select(&:location).first
+    #google_map
+    :javascript
+      function addMarker(map, coords, title, url) {
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(coords[0], coords[1]),
+          icon: 'http://maps.google.com/mapfiles/ms/icons/pink-dot.png',
+          title: title,
+          map: map
+        });
+
+        var infoWindow = new google.maps.InfoWindow({
+          content: $('<a>').attr('href', url).text(title)[0].outerHTML
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          if (window.openInfoWindow) { window.openInfoWindow.close(); }
+          (window.openInfoWindow = infoWindow).open(map,marker);
+        });
+      }
+
+      function initialize() {
+        var map = new google.maps.Map(document.getElementById("google_map"), {
+          center: new google.maps.LatLng(
+            #{map_options[:center][0].to_json.html_safe},
+            #{map_options[:center][1].to_json.html_safe}
+          ),
+          zoom: #{map_options[:zoom].to_json.html_safe}
+        });
+
+        #{@venues.select(&:location).map {|venue|
+          <<-JS
+          addMarker(map,
+            #{venue.location.to_json.html_safe},
+            #{venue.title.to_json.html_safe},
+            #{venue_path(venue).to_json.html_safe}
+          );
+          JS
+        }.join}
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
