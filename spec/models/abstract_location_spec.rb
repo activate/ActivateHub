@@ -117,36 +117,40 @@ describe AbstractLocation do
       end
     end
 
-    context "when non-venue fields have changed" do
-      before(:each) do
-        abstract_location.raw_venue = 'asdf83fkkhefg'
-        abstract_location.rebase(existing)
-      end
+    context "when fields have changed" do
+      before(:each) { abstract_location.raw_venue = 'asdf83fkkhefg' }
 
       it "should retain that field's original value" do
+        abstract_location.rebase(existing)
         abstract_location.raw_venue.should eq 'asdf83fkkhefg'
       end
 
       it "should record that field as having changed" do
+        abstract_location.rebase(existing)
         abstract_location.raw_venue_changed?.should be_true
       end
 
+      it "should only retain fields that were actually changed" do
+        existing.venue_id = 999_999
+        abstract_location.rebase(existing)
+        abstract_location.venue_id.should eq 999_999
+      end
+    end
+
+    context "when only non-venue fields have changed" do
+      before(:each) { abstract_location.raw_venue = 'asdf83fkkhefg' }
+
       it "should not have any venue field changes" do
+        abstract_location.rebase(existing)
         abstract_location.venue_attributes_changed?.should be_false
       end
     end
 
     context "when venue fields have changed" do
-      before(:each) do
-        abstract_location.title = '1970s Telco Switchboard Room'
-        abstract_location.rebase(existing)
-      end
-
-      it "should retain that field's original value" do
-        abstract_location.title.should eq '1970s Telco Switchboard Room'
-      end
+      before(:each) { abstract_location.title = '1970s Telco Switchboard Room' }
 
       it "should report having venue field changes" do
+        abstract_location.rebase(existing)
         abstract_location.venue_attributes_changed?.should be_true
       end
     end

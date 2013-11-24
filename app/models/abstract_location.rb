@@ -24,9 +24,9 @@ class AbstractLocation < ActiveRecord::Base
     abstract_locations = self.class.where(:source_id => source.id)
 
     matchers = [
+      # note: lat+long not exact enough, can have mult. venues within a building
       { :external_id => external_id },
       { :title => title },
-      # note: lat+long not exact enough, can have mult. venues within a building
     ]
 
     # all matcher conditions must have a value for matcher to be valid
@@ -51,14 +51,16 @@ class AbstractLocation < ActiveRecord::Base
   end
 
   def rebase(abstract_location)
-    orig_attributes = attributes
+    # we only care about rebasing attributes that were explictly changed,
+    # otherwise we'd overwrite important data in parent like venue_id
+    orig_attribute_changes = attributes.slice(*changed)
 
     # resets this object's attributes to be identical to abstract_location
-    self.attributes = abstract_location.attributes
+    self.attributes = abstract_location.attributes.except(:id)
     changed_attributes.clear
 
     # apply our original attributes on top, allowing us to identify changes
-    self.attributes = orig_attributes
+    self.attributes = orig_attribute_changes
 
     self
   end

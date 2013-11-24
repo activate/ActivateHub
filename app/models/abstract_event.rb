@@ -57,14 +57,16 @@ class AbstractEvent < ActiveRecord::Base
   end
 
   def rebase(abstract_event)
-    orig_attributes = attributes
+    # we only care about rebasing attributes that were explictly change,
+    # otherwise we'd overwrite important data in parent like event_id
+    orig_attribute_changes = attributes.slice(*changed)
 
     # resets this object's attributes to be identical to abstract_event
     self.attributes = abstract_event.attributes
     changed_attributes.clear
 
     # apply our original attributes on top, allowing us to identify changes
-    self.attributes = orig_attributes
+    self.attributes = orig_attribute_changes
 
     self
   end
