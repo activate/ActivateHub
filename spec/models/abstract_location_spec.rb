@@ -119,26 +119,6 @@ describe AbstractLocation do
       end
     end
 
-    context "when fields have changed" do
-      before(:each) { abstract_location.raw_venue = 'asdf83fkkhefg' }
-
-      it "should retain that field's original value" do
-        abstract_location.rebase_changed_attributes!(existing)
-        abstract_location.raw_venue.should eq 'asdf83fkkhefg'
-      end
-
-      it "should record that field as having changed" do
-        abstract_location.rebase_changed_attributes!(existing)
-        abstract_location.raw_venue_changed?.should be_true
-      end
-
-      it "should only retain fields that were actually changed" do
-        existing.venue_id = 999_999
-        abstract_location.rebase_changed_attributes!(existing)
-        abstract_location.venue_id.should eq 999_999
-      end
-    end
-
     context "when only non-venue fields have changed" do
       before(:each) { abstract_location.raw_venue = 'asdf83fkkhefg' }
 
@@ -199,7 +179,7 @@ describe AbstractLocation do
   end
 
   describe "#venue_attributes_changed?" do
-    it "is true when #venue_attributes_change is not empty" do
+    it "is true when #venue_attributes_changed is not empty" do
       abstract_location.stub(:venue_attributes_changed => [:title, :description])
       abstract_location.venue_attributes_changed?.should be_true
     end

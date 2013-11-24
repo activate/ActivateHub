@@ -65,7 +65,7 @@ describe AbstractEvent do
   end
 
   describe "#event_attributes_changed?" do
-    it "is true when #event_attributes_change is not empty" do
+    it "is true when #event_attributes_changed is not empty" do
       abstract_event.stub(:event_attributes_changed => [:title, :description])
       abstract_event.event_attributes_changed?.should be_true
     end
@@ -147,26 +147,6 @@ describe AbstractEvent do
       it "should not report having any event field changes" do
         abstract_event.rebase_changed_attributes!(existing)
         abstract_event.event_attributes_changed?.should be_false
-      end
-    end
-
-    context "when fields have changed" do
-      before(:each) { abstract_event.raw_event = 'xyz12493875' }
-
-      it "should retain that field's original value" do
-        abstract_event.rebase_changed_attributes!(existing)
-        abstract_event.raw_event.should eq 'xyz12493875'
-      end
-
-      it "should record that field as having changed" do
-        abstract_event.rebase_changed_attributes!(existing)
-        abstract_event.raw_event_changed?.should be_true
-      end
-
-      it "should only retain fields that were actually changed" do
-        existing.event_id = 999_999
-        abstract_event.rebase_changed_attributes!(existing)
-        abstract_event.event_id.should eq 999_999
       end
     end
 
