@@ -74,6 +74,29 @@ describe Rebaseable do
       child.rebase_changed_attributes!(parent)
       child.changed.sort.should eq %w(color price)
     end
+
+    context "when model has an :id attribute field" do
+      subject(:model) do
+        Class.new(TestClasses::DirtyModel) do
+          include Rebaseable
+          define_attributes :id, :foo, :bar
+        end
+      end
+
+      let(:parent) { model.new(:id => 7) }
+
+      it "retains :id of child" do
+        result = model.new(:id => 99).rebase_changed_attributes!(parent)
+        result.id.should eq 99
+        result.id_changed?.should be_true
+      end
+
+      it "ignores :id of parent" do
+        result = model.new.rebase_changed_attributes!(parent)
+        result.id.should be_nil
+        result.id_changed?.should be_false
+      end
+    end
   end
 
 end
