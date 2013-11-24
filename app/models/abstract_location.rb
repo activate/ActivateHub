@@ -4,6 +4,8 @@ class AbstractLocation < ActiveRecord::Base
   belongs_to :venue
   has_many :abstract_events
 
+  include Rebaseable
+
   VENUE_ATTRIBUTES = [ # attributes that get copied over to venues if changed
     :url, :title, :description, :address, :street_address, :locality, :region,
     :postal_code, :country, :latitude, :longitude, :email, :telephone, :tags,
@@ -48,21 +50,6 @@ class AbstractLocation < ActiveRecord::Base
     end
 
     abstract_location
-  end
-
-  def rebase(abstract_location)
-    # we only care about rebasing attributes that were explictly changed,
-    # otherwise we'd overwrite important data in parent like venue_id
-    orig_attribute_changes = attributes.slice(*changed)
-
-    # resets this object's attributes to be identical to abstract_location
-    self.attributes = abstract_location.attributes.except(:id)
-    changed_attributes.clear
-
-    # apply our original attributes on top, allowing us to identify changes
-    self.attributes = orig_attribute_changes
-
-    self
   end
 
   def save_invalid!

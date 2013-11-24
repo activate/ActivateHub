@@ -4,6 +4,8 @@ class AbstractEvent < ActiveRecord::Base
   belongs_to :event
   belongs_to :abstract_location
 
+  include Rebaseable
+
   EVENT_ATTRIBUTES = [ # attributes that get copied over to events if changed
     :url, :title, :start_time, :end_time, :description, :tags,
   ]
@@ -54,21 +56,6 @@ class AbstractEvent < ActiveRecord::Base
     end
 
     abstract_event
-  end
-
-  def rebase(abstract_event)
-    # we only care about rebasing attributes that were explictly change,
-    # otherwise we'd overwrite important data in parent like event_id
-    orig_attribute_changes = attributes.slice(*changed)
-
-    # resets this object's attributes to be identical to abstract_event
-    self.attributes = abstract_event.attributes
-    changed_attributes.clear
-
-    # apply our original attributes on top, allowing us to identify changes
-    self.attributes = orig_attribute_changes
-
-    self
   end
 
   def save_invalid!

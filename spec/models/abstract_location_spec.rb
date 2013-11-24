@@ -17,6 +17,8 @@ describe AbstractLocation do
   it { should validate_presence_of(:source_id) }
   it { should validate_presence_of(:title) }
 
+  it_should_behave_like Rebaseable
+
   #---[ Scopes ]------------------------------------------------------------
 
   describe "(scopes)" do
@@ -106,13 +108,13 @@ describe AbstractLocation do
     end
   end
 
-  describe "#rebase" do
+  describe "#rebase_changed_attributes!" do
     # start with something that would be considered identical
     let!(:existing) { abstract_location.dup }
 
     context "when both abstract locations have same values" do
       it "should not report having any venue field changes" do
-        abstract_location.rebase(existing)
+        abstract_location.rebase_changed_attributes!(existing)
         abstract_location.venue_attributes_changed?.should be_false
       end
     end
@@ -121,18 +123,18 @@ describe AbstractLocation do
       before(:each) { abstract_location.raw_venue = 'asdf83fkkhefg' }
 
       it "should retain that field's original value" do
-        abstract_location.rebase(existing)
+        abstract_location.rebase_changed_attributes!(existing)
         abstract_location.raw_venue.should eq 'asdf83fkkhefg'
       end
 
       it "should record that field as having changed" do
-        abstract_location.rebase(existing)
+        abstract_location.rebase_changed_attributes!(existing)
         abstract_location.raw_venue_changed?.should be_true
       end
 
       it "should only retain fields that were actually changed" do
         existing.venue_id = 999_999
-        abstract_location.rebase(existing)
+        abstract_location.rebase_changed_attributes!(existing)
         abstract_location.venue_id.should eq 999_999
       end
     end
@@ -141,7 +143,7 @@ describe AbstractLocation do
       before(:each) { abstract_location.raw_venue = 'asdf83fkkhefg' }
 
       it "should not have any venue field changes" do
-        abstract_location.rebase(existing)
+        abstract_location.rebase_changed_attributes!(existing)
         abstract_location.venue_attributes_changed?.should be_false
       end
     end
@@ -150,7 +152,7 @@ describe AbstractLocation do
       before(:each) { abstract_location.title = '1970s Telco Switchboard Room' }
 
       it "should report having venue field changes" do
-        abstract_location.rebase(existing)
+        abstract_location.rebase_changed_attributes!(existing)
         abstract_location.venue_attributes_changed?.should be_true
       end
     end

@@ -20,6 +20,8 @@ describe AbstractEvent do
   it { should validate_presence_of(:start_time) }
   it { should validate_presence_of(:end_time) }
 
+  it_should_behave_like Rebaseable
+
   #---[ Scopes ]------------------------------------------------------------
 
   describe "(scopes)" do
@@ -137,13 +139,13 @@ describe AbstractEvent do
     end
   end
 
-  describe "#rebase" do
+  describe "#rebase_changed_attributes!" do
     # start with something that would be considered identical
     let!(:existing) { abstract_event.dup }
 
     context "when both abstract events have same values" do
       it "should not report having any event field changes" do
-        abstract_event.rebase(existing)
+        abstract_event.rebase_changed_attributes!(existing)
         abstract_event.event_attributes_changed?.should be_false
       end
     end
@@ -152,18 +154,18 @@ describe AbstractEvent do
       before(:each) { abstract_event.raw_event = 'xyz12493875' }
 
       it "should retain that field's original value" do
-        abstract_event.rebase(existing)
+        abstract_event.rebase_changed_attributes!(existing)
         abstract_event.raw_event.should eq 'xyz12493875'
       end
 
       it "should record that field as having changed" do
-        abstract_event.rebase(existing)
+        abstract_event.rebase_changed_attributes!(existing)
         abstract_event.raw_event_changed?.should be_true
       end
 
       it "should only retain fields that were actually changed" do
         existing.event_id = 999_999
-        abstract_event.rebase(existing)
+        abstract_event.rebase_changed_attributes!(existing)
         abstract_event.event_id.should eq 999_999
       end
     end
@@ -172,7 +174,7 @@ describe AbstractEvent do
       before(:each) { abstract_event.raw_event = 'xyz12493875' }
 
       it "should not have any event field changes" do
-        abstract_event.rebase(existing)
+        abstract_event.rebase_changed_attributes!(existing)
         abstract_event.event_attributes_changed?.should be_false
       end
     end
@@ -181,7 +183,7 @@ describe AbstractEvent do
       before(:each) { abstract_event.title = 'Sandwich Making Contest' }
 
       it "should report having event field changes" do
-        abstract_event.rebase(existing)
+        abstract_event.rebase_changed_attributes!(existing)
         abstract_event.event_attributes_changed?.should be_true
       end
     end
