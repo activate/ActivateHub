@@ -52,11 +52,20 @@ class AbstractEvent < ActiveRecord::Base
     # all matcher conditions must have a value for matcher to be valid
     matchers.reject! {|m| m.any? {|k,v| v.blank? } }
 
-    abstract_event = matchers.inject(nil) do |existing,matcher_conditions|
-      existing ||= abstract_events.where(matcher_conditions).order(:id).last
+    existing = matchers.find do |matcher_conditions|
+      if matched = abstract_events.where(matcher_conditions).order(:id).last
+        if event_id = matched.event_id
+          # matcher value might've changed, can now tie to event and find latest
+          matched = abstract_events.where(:event_id => event_id).order(:id).last
+        else
+          # probably was invalid and never created an event, use original match
+        end
+
+        break matched
+      end
     end
 
-    abstract_event
+    existing
   end
 
   def import!

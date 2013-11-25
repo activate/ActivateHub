@@ -308,10 +308,17 @@ describe AbstractEvent do
       ae.find_existing.should eq existing
     end
 
-    it "returns the most recently created match" do
-      aes = create_list(:abstract_event, 3, :source => source, :external_id => 'x')
+    it "returns the most recently created match", :focus => true do
+      ae_attrs = { :source => source, :external_id => 'x', :event => create(:event) }
+      create(:abstract_event, ae_attrs)
+
+      # matcher value changed, but shares venue w/ a event that should match
+      expected = create(:abstract_event, ae_attrs.merge(:external_id => 'y'))
+
+      create(:abstract_event, :source => source) # filler, won't match
+
       ae = build(:abstract_event, :source => source, :external_id => 'x')
-      ae.find_existing.should eq aes.last
+      ae.find_existing.should eq expected
     end
   end
 

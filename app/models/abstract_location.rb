@@ -46,11 +46,21 @@ class AbstractLocation < ActiveRecord::Base
       }
     end
 
-    abstract_location = matchers.inject(nil) do |existing,matcher_conditions|
-      existing ||= abstract_locations.where(matcher_conditions).order(:id).last
+    existing = matchers.find do |matcher_conditions|
+      if matched = abstract_locations.where(matcher_conditions).order(:id).last
+        if venue_id = matched.venue_id
+          # matcher value might've changed, can now tie to venue and find latest
+          # can get a better match; the matcher might've found an older copy
+          matched = abstract_locations.where(:venue_id => venue_id).order(:id).last
+        else
+          # probably was invalid and never created a venue, use original match
+        end
+
+        break matched
+      end
     end
 
-    abstract_location
+    existing
   end
 
   def import!

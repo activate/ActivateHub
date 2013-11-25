@@ -103,9 +103,16 @@ describe AbstractLocation do
     end
 
     it "returns the most recently created match" do
-      alocs = create_list(:abstract_location, 3, :source => source, :external_id => 'k')
+      al_attrs = { :source => source, :external_id => 'k', :venue => create(:venue) }
+      create(:abstract_location, al_attrs)
+
+      # matcher value changed, but shares venue w/ a location that should match
+      expected = create(:abstract_location, al_attrs.merge(:external_id => 'd'))
+
+      create(:abstract_location, :source => source) # filler, won't match
+
       aloc = build(:abstract_location, :source => source, :external_id => 'k')
-      aloc.find_existing.should eq alocs.last
+      aloc.find_existing.should eq expected
     end
   end
 
