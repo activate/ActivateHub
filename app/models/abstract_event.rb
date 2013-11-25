@@ -7,7 +7,8 @@ class AbstractEvent < ActiveRecord::Base
   include Rebaseable
 
   EVENT_ATTRIBUTES = [ # attributes that get copied over to events if changed
-    :url, :title, :start_time, :end_time, :description, :tags,
+    :url, :title, :start_time, :end_time, :description,
+    #:tags, # FIXME: is :tags_list in Event (:changed doesn't match up in populate_event)
   ]
 
   validates :site_id, :presence => true
@@ -72,6 +73,22 @@ class AbstractEvent < ActiveRecord::Base
     end
 
     result
+  end
+
+  def populate_event
+    self.event ||= Event.new(:source_id => source_id)
+
+    event_attributes_changed.each do |name|
+      if event[name] == send("#{name}_was")
+        # event value unchanged from value set in last abstract event, safe
+        event.send("#{name}=", send(name))
+      else
+        # event value has been updated outside of abstract events; we don't
+        # know if it's safe to update this value anymore, ignore the change
+      end
+    end
+
+    event
   end
 
   def save_invalid!

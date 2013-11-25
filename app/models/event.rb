@@ -106,13 +106,13 @@ class Event < ActiveRecord::Base
   # Return the title but strip out any whitespace.
   def title
     # TODO Generalize this code so we can use it on other attributes in the different model classes. The solution should use an #alias_method_chain to make sure it's not breaking any explicit overrides for an attribute.
-    return read_attribute(:title).to_s.strip
+    return read_attribute(:title).try {|t| t.to_s.strip }
   end
 
   # Return description without those pesky carriage-returns.
   def description
     # TODO Generalize this code so we can reuse it on other attributes.
-    return read_attribute(:description).to_s.gsub("\r\n", "\n").gsub("\r", "\n")
+    return read_attribute(:description).try {|d| d.to_s.gsub("\r\n", "\n").gsub("\r", "\n") }
   end
 
   if (table_exists? rescue nil)

@@ -12,12 +12,27 @@ describe Event do
       event.should be_valid
     end
 
+    describe "#description" do
+      it "returns nil if no value" do
+        # it used to return "" for a time due to explicit :to_s
+        Event.new.description.should eq nil
+      end
+    end
+
     describe "#end_time" do
       it "default to start_time if nil" do
         start_time = 1.week.from_now
         Event.new(:start_time => start_time).end_time.should eq start_time
       end
     end
+
+    describe "#title" do
+      it "returns nil if no value" do
+        # it used to return "" for a time due to explicit :to_s
+        Event.new.title.should eq nil
+      end
+    end
+
   end
 
   describe "when checking time status" do

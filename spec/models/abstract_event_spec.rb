@@ -169,6 +169,89 @@ describe AbstractEvent do
     end
   end
 
+  describe "#populate_event" do
+    let(:abstract_event) { build(:abstract_event, :w_event_attributes) }
+    let(:event_attributes) { AbstractEvent::EVENT_ATTRIBUTES.map(&:to_s) }
+
+    it "should return the event object" do
+      event = abstract_event.populate_event
+      event.should eq abstract_event.event
+    end
+
+    context "no associated event" do
+      it "should initialize a new event object" do
+        abstract_event.populate_event
+        abstract_event.event.should_not be_nil
+      end
+
+      it "should not save the event" do
+        expect { abstract_event.populate_event }.to_not change { Event.count }
+      end
+
+      it "should populate event with event attributes" do
+        abstract_event.populate_event
+        changed = abstract_event.event.changed
+        changed.should include(*event_attributes)
+      end
+
+      it "should associate event with abstract event's source" do
+        abstract_event.populate_event
+        abstract_event.event.source.should eq abstract_event.source
+      end
+    end
+
+    context "with an associated event" do
+      let!(:event) do
+        # we sort of cheat here, but it should be valid unless other tests fail
+        event = abstract_event.populate_event
+        event.changed_attributes.clear
+        event
+      end
+
+      it "should not save the event" do
+        event.should_not_receive :save
+        event.should_not_receive :save!
+        abstract_event.populate_event
+      end
+
+      context "without any changed attributes" do
+        # event is unchanged by default for these tests
+
+        it "should not change the event" do
+          event = abstract_event.populate_event
+          event.changed?.should be_false
+        end
+      end
+
+      context "with changed attributes" do
+        it "changes event attributes that match expected '_was' value" do
+          # *_was is defined in ActiveModel::Dirty and represents value before
+          # applying local changes (in our case, parent value before rebasing)
+          abstract_event.description = event.description
+          abstract_event.changed_attributes.delete('description') # reset
+          abstract_event.description = 'We upgraded our snow shoes to moon boots'
+
+          abstract_event.populate_event
+          event.description.should eq 'We upgraded our snow shoes to moon boots'
+          event.changed.should include('description')
+        end
+
+        it "doesn't change attributes changed outside of abstract event" do
+          # simulate an event change outside of an abstract event, because
+          # people like to program computers to change URLs to random things
+          event.url = 'http://get-your-talkie-talking-toaster.now/'
+          event.changed_attributes.clear
+
+          # whereas people like to translate their urls into gibberish
+          abstract_event.url = 'youtu.be/LRq_SAuQDec' # "Howdy doodly doo!"
+
+          abstract_event.populate_event
+          event.changed.should_not include('url')
+        end
+      end
+    end
+  end
+
   describe "#tags" do
     it "should be an empty array by default" do
       AbstractEvent.new.tags.should eq([])

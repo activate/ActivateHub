@@ -8,7 +8,8 @@ class AbstractLocation < ActiveRecord::Base
 
   VENUE_ATTRIBUTES = [ # attributes that get copied over to venues if changed
     :url, :title, :description, :address, :street_address, :locality, :region,
-    :postal_code, :country, :latitude, :longitude, :email, :telephone, :tags,
+    :postal_code, :country, :latitude, :longitude, :email, :telephone,
+    # :tags, # FIXME: is :tags_list in Venue (:changed doesn't match up in populate_venue)
   ]
 
   validates :site_id, :presence => true
@@ -66,6 +67,22 @@ class AbstractLocation < ActiveRecord::Base
     end
 
     result
+  end
+
+  def populate_venue
+    self.venue ||= Venue.new(:source_id => source_id)
+
+    venue_attributes_changed.each do |name|
+      if venue[name] == send("#{name}_was")
+        # venue value unchanged from value set in last abstract location, safe
+        venue.send("#{name}=", send(name))
+      else
+        # venue value has been updated outside of abstract locations; we don't
+        # know if it's safe to update this value anymore, ignore the change
+      end
+    end
+
+    venue
   end
 
   def save_invalid!

@@ -201,6 +201,90 @@ describe AbstractLocation do
     end
   end
 
+  describe "#populate_venue" do
+    let(:abstract_location) { build(:abstract_location, :w_venue_attributes) }
+    let(:venue_attributes) { AbstractLocation::VENUE_ATTRIBUTES.map(&:to_s) }
+
+    it "should return the venue object" do
+      venue = abstract_location.populate_venue
+      venue.should eq abstract_location.venue
+    end
+
+    context "no associated venue" do
+      it "should initialize a new venue object" do
+        abstract_location.populate_venue
+        abstract_location.venue.should_not be_nil
+      end
+
+      it "should not save the venue" do
+        expect { abstract_location.populate_venue } \
+          .to_not change { Venue.count }
+      end
+
+      it "should populate venue with venue attributes" do
+        abstract_location.populate_venue
+        changed = abstract_location.venue.changed
+        changed.should include(*venue_attributes)
+      end
+
+      it "should associate venue with abstract location's source" do
+        abstract_location.populate_venue
+        abstract_location.venue.source.should eq abstract_location.source
+      end
+    end
+
+    context "with an associated venue" do
+      let!(:venue) do
+        # we sort of cheat here, but it should be valid unless other tests fail
+        venue = abstract_location.populate_venue
+        venue.changed_attributes.clear
+        venue
+      end
+
+      it "should not save the venue" do
+        venue.should_not_receive :save
+        venue.should_not_receive :save!
+        abstract_location.populate_venue
+      end
+
+      context "without any changed attributes" do
+        # venue is unchanged by default for these tests
+
+        it "should not change the venue" do
+          venue = abstract_location.populate_venue
+          venue.changed?.should be_false
+        end
+      end
+
+      context "with changed attributes" do
+        it "changes venue attributes that match expected '_was' value" do
+          # *_was is defined in ActiveModel::Dirty and represents value before
+          # applying local changes (in our case, parent value before rebasing)
+          abstract_location.description = venue.description
+          abstract_location.changed_attributes.delete('description') # reset
+          abstract_location.description = 'Classified'
+
+          abstract_location.populate_venue
+          venue.description.should eq 'Classified'
+          venue.changed.should include('description')
+        end
+
+        it "doesn't change attributes changed outside of abstract location" do
+          # simulate a venue change outside of an abstract location, because
+          # people like to program computers to change URLs to random things
+          venue.url = 'http://if.charlie.brown.was.an.atheist/'
+          venue.changed_attributes.clear
+
+          # whereas people like to translate their urls into gibberish
+          abstract_location.url = 'http://bit.ly/1hdhFhW' # yes, yes it does
+
+          abstract_location.populate_venue
+          venue.changed.should_not include('url')
+        end
+      end
+    end
+  end
+
   describe "#rebase_changed_attributes!" do
     # start with something that would be considered identical
     let!(:existing) { abstract_location.dup }

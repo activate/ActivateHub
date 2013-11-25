@@ -21,5 +21,16 @@ FactoryGirl.define do
       country 'US'
     end
 
+    trait :w_venue_attributes do
+      w_address
+
+      sequence(:url) {|n| "http://my.venue-#{n}.url.test/" }
+      description { "For that glow-in-your-mouth goodness!" }
+      latitude { (64.503889).to_d }
+      longitude { (-165.399444).to_d }
+      email { "iceman@extreme-tourguides.test" }
+      telephone { "000-000-0000" }
+      tags { %w(food farming gmo underground radium) }
+    end
   end
 end
