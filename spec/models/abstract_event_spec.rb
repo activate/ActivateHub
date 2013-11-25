@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'mixins/rebaseable_examples'
 
 describe AbstractEvent do
   subject(:abstract_event) { build_stubbed(:abstract_event, :source => source) }
@@ -73,6 +74,98 @@ describe AbstractEvent do
     it "is false when #event_attributes_changed is empty" do
       abstract_event.stub(:event_attributes_changed => [])
       abstract_event.event_attributes_changed?.should be_false
+    end
+  end
+
+  describe "#import!" do
+    subject(:abstract_event) { build(:abstract_event) }
+
+    context "with an existing abstract event" do
+      let(:existing) do
+        abstract_event.dup # make attributes identical by default
+      end
+
+      before(:each) do
+        AbstractEvent.any_instance.stub(:find_existing => existing)
+      end
+
+      it "should attempt a rebase" do
+        abstract_event.should_receive(:rebase_changed_attributes!).with(existing)
+        abstract_event.import!
+      end
+
+      context "abstract event has changes" do
+        before(:each) { abstract_event.description = "Synchronized Coffee Grinding" }
+
+        it "saves a new copy of the abstract event" do
+          expect { abstract_event.import! } \
+            .to change { AbstractEvent.count }.by(1)
+        end
+
+        it "returns 'updated' as its result" do
+          expect(abstract_event.import!).to eq 'updated'
+        end
+
+        it "set the :result attribute to 'updated'" do
+          abstract_event.tap(&:import!).reload # ensure it's persisted
+          abstract_event.result.should eq 'updated'
+        end
+
+        context "has invalid attributes" do
+          before(:each) { abstract_event.title = '' }
+
+          it "raises an ActiveRecord::RecordInvalid exception" do
+            expect { abstract_event.import! } \
+              .to raise_error ActiveRecord::RecordInvalid
+          end
+        end
+      end
+
+      context "abstract event has no changes" do
+        it "does not save a new copy of the abstract event" do
+          expect { abstract_event.import! } \
+            .to_not change { AbstractEvent.count }
+        end
+
+        it "returns 'unchanged' as its result" do
+          expect(abstract_event.import!).to eq 'unchanged'
+        end
+
+        it "sets the :result attribute to 'unchanged'" do
+          abstract_event.import!
+          abstract_event.result.should eq 'unchanged'
+        end
+      end
+    end
+
+    context "without an existing abstract event" do
+      it "saves a new copy of the abstract event" do
+        expect { abstract_event.import! } \
+          .to change { AbstractEvent.count }.by(1)
+      end
+
+      it "should not rebase the event" do
+        abstract_event.should_not_receive :rebase_changed_attributes!
+        abstract_event.import!
+      end
+
+      it "returns 'created' as its result" do
+        expect(abstract_event.import!).to eq 'created'
+      end
+
+      it "set the :result attribute to 'created'" do
+        abstract_event.tap(&:import!).reload # ensure it's persisted
+        abstract_event.result.should eq 'created'
+      end
+
+      context "has invalid attributes" do
+        before(:each) { abstract_event.title = '' }
+
+        it "raises an ActiveRecord::RecordInvalid exception" do
+          expect { abstract_event.import! } \
+            .to raise_error ActiveRecord::RecordInvalid
+        end
+      end
     end
   end
 

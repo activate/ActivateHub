@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'mixins/rebaseable_examples'
 
 describe AbstractLocation do
   subject(:abstract_location) { build_stubbed(:abstract_location) }
@@ -105,6 +106,98 @@ describe AbstractLocation do
       alocs = create_list(:abstract_location, 3, :source => source, :external_id => 'k')
       aloc = build(:abstract_location, :source => source, :external_id => 'k')
       aloc.find_existing.should eq alocs.last
+    end
+  end
+
+  describe "#import!" do
+    subject(:abstract_location) { build(:abstract_location) }
+
+    context "with an existing abstract location" do
+      let(:existing) do
+        abstract_location.dup # make attributes identical by default
+      end
+
+      before(:each) do
+        AbstractLocation.any_instance.stub(:find_existing => existing)
+      end
+
+      it "should attempt a rebase" do
+        abstract_location.should_receive(:rebase_changed_attributes!).with(existing)
+        abstract_location.import!
+      end
+
+      context "abstract location has changes" do
+        before(:each) { abstract_location.description = "Where capsaicin is king" }
+
+        it "saves a new copy of the abstract location" do
+          expect { abstract_location.import! } \
+            .to change { AbstractLocation.count }.by(1)
+        end
+
+        it "returns 'updated' as its result" do
+          expect(abstract_location.import!).to eq 'updated'
+        end
+
+        it "set the :result attribute to 'updated'" do
+          abstract_location.tap(&:import!).reload # ensure it's persisted
+          abstract_location.result.should eq 'updated'
+        end
+
+        context "has invalid attributes" do
+          before(:each) { abstract_location.title = '' }
+
+          it "raises an ActiveRecord::RecordInvalid exception" do
+            expect { abstract_location.import! } \
+              .to raise_error ActiveRecord::RecordInvalid
+          end
+        end
+      end
+
+      context "abstract location has no changes" do
+        it "does not save a new copy of the abstract location" do
+          expect { abstract_location.import! } \
+            .to_not change { AbstractLocation.count }
+        end
+
+        it "returns 'unchanged' as its result" do
+          expect(abstract_location.import!).to eq 'unchanged'
+        end
+
+        it "sets the :result attribute to 'unchanged'" do
+          abstract_location.import!
+          abstract_location.result.should eq 'unchanged'
+        end
+      end
+    end
+
+    context "without an existing abstract location" do
+      it "saves a new copy of the abstract location" do
+        expect { abstract_location.import! } \
+          .to change { AbstractLocation.count }.by(1)
+      end
+
+      it "should not rebase the location" do
+        abstract_location.should_not_receive :rebase_changed_attributes!
+        abstract_location.import!
+      end
+
+      it "returns 'created' as its result" do
+        expect(abstract_location.import!).to eq 'created'
+      end
+
+      it "set the :result attribute to 'created'" do
+        abstract_location.tap(&:import!).reload # ensure it's persisted
+        abstract_location.result.should eq 'created'
+      end
+
+      context "has invalid attributes" do
+        before(:each) { abstract_location.title = '' }
+
+        it "raises an ActiveRecord::RecordInvalid exception" do
+          expect { abstract_location.import! } \
+            .to raise_error ActiveRecord::RecordInvalid
+        end
+      end
     end
   end
 

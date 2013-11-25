@@ -52,6 +52,22 @@ class AbstractLocation < ActiveRecord::Base
     abstract_location
   end
 
+  def import!
+    # layer our changes on top of an existing location if one found
+    if existing = find_existing
+      rebase_changed_attributes!(existing)
+    end
+
+    if venue_attributes_changed?
+      self.result = (existing ? 'updated' : 'created')
+      save!
+    else
+      self.result = 'unchanged'
+    end
+
+    result
+  end
+
   def save_invalid!
     self.result = 'invalid'
     save!(:validate => false)
