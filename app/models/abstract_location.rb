@@ -6,6 +6,8 @@ class AbstractLocation < ActiveRecord::Base
 
   include Rebaseable
 
+  scope_to_current_site
+
   VENUE_ATTRIBUTES = [ # attributes that get copied over to venues if changed
     :url, :title, :description, :address, :street_address, :locality, :region,
     :postal_code, :country, :latitude, :longitude, :email, :telephone,

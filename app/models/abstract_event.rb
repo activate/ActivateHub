@@ -6,6 +6,8 @@ class AbstractEvent < ActiveRecord::Base
 
   include Rebaseable
 
+  scope_to_current_site
+
   EVENT_ATTRIBUTES = [ # attributes that get copied over to events if changed
     :url, :title, :start_time, :end_time, :description,
     #:tags, # FIXME: is :tags_list in Event (:changed doesn't match up in populate_event)
@@ -73,6 +75,8 @@ class AbstractEvent < ActiveRecord::Base
     if existing = find_existing
       rebase_changed_attributes!(existing)
     end
+
+    # FIXME: populate and associate the venue
 
     if event_attributes_changed?
       self.result = (existing ? 'updated' : 'created')
