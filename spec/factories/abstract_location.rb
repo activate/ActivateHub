@@ -9,7 +9,7 @@ FactoryGirl.define do
     source
 
     trait :invalid do
-      title nil
+      title ' '
     end
 
     trait :w_address do

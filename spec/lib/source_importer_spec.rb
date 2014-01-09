@@ -112,7 +112,10 @@ describe SourceImporter do
 
   describe "#import!" do
     let(:abstract_events) { build_list(:abstract_event, 3, :future) }
-    before(:each) { SourceParser.stub(:to_abstract_events => abstract_events) }
+    before(:each) {
+      abstract_events.each {|ae| ae.abstract_location = build(:abstract_location) }
+      SourceParser.stub(:to_abstract_events => abstract_events)
+    }
 
     it "fetches upstream events if not already fetched" do
       importer.should_receive(:fetch_upstream).once.and_call_original
@@ -123,6 +126,24 @@ describe SourceImporter do
       importer.fetch_upstream
       importer.should_receive(:fetch_upstream).never
       importer.import!
+    end
+
+    it "imports valid abstract locations" do
+      expect { importer.import! }.to change { AbstractLocation.count }.by(3)
+    end
+
+    it "imports valid abstract events" do
+      expect { importer.import! }.to change { AbstractEvent.count }.by(3)
+    end
+
+    context "with invalid locations" do
+      before(:each) do
+        abstract_events.last.abstract_location = build(:abstract_location, :invalid)
+      end
+
+      it "persists invalid abstract locations (for eventual triage)" do
+        expect { importer.import! }.to change { AbstractLocation.invalid.count }.by(1)
+      end
     end
 
     context "with invalid events" do

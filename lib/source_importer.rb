@@ -18,6 +18,8 @@ class SourceImporter
 
   def fetch_upstream
     @abstract_events = SourceParser.to_abstract_events(:url => source.url)
+
+    # exclude events that fall outside our date range
     @abstract_events.reject! {|ae| ae.start_time < range_start }
     @abstract_events.reject! {|ae| ae.start_time >= range_end }
 
@@ -35,13 +37,21 @@ class SourceImporter
     # fetch upstream events if not tried yet
     fetch_upstream unless abstract_events
 
-    # separate out and save abstract events that fail validation checks
-    invalid, valid = abstract_events.partition(&:invalid?)
-    invalid.each(&:save_invalid!)
+    abstract_locations.each do |abstract_location|
+      begin
+        abstract_location.import!
+      rescue
+        abstract_location.save_invalid!
+      end
+    end
 
-    # FIXME: handle valid events
-
-    true
+    abstract_events.each do |abstract_event|
+      begin
+        abstract_event.import!
+      rescue
+        abstract_event.save_invalid!
+      end
+    end
   end
 
 end
