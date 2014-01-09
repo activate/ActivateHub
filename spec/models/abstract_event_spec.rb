@@ -81,8 +81,8 @@ describe AbstractEvent do
     subject(:abstract_event) { build(:abstract_event) }
 
     context "with an existing abstract event" do
-      let(:existing) do
-        abstract_event.dup # make attributes identical by default
+      let!(:existing) do
+        abstract_event.dup.tap(&:import!) # make attributes identical by default
       end
 
       before(:each) do
@@ -109,6 +109,14 @@ describe AbstractEvent do
         it "set the :result attribute to 'updated'" do
           abstract_event.tap(&:import!).reload # ensure it's persisted
           abstract_event.result.should eq 'updated'
+        end
+
+        it "populates and saves the event" do
+          expect {
+            abstract_event.should_receive(:populate_event).and_call_original
+            abstract_event.import!
+          }.to change { existing.event.reload.description }
+
         end
 
         context "has invalid attributes" do
@@ -308,7 +316,7 @@ describe AbstractEvent do
       ae.find_existing.should eq existing
     end
 
-    it "returns the most recently created match", :focus => true do
+    it "returns the most recently created match" do
       ae_attrs = { :source => source, :external_id => 'x', :event => create(:event) }
       create(:abstract_event, ae_attrs)
 

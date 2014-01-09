@@ -73,6 +73,8 @@ class AbstractLocation < ActiveRecord::Base
 
     if venue_attributes_changed?
       self.result = (existing ? 'updated' : 'created')
+      populate_venue
+      venue.save!
       save!
     else
       self.result = 'unchanged'

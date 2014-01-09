@@ -80,6 +80,8 @@ class AbstractEvent < ActiveRecord::Base
 
     if event_attributes_changed?
       self.result = (existing ? 'updated' : 'created')
+      populate_event
+      event.save!
       save!
     else
       self.result = 'unchanged'

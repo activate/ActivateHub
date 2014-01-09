@@ -120,8 +120,8 @@ describe AbstractLocation do
     subject(:abstract_location) { build(:abstract_location) }
 
     context "with an existing abstract location" do
-      let(:existing) do
-        abstract_location.dup # make attributes identical by default
+      let!(:existing) do
+        abstract_location.dup.tap(&:import!) # make attributes identical by default
       end
 
       before(:each) do
@@ -148,6 +148,13 @@ describe AbstractLocation do
         it "set the :result attribute to 'updated'" do
           abstract_location.tap(&:import!).reload # ensure it's persisted
           abstract_location.result.should eq 'updated'
+        end
+
+        it "populates and saves the venue" do
+          expect {
+            abstract_location.should_receive(:populate_venue).and_call_original
+            abstract_location.import!
+          }.to change { existing.venue.reload.description }
         end
 
         context "has invalid attributes" do
