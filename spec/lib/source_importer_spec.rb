@@ -111,10 +111,14 @@ describe SourceImporter do
   end
 
   describe "#import!" do
+    let(:abstract_locations) { build_list(:abstract_location, 3) }
     let(:abstract_events) { build_list(:abstract_event, 3, :future) }
     before(:each) {
-      abstract_events.each {|ae| ae.abstract_location = build(:abstract_location) }
-      SourceParser.stub(:to_abstract_events => abstract_events)
+      importer.stub(:fetch_upstream) do
+        importer.instance_variable_set(:@abstract_locations, abstract_locations)
+        importer.instance_variable_set(:@abstract_events, abstract_events)
+        true
+      end
     }
 
     it "should return true" do
@@ -122,7 +126,9 @@ describe SourceImporter do
     end
 
     it "fetches upstream events if not already fetched" do
-      importer.should_receive(:fetch_upstream).once.and_call_original
+      # "and_return(importer.fetch_upstream)" forces stubbed method to be called.
+      # "and_call_original" calls the original implemention, even when stubbed :(
+      importer.should_receive(:fetch_upstream).and_return(importer.fetch_upstream)
       importer.import!
     end
 
@@ -155,6 +161,23 @@ describe SourceImporter do
 
       it "persists invalid abstract events (for eventual triage)" do
         expect { importer.import! }.to change { AbstractEvent.invalid.count }.by(2)
+      end
+    end
+
+    context "with duplicate unchanged locations" do
+      let(:abstract_locations) do
+        locations = build_list(:abstract_location, 3)
+        locations.first.import!
+
+        # should result in 2 created and 7 unchanged after import
+        result = 3.times.flat_map { locations.map(&:dup) }
+      end
+
+      it "filters out unchanged locations that match others in same import" do
+        importer.import!
+        importer.abstract_locations.map(&:result).should eq [
+          'unchanged', 'created', 'created'
+        ]
       end
     end
   end

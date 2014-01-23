@@ -53,6 +53,17 @@ class SourceImporter
       end
     end
 
+    # only want to keep first occurrence of abstract location unless changed
+    abstract_location_ids = {}
+    @abstract_locations = @abstract_locations.inject([]) do |memo,al|
+      unless al.result == 'unchanged' && abstract_location_ids[al.id]
+        abstract_location_ids[al.id] = true
+        memo << al
+      end
+
+      memo
+    end
+
     true
   end
 
