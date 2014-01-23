@@ -1,3 +1,5 @@
+require 'task_helpers'
+
 namespace :sources do
   task 'import:all', [:site] => :tenantized_environment do |t,args|
     site = ActiveRecord::Base.current_site
@@ -7,30 +9,36 @@ namespace :sources do
     end
   end
 
-  task :import, [:site,:source_id] => :tenantized_environment do |t,args|
-    unless source = Source.find(args[:source_id])
-      raise "could not find source with id '#{args[:source_id]}'"
-    end
+  task :import, [:site,:source_id,*(:argv0..:argv9)] => :tenantized_environment do |t,args|
+    options = TaskHelpers.parse_var_args(args)
 
-    unless source.enabled?
-      raise "source is currently flagged as disabled"
-    end
+    dry_run = options.key?(:dry) ? options[:dry] : false
 
-    title = "#{source.name} (id: #{source.id}):"
-    puts '='*76, title, '-'*title.length
+    sources = options[:source_id] == '*' \
+      ? Source.enabled # wildcard, want all enabled sources
+      : [Source.find(options[:source_id])]
 
-    begin
-      raise ActiveRecord::RecordInvalid if source.invalid?
-      importer = SourceImporter.new(source)
-      importer.import!
+    ActiveRecord::Base.transaction(:requires_new => true) do
+      sources.each do |source|
+        title = "#{source.name} (id: #{source.id}):"
+        puts '='*76, title, '-'*title.length
 
-      puts importer.summary
-      puts
+        begin
+          raise ActiveRecord::RecordInvalid if source.invalid?
+          importer = SourceImporter.new(source)
+          importer.import!
 
-    rescue => e
-      # Could have more robust error handling here
-      puts "#{e.class.name}: #{e.message}:", e.backtrace
-      puts
+          puts importer.summary
+          puts
+
+        rescue => e
+          # Could have more robust error handling here
+          puts "#{e.class.name}: #{e.message}:", e.backtrace
+          puts
+        end
+      end
+
+      raise ActiveRecord::Rollback if dry_run
     end
 
     CacheObserver.expire_all
