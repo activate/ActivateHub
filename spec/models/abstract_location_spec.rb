@@ -32,6 +32,17 @@ describe AbstractLocation do
     end
   end
 
+  #--- [ Constants ]--------------------------------------------------------
+
+  describe "::VENUE_ATTRIBUTES" do
+    it "includes expected attributes" do
+      AbstractLocation::VENUE_ATTRIBUTES.should include(
+        :url, :title, :description, :address, :street_address, :locality, :region,
+        :postal_code, :country, :latitude, :longitude, :email, :telephone
+      )
+    end
+  end
+
   #---[ Instance Methods ]--------------------------------------------------
 
   describe "#find_existing" do

@@ -51,16 +51,28 @@ describe AbstractEvent do
     end
   end
 
+  #--- [ Constants ]--------------------------------------------------------
+
+  describe "::EVENT_ATTRIBUTES" do
+    it "includes expected attributes" do
+      AbstractEvent::EVENT_ATTRIBUTES.should include(
+        :url, :title, :end_time, :start_time, :description, :venue_id
+      )
+    end
+
+    it ":end_time comes before :start_time, otherwise might get auto-gen" do
+      start_time_idx = AbstractEvent::EVENT_ATTRIBUTES.index(:start_time)
+      end_time_idx = AbstractEvent::EVENT_ATTRIBUTES.index(:end_time)
+      end_time_idx.should be < start_time_idx
+    end
+  end
+
   #---[ Custom Attributes ]-------------------------------------------------
   # non-persistent attributes and the overrides required to behave correctly
 
   describe ":venue_id" do
     it "is included in attributes list" do
       abstract_event.attributes.keys.should include('venue_id')
-    end
-
-    it "is included in EVENT_ATTRIBUTES" do
-      AbstractEvent::EVENT_ATTRIBUTES.should include(:venue_id)
     end
 
     it "flags itself as being changed when new value set" do

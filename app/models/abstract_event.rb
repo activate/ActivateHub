@@ -13,7 +13,7 @@ class AbstractEvent < ActiveRecord::Base
   attr_accessor :venue_id
 
   EVENT_ATTRIBUTES = [ # attributes that get copied over to events if changed
-    :url, :title, :start_time, :end_time, :description, :venue_id
+    :url, :title, :end_time, :start_time, :description, :venue_id
     #:tags, # FIXME: is :tags_list in Event (:changed doesn't match up in populate_event)
   ]
 
