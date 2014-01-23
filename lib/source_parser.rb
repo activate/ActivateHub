@@ -1,4 +1,6 @@
+require 'source_parser/base'
 require 'source_parser/not_found'
+require 'source_parser/http_authentication_required_error'
 
 # == SourceParser
 #
@@ -61,8 +63,8 @@ class SourceParser
 end
 
 # Load format-specific drivers in the following order:
-SourceParser::Plancast
-SourceParser::Meetup
-SourceParser::Facebook
-SourceParser::Ical
-SourceParser::Hcal
+require 'source_parser/plancast'
+require 'source_parser/meetup'
+require 'source_parser/facebook'
+require 'source_parser/ical'
+require 'source_parser/hcal'

@@ -1,4 +1,5 @@
 require 'task_helpers'
+require 'source_importer'
 
 namespace :sources do
   task 'import:all', [:site] => :tenantized_environment do |t,args|

@@ -1,3 +1,5 @@
+require 'source_parser'
+
 class SourcesController < ApplicationController
   MAXIMUM_EVENTS_TO_DISPLAY_IN_FLASH = 5
 
