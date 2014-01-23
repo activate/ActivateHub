@@ -8,8 +8,12 @@ class AbstractEvent < ActiveRecord::Base
 
   scope_to_current_site
 
+  after_find :populate_venue_id
+
+  attr_accessor :venue_id
+
   EVENT_ATTRIBUTES = [ # attributes that get copied over to events if changed
-    :url, :title, :start_time, :end_time, :description,
+    :url, :title, :start_time, :end_time, :description, :venue_id
     #:tags, # FIXME: is :tags_list in Event (:changed doesn't match up in populate_event)
   ]
 
@@ -28,11 +32,19 @@ class AbstractEvent < ActiveRecord::Base
     # keep a copy of venue title so we don't have to hit database for
     # abstract locations when detecting if event exists in :find_existing
     self.venue_title = abstract_location.try(:title)
+    self.venue_id = abstract_location.try(:venue_id)
 
     super
   end
 
+  def attributes
+    super.merge!('venue_id' => venue_id)
+  end
+
   def event_attributes_changed
+    # ensures venue_id is current as dirty attrs uses cached value
+    self.venue_id = abstract_location.try(:venue_id)
+
     EVENT_ATTRIBUTES.select {|a| changed_attributes.key?(a.to_s) }
   end
 
@@ -71,7 +83,7 @@ class AbstractEvent < ActiveRecord::Base
   end
 
   def import!
-    # layer our changes on top of an existing location if one found
+    # layer our changes on top of an existing event if one found
     if existing = find_existing
       rebase_changed_attributes!(existing)
     end
@@ -95,7 +107,7 @@ class AbstractEvent < ActiveRecord::Base
     self.event ||= Event.new(:source_id => source_id)
 
     event_attributes_changed.each do |name|
-      if event[name] == send("#{name}_was")
+      if event.send(name) == send("#{name}_was")
         # event value unchanged from value set in last abstract event, safe
         event.send("#{name}=", send(name))
       else
@@ -110,6 +122,59 @@ class AbstractEvent < ActiveRecord::Base
   def save_invalid!
     self.result = 'invalid'
     save!(:validate => false)
+  end
+
+  def venue_id=(venue_id)
+    if changed_attributes['venue_id'] == venue_id
+      # reverting to original value
+      changed_attributes.delete('venue_id')
+    elsif @venue_id != venue_id
+      venue_id_will_change!
+    end
+
+    @venue_id = venue_id
+  end
+
+  #---[ ActiveModel::Dirty Attibute Methods ]-------------------------------
+  # To enable dirty attr methods, it should be possible to write something
+  # like the following (see rubydoc for ActiveModel::AttributeMethods):
+  #   attr_accessor :venue_id
+  #
+  #   # automatically mixed in from ActiveModel::Dirty
+  #   # attribute_method_suffix '_changed?', '_change', '_will_change!', '_was'
+  #
+  #   define_attribute_methods [:venue_id]
+  #
+  # Unfortunately `define_attribute_methods` doesn't work for any attributes
+  # because there are ActiveRecord-specific prefix/affix/suffix definitions
+  # that assume any attributes passed to them are real ActiveRecord columns.
+
+  def reset_venue_id!
+    reset_attribute!('venue_id')
+  end
+
+  def venue_id_change
+    attribute_change('venue_id')
+  end
+
+  def venue_id_changed?
+    attribute_changed?('venue_id')
+  end
+
+  def venue_id_will_change!
+    attribute_will_change!('venue_id')
+  end
+
+  def venue_id_was
+    attribute_was('venue_id')
+  end
+
+  #-------------------------------------------------------------------------
+
+  private
+
+  def populate_venue_id
+    @venue_id = abstract_location.try(:venue_id)
   end
 
 end

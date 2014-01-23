@@ -35,6 +35,81 @@ describe AbstractEvent do
     end
   end
 
+  #---[ ActiveRecord Callbacks ]--------------------------------------------
+
+  describe ":after_find callback" do
+    let(:abstract_event) { build(:abstract_event) }
+
+    it "populates the venue_id attribute from abstract_location" do
+      abstract_event.abstract_location = build(:abstract_location)
+
+      abstract_event.abstract_location.import!
+      abstract_event.import!
+
+      expected = abstract_event.abstract_location.venue_id
+      AbstractEvent.find(abstract_event.id).venue_id.should eq expected
+    end
+  end
+
+  #---[ Custom Attributes ]-------------------------------------------------
+  # non-persistent attributes and the overrides required to behave correctly
+
+  describe ":venue_id" do
+    it "is included in attributes list" do
+      abstract_event.attributes.keys.should include('venue_id')
+    end
+
+    it "is included in EVENT_ATTRIBUTES" do
+      AbstractEvent::EVENT_ATTRIBUTES.should include(:venue_id)
+    end
+
+    it "flags itself as being changed when new value set" do
+      abstract_event.venue_id = 54321
+      abstract_event.changes.should include('venue_id')
+    end
+
+    it "resets changed state when value is restored to original value" do
+      abstract_event.venue_id = 54321
+      abstract_event.venue_id = nil
+      abstract_event.changes.should_not include('venue_id')
+    end
+
+    context "ActiveModel::Dirty attribute methods" do
+      before(:each) do
+        # make original unchanged value something besides nil, easier to verify
+        abstract_event.venue_id = 12345
+        abstract_event.changed_attributes.delete('venue_id')
+      end
+
+      it "#reset_venue_id! should assign attribute to its original value" do
+        abstract_event.venue_id = 54321
+        abstract_event.reset_venue_id!
+        abstract_event.venue_id.should eq 12345
+        abstract_event.venue_id_changed?.should be false
+      end
+
+      it "#venue_id_change should include old and new value" do
+        expect { abstract_event.venue_id = 54321 }
+          .to change { abstract_event.venue_id_change }.from(nil).to([12345, 54321])
+      end
+
+      it "#venue_id_changed? should be true after change" do
+        expect { abstract_event.venue_id = 54321 } \
+          .to change { abstract_event.venue_id_changed? }.from(false).to(true)
+      end
+
+      it "#venue_id_will_change! set changed flag" do
+        expect { abstract_event.venue_id_will_change! } \
+          .to change { abstract_event.venue_id_changed? }.from(false).to(true)
+      end
+
+      it "#venue_id_was should return return original value" do
+        abstract_event.venue_id = 54321
+        abstract_event.venue_id_was.should eq 12345
+      end
+    end
+  end
+
   #---[ Instance Methods ]--------------------------------------------------
 
   describe "#abstract_location=" do
@@ -42,6 +117,12 @@ describe AbstractEvent do
       al = build_stubbed(:abstract_location, :source => source, :title => 'The Bog')
       abstract_event.abstract_location = al
       abstract_event.venue_title.should eq 'The Bog'
+    end
+
+    it "sets the :venue_id attribute to abstract location's venue_id" do
+      al = build_stubbed(:abstract_location, :source => source, :venue_id => 864531)
+      abstract_event.abstract_location = al
+      abstract_event.venue_id.should eq 864531
     end
   end
 
@@ -57,10 +138,15 @@ describe AbstractEvent do
       abstract_event.event_attributes_changed.should eq []
     end
 
-    AbstractEvent::EVENT_ATTRIBUTES.each do |attribute_name|
-      it "includes attribute name  when #{attribute_name} changes" do
+    (AbstractEvent::EVENT_ATTRIBUTES-[:venue_id]).each do |attribute_name|
+      it "includes attribute name when #{attribute_name} changes" do
         abstract_event.send("#{attribute_name}=", :foo)
         abstract_event.event_attributes_changed.should eq [attribute_name]
+      end
+
+      it "includes attribute name when venue_id changes" do
+        abstract_event.abstract_location = build_stubbed(:abstract_location, :venue_id => 947343)
+        abstract_event.event_attributes_changed.should eq [:venue_id]
       end
     end
   end
@@ -202,6 +288,8 @@ describe AbstractEvent do
       end
 
       it "should populate event with event attributes" do
+        abstract_event.abstract_location = build(:abstract_location).tap(&:import!)
+
         abstract_event.populate_event
         changed = abstract_event.event.changed
         changed.should include(*event_attributes)
