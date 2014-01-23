@@ -34,13 +34,17 @@ class SourceImporter
   end
 
   def import!
+    # NOTE: We assume a partial import is acceptable if an error is raised. If
+    # If you'd like to rollback on error, wrap this method in a transaction.
+
     # fetch upstream events if not tried yet
     fetch_upstream unless abstract_events
 
+    # NOTE: 
     abstract_locations.each do |abstract_location|
       begin
         abstract_location.import!
-      rescue
+      rescue ActiveRecord::RecordInvalid => e
         abstract_location.save_invalid!
       end
     end
@@ -48,7 +52,7 @@ class SourceImporter
     abstract_events.each do |abstract_event|
       begin
         abstract_event.import!
-      rescue
+      rescue ActiveRecord::RecordInvalid => e
         abstract_event.save_invalid!
       end
     end

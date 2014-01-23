@@ -164,6 +164,28 @@ describe SourceImporter do
       end
     end
 
+    context "with a location that raises an error" do
+      before(:each) do
+        location = build(:abstract_location)
+        location.stub(:import!).and_raise('unhandled error')
+        abstract_events.last.abstract_location = location
+      end
+
+      it "propagates the error" do
+        expect { importer.import! }.to raise_error
+      end
+    end
+
+    context "with a event that raises an error" do
+      before(:each) do
+        abstract_events.last.stub(:import!).and_raise('unhandled error')
+      end
+
+      it "propagates the error" do
+        expect { importer.import! }.to raise_error
+      end
+    end
+
     context "with duplicate unchanged locations" do
       let(:abstract_locations) do
         locations = build_list(:abstract_location, 3)
