@@ -88,7 +88,14 @@ class AbstractEvent < ActiveRecord::Base
       rebase_changed_attributes!(existing)
     end
 
-    # FIXME: populate and associate the venue
+    # import the venue if it hasn't been done already
+    if abstract_location && !abstract_location.result?
+      begin
+        abstract_location.import!
+      rescue ActiveRecord::RecordInvalid => e
+        abstract_location.save_invalid!
+      end
+    end
 
     if event_attributes_changed?
       self.result = (existing ? 'updated' : 'created')

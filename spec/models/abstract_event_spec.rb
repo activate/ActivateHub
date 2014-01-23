@@ -278,6 +278,57 @@ describe AbstractEvent do
         end
       end
     end
+
+    context "with an abstract_location" do
+      let(:abstract_location) { build(:abstract_location) }
+      before(:each) { abstract_event.abstract_location = abstract_location }
+
+      it "imports the abstract location if not imported" do
+        abstract_location.should_receive(:import!).and_call_original
+        abstract_event.import!
+      end
+
+      it "doesn't import abstract location if already imported" do
+        abstract_location.import!
+        abstract_location.should_receive(:import!).never
+        abstract_event.import!
+      end
+
+      it "associates the venue with the created event" do
+        abstract_event.import!
+        abstract_event.event.venue.should_not be_nil # sanity check
+        abstract_event.event.venue_id.should eq abstract_location.venue_id
+      end
+
+      context "abstract_location is invalid" do
+        let(:abstract_location) { build(:abstract_location, :invalid) }
+
+        it "saves the the location as invalid" do
+          abstract_event.import!
+          abstract_event.abstract_location.result.should eq 'invalid'
+        end
+
+        it "doesn't prevent importing the event" do
+          abstract_event.import!
+          abstract_event.result.should eq 'created'
+        end
+      end
+
+      context "abstract_location raises an error" do
+        before(:each) do
+          abstract_location.stub(:import!).and_raise('unhandled_error')
+        end
+
+        it "doesn't save abstract event" do
+          expect { abstract_event.import! rescue nil } \
+            .to_not change { AbstractEvent.count }
+        end
+
+        it "propagates the error" do
+          expect { abstract_event.import! }.to raise_error
+        end
+      end
+    end
   end
 
   describe "#populate_event" do
