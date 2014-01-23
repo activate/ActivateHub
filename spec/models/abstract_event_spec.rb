@@ -143,6 +143,11 @@ describe AbstractEvent do
           abstract_event.import!
           abstract_event.result.should eq 'unchanged'
         end
+
+        it "sets the id to the existing abstract event" do
+          expect { abstract_event.import! } \
+            .to change { abstract_event.id }.from(nil).to(existing.id)
+        end
       end
     end
 

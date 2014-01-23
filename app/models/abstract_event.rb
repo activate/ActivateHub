@@ -84,6 +84,7 @@ class AbstractEvent < ActiveRecord::Base
       event.save!
       save!
     else
+      self.id = existing.id
       self.result = 'unchanged'
     end
 

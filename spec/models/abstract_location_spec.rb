@@ -181,6 +181,11 @@ describe AbstractLocation do
           abstract_location.import!
           abstract_location.result.should eq 'unchanged'
         end
+
+        it "sets the id to the existing abstract location" do
+          expect { abstract_location.import! } \
+            .to change { abstract_location.id }.from(nil).to(existing.id)
+        end
       end
     end
 
