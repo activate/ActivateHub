@@ -117,6 +117,10 @@ describe SourceImporter do
       SourceParser.stub(:to_abstract_events => abstract_events)
     }
 
+    it "should return true" do
+      importer.import!.should be_true
+    end
+
     it "fetches upstream events if not already fetched" do
       importer.should_receive(:fetch_upstream).once.and_call_original
       importer.import!
@@ -152,6 +156,52 @@ describe SourceImporter do
       it "persists invalid abstract events (for eventual triage)" do
         expect { importer.import! }.to change { AbstractEvent.invalid.count }.by(2)
       end
+    end
+  end
+
+  describe "#summary" do
+    before(:each) {
+      importer.stub(:abstract_locations => [
+        *build_stubbed_list(:abstract_location, 1, :result => 'created'),
+        *build_stubbed_list(:abstract_location, 2, :result => 'unchanged'),
+        build_stubbed(:abstract_location, :result => 'invalid'),
+        build_stubbed(:abstract_location, :result => 'updated'),
+      ])
+
+      importer.stub(:abstract_events => [
+        *build_stubbed_list(:abstract_event, 2, :result => 'created'),
+        *build_stubbed_list(:abstract_event, 3, :result => 'unchanged'),
+        build_stubbed(:abstract_event, :result => 'invalid'),
+        build_stubbed(:abstract_event, :result => 'updated'),
+      ])
+    }
+
+    it "reports total number of events found upstream" do
+      importer.summary.should match /7 event/i
+    end
+
+    it "reports net increase of 1 venue" do
+      importer.summary.should match /Venues:\s*\+1/i
+    end
+
+    it "reports correct number of abstract locations" do
+      venue_summary = importer.summary[/^Venues:\s*[+-].*?\n(?:\s+[^s].*\n)+/]
+      venue_summary.should match /Invalid:\s*1/i
+      venue_summary.should match /Created:\s*1/i
+      venue_summary.should match /Updated:\s*1/i
+      venue_summary.should match /Unchanged:\s*2/i
+    end
+
+    it "reports correct number of abstract events" do
+      event_summary = importer.summary[/^Events:\s*[+-].*?\n(?:\s+[^\s].*\n)+/]
+      event_summary.should match /Invalid:\s*1/i
+      event_summary.should match /Created:\s*2/i
+      event_summary.should match /Updated:\s*1/i
+      event_summary.should match /Unchanged:\s*3/i
+    end
+
+    it "reports net increase of 2 events" do
+      importer.summary.should match /Events:\s*\+2/i
     end
   end
 

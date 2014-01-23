@@ -52,6 +52,55 @@ class SourceImporter
         abstract_event.save_invalid!
       end
     end
+
+    true
   end
 
+  def summary
+    re = (abstract_events||{}).group_by(&:result).symbolize_keys
+    rv = (abstract_locations||{}).group_by(&:result).symbolize_keys
+    re.default = rv.default = []
+
+    summary = <<-SUMMARY.strip_heredoc
+      Found #{abstract_events.size} event(s) starting from "#{range_start}".
+
+      Events: #{"%+d" % re[:created].size}
+        Invalid: #{re[:invalid].size}
+        Created: #{re[:created].size}
+        Updated: #{re[:updated].size}
+        Unchanged: #{re[:unchanged].size}
+
+      Venues: #{"%+d" % rv[:created].size}
+        Invalid: #{rv[:invalid].size}
+        Created: #{rv[:created].size}
+        Updated: #{rv[:updated].size}
+        Unchanged: #{rv[:unchanged].size}
+
+    SUMMARY
+
+    event_dump = [:invalid,:created,:updated,:unchanged].inject({}) do |h,state|
+      h[state.to_s] = re[state].map do |abstract_event|
+        if event = abstract_event.event
+          # FIXME: timezone associated with event might not always be site's timezone
+          desc = "#{event.start_time.to_date}: #{event.title} (id: #{event.id})"
+          state == :invalid ? { desc => event.errors.full_messages } : desc
+        end
+      end
+      h
+    end
+
+    venue_dump = [:invalid,:created,:updated,:unchanged].inject({}) do |h,state|
+      h[state.to_s] = rv[state].map do |abstract_location|
+        if venue = abstract_location.venue
+          desc = "#{venue.title} (id: #{venue.id})"
+          state == :invalid ? { desc => venue.errors.full_messages } : desc
+        end
+      end
+      h
+    end
+
+    summary \
+      + { 'events' => event_dump }.to_yaml(:line_width => -1) \
+      + { 'venues' => venue_dump }.to_yaml(:line_width => -1)
+  end
 end
