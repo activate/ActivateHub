@@ -40,7 +40,6 @@ class SourceImporter
     # fetch upstream events if not tried yet
     fetch_upstream unless abstract_events
 
-    # NOTE: 
     abstract_locations.each do |abstract_location|
       begin
         abstract_location.import!
