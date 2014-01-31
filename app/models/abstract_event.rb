@@ -4,13 +4,14 @@ class AbstractEvent < ActiveRecord::Base
   belongs_to :event
   belongs_to :abstract_location
 
+  include DirtyAttrAccessor
   include Rebaseable
 
   scope_to_current_site
 
   after_find :populate_venue_id
 
-  attr_accessor :venue_id
+  dirty_attr_accessor :venue_id
 
   EVENT_ATTRIBUTES = [ # attributes that get copied over to events if changed
     :url, :title, :end_time, :start_time, :description, :venue_id
@@ -131,52 +132,6 @@ class AbstractEvent < ActiveRecord::Base
     save!(:validate => false)
   end
 
-  def venue_id=(venue_id)
-    if changed_attributes['venue_id'] == venue_id
-      # reverting to original value
-      changed_attributes.delete('venue_id')
-    elsif @venue_id != venue_id
-      venue_id_will_change!
-    end
-
-    @venue_id = venue_id
-  end
-
-  #---[ ActiveModel::Dirty Attibute Methods ]-------------------------------
-  # To enable dirty attr methods, it should be possible to write something
-  # like the following (see rubydoc for ActiveModel::AttributeMethods):
-  #   attr_accessor :venue_id
-  #
-  #   # automatically mixed in from ActiveModel::Dirty
-  #   # attribute_method_suffix '_changed?', '_change', '_will_change!', '_was'
-  #
-  #   define_attribute_methods [:venue_id]
-  #
-  # Unfortunately `define_attribute_methods` doesn't work for any attributes
-  # because there are ActiveRecord-specific prefix/affix/suffix definitions
-  # that assume any attributes passed to them are real ActiveRecord columns.
-
-  def reset_venue_id!
-    reset_attribute!('venue_id')
-  end
-
-  def venue_id_change
-    attribute_change('venue_id')
-  end
-
-  def venue_id_changed?
-    attribute_changed?('venue_id')
-  end
-
-  def venue_id_will_change!
-    attribute_will_change!('venue_id')
-  end
-
-  def venue_id_was
-    attribute_was('venue_id')
-  end
-
-  #-------------------------------------------------------------------------
 
   private
 

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'mixins/dirty_attr_accessor_examples'
 require 'mixins/rebaseable_examples'
 
 describe AbstractEvent do
@@ -21,6 +22,7 @@ describe AbstractEvent do
   it { should validate_presence_of(:start_time) }
   it { should validate_presence_of(:end_time) }
 
+  it_should_behave_like DirtyAttrAccessor
   it_should_behave_like Rebaseable
 
   #---[ Scopes ]------------------------------------------------------------
@@ -75,50 +77,10 @@ describe AbstractEvent do
       abstract_event.attributes.keys.should include('venue_id')
     end
 
-    it "flags itself as being changed when new value set" do
+    it "supports dirty/change tracking" do
       abstract_event.venue_id = 54321
-      abstract_event.changes.should include('venue_id')
-    end
-
-    it "resets changed state when value is restored to original value" do
-      abstract_event.venue_id = 54321
-      abstract_event.venue_id = nil
-      abstract_event.changes.should_not include('venue_id')
-    end
-
-    context "ActiveModel::Dirty attribute methods" do
-      before(:each) do
-        # make original unchanged value something besides nil, easier to verify
-        abstract_event.venue_id = 12345
-        abstract_event.changed_attributes.delete('venue_id')
-      end
-
-      it "#reset_venue_id! should assign attribute to its original value" do
-        abstract_event.venue_id = 54321
-        abstract_event.reset_venue_id!
-        abstract_event.venue_id.should eq 12345
-        abstract_event.venue_id_changed?.should be false
-      end
-
-      it "#venue_id_change should include old and new value" do
-        expect { abstract_event.venue_id = 54321 }
-          .to change { abstract_event.venue_id_change }.from(nil).to([12345, 54321])
-      end
-
-      it "#venue_id_changed? should be true after change" do
-        expect { abstract_event.venue_id = 54321 } \
-          .to change { abstract_event.venue_id_changed? }.from(false).to(true)
-      end
-
-      it "#venue_id_will_change! set changed flag" do
-        expect { abstract_event.venue_id_will_change! } \
-          .to change { abstract_event.venue_id_changed? }.from(false).to(true)
-      end
-
-      it "#venue_id_was should return return original value" do
-        abstract_event.venue_id = 54321
-        abstract_event.venue_id_was.should eq 12345
-      end
+      abstract_event.venue_id_changed?.should be true
+      abstract_event.changed_attributes.should include('venue_id')
     end
   end
 
