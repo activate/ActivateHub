@@ -14,6 +14,8 @@
     %ul
       %li= link_to 'Venues without map coordinates', admin_venues_path(:type => 'missing_lat_long')
       %li= link_to 'Events without an end time', admin_events_path(:type => 'missing_end_time')
+      %li= link_to 'Events without topics', admin_events_path(:type => 'missing_topic')
+      %li= link_to 'Events without types', admin_events_path(:type => 'missing_type')
 
     %h3 Duplicate Management
     %ul

@@ -8,6 +8,14 @@ class Admin::EventsController < AdminController
 
     if params[:type] == 'missing_end_time'
       @events = @events.where('end_time is null or end_time = start_time')
+    elsif params[:type] == 'missing_topic'
+      @events = @events
+        .joins("LEFT JOIN events_topics ON (events_topics.event_id = events.id)") \
+        .where("events_topics.event_id IS NULL")
+    elsif params[:type] == 'missing_type'
+      @events = @events
+        .joins("LEFT JOIN events_types ON (events_types.event_id = events.id)") \
+        .where("events_types.event_id IS NULL")
     end
 
     @events = @events.order(:title)
