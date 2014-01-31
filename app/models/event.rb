@@ -49,6 +49,7 @@ class Event < ActiveRecord::Base
 
   # Triggers
   before_validation :normalize_url!
+  before_create :associate_source_topics_types, :if => :source
 
   # Validations
   validates_presence_of :title, :start_time
@@ -576,4 +577,10 @@ protected
       errors.add(:end_time, "cannot be before start")
     end
   end
+
+  def associate_source_topics_types
+    self.topic_ids = source.topic_ids
+    self.type_ids = source.type_ids
+  end
+
 end

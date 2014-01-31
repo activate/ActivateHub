@@ -328,6 +328,25 @@ describe Event do
     end
   end
 
+  describe "#save", :focus => true do
+    context "creating an event" do
+      context "with an associated source" do
+        let(:source) { create(:source, :w_topics_types) }
+        let(:event) { build(:event, :source => source) }
+
+        it "associates source topics with event" do
+          event.save!
+          event.topic_ids.should include(*source.topic_ids)
+        end
+
+        it "associates source types with event" do
+          event.save!
+          event.type_ids.should include(*source.type_ids)
+        end
+      end
+    end
+  end
+
   describe "when finding by dates" do
 
     before do
