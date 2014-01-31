@@ -42,6 +42,14 @@ describe AbstractEvent do
   describe ":after_find callback" do
     let(:abstract_event) { build(:abstract_event) }
 
+    it "populates the organization_id attribute from source" do
+      abstract_event.source = create(:source, :w_organization)
+      abstract_event.import!
+
+      expected = abstract_event.source.organization_id
+      AbstractEvent.find(abstract_event.id).organization_id.should eq expected
+    end
+
     it "populates the venue_id attribute from abstract_location" do
       abstract_event.abstract_location = build(:abstract_location)
 
@@ -58,7 +66,8 @@ describe AbstractEvent do
   describe "::EVENT_ATTRIBUTES" do
     it "includes expected attributes" do
       AbstractEvent::EVENT_ATTRIBUTES.should include(
-        :url, :title, :end_time, :start_time, :description, :venue_id
+        :url, :title, :end_time, :start_time, :description, :venue_id,
+        :organization_id
       )
     end
 
@@ -71,6 +80,18 @@ describe AbstractEvent do
 
   #---[ Custom Attributes ]-------------------------------------------------
   # non-persistent attributes and the overrides required to behave correctly
+
+  describe ":organization_id" do
+    it "is included in attributes list" do
+      abstract_event.attributes.keys.should include('organization_id')
+    end
+
+    it "supports dirty/change tracking" do
+      abstract_event.organization_id = 12345
+      abstract_event.organization_id_changed?.should be true
+      abstract_event.changed_attributes.should include('organization_id')
+    end
+  end
 
   describe ":venue_id" do
     it "is included in attributes list" do
@@ -112,7 +133,7 @@ describe AbstractEvent do
       abstract_event.event_attributes_changed.should eq []
     end
 
-    (AbstractEvent::EVENT_ATTRIBUTES-[:venue_id]).each do |attribute_name|
+    (AbstractEvent::EVENT_ATTRIBUTES-[:organization_id,:venue_id]).each do |attribute_name|
       it "includes attribute name when #{attribute_name} changes" do
         abstract_event.send("#{attribute_name}=", :foo)
         abstract_event.event_attributes_changed.should eq [attribute_name]
@@ -121,6 +142,11 @@ describe AbstractEvent do
       it "includes attribute name when venue_id changes" do
         abstract_event.abstract_location = build_stubbed(:abstract_location, :venue_id => 947343)
         abstract_event.event_attributes_changed.should eq [:venue_id]
+      end
+
+      it "includes attribute name when organization_id changes" do
+        abstract_event.source = build_stubbed(:source, :organization_id => 474747)
+        abstract_event.event_attributes_changed.should eq [:organization_id]
       end
     end
   end
@@ -313,6 +339,8 @@ describe AbstractEvent do
       end
 
       it "should populate event with event attributes" do
+        # needed for organization_id and venue_id
+        abstract_event.source = build(:source, :w_organization)
         abstract_event.abstract_location = build(:abstract_location).tap(&:import!)
 
         abstract_event.populate_event

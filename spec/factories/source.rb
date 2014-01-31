@@ -6,5 +6,10 @@ FactoryGirl.define do
 
     url 'http://a.valid.url.test'
     title 'My Source'
+
+    trait :w_organization do
+      organization
+    end
+
   end
 end

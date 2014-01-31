@@ -9,12 +9,12 @@ class AbstractEvent < ActiveRecord::Base
 
   scope_to_current_site
 
-  after_find :populate_venue_id
+  after_find :populate_attributes
 
-  dirty_attr_accessor :venue_id
+  dirty_attr_accessor :organization_id, :venue_id
 
   EVENT_ATTRIBUTES = [ # attributes that get copied over to events if changed
-    :url, :title, :end_time, :start_time, :description, :venue_id
+    :url, :title, :end_time, :start_time, :description, :venue_id, :organization_id
     #:tags, # FIXME: is :tags_list in Event (:changed doesn't match up in populate_event)
   ]
 
@@ -39,11 +39,13 @@ class AbstractEvent < ActiveRecord::Base
   end
 
   def attributes
-    super.merge!('venue_id' => venue_id)
+    super.merge!('organization_id' => organization_id, 'venue_id' => venue_id)
   end
 
   def event_attributes_changed
-    # ensures venue_id is current as dirty attrs uses cached value
+    # ensures non-persistent attrs are current as dirty attrs use cached values
+    # NOTE: doesn't use #populate_attributes as it doesn't set dirty flag
+    self.organization_id = source.try(:organization_id)
     self.venue_id = abstract_location.try(:venue_id)
 
     EVENT_ATTRIBUTES.select {|a| changed_attributes.key?(a.to_s) }
@@ -135,7 +137,8 @@ class AbstractEvent < ActiveRecord::Base
 
   private
 
-  def populate_venue_id
+  def populate_attributes
+    @organization_id = source.try(:organization_id)
     @venue_id = abstract_location.try(:venue_id)
   end
 
