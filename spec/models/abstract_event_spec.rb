@@ -302,6 +302,22 @@ describe AbstractEvent do
         end
       end
 
+      context "abstract_location has 'unchanged' result" do
+        # 'unchanged' abstract locations have their :id attribute set so we can
+        # find the persisted copy if needed, but are still considered a new
+        # record to ActiveRecord, and will try create a new record on 'save'
+        before(:each) do
+          abstract_location.dup.import!
+          abstract_location.import!
+          abstract_location.result.should eq 'unchanged'
+        end
+
+        it "should not try to re-save abstract location" do
+          abstract_location.should_not receive(:save)
+          abstract_event.import!
+        end
+      end
+
       context "abstract_location raises an error" do
         before(:each) do
           abstract_location.stub(:import!).and_raise('unhandled_error')

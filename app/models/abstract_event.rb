@@ -2,7 +2,7 @@ class AbstractEvent < ActiveRecord::Base
   belongs_to :site
   belongs_to :source
   belongs_to :event
-  belongs_to :abstract_location
+  belongs_to :abstract_location, :autosave => false # done manually in #import!
 
   include DirtyAttrAccessor
   include Rebaseable
@@ -99,6 +99,9 @@ class AbstractEvent < ActiveRecord::Base
         abstract_location.save_invalid!
       end
     end
+
+    # if AbstractLocation#import! happens after assignment, its _id might be nil
+    self.abstract_location_id = abstract_location.try(:id)
 
     if event_attributes_changed?
       self.result = (existing ? 'updated' : 'created')
