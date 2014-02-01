@@ -85,7 +85,13 @@ class AbstractLocation < ActiveRecord::Base
   end
 
   def populate_venue
-    self.venue ||= Venue.new(:source_id => source_id)
+    if self.venue
+      # make sure we're making changes to progenitor, not slave/dupe venue
+      self.venue = venue.progenitor
+    else
+      # new venue
+      self.venue = Venue.new(:source_id => source_id)
+    end
 
     venue_attributes_changed.each do |name|
       if venue[name] == send("#{name}_was")

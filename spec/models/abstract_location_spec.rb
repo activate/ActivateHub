@@ -313,6 +313,25 @@ describe AbstractLocation do
         end
       end
     end
+
+    context "with an associated non-master venue" do
+      let!(:venue) do
+        abstract_location.import!
+        venue = abstract_location.venue
+        venue.duplicate_of = venue.dup.tap(&:save!)
+        venue.tap(&:save!)
+      end
+
+      let(:progenitor) { venue.progenitor }
+
+      it "should apply changes to progenitor" do
+        abstract_location.description = 'Description missing, reward offered!'
+
+        abstract_location.populate_venue
+        progenitor.description.should eq 'Description missing, reward offered!'
+        progenitor.changed.should include('description')
+      end
+    end
   end
 
   describe "#rebase_changed_attributes!" do

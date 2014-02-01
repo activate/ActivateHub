@@ -117,14 +117,20 @@ class AbstractEvent < ActiveRecord::Base
   end
 
   def populate_event
-    self.event ||= Event.new(:source_id => source_id)
+    if self.event
+      # make sure we're making changes to progenitor, not slave/dupe event
+      self.event = event.progenitor
+    else
+      # new event
+      self.event = Event.new(:source_id => source_id)
+    end
 
     event_attributes_changed.each do |name|
       if event.send(name) == send("#{name}_was")
         # event value unchanged from value set in last abstract event, safe
         event.send("#{name}=", send(name))
       else
-        # event value has been updated outside of abstract events; we don't
+        # event value has been updated outside of this abstract event; don't
         # know if it's safe to update this value anymore, ignore the change
       end
     end

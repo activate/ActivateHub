@@ -420,6 +420,25 @@ describe AbstractEvent do
         end
       end
     end
+
+    context "with an associated non-master event" do
+      let!(:event) do
+        abstract_event.import!
+        event = abstract_event.event
+        event.duplicate_of = event.dup.tap(&:save!)
+        event.tap(&:save!)
+      end
+
+      let(:progenitor) { event.progenitor }
+
+      it "should apply changes to progenitor" do
+        abstract_event.description = "Who needs shoes when there's no gravity?"
+
+        abstract_event.populate_event
+        progenitor.description.should eq "Who needs shoes when there's no gravity?"
+        progenitor.changed.should include('description')
+      end
+    end
   end
 
   describe "#tags" do
