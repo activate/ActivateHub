@@ -1,5 +1,6 @@
 #= require jquery
 #= require jquery.cookie
+#= require events
 #= require_self
 
 $ ->
