@@ -15,9 +15,13 @@
   days = Hash[(start_date..end_date).map{|date| [date, Array.new(slots)] }]
 
   # FIXME: re-ordering by start_time should be assumed to happen in controller (but isn't?)
-  # FIXME: would also be nice to order by 'start_date asc, end_date desc' so we can be sure
-  # multi-day events are at top of each days' event list
-  events.reorder('start_time asc, end_time desc').each do |event|
+  events = events.reorder('start_time asc, end_time desc')
+
+  # ensure multi-day events come first, otherwise it becomes difficult to fill
+  # all the slots in the calendar view without ugly gaps
+  events = events.sort_by {|e| - e.days }
+
+  events.each do |event|
     event_start, event_end = event.start_date, event.end_date
 
     # really long events are probably mistyped, spam or otherwise annoying
