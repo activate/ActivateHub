@@ -1,0 +1,44 @@
+- # COMPLETELY EXPERIMENTAL, FOR DEMO PURPOSES ONLY
+
+= javascript_include_tag 'jquery-ui'
+
+:javascript
+  var srcEventId;
+  $('.event').draggable({
+    revert: true, stack: '.event',
+    start: function(event, ui) {
+      srcEventId = $(this).data('event-id');
+    }
+  });
+
+  $('.event').droppable({
+    activeClass: 'ui-state-default',
+    hoverClass: 'ui-state-hover',
+    drop: function(event, ui) {
+      var $srcEvent = $(".event[data-event-id="+srcEventId+"]");
+      var srcEventTitle = $srcEvent.find('.event-title a').text();
+
+      var tgtEventId = $(this).data('event-id');
+      var tgtEventTitle = $(this).find('.event-title a').text();
+
+      var result = confirm("Would you like to squash:\n\n"
+        + srcEventTitle + " (id " + srcEventId + ")\n\n"
+        + "...into...\n\n" +
+        tgtEventTitle + " (id " + tgtEventId + ")?");
+
+      if (result == true) {
+        var data = { master_id: tgtEventId };
+        data["duplicate_id_"+srcEventId] = srcEventId;
+        $.post("/admin/events/duplicates", data).done(function(data) {
+          $srcEvent.hide();
+        });
+      }
+    }
+  });
+
+:css
+  .ui-state-hover .event-title a {
+    border-color: #800 !important;
+    background-color: #ecc !important;
+    color: #800 !important;
+  }
