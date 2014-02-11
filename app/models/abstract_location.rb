@@ -88,6 +88,9 @@ class AbstractLocation < ActiveRecord::Base
     if self.venue
       # make sure we're making changes to progenitor, not slave/dupe venue
       self.venue = venue.progenitor
+    elsif self.venue_id
+      # had a venue, but was explicitly removed; nothing to do
+      return
     else
       # new venue
       self.venue = Venue.new(:source_id => source_id)

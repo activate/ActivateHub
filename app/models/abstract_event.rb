@@ -120,6 +120,9 @@ class AbstractEvent < ActiveRecord::Base
     if self.event
       # make sure we're making changes to progenitor, not slave/dupe event
       self.event = event.progenitor
+    elsif self.event_id
+      # had an event, but was explicitly removed; nothing to do
+      return
     else
       # new event
       self.event = Event.new(:source_id => source_id)

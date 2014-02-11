@@ -332,6 +332,28 @@ describe AbstractLocation do
         progenitor.changed.should include('description')
       end
     end
+
+    context "with a destroyed venue" do
+      let!(:venue) do
+        abstract_location.import!
+        venue = abstract_location.venue.tap(&:destroy)
+        abstract_location.reload # reloads :venue association
+        venue
+      end
+
+      before(:each) do
+        # give the abstract location some changes to propagate
+        abstract_location.description = "The ground looks a bit fuzzy."
+      end
+
+      it "should not raise an error" do
+        expect { abstract_location.populate_venue }.to_not raise_error
+      end
+
+      it "should not create a new venue" do
+        expect { abstract_location.populate_venue }.to_not change { Venue.count }
+      end
+    end
   end
 
   describe "#rebase_changed_attributes!" do

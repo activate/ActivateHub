@@ -439,6 +439,28 @@ describe AbstractEvent do
         progenitor.changed.should include('description')
       end
     end
+
+    context "with a destroyed event" do
+      let!(:event) do
+        abstract_event.import!
+        event = abstract_event.event.tap(&:destroy)
+        abstract_event.reload # reloads :event association
+        event
+      end
+
+      before(:each) do
+        # give the abstract event some changes to propagate
+        abstract_event.description = "I think I found a black hole."
+      end
+
+      it "should not raise an error" do
+        expect { abstract_event.populate_event }.to_not raise_error
+      end
+
+      it "should not create a new event" do
+        expect { abstract_event.populate_event }.to_not change { Event.count }
+      end
+    end
   end
 
   describe "#tags" do
