@@ -507,7 +507,8 @@ describe EventsController do
         Event.should_receive(:find).and_return(@event)
         @event.stub(:associate_with_venue).with(@params[:venue_name])
         @event.stub(:venue).and_return(nil)
-        @event.should_receive(:update_attributes).and_return(true)
+        @event.should_receive(:attributes=).with(@params[:event]).and_call_original
+        @event.should_receive(:save).and_return(true)
 
         put "update", @params
         response.should redirect_to(event_path(@event))
@@ -518,7 +519,8 @@ describe EventsController do
         Event.should_receive(:find).and_return(@event)
         @event.should_receive(:associate_with_venue).with(@venue.id)
         @event.stub(:venue).and_return(@venue)
-        @event.should_receive(:update_attributes).and_return(true)
+        @event.should_receive(:attributes=).with(@params[:event]).and_call_original
+        @event.should_receive(:save).and_return(true)
 
         put "update", @params
       end
@@ -528,7 +530,8 @@ describe EventsController do
         Event.should_receive(:find).and_return(@event)
         @event.should_receive(:associate_with_venue).with("Some Event")
         @event.stub(:venue).and_return(@venue)
-        @event.should_receive(:update_attributes).and_return(true)
+        @event.should_receive(:attributes=).with(@params[:event]).and_call_original
+        @event.should_receive(:save).and_return(true)
 
         put "update", @params
       end
@@ -539,7 +542,8 @@ describe EventsController do
         Event.should_receive(:find).and_return(@event)
         @event.should_receive(:associate_with_venue).with(@venue.id)
         @event.stub(:venue).and_return(@venue)
-        @event.should_receive(:update_attributes).and_return(true)
+        @event.should_receive(:attributes=).with(@params[:event]).and_call_original
+        @event.should_receive(:save).and_return(true)
 
         put "update", @params
       end
@@ -549,7 +553,8 @@ describe EventsController do
         Event.should_receive(:find).and_return(@event)
         @event.stub(:associate_with_venue).with(@params[:venue_name])
         @event.stub(:venue).and_return(@venue)
-        @event.should_receive(:update_attributes).and_return(true)
+        @event.should_receive(:attributes=).with(@params[:event]).and_call_original
+        @event.should_receive(:save).and_return(true)
         @venue.stub(:new_record?).and_return(false)
 
         put "update", @params
@@ -561,7 +566,8 @@ describe EventsController do
         Event.should_receive(:find).and_return(@event)
         @event.stub(:associate_with_venue).with(@params[:venue_name])
         @event.stub(:venue).and_return(@venue)
-        @event.should_receive(:update_attributes).and_return(true)
+        @event.should_receive(:attributes=).with(@params[:event]).and_call_original
+        @event.should_receive(:save).and_return(true)
         @venue.stub(:new_record?).and_return(true)
 
         put "update", @params
@@ -572,7 +578,7 @@ describe EventsController do
         Event.should_receive(:find).and_return(@event)
         @event.stub(:associate_with_venue)
         @event.stub(:venue).and_return(nil)
-        @event.should_receive(:update_attributes).and_return(false)
+        @event.should_receive(:save).and_return(false)
 
         put "update", :id => 1234
         response.should render_template :edit
@@ -594,6 +600,28 @@ describe EventsController do
         put "update", @params
         response.should render_template :edit
         flash[:failure].should match /too many links/i
+      end
+
+      it "should allow too many links in the description if already has too many" do
+        # if an event came in with too many links to begin with (imported), we
+        # should allow it to have those links until it returns below threshold
+        @event.description = <<-DESC
+          old description...
+          http://example.com
+          https://example.com
+          http://example.net
+          https://example.net
+        DESC
+        @event.changed_attributes.delete('description') # sets up description_was
+
+        @params[:event][:description] = <<-DESC
+          http://example.com
+          https://example.com
+          http://example.net
+          https://example.net
+        DESC
+        put "update", @params
+        response.should redirect_to(event_path(@event))
       end
 
       it "should allow the user to preview the event" do

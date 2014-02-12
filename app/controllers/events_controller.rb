@@ -101,7 +101,7 @@ class EventsController < ApplicationController
       flash[:failure] = "<h3>Evil Robot</h3> We didn't create this event because we think you're an evil robot. If you're really not an evil robot, look at the form instructions more carefully. If this doesn't work please file a bug report and let us know."
     end
 
-    if too_many_links = too_many_links?(@event.description)
+    if too_many_links = too_many_links?(@event)
       flash[:failure] = "We allow a maximum of 3 links in a description. You have too many links."
     end
 
@@ -138,17 +138,18 @@ class EventsController < ApplicationController
 
     @event.start_time = [ params[:start_date], params[:start_time] ]
     @event.end_time   = [ params[:end_date], params[:end_time] ]
+    @event.attributes = params[:event]
 
     if evil_robot = !params[:trap_field].blank?
       flash[:failure] = "<h3>Evil Robot</h3> We didn't update this event because we think you're an evil robot. If you're really not an evil robot, look at the form instructions more carefully. If this doesn't work please file a bug report and let us know."
     end
 
-    if too_many_links = too_many_links?(params[:event] && params[:event][:description])
+    if too_many_links = too_many_links?(@event)
       flash[:failure] = "We allow a maximum of 3 links in a description. You have too many links."
     end
 
     respond_to do |format|
-      if !evil_robot && !too_many_links && params[:preview].nil? && @event.update_attributes(params[:event])
+      if !evil_robot && !too_many_links && params[:preview].nil? && @event.save
         flash[:success] = 'Event was successfully updated.'
         format.html {
           if has_new_venue && !params[:venue_name].blank?
@@ -161,7 +162,6 @@ class EventsController < ApplicationController
         format.xml  { head :ok }
       else
         if params[:preview]
-          @event.attributes = params[:event]
           @event.valid?
           @event.tags.reload # Reload the #tags association because its members may have been modified when #tag_list was set above.
         end
@@ -267,8 +267,11 @@ class EventsController < ApplicationController
 
   # Checks if the description has too many links
   # which is probably spam
-  def too_many_links?(description)
-    description.present? && description.scan(/https?:\/\//i).size > 3
+  def too_many_links?(event)
+    # short-circuit restriction if orig description already had too many links
+    return false if event.description_was.to_s.scan(/https?:\/\//i).size > 3
+
+    event.description.to_s.scan(/https?:\/\//i).size > 3
   end
 
   # Export +events+ to an iCalendar file.
