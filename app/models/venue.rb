@@ -41,7 +41,7 @@ class Venue < ActiveRecord::Base
   include DecodeHtmlEntitiesHack
 
   # Associations
-  has_many :events, :dependent => :nullify
+  has_many :events
   belongs_to :source
   belongs_to :site
   scope_to_current_site
