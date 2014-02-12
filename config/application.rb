@@ -94,7 +94,7 @@ module Calagator
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    config.assets.precompile += ["leaflet_google_layer.js"]
+    config.assets.precompile += ["leaflet_google_layer.js", 'jquery-ui.js']
 
     #---[ Locale / Translations ]-------------------------------------------
 

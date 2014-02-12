@@ -22,6 +22,7 @@
       %li= link_to 'Venues with a matching title', duplicates_admin_venues_path(:type => 'matching_title')
       %li= link_to 'Venues at same map coordinates', duplicates_admin_venues_path(:type => 'matching_lat_long')
       %li= link_to 'Events with overlapping time and venue', duplicates_admin_events_path(:type => 'overlapping_venue_and_time')
+      %li= link_to 'Drag & Drop Event Cleanup', events_path(:manage => 1)
 
 - content_for :content do
   = yield

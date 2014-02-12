@@ -5,7 +5,6 @@
   page_title = params[:title] || t('.title') # "?title=" should hide title
   event_views = params[:views] ? params[:views].split(',') : %w( calendar list )
 
-
 - content_for :sidebar do
   #sidebar-welcome.sidebar-box= render 'site/welcome'
   #sidebar-event-details.sidebar-box
@@ -26,3 +25,6 @@
   - cache_key = "events-index-topic:#{params[:topic]}-type:#{params[:type]}-org:#{params[:organization]}"
   - cache_if(@perform_caching, CacheObserver.daily_key_for(cache_key, request)) do
     = render 'events/calendar', :events => @events, :start_date => @start_date, :end_date => @end_date
+
+- if params[:manage]
+  = render 'manage_overlay'
