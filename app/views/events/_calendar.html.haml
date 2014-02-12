@@ -1,4 +1,6 @@
 :ruby
+  # FIXME: split into helper methods and add tests (and optimize!)
+
   events ||= raise ArgumentError, "event is required in view partial #{__FILE__}"
   start_date ||= events.map(&:start_date).min
   end_date   ||= events.map(&:end_date).max
@@ -6,6 +8,9 @@
   slots ||= 5
 
   now = Time.zone.now
+
+  # max number of days to show event if it's longer than one week
+  multi_week_days = 3
 
   # ensure dates start and end on week boundaries and are dates, not times
   start_date = start_date.to_date.beginning_of_week(:sunday)
@@ -19,20 +24,20 @@
 
   # ensure multi-day events come first, otherwise it becomes difficult to fill
   # all the slots in the calendar view without ugly gaps
-  events = events.sort_by {|e| - e.days }
+  events = events.sort_by {|e| [e.start_date, - e.days] }
 
   events.each do |event|
     event_start, event_end = event.start_date, event.end_date
-
-    # really long events are probably mistyped, spam or otherwise annoying
-    # FIXME: prevent long events from being created in the first place?
-    next if event_end - event_start > 7 # days
+    multi_week = event.days > 7 # for special handling later
 
     # event start_time or end_time must fall within calendar date range
     next if event_start > end_date || event_end < start_date
 
     event_pos = nil # cache position so multi-day events use same slot
     (event_start..event_end).each do |date|
+      # don't display multi-week events for longer than `multi_week_days` days
+      break if multi_week && (date - event_start) >= multi_week_days
+
       # skip any days that wander outside our calendar range
       day = days[date] or next
 
@@ -73,7 +78,8 @@
           .year= day.year
         - events.each_with_index do |event,idx|
           - if event
-            - span = [event.days(day), (7 - day.wday)].min
+            - days = (event.days > 7) ? multi_week_days - (event.days - event.days(day)) : event.days(day)
+            - span = [days, (7 - day.wday)].min
             .slot{:class => "s#{span} #{idx > slots-2 && events.count > slots ? 'extra' : ''}"}
               = render 'events/index_item', :event => event, :today => today, :new => (day && event.start_date)
           - else
