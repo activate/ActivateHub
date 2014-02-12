@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131001031403) do
+ActiveRecord::Schema.define(:version => 20140212051512) do
 
   create_table "abstract_events", :force => true do |t|
     t.integer  "site_id"
@@ -125,8 +125,8 @@ ActiveRecord::Schema.define(:version => 20131001031403) do
   create_table "sites", :force => true do |t|
     t.string   "name"
     t.string   "domain"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.string   "tagline"
     t.string   "timezone"
     t.float    "map_latitude"
@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(:version => 20131001031403) do
     t.string   "locale"
     t.string   "ga_account_id"
     t.string   "sharethis_key"
+    t.string   "disqus_shortname"
   end
 
   create_table "sources", :force => true do |t|

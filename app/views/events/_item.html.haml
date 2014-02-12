@@ -49,5 +49,7 @@
         - event.types.order(:name).each do |type|
           = link_to type[:name], params.merge(:type => type[:name]), :class => 'type'
 
+    = render 'comments'
+
 :javascript
   $('.event-description a').attr('target', '_blank');
