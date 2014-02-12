@@ -44,7 +44,7 @@ class SourceParser
     end
 
     # Returns content read from a URL. Easier to stub.
-    def self.read_url(url)
+    def self.read_url(url, redirect_limit = 3)
       uri = URI.parse(url)
       if uri.respond_to?(:read)
         if ['http', 'https'].include?(uri.scheme)
@@ -55,10 +55,16 @@ class SourceParser
           request = Net::HTTP::Get.new(path_and_query)
           request.basic_auth(uri.user, uri.password)
           response = SourceParser::Base::http_response_for(http, request)
+
           if response.code == "401"
             raise SourceParser::HttpAuthenticationRequiredError.new
           end
-          return response.body
+
+          if response.kind_of?(Net::HTTPRedirection) && redirect_limit > 0
+            return read_url(response['location'], redirect_limit - 1)
+          else
+            return response.body
+          end
         else
           return uri.read
         end

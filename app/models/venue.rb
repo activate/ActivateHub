@@ -61,6 +61,7 @@ class Venue < ActiveRecord::Base
     :in => -180..180,
     :allow_nil => true,
     :message => "must be between -180 and 180"
+  validates :title, :length => { :maximum => 255 }
 
   include ValidatesBlacklistOnMixin
   validates_blacklist_on :title, :description, :address, :url, :street_address, :locality, :region, :postal_code, :country, :email, :telephone
