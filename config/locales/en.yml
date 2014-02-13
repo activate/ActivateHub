@@ -48,6 +48,10 @@ en:
       Add copyright and other information here.
 
   events:
+    subnav:
+      events: "Browse events"
+      new_event: "Add an event"
+      new_source: "Import event(s)"
     appropriateness: >
       Please use responsibly: only add events that contribute towards
       betterment of your community and tag appropriately. Excessive or
@@ -94,6 +98,9 @@ en:
       show_more: "+ %{count} more"
 
   organizations:
+    subnav:
+      organizations: "Browse organizations"
+      new_organization: "Add an organization"
     index:
       title: "Organizations"
       url_label: "Website:"
@@ -121,6 +128,9 @@ en:
       title: "Edit an Organization"
 
   venues:
+    subnav:
+      venues: "Browse venues"
+      new_venue: "Add a venue"
     appropriateness: >
       The more information we have about your venue, the easier it will be
       for people to find it.

@@ -6,6 +6,8 @@ en-x-activate:
     navbar:
       logo_link: "http://activatehub.org/"
       logo_src: "navbar-logo.png"
+      learn_more: >
+        <a href="http://activatehub.org/what-is-activatehub/">Learn how to use this site <span class="heart">&hearts;</span></a>
 
     welcome:
       title: "Your Community is Calling"

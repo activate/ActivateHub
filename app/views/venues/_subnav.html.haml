@@ -1,0 +1,4 @@
+.subnav.venues-subnav
+  %ul
+    %li{:class => subnav_class_for('venues', 'index')}= link_to t('.venues'), venues_path
+    %li{:class => subnav_class_for('venues', 'new')}= link_to t('.new_venue'), new_venue_path
