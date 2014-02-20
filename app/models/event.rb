@@ -110,6 +110,10 @@ class Event < ActiveRecord::Base
     return read_attribute(:title).try {|t| t.to_s.strip }
   end
 
+  def title=(title)
+    super(title.try {|t| t.strip[0,255] })
+  end
+
   # Return description without those pesky carriage-returns.
   def description
     # TODO Generalize this code so we can reuse it on other attributes.

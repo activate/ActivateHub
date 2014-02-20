@@ -146,6 +146,10 @@ class AbstractEvent < ActiveRecord::Base
     save!(:validate => false)
   end
 
+  def title=(title)
+    super(title.try {|t| t.strip[0,255] })
+  end
+
 
   private
 
