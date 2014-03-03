@@ -12,7 +12,13 @@ if Rails.env.development?
   User.create!({ :email => "dev@example.org", :password => "activate" })
 
   # Creates 20 random venue, organizations, and event database entries
-  site = Site.create!({ :name => "activate_dev", :domain => "localhost" })
+  site = Site.create!({
+    :name     => "activate_dev",
+    :domain   => "localhost",
+    :timezone => 'Pacific Time (US & Canada)',
+    :locale   => 'en-x-activate',
+  })
+
   1.upto(20) do
     venue = Venue.create!({
       :title       => Faker::Company::name,
