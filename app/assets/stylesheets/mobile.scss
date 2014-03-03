@@ -44,11 +44,21 @@
     overflow: auto; // forces bottom of navbar to clear floated menu
   }
 
+  #navbar-menu {
+    clear: left;
+
+    a { // shrink menu buttons
+      height: 30px;
+      line-height: 30px;
+      font-size: 14px;
+    }
+  }
+
   //----- compact main view even more -----
   #main { margin: 10px; }
 }
 
-@media (max-width: 425px) {
+@media (max-width: 400px) {
   //----- vertical navbar menu -----
   #navbar-menu { // no longer enough room to display menu horizontally
     display: none;
@@ -63,22 +73,6 @@
       -moz-border-radius: 5px;
       -webkit-border-radius: 5px;
     }
-  }
-
-  #navbar-menu {
-    clear: left;
-    padding-left: 0px;
-    padding-right: 0px;
-
-    a { // shrink menu buttons
-      height: 30px;
-      line-height: 30px;
-      font-size: 14px;
-    }
-  }
-
-  #navbar-subnav {
-    padding-left: 0px;
   }
 
   //----- show and style navbar menu toggle button -----

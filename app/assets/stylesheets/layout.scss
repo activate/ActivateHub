@@ -37,7 +37,7 @@
 }
 
 #navbar-logo {
-  float: right;
+  float: left;
   padding: 0px 10px;
 
   img {
@@ -48,7 +48,6 @@
 
 #navbar-menu {
   float: left;
-  padding-left: 10px;
 
   ul, ul li {
     display: inline;
@@ -71,86 +70,16 @@
   .active a {
     background-color: $navbar-active-bgcolor;
     color: $navbar-active-color;
-
-    -webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
   }
 }
 
 #navbar-toggle {
-  float: left !important;
   display: none;
 }
 
 #navbar-search {
   float: right;
   padding: 0px 20px;
-}
-
-#navbar-subnav {
-  clear: both;
-  padding: 0px;
-  padding-left: 25px;
-  overflow: auto;
-
-  min-height: $subnav-height;
-  line-height: $subnav-height;
-  background-color: $subnav-bgcolor;
-
-  background-image: -moz-linear-gradient(top, $subnav-gradient1, $subnav-gradient2);
-  background-image: -ms-linear-gradient(top, $subnav-gradient1, $subnav-gradient2);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from($subnav-gradient1), to($subnav-gradient2));
-  background-image: -webkit-linear-gradient(top, $subnav-gradient1, $subnav-gradient2);
-  background-image: linear-gradient(top, $subnav-gradient1, $subnav-gradient2);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$subnav-gradient1', endColorstr='$subnav-gradient2', GradientType=0);
-
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-
-  ul, ul li {
-    display: inline;
-  }
-
-  a {
-    float: left;
-    display: block;
-    padding: 0px 15px;
-    vertical-align: middle;
-    font-size: 15px;
-    height: $subnav-height;
-    color: $subnav-link-color !important;
-  }
-
-  a:hover {
-    background-color: $subnav-bgcolor-hover;
-  }
-
-  .active a {
-    background-color: $subnav-active-bgcolor;
-    color: $subnav-active-color;
-    -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-  }
-
-  .learn-more {
-    float: right;
-
-    a {
-      font-size: 15px;
-      opacity: 0.7;
-    }
-
-    a:hover {
-      background-color: rgba(255, 0, 255, 0.3);
-      .heart {
-        color: #f6c;
-      }
-    }
-  }
 }
 
 
@@ -189,7 +118,7 @@
 /*---[ main ]---------------------------------------------------------------*/
 
 #main {
-  margin: ($navbar-height + $subnav-height + 20px) 20px 20px ($sidebar-width + 60px);
+  margin: ($navbar-height + 20px) 20px 20px ($sidebar-width + 60px);
 
   .main-title {
     font-size: 24px;
