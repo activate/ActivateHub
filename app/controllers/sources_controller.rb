@@ -9,15 +9,10 @@ class SourcesController < ApplicationController
 
     @source = Source.find_or_create_from(params[:source])
     @source.organization = Organization.find(params[:organization_id])
-    @source.save
 
-
-    @events = nil # nil means events were never assigned, while [] means no events were found
-
-    valid = @source.valid?
-    if valid
+    if @source.save
       begin
-        @events = @source.create_events!
+        SourceImporter.new(@source).import!
       rescue SourceParser::NotFound => e
         @source.errors.add(:base, "No events found at remote site. Is the event identifier in the URL correct?")
       rescue SourceParser::HttpAuthenticationRequiredError => e
@@ -33,9 +28,20 @@ class SourcesController < ApplicationController
       end
     end
 
+    @events = @source.events
+
     respond_to do |format|
-      if valid && @events && @events.size > 0
-        # TODO move this to a view, it currently causes a CGI::Session::CookieStore::CookieOverflow if the flash gets too big when too many events are imported at once
+      if @source.errors.any?
+        flash[:failure] = "Unable to import: #{@source.errors.full_messages.to_sentence}"
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @source.errors, :status => :unprocessable_entity }
+
+      elsif @events.none?
+        flash[:failure] = "Unable to find any upcoming events to import from this source"
+        format.html { redirect_to(events_path) }
+        format.xml  { render :xml => @source, :events => @events }
+
+      else
         s = "<p>Imported #{@events.size} entries:</p><ul>"
         @events.each_with_index do |event, i|
           if i >= MAXIMUM_EVENTS_TO_DISPLAY_IN_FLASH
@@ -50,13 +56,6 @@ class SourcesController < ApplicationController
 
         format.html { redirect_to(events_path) }
         format.xml  { render :xml => @source, :events => @events }
-      else
-        flash[:failure] = @events.nil? \
-          ? "Unable to import: #{@source.errors.full_messages.to_sentence}" \
-          : "Unable to find any upcoming events to import from this source"
-
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @source.errors, :status => :unprocessable_entity }
       end
     end
   end

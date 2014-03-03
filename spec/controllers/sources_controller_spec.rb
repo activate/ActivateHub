@@ -26,7 +26,7 @@ describe SourcesController do
       end
 
       it "should try to import assocated events" do
-        Source.any_instance.should_receive(:create_events!)
+        SourceImporter.any_instance.should_receive(:import!)
         post :import, :source => source_attrs
       end
     end
@@ -39,7 +39,7 @@ describe SourcesController do
       end
 
       it "should try to import assocated events" do
-        Source.any_instance.should_receive(:create_events!)
+        SourceImporter.any_instance.should_receive(:import!)
         post :import, :source => source_attrs
       end
     end
@@ -50,7 +50,7 @@ describe SourcesController do
       end
 
       def assert_import_raises(exception)
-        source.should_receive(:create_events!).and_raise(exception)
+        SourceImporter.any_instance.should_receive(:import!).and_raise(exception)
         post :import, :source => {:url => "http://invalid.host"}
       end
 
@@ -78,7 +78,9 @@ describe SourcesController do
     it "should limit the number of created events to list in the flash" do
       max_display = SourcesController::MAXIMUM_EVENTS_TO_DISPLAY_IN_FLASH
       events = 1.upto(max_display + 5).map { build_stubbed(:event) }
-      Source.any_instance.should_receive(:to_events).and_return(events)
+      SourceImporter.any_instance.should_receive(:import!) do
+        Source.any_instance.stub(:events).and_return(events)
+      end
 
       post :import, :source => { :url => source.url, :title => 'My Title' }
       flash[:success].should match /And 5 other events/si
