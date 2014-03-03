@@ -20,7 +20,25 @@ The stable releases this software are tagged with version numbers, such as `v0.2
 
 Installing
 ----------
+### Quick Setup
+If you're already familiar with ruby and have rvm/rbenv/direnv/etc, this
+project is pretty much set up to work from a fresh checkout:
+```
+git clone https://github.com/activate/ActivateHub.git
+cd ActivateHub
+bundle install
+bundle exec rake db:setup # same as bundle exec rake db:create db:seed
+bundle exec rails server -blocalhost
+```
 
+There are additional things you can set up, such as switching from SQLite
+to PostgreSQL, setting up multi-tenancy, obtaining a Google API key for
+displaying maps, a DISQUS key for testing comments, etc.
+
+_Some of these feature are currently undocumented, see:
+<https://github.com/activate/ActivateHub/issues/66>._
+
+### The Longer/Older Version
 Read [INSTALL.md](INSTALL.md) for details on installing the software.
 
 
