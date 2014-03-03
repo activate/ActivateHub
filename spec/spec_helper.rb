@@ -58,7 +58,7 @@ Spork.prefork do
 
       # use a fixed time so tests and fixtures can make assumptions
       # about future events and not worry about changes in seconds, etc
-      Timecop.travel(Time.parse('2013-03-22 14:05:27'))
+      Timecop.travel(Time.zone.parse('2013-03-22 14:05:27'))
       Timecop.safe_mode = true
     end
 
@@ -69,8 +69,12 @@ Spork.prefork do
       # all tests and that it matches the request.domain used for controller
       # and functional tests.
       ENV['TEST_REQ_HOST'] = 'activate.test'
-      site = Site.create(:name => 'Test Site', :domain => ENV['TEST_REQ_HOST'])
-      ActiveRecord::Base.current_site = site
+      Site.create(
+        :name     => 'Test Site',
+        :domain   => ENV['TEST_REQ_HOST'],
+        :timezone => 'Pacific Time (US & Canada)',
+        :locale   => 'en',
+      ).use!
     end
 
     config.after(:each) do

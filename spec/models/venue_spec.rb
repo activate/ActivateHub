@@ -37,8 +37,8 @@ end
 
 describe Venue, "when finding exact duplicates" do
   it "should ignore attributes like created_at" do
-    venue1 = Venue.create!(:title => "this", :description => "desc",:created_at => Time.now)
-    venue2 = Venue.new(    :title => "this", :description => "desc",:created_at => Time.now.yesterday)
+    venue1 = Venue.create!(:title => "this", :description => "desc",:created_at => Time.zone.now)
+    venue2 = Venue.new(    :title => "this", :description => "desc",:created_at => Time.zone.now.yesterday)
 
     venue2.find_exact_duplicates.should include(venue1)
   end
@@ -168,8 +168,8 @@ describe Venue, "when squashing duplicates" do
     @child_venue     = Venue.create!(:title => "Child", :duplicate_of => @submaster_venue)
     @venues          = [@master_venue, @submaster_venue, @child_venue]
 
-    @event_at_child_venue = Event.create!(:title => "Event at child venue", :venue => @child_venue, :start_time => Time.now)
-    @event_at_submaster_venue = Event.create!(:title => "Event at submaster venue", :venue => @submaster_venue, :start_time => Time.now)
+    @event_at_child_venue = Event.create!(:title => "Event at child venue", :venue => @child_venue, :start_time => Time.zone.now)
+    @event_at_submaster_venue = Event.create!(:title => "Event at submaster venue", :venue => @submaster_venue, :start_time => Time.zone.now)
     @events          = [@event_at_child_venue, @event_at_submaster_venue]
 
     @venues.map(&:reload) # Make venues recognize changes to associated events

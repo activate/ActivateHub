@@ -21,22 +21,6 @@ describe EventsHelper do
     end
   end
 
-  # TODO Do we need a helper to return 'Today' and 'Tomorrow' at all? See app/helpers/events_helper.rb #today_tomorrow_or_weekday
-
-=begin
-  it "should display today as 'Today'" do
-    @event = Event.new
-    @event.start_time = Time.now
-    helper.today_tomorrow_or_weekday(@event).should eq 'Today'
-  end
-
-  it "should display tomorrow as 'Tomorrow'" do
-    @event = Event.new
-    @event.start_time = Time.now+1.days
-    helper.today_tomorrow_or_weekday(@event).should eq 'Tomorrow'
-  end
-=end
-
   describe "google_event_export_link" do
     def escape(string)
       return Regexp.escape(CGI.escape(string))
@@ -45,7 +29,7 @@ describe EventsHelper do
     shared_context "exported event setup" do
       before do
         @venue = Venue.create!(:title => "My venue", :address => "1930 SW 4th Ave, Portland, Oregon 97201")
-        @event = Event.create!(:title => "My event", :start_time => Time.now - 1.hour, :end_time => Time.now, :venue => @venue, :description => event_description)
+        @event = Event.create!(:title => "My event", :start_time => Time.zone.now - 1.hour, :end_time => Time.zone.now, :venue => @venue, :description => event_description)
         @export = helper.google_event_export_link(@event)
       end
     end

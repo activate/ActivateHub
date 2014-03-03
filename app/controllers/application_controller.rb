@@ -18,8 +18,7 @@ protected
 
   def current_site
     @current_site = Site.find_by_domain!(request.host)
-    ActiveRecord::Base.current_site = @current_site
-    I18n.locale = @current_site.locale
+    @current_site.use!
   end
 
   #---[ Helpers ]---------------------------------------------------------

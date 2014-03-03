@@ -193,8 +193,8 @@ describe VenuesController do
           @venue = create(:venue)
           @future_event = create(:event, :venue => @venue)
           @past_event = create(:event, :venue => @venue,
-            :start_time => Time.now - 1.week + 1.hour,
-            :end_time => Time.now - 1.week + 2.hours)
+            :start_time => Time.zone.now - 1.week + 1.hour,
+            :end_time => Time.zone.now - 1.week + 2.hours)
 
           get :show, :id => @venue.to_param, :format => "html"
           response.should be_success

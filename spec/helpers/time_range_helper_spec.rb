@@ -3,7 +3,7 @@ include TimeRangeHelper
 
 describe "Time formatting" do
   before(:each) do
-    @start_time = DateTime.new(2008, 4, 1, 9, 00)
+    @start_time = Time.zone.local(2008, 4, 1, 9, 00)
   end
 
   # Test all permutations of
@@ -14,13 +14,13 @@ describe "Time formatting" do
     [ "start time only", nil,
       "<time class=\"dtstart dt-start\" title=\"2008-04-01T09:00:00\" datetime=\"2008-04-01T09:00:00\">Tuesday, April 1, 2008 at 9am</time>",
       "<time class=\"dtstart dt-start\" title=\"2008-04-01T09:00:00\" datetime=\"2008-04-01T09:00:00\">9am</time>"],
-    [ "same day & am-pm", DateTime.new(2008, 4, 1, 11, 00),
+    [ "same day & am-pm", Time.zone.local(2008, 4, 1, 11, 00),
       "<time class=\"dtstart dt-start\" title=\"2008-04-01T09:00:00\" datetime=\"2008-04-01T09:00:00\">Tuesday, April 1, 2008 from 9</time>&ndash;<time class=\"dtend dt-end\" title=\"2008-04-01T11:00:00\" datetime=\"2008-04-01T11:00:00\">11am</time>",
       "<time class=\"dtstart dt-start\" title=\"2008-04-01T09:00:00\" datetime=\"2008-04-01T09:00:00\">9</time>&ndash;<time class=\"dtend dt-end\" title=\"2008-04-01T11:00:00\" datetime=\"2008-04-01T11:00:00\">11am</time>" ],
-    [ "same day, different am-pm", DateTime.new(2008, 4, 1, 13, 30),
+    [ "same day, different am-pm", Time.zone.local(2008, 4, 1, 13, 30),
       "<time class=\"dtstart dt-start\" title=\"2008-04-01T09:00:00\" datetime=\"2008-04-01T09:00:00\">Tuesday, April 1, 2008 from 9am</time>&ndash;<time class=\"dtend dt-end\" title=\"2008-04-01T13:30:00\" datetime=\"2008-04-01T13:30:00\">1:30pm</time>",
       "<time class=\"dtstart dt-start\" title=\"2008-04-01T09:00:00\" datetime=\"2008-04-01T09:00:00\">9am</time>&ndash;<time class=\"dtend dt-end\" title=\"2008-04-01T13:30:00\" datetime=\"2008-04-01T13:30:00\">1:30pm</time>" ],
-    [ "different days", DateTime.new(2009, 4, 1, 13, 30),
+    [ "different days", Time.zone.local(2009, 4, 1, 13, 30),
       "<time class=\"dtstart dt-start\" title=\"2008-04-01T09:00:00\" datetime=\"2008-04-01T09:00:00\">Tuesday, April 1, 2008 at 9am</time> through <time class=\"dtend dt-end\" title=\"2009-04-01T13:30:00\" datetime=\"2009-04-01T13:30:00\">Wednesday, April 1, 2009 at 1:30pm</time>",
       "<time class=\"dtstart dt-start\" title=\"2008-04-01T09:00:00\" datetime=\"2008-04-01T09:00:00\">9am</time> through <time class=\"dtend dt-end\" title=\"2009-04-01T13:30:00\" datetime=\"2009-04-01T13:30:00\">Wednesday, April 1, 2009 at 1:30pm</time>" ]
   ]
@@ -43,13 +43,13 @@ describe "Time formatting" do
 
   describe "with objects" do
     it "should format from objects that respond to just start_time" do
-      event = Event.new(:start_time => Time.parse('2008-04-01 13:30'))
+      event = Event.new(:start_time => Time.zone.parse('2008-04-01 13:30'))
       TimeRange.new(event, :format => :text).to_s.should eq "Tuesday, April 1, 2008 at 1:30pm"
     end
 
     it "should format from objects that respond to both start_time and end_time" do
-      event = Event.new(:start_time => Time.parse('2008-04-01 13:30'),
-                        :end_time => Time.parse('2008-04-01 15:30'))
+      event = Event.new(:start_time => Time.zone.parse('2008-04-01 13:30'),
+                        :end_time => Time.zone.parse('2008-04-01 15:30'))
       TimeRange.new(event, :format => :text).to_s.should eq "Tuesday, April 1, 2008 from 1:30-3:30pm"
     end
   end

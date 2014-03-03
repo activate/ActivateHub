@@ -7,7 +7,7 @@ FactoryGirl.define do
     # TODO: reduce to minimum required to pass validation (drop sequences unless uniq)
     sequence(:title) { |n| "Event #{n}" }
     sequence(:description) { |n| "Description of Event #{n}." }
-    start_time { Time.now + 1.hour }
+    start_time { Time.zone.now + 1.hour }
     end_time { self.start_time + 1.hours }
 
     trait :future do

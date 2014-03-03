@@ -50,7 +50,7 @@ namespace :sources do
       raise "could not find site with path '#{args[:site]}'"
     end
 
-    ActiveRecord::Base.current_site = site
+    site.use!
   end
 
 end

@@ -4,5 +4,7 @@ FactoryGirl.define do
   factory :site do
     name 'My Site'
     domain 'my.site'
+    timezone 'Asia/Tokyo'
+    locale 'en-x-foo-bar'
   end
 end

@@ -122,7 +122,7 @@ class Event < ActiveRecord::Base
 
   if (table_exists? rescue nil)
     # XXX Horrible hack to materialize the #start_time= and #end_time= methods so they can be aliased by #start_time_with_smarter_setter= and #end_time_with_smarter_setter=.
-    Event.new(:start_time => Time.now, :end_time => Time.now)
+    Event.new(:start_time => Time.zone.now, :end_time => Time.zone.now)
 
     # Set the start_time from one of a number of time values, a string, or an
     # array of strings.
@@ -143,9 +143,9 @@ class Event < ActiveRecord::Base
   #
   # @param [ActiveRecord::Base] record The record to modify.
   # @param [String, Symbol] attribute The attribute to set, e.g. :start_time.
-  # @param [Time] value The time.
+  # @param [ActiveSupport::TimeWithZone] value The time.
   #
-  # @return [Time]
+  # @return [ActiveSupport::TimeWithZone]
   def self.set_time_on(record, attribute, value)
     begin
       result = self.time_for(value)
@@ -161,7 +161,7 @@ class Event < ActiveRecord::Base
   #
   # @param [nil, String, Date, DateTime, ActiveSupport::TimeWithZone, Time] value The time to parse.
   #
-  # @return [Time]
+  # @return [ActiveSupport::TimeWithZone]
   #
   # @raise TypeError Thrown if given an unknown type.
   # @raise Exception Thrown if value can't be parsed.
@@ -175,9 +175,10 @@ class Event < ActiveRecord::Base
       return value.present? ?
         Time.zone.parse(value) :
         nil
-    when Date, DateTime, ActiveSupport::TimeWithZone
-      return value.to_time
+    when Date, DateTime, Time
+      return value.to_time.in_time_zone
     when Time
+    when ActiveSupport::TimeWithZone
       return value # Accept as-is.
     else
       raise TypeError, "Unknown type #{value.class.to_s.inspect} with value #{value.inspect}"
@@ -259,7 +260,7 @@ class Event < ActiveRecord::Base
       kind = %w[all any].include?(type) ? type.to_sym : type.split(',')
       return self.find_duplicates_by(kind,
         :grouped => true,
-        :where => "a.start_time >= #{self.connection.quote(Time.now - 1.day)}")
+        :where => "a.start_time >= #{self.connection.quote(Time.zone.now - 1.day)}")
     end
   end
 
@@ -354,8 +355,8 @@ class Event < ActiveRecord::Base
     event.organization = source.organization if source
     event.title        = abstract_event.title
     event.description  = abstract_event.description
-    event.start_time   = abstract_event.start_time.blank? ? nil : Time.parse(abstract_event.start_time.to_s)
-    event.end_time     = abstract_event.end_time.blank? ? nil : Time.parse(abstract_event.end_time.to_s)
+    event.start_time   = abstract_event.start_time.blank? ? nil : Time.zone.parse(abstract_event.start_time.to_s)
+    event.end_time     = abstract_event.end_time.blank? ? nil : Time.zone.parse(abstract_event.end_time.to_s)
     event.url          = abstract_event.url
     event.venue        = Venue.from_abstract_location(abstract_event.abstract_location, source) if abstract_event.abstract_location
     event.tag_list     = abstract_event.tags.join(',')
@@ -496,8 +497,8 @@ EOF
   # Return a time that's today but has the time-of-day component from the
   # +source+ time argument.
   def self._clone_time_for_today(source)
-    today = Time.today
-    return Time.local(today.year, today.mon, today.day, source.hour, source.min, source.sec, source.usec)
+    today = Time.zone.today
+    return Time.zone.local(today.year, today.mon, today.day, source.hour, source.min, source.sec, source.usec)
   end
 
   #---[ Date related ]----------------------------------------------------
@@ -526,7 +527,7 @@ EOF
 
   # Is this event current? Default cutoff is today
   def current?(cutoff=nil)
-    cutoff ||= Time.today
+    cutoff ||= Time.zone.today.beginning_of_day
     return (self.end_time || self.start_time) >= cutoff
   end
 
@@ -538,7 +539,8 @@ EOF
 
   # Did this event start before today but ends today or later?
   def ongoing?
-    self.start_time < Time.today && self.end_time && self.end_time >= Time.today
+    today = Time.zone.today.beginning_of_day
+    self.start_time < today && self.end_time && self.end_time >= today
   end
 
   def multiday?

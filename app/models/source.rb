@@ -76,7 +76,7 @@ class Source < ActiveRecord::Base
   # Create events for this source. Returns the events created. URL must be set
   # for this source for this to work.
   def create_events!(opts={})
-    cutoff = Time.now.yesterday # All events before this date will be skipped
+    cutoff = Time.zone.now.yesterday # All events before this date will be skipped
     events = []
     for event in self.to_events(opts)
       if opts[:skip_old]
@@ -134,7 +134,7 @@ class Source < ActiveRecord::Base
   # * :url -- URL of data to import. Defaults to record's #url attribute.
   # * :skip_old -- Should old events be skipped? Default is true.
   def to_events(opts={})
-    self.imported_at = Time.now
+    self.imported_at = Time.zone.now
     if valid?
       opts[:url] ||= self.url
       [].tap do |events|

@@ -113,7 +113,7 @@ describe SourceParser, "checking duplicates when importing" do
     end
 
     it "an event with a orphaned exact duplicate should should remove duplicate marking" do
-      orphan = Event.create!(:title => "orphan", :start_time => Time.parse("July 14 2008"), :duplicate_of_id => 7142008 )
+      orphan = Event.create!(:title => "orphan", :start_time => Time.zone.parse("July 14 2008"), :duplicate_of_id => 7142008 )
       cal_content = <<-HERE
         <div class="vevent">
         <abbr class="summary" title="orphan"></abbr>

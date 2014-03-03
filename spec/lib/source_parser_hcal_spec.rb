@@ -12,8 +12,8 @@ describe SourceParser::Hcal, "with hCalendar events" do
     for key, value in {
       :title => "Calendar event",
       :description => "Check it out!",
-      :start_time => Time.parse("2008-1-19"),
-      :end_time => Time.parse("2008-1-20"),
+      :start_time => Time.zone.parse("2008-1-19"),
+      :end_time => Time.zone.parse("2008-1-20"),
       :url => "http://www.cubespacepdx.com",
       :venue_id => nil, # TODO what should venue instance be?
     }
@@ -39,10 +39,10 @@ describe SourceParser::Hcal, "with hCalendar events" do
     events = hcal_source.to_events
     events.size.should eq 2
     first, second = *events
-    first.start_time.should eq Time.parse('2008-1-19')
-    first.end_time.should eq Time.parse('2008-01-20')
-    second.start_time.should eq Time.parse('2008-2-2')
-    second.end_time.should eq Time.parse('2008-02-03')
+    first.start_time.should eq Time.zone.parse('2008-1-19')
+    first.end_time.should eq Time.zone.parse('2008-01-20')
+    second.start_time.should eq Time.zone.parse('2008-2-2')
+    second.end_time.should eq Time.zone.parse('2008-02-03')
   end
 end
 

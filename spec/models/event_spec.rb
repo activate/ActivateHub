@@ -286,38 +286,38 @@ describe Event do
 
     it "should set from date String" do
       event = Event.new(:start_time => today.to_date.to_s(:db))
-      event.start_time.should be_a_kind_of Time
+      event.start_time.should be_a_kind_of ActiveSupport::TimeWithZone
       event.start_time.should eq today
     end
 
     it "should set from date-time String" do
       event = Event.new(:start_time => today.localtime.to_s(:db))
-      event.start_time.should be_a_kind_of Time
+      event.start_time.should be_a_kind_of ActiveSupport::TimeWithZone
       event.start_time.should eq today
     end
 
     it "should set from Date" do
       event = Event.new(:start_time => today.to_date)
-      event.start_time.should be_a_kind_of Time
+      event.start_time.should be_a_kind_of ActiveSupport::TimeWithZone
       event.start_time.should eq today
     end
 
     it "should set from DateTime" do
       event = Event.new(:start_time => today.to_datetime)
-      event.start_time.should be_a_kind_of Time
+      event.start_time.should be_a_kind_of ActiveSupport::TimeWithZone
       event.start_time.should eq today
     end
 
     it "should set from TimeWithZone" do
-      event = Event.new(:start_time => ActiveSupport::TimeWithZone.new(Time.now.midnight, Time.zone))
-      event.start_time.should be_a_kind_of Time
+      event = Event.new(:start_time => Time.zone.now.midnight)
+      event.start_time.should be_a_kind_of ActiveSupport::TimeWithZone
       event.start_time.should eq today
     end
 
     it "should set from Time" do
       time = today
       event = Event.new(:start_time => time)
-      event.start_time.should be_a_kind_of Time
+      event.start_time.should be_a_kind_of ActiveSupport::TimeWithZone
       event.start_time.should eq time
     end
 
@@ -844,8 +844,8 @@ describe Event do
     let :original do
       build(:event,
         :id => 42,
-        :start_time => Time.parse("2008-01-19 10:00 PST"),
-        :end_time => Time.parse("2008-01-19 17:00 PST"),
+        :start_time => Time.zone.parse("2008-01-19 10:00 PST"),
+        :end_time => Time.zone.parse("2008-01-19 17:00 PST"),
         :tag_list => "foo, bar, baz",
         :venue_details => "Details")
     end
@@ -951,7 +951,7 @@ describe Event do
     end
 
     it "should create multi-day entries for multi-day events" do
-      time = Time.now
+      time = Time.zone.now
       event = build(:event, :start_time => time, :end_time => time + 4.days)
       parsed_event = ical_roundtrip( event )
 

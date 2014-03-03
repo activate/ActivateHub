@@ -8,7 +8,7 @@ describe Source, "in general" do
       :title => "Title",
       :description => "Description",
       :url => "http://my.url/",
-      :start_time => Time.now + 1.day,
+      :start_time => Time.zone.now + 1.day,
       :end_time => nil,
       :venue => nil,
       :duplicate_of_id => nil)
@@ -64,7 +64,7 @@ describe Source, "when associated with an organization" do
       :title => "Title",
       :description => "Description",
       :url => "http://my.url/",
-      :start_time => Time.now + 1.day,
+      :start_time => Time.zone.now + 1.day,
       :end_time => nil,
       :venue => nil,
       :duplicate_of_id => nil,

@@ -133,10 +133,21 @@ describe AbstractEvent do
       abstract_event.event_attributes_changed.should eq []
     end
 
-    (AbstractEvent::EVENT_ATTRIBUTES-[:organization_id,:venue_id]).each do |attribute_name|
+    exclude = [:organization_id, :venue_id, :start_time, :end_time]
+    (AbstractEvent::EVENT_ATTRIBUTES-exclude).each do |attribute_name|
       it "includes attribute name when #{attribute_name} changes" do
-        abstract_event.send("#{attribute_name}=", :foo)
+        abstract_event.send("#{attribute_name}=", 'foo')
         abstract_event.event_attributes_changed.should eq [attribute_name]
+      end
+
+      it "includes attribute name when start_time changes" do
+        abstract_event.start_time = 27.days.from_now
+        abstract_event.event_attributes_changed.should eq [:start_time]
+      end
+
+      it "includes attribute name when end_time changes" do
+        abstract_event.end_time = 28.days.from_now
+        abstract_event.event_attributes_changed.should eq [:end_time]
       end
 
       it "includes attribute name when venue_id changes" do

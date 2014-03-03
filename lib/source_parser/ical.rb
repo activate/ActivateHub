@@ -21,7 +21,7 @@ class SourceParser # :nodoc:
     # Helper to set the start and end dates correctly depending on whether it's a floating or fixed timezone
     def self.dates_for_tz(component, event)
       if component.dtstart_property.tzid.nil?
-        event.start_time  = Time.parse(component.dtstart_property.value)
+        event.start_time  = Time.zone.parse(component.dtstart_property.value)
         if component.dtend_property.nil?
           if component.duration
             event.end_time = component.duration_property.add_to_date_time_value(event.start_time)
@@ -29,15 +29,15 @@ class SourceParser # :nodoc:
             event.end_time = event.start_time
           end
         else
-          event.end_time = Time.parse(component.dtend_property.value)
+          event.end_time = Time.zone.parse(component.dtend_property.value)
         end
       else
         event.start_time  = component.dtstart
         event.end_time    = component.dtend
       end
     rescue RiCal::InvalidTimezoneIdentifier
-      event.start_time = Time.parse(component.dtstart_property.to_s)
-      event.end_time = Time.parse(component.dtend_property.to_s)
+      event.start_time = Time.zone.parse(component.dtstart_property.to_s)
+      event.end_time = Time.zone.parse(component.dtend_property.to_s)
     end
 
     CALENDAR_CONTENT_RE    = /^BEGIN:VCALENDAR.*?^END:VCALENDAR/m
