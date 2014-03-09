@@ -26,7 +26,7 @@ class Source < ActiveRecord::Base
   has_many :updates, :dependent => :destroy
   has_and_belongs_to_many :topics
   has_and_belongs_to_many :types
-  belongs_to :organization
+  belongs_to :organization, :touch => true
   belongs_to :site
   scope_to_current_site
 

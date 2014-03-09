@@ -50,6 +50,7 @@ class Venue < ActiveRecord::Base
   strip_whitespace! :title, :description, :address, :url, :street_address, :locality, :region, :postal_code, :country, :email, :telephone
   before_validation :normalize_url!
   before_save :geocode
+  after_save :touch_events
 
   # Validations
   validates_presence_of :title
@@ -260,6 +261,13 @@ class Venue < ActiveRecord::Base
     unless self.url.blank? || self.url.match(/^[\d\D]+:\/\//)
       self.url = 'http://' + self.url
     end
+  end
+
+
+  private
+
+  def touch_events
+    events.update_all(:updated_at => Time.zone.now)
   end
 
 end

@@ -1,88 +1,95 @@
 :ruby
-  # FIXME: split into helper methods and add tests (and optimize!)
-
   events ||= raise ArgumentError, "event is required in view partial #{__FILE__}"
-  start_date ||= events.map(&:start_date).min
-  end_date   ||= events.map(&:end_date).max
   today ||= Time.zone.today
-  slots ||= 5
 
-  now = Time.zone.now
+  # not always defined when included as partial in other pages
+  start_date ||= nil
+  end_date ||= nil
 
-  # max number of days to show event if it's longer than one week
-  multi_week_days = 3
+- collection_cache events, [start_date, end_date, today, params] do
+  :ruby
+    # FIXME: split into helper methods and add tests (and optimize!)
+    start_date ||= events.map(&:start_date).min
+    end_date   ||= events.map(&:end_date).max
+    slots ||= 5
 
-  # ensure dates start and end on week boundaries and are dates, not times
-  start_date = start_date.to_date.beginning_of_week(:sunday)
-  end_date = end_date.to_date.end_of_week(:sunday)
+    now = Time.zone.now
 
-  # creates empty event slots for each day we will show on the calendar
-  days = Hash[(start_date..end_date).map{|date| [date, Array.new(slots)] }]
+    # max number of days to show event if it's longer than one week
+    multi_week_days = 3
 
-  # FIXME: re-ordering by start_time should be assumed to happen in controller (but isn't?)
-  events = events.reorder('start_time asc, end_time desc')
+    # ensure dates start and end on week boundaries and are dates, not times
+    start_date = start_date.to_date.beginning_of_week(:sunday)
+    end_date = end_date.to_date.end_of_week(:sunday)
 
-  # ensure multi-day events come first, otherwise it becomes difficult to fill
-  # all the slots in the calendar view without ugly gaps
-  events = events.sort_by {|e| [e.start_date, - e.days] }
+    # creates empty event slots for each day we will show on the calendar
+    days = Hash[(start_date..end_date).map{|date| [date, Array.new(slots)] }]
 
-  events.each do |event|
-    event_start, event_end = event.start_date, event.end_date
-    multi_week = event.days > 7 # for special handling later
+    # FIXME: re-ordering by start_time should be assumed to happen in controller (but isn't?)
+    events = events.reorder('start_time asc, end_time desc')
 
-    # event start_time or end_time must fall within calendar date range
-    next if event_start > end_date || event_end < start_date
+    # ensure multi-day events come first, otherwise it becomes difficult to fill
+    # all the slots in the calendar view without ugly gaps
+    events = events.sort_by {|e| [e.start_date, - e.days] }
 
-    event_pos = nil # cache position so multi-day events use same slot
-    (event_start..event_end).each do |date|
-      # don't display multi-week events for longer than `multi_week_days` days
-      break if multi_week && (date - event_start) >= multi_week_days
+    events.each do |event|
+      event_start, event_end = event.start_date, event.end_date
+      multi_week = event.days > 7 # for special handling later
 
-      # skip any days that wander outside our calendar range
-      day = days[date] or next
+      # event start_time or end_time must fall within calendar date range
+      next if event_start > end_date || event_end < start_date
 
-      if event_pos
-        # event already started on a previous day
-        if date.wday == 0 # sunday
-          # at start of week, redefine event on calendar
+      event_pos = nil # cache position so multi-day events use same slot
+      (event_start..event_end).each do |date|
+        # don't display multi-week events for longer than `multi_week_days` days
+        break if multi_week && (date - event_start) >= multi_week_days
+
+        # skip any days that wander outside our calendar range
+        day = days[date] or next
+
+        if event_pos
+          # event already started on a previous day
+          if date.wday == 0 # sunday
+            # at start of week, redefine event on calendar
+            day[event_pos] = event
+          else
+            # event flows into this day, reserve so other events can't take
+            day[event_pos] = false
+          end
+        elsif event_pos = day.find_index(&:nil?) || day.count
+          # found empty slot or created a new slot if needed
           day[event_pos] = event
-        else
-          # event flows into this day, reserve so other events can't take
-          day[event_pos] = false
         end
-      elsif event_pos = day.find_index(&:nil?) || day.count
-        # found empty slot or created a new slot if needed
-        day[event_pos] = event
       end
     end
-  end
 
-.week-header
-  - 0.upto(6) do |wday|
-    .day-header= t('date.abbr_day_names')[wday]
-- days.each_slice(7) do |week|
-  - month_change = week.last[0].day <= 7
-  .week{:class => (month_change ? 'w1' : '')}
-    - week.each do |day,events|
-      - if day.day == 1
-        .month-header
-          .month= t('date.month_names')[day.month]
-          .year= day.year
-      - new_events = events.select {|e| e.present? && e.start_date == day }
-      - future_events = new_events.select {|e| e.end_time >= now }
-      .day{:class => "d#{day.day} wday#{day.wday} #{day == today ? 'today' : ''} #{future_events.any? ? 'has-future-events' : 'no-future-events'} #{new_events.any? ? 'has-events' : 'no-events'}"}
-        .date
-          .wday= t('date.day_names')[day.wday]
-          .month= t('date.abbr_month_names')[day.month]
-          .dom= day.day
-          .year= day.year
-        - events.each_with_index do |event,idx|
-          - if event
-            - days = (event.days > 7) ? multi_week_days - (event.days - event.days(day)) : event.days(day)
-            - span = [days, (7 - day.wday)].min
-            .slot{:class => "s#{span} #{idx > slots-2 && events.count > slots ? 'extra' : ''}"}
-              = render 'events/index_item', :event => event, :today => today, :new => (day && event.start_date)
-          - else
-            .slot.empty-slot{:class => (idx > slots-2 && events.count > slots ? 'extra' : '')}
-        - if (more_events = events.from(slots)).any?
-          .show-more= link_to t('.show_more', :count => more_events.count+1), '#'
+  .week-header
+    - 0.upto(6) do |wday|
+      .day-header= t('date.abbr_day_names')[wday]
+  - days.each_slice(7) do |week|
+    - month_change = week.last[0].day <= 7
+    .week{:class => (month_change ? 'w1' : '')}
+      - week.each do |day,events|
+        - collection_cache events, [day, day.today?, params] do
+          - if day.day == 1
+            .month-header
+              .month= t('date.month_names')[day.month]
+              .year= day.year
+          - new_events = events.select {|e| e.present? && e.start_date == day }
+          - future_events = new_events.select {|e| e.end_time >= now }
+          .day{:class => "d#{day.day} wday#{day.wday} #{day == today ? 'today' : ''} #{future_events.any? ? 'has-future-events' : 'no-future-events'} #{new_events.any? ? 'has-events' : 'no-events'}"}
+            .date
+              .wday= t('date.day_names')[day.wday]
+              .month= t('date.abbr_month_names')[day.month]
+              .dom= day.day
+              .year= day.year
+            - events.each_with_index do |event,idx|
+              - if event
+                - days = (event.days > 7) ? multi_week_days - (event.days - event.days(day)) : event.days(day)
+                - span = [days, (7 - day.wday)].min
+                .slot{:class => "s#{span} #{idx > slots-2 && events.count > slots ? 'extra' : ''}"}
+                  = render 'events/index_item', :event => event, :today => today, :new => (day && event.start_date)
+              - else
+                .slot.empty-slot{:class => (idx > slots-2 && events.count > slots ? 'extra' : '')}
+            - if (more_events = events.from(slots)).any?
+              .show-more= link_to t('.show_more', :count => more_events.count+1), '#'

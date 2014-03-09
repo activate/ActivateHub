@@ -6,16 +6,18 @@
 
 = render 'organizations/item', :organization => @organization
 
-%h2.future-events-title= t('.future_events.title')
-.future-events.events-list.list
-  - if @future_events.any?
-    = render 'events/calendar', :events => @future_events
-  - else
-    .no-events= t('.future_events.none')
+- collection_cache @future_events do
+  %h2.future-events-title= t('.future_events.title')
+  .future-events.events-list.list
+    - if @future_events.any?
+      = render 'events/calendar', :events => @future_events
+    - else
+      .no-events= t('.future_events.none')
 
-%h2.past-events-title= t('.past_events.title')
-.past-events.events-list.list
-  - if @past_events.any?
-    = render 'events/calendar', :events => @past_events
-  - else
-    .no-events= t('.past_events.none')
+- collection_cache @past_events do
+  %h2.past-events-title= t('.past_events.title')
+  .past-events.events-list.list
+    - if @past_events.any?
+      = render 'events/calendar', :events => @past_events
+    - else
+      .no-events= t('.past_events.none')

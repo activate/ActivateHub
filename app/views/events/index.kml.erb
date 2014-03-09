@@ -1,3 +1,4 @@
+<% collection_cache @events, [@start_date, @end_date, Time.zone.today] do %>
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://earth.google.com/kml/2.2">
   <Document>
@@ -18,3 +19,4 @@
   <% end %>
   </Document>
 </kml>
+<% end %>

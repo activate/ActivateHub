@@ -31,7 +31,7 @@ class VenuesController < ApplicationController
       elsif params[:query].present?
         @venues = Venue.search(params[:query], :include_closed => params[:include_closed], :wifi => params[:wifi])
       else
-        @venues = scoped_venues.all
+        @venues = scoped_venues
       end
     end
 

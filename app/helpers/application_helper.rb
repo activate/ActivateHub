@@ -87,14 +87,17 @@ module ApplicationHelper
     stamp.html_safe
   end
 
-  # Caches +block+ in view only if the +condition+ is true.
-  # http://skionrails.wordpress.com/2008/05/22/conditional-fragment-caching/
-  def cache_if(condition, name={}, &block)
-    if condition
-      cache(name, &block)
-    else
-      block.call
+  def collection_cache(collection, scope = nil, &block)
+    newest = case collection
+      when ActiveRecord::Relation then collection.reorder("#{collection.table_name}.updated_at").last
+      when Array then collection.select {|v| v.respond_to? :updated_at }.max_by(&:updated_at)
+      else raise ArgumentError, "unsupported collection type: #{collection.class}"
     end
+
+    cache_key = "#{newest && newest.cache_key}-#{collection.size}"
+    cache_key += "-#{Digest::MD5.hexdigest(JSON.generate([scope]))}" if scope
+
+    cache(cache_key, &block)
   end
 
   # Insert a chunk of +javascript+ into the page, and execute it when the document is ready.

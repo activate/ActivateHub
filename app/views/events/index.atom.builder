@@ -1,4 +1,4 @@
-cache_if(@perform_caching, CacheObserver.daily_key_for("events_atom", request)) do
+collection_cache @events, [@start_date, @end_date, Time.zone.today] do
   atom_feed("xmlns:georss".to_sym => "http://www.georss.org/georss") do |feed|
     feed.title("#{@current_site.name}#{': ' + @page_title if @page_title}")
     unless @events.size == 0

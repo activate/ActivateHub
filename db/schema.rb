@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140212051512) do
+ActiveRecord::Schema.define(:version => 20140309152321) do
 
   create_table "abstract_events", :force => true do |t|
     t.integer  "site_id"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(:version => 20140212051512) do
   add_index "abstract_events", ["event_id"], :name => "index_abstract_events_on_event_id"
   add_index "abstract_events", ["site_id", "source_id", "external_id"], :name => "abstract_events_by_external_id"
   add_index "abstract_events", ["site_id", "source_id", "start_time"], :name => "abstract_events_by_start_time"
+  add_index "abstract_events", ["updated_at"], :name => "index_abstract_events_on_updated_at"
 
   create_table "abstract_locations", :force => true do |t|
     t.integer  "site_id"
@@ -64,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20140212051512) do
   end
 
   add_index "abstract_locations", ["site_id", "source_id", "external_id"], :name => "index_abstract_locations_by_external_id"
+  add_index "abstract_locations", ["updated_at"], :name => "index_abstract_locations_on_updated_at"
   add_index "abstract_locations", ["venue_id"], :name => "index_abstract_locations_on_venue_id"
 
   create_table "events", :force => true do |t|
@@ -83,15 +85,23 @@ ActiveRecord::Schema.define(:version => 20140212051512) do
     t.integer  "site_id"
   end
 
+  add_index "events", ["updated_at"], :name => "index_events_on_updated_at"
+
   create_table "events_topics", :id => false, :force => true do |t|
     t.integer "event_id"
     t.integer "topic_id"
   end
 
+  add_index "events_topics", ["event_id"], :name => "index_events_topics_on_event_id"
+  add_index "events_topics", ["topic_id"], :name => "index_events_topics_on_topic_id"
+
   create_table "events_types", :id => false, :force => true do |t|
     t.integer "event_id"
     t.integer "type_id"
   end
+
+  add_index "events_types", ["event_id"], :name => "index_events_types_on_event_id"
+  add_index "events_types", ["type_id"], :name => "index_events_types_on_type_id"
 
   create_table "organizations", :force => true do |t|
     t.string   "name"
@@ -104,10 +114,15 @@ ActiveRecord::Schema.define(:version => 20140212051512) do
     t.string   "description"
   end
 
+  add_index "organizations", ["updated_at"], :name => "index_organizations_on_updated_at"
+
   create_table "organizations_topics", :id => false, :force => true do |t|
     t.integer "organization_id"
     t.integer "topic_id"
   end
+
+  add_index "organizations_topics", ["organization_id"], :name => "index_organizations_topics_on_organization_id"
+  add_index "organizations_topics", ["topic_id"], :name => "index_organizations_topics_on_topic_id"
 
   create_table "rails_admin_histories", :force => true do |t|
     t.text     "message"
@@ -138,6 +153,8 @@ ActiveRecord::Schema.define(:version => 20140212051512) do
     t.string   "disqus_shortname"
   end
 
+  add_index "sites", ["updated_at"], :name => "index_sites_on_updated_at"
+
   create_table "sources", :force => true do |t|
     t.string   "title"
     t.string   "url"
@@ -149,6 +166,8 @@ ActiveRecord::Schema.define(:version => 20140212051512) do
     t.integer  "site_id"
     t.boolean  "enabled",         :default => true
   end
+
+  add_index "sources", ["updated_at"], :name => "index_sources_on_updated_at"
 
   create_table "sources_topics", :id => false, :force => true do |t|
     t.integer "source_id"
@@ -162,6 +181,9 @@ ActiveRecord::Schema.define(:version => 20140212051512) do
     t.integer "source_id"
     t.integer "type_id"
   end
+
+  add_index "sources_types", ["source_id"], :name => "index_sources_types_on_source_id"
+  add_index "sources_types", ["type_id"], :name => "index_sources_types_on_type_id"
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id",        :null => false
@@ -189,12 +211,18 @@ ActiveRecord::Schema.define(:version => 20140212051512) do
     t.integer  "site_id"
   end
 
+  add_index "topics", ["site_id", "name"], :name => "index_topics_on_site_id_and_name"
+  add_index "topics", ["updated_at"], :name => "index_topics_on_updated_at"
+
   create_table "types", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "site_id"
   end
+
+  add_index "types", ["site_id", "name"], :name => "index_types_on_site_id_and_name"
+  add_index "types", ["updated_at"], :name => "index_types_on_updated_at"
 
   create_table "updates", :force => true do |t|
     t.integer  "source_id"
@@ -220,6 +248,7 @@ ActiveRecord::Schema.define(:version => 20140212051512) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["updated_at"], :name => "index_users_on_updated_at"
 
   create_table "venues", :force => true do |t|
     t.string   "title"
@@ -245,6 +274,8 @@ ActiveRecord::Schema.define(:version => 20140212051512) do
     t.integer  "events_count"
     t.integer  "site_id"
   end
+
+  add_index "venues", ["updated_at"], :name => "index_venues_on_updated_at"
 
   create_table "versions", :force => true do |t|
     t.string   "item_type",  :null => false

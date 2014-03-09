@@ -7,7 +7,7 @@ class EventsController < ApplicationController
     @start_date = date_or_default_for(:start)
     @end_date = date_or_default_for(:end)
 
-    query = Event.non_duplicates.ordered_by_ui_field(params[:order]).includes(:venue, :tags)
+    query = Event.non_duplicates.ordered_by_ui_field(params[:order]).includes(:venue)
     @events = query.within_dates(@start_date, @end_date)
 
     @events = @events.includes([:organization,:topics,:types])
@@ -28,10 +28,10 @@ class EventsController < ApplicationController
       @events = @events.joins(:types).where('types.name' => @selected_types)
     end
 
-    @perform_caching = [:order,:date].all? {|n| params[n].blank? }
-
-    @topics = Topic.order(:name)
-    @types = Type.order(:name)
+    @topics = Topic.joins(:events).where("events.start_time > NOW()") \
+      .select("DISTINCT topics.name AS name").reorder(:name)
+    @types = Type.joins(:events).where("events.start_time > NOW()") \
+      .select("DISTINCT types.name AS name").reorder(:name)
 
     @custom_content = true
 

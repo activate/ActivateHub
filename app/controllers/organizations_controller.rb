@@ -6,7 +6,7 @@ class OrganizationsController < ApplicationController
       @organizations = @organizations.joins(:topics).where('topics.name = ?', @topic)
     end
 
-    @topics = Topic.joins(:organizations).order(:name).uniq_by(&:name)
+    @topics = Topic.joins(:organizations).select("DISTINCT topics.name AS name").reorder(:name)
   end
 
   # GET /organizations/1

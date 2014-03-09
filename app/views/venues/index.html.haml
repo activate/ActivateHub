@@ -12,80 +12,80 @@
   #sidebar-wiki-props.sidebar-box= render 'site/wiki_props_index', :collection => Venue.scoped
   #sidebar-exports.sidebar-box= render 'venues/exports'
 
+- collection_cache @venues, [params, venues_view] do
+  .view-switcher
+    %ul
+      %li= link_to t('.switcher.list'), params.merge(:view => 'list'), :class => (venues_view == 'list' ? 'selected' : ''), :data => { :view => 'list' }
+      %li= link_to t('.switcher.map'), params.merge(:view => 'map'), :class => (venues_view == 'map' ? 'selected' : ''), :data => { :view => 'map' }
 
-.view-switcher
-  %ul
-    %li= link_to t('.switcher.list'), params.merge(:view => 'list'), :class => (venues_view == 'list' ? 'selected' : ''), :data => { :view => 'list' }
-    %li= link_to t('.switcher.map'), params.merge(:view => 'map'), :class => (venues_view == 'map' ? 'selected' : ''), :data => { :view => 'map' }
+  %h2.main-title= t('.title')
 
-%h2.main-title= t('.title')
+  .venues-view{:class => "#{venues_view} #{params[:all] ? 'all' : ''}"}
+    .show-all-venues{:style => (params[:all] || params[:view] == 'map' ? 'display:none' : '')}= link_to t('.show_all'), params.merge(:all => 1)
 
-.venues-view{:class => "#{venues_view} #{params[:all] ? 'all' : ''}"}
-  .show-all-venues{:style => (params[:all] || params[:view] == 'map' ? 'display:none' : '')}= link_to t('.show_all'), params.merge(:all => 1)
+    .most-active-venues
+      %h3.most-active-title= t('.most_active.title')
+      - @most_active_venues.each do |venue|
+        %ul.venues-list
+          %li.venue
+            .venue-title= link_to venue.title, venue_path(venue)
+            .venue-events-count= t('.most_active.events_count', :count => venue.events_count)
 
-  .most-active-venues
-    %h3.most-active-title= t('.most_active.title')
-    - @most_active_venues.each do |venue|
+    .newest-venues
+      %h3.newest-title= t('.newest.title')
       %ul.venues-list
-        %li.venue
-          .venue-title= link_to venue.title, venue_path(venue)
-          .venue-events-count= t('.most_active.events_count', :count => venue.events_count)
+        - @newest_venues.each do |venue|
+          %li.venue
+            .venue-title= link_to venue.title, venue_path(venue)
+            .venue-age= t('.newest.age', :age => time_ago_in_words(venue.created_at))
 
-  .newest-venues
-    %h3.newest-title= t('.newest.title')
-    %ul.venues-list
-      - @newest_venues.each do |venue|
-        %li.venue
-          .venue-title= link_to venue.title, venue_path(venue)
-          .venue-age= t('.newest.age', :age => time_ago_in_words(venue.created_at))
+    .all-venues
+      %ul.venues-list
+        - for venue in @venues
+          %li.venue
+            .venue-title= link_to venue.title, venue_path(venue)
+            .venue-address= venue.full_address
 
-  .all-venues
-    %ul.venues-list
-      - for venue in @venues
-        %li.venue
-          .venue-title= link_to venue.title, venue_path(venue)
-          .venue-address= venue.full_address
+    .venues-map
+      - venue = @venues.select(&:location).first
+      #google_map
+      :javascript
+        function addMarker(map, coords, title, url) {
+          var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(coords[0], coords[1]),
+            icon: 'http://maps.google.com/mapfiles/ms/icons/pink-dot.png',
+            title: title,
+            map: map
+          });
 
-  .venues-map
-    - venue = @venues.select(&:location).first
-    #google_map
-    :javascript
-      function addMarker(map, coords, title, url) {
-        var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(coords[0], coords[1]),
-          icon: 'http://maps.google.com/mapfiles/ms/icons/pink-dot.png',
-          title: title,
-          map: map
-        });
+          var infoWindow = new google.maps.InfoWindow({
+            content: $('<a>').attr('href', url).text(title)[0].outerHTML
+          });
 
-        var infoWindow = new google.maps.InfoWindow({
-          content: $('<a>').attr('href', url).text(title)[0].outerHTML
-        });
+          google.maps.event.addListener(marker, 'click', function() {
+            if (window.openInfoWindow) { window.openInfoWindow.close(); }
+            (window.openInfoWindow = infoWindow).open(map,marker);
+          });
+        }
 
-        google.maps.event.addListener(marker, 'click', function() {
-          if (window.openInfoWindow) { window.openInfoWindow.close(); }
-          (window.openInfoWindow = infoWindow).open(map,marker);
-        });
-      }
+        function initialize() {
+          var map = new google.maps.Map(document.getElementById("google_map"), {
+            center: new google.maps.LatLng(
+              #{map_options[:center][0].to_json.html_safe},
+              #{map_options[:center][1].to_json.html_safe}
+            ),
+            zoom: #{map_options[:zoom].to_json.html_safe}
+          });
 
-      function initialize() {
-        var map = new google.maps.Map(document.getElementById("google_map"), {
-          center: new google.maps.LatLng(
-            #{map_options[:center][0].to_json.html_safe},
-            #{map_options[:center][1].to_json.html_safe}
-          ),
-          zoom: #{map_options[:zoom].to_json.html_safe}
-        });
+          #{@venues.select(&:location).map {|venue|
+            <<-JS
+            addMarker(map,
+              #{venue.location.to_json.html_safe},
+              #{venue.title.to_json.html_safe},
+              #{venue_path(venue).to_json.html_safe}
+            );
+            JS
+          }.join}
+        }
 
-        #{@venues.select(&:location).map {|venue|
-          <<-JS
-          addMarker(map,
-            #{venue.location.to_json.html_safe},
-            #{venue.title.to_json.html_safe},
-            #{venue_path(venue).to_json.html_safe}
-          );
-          JS
-        }.join}
-      }
-
-      google.maps.event.addDomListener(window, 'load', initialize);
+        google.maps.event.addDomListener(window, 'load', initialize);

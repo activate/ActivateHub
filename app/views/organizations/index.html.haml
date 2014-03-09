@@ -4,20 +4,21 @@
   #sidebar-filters.sidebar-box= render 'organizations/filters'
 
 
-%h2.main-title= t('.title')
+- collection_cache @organizations do
+  %h2.main-title= t('.title')
 
-%ul.organizations-view
-  - for organization in @organizations
-    %li.organization
-      .organization-name= link_to organization.name, organization_path(organization)
+  %ul.organizations-view
+    - for organization in @organizations
+      %li.organization
+        .organization-name= link_to organization.name, organization_path(organization)
 
-      - if organization.url?
-        .organization-url
-          .organization-url-label= t('.url_label')
-          = link_to organization.url, organization.url, :target => '_blank'
+        - if organization.url?
+          .organization-url
+            .organization-url-label= t('.url_label')
+            = link_to organization.url, organization.url, :target => '_blank'
 
-      .organization-description= organization.description
+        .organization-description= organization.description
 
-      .organization-topics<
-        - organization.topics.each do |topic|
-          = link_to topic.name, '#', :class => 'topic'
+        .organization-topics<
+          - organization.topics.each do |topic|
+            = link_to topic.name, '#', :class => 'topic'

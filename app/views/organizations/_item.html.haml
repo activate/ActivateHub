@@ -3,32 +3,33 @@
   sources = organization.sources.enabled
 
 
-.organization-item
-  .organization
-    .organization-title= organization.name
+- cache organization do
+  .organization-item
+    .organization
+      .organization-title= organization.name
 
-    .organization-source-actions
-      .show-sources>= link_to t('.sources.show'), '#'
-      ,
-      .add-source= link_to t('.sources.add'), new_organization_source_path(organization)
+      .organization-source-actions
+        .show-sources>= link_to t('.sources.show'), '#'
+        ,
+        .add-source= link_to t('.sources.add'), new_organization_source_path(organization)
 
-    - if organization.url?
-      %h2.organization-url-title= t('.url.title')
-      .organization-url= link_to organization.url, organization.url, :target => '_blank'
+      - if organization.url?
+        %h2.organization-url-title= t('.url.title')
+        .organization-url= link_to organization.url, organization.url, :target => '_blank'
 
-    %h2.organization-description-title= t('.description.title')
-    .organization-description{:class => (organization.description? ? '' : 'no-content')}
-      = organization.description.presence || t('.description.none')
+      %h2.organization-description-title= t('.description.title')
+      .organization-description{:class => (organization.description? ? '' : 'no-content')}
+        = organization.description.presence || t('.description.none')
 
-    .organization-topics<
-      - organization.topics.each do |topic|
-        = link_to topic.name, '#', :class => 'topic'
+      .organization-topics<
+        - organization.topics.each do |topic|
+          = link_to topic.name, '#', :class => 'topic'
 
-    .organization-sources-container
-      %h2.organization-sources-title= t('.sources.title')
-      .organization-sources.sources-list.list
-        - if sources.any?
-          - sources.each do |source|
-            = render 'sources/index_item', :source => source
-        - else
-          .no-sources= t('.sources.none')
+      .organization-sources-container
+        %h2.organization-sources-title= t('.sources.title')
+        .organization-sources.sources-list.list
+          - if sources.any?
+            - sources.each do |source|
+              = render 'sources/index_item', :source => source
+          - else
+            .no-sources= t('.sources.none')

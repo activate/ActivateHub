@@ -67,6 +67,7 @@ gem 'haml'
 gem 'rails_admin', '0.4.8'
 gem 'devise'
 gem 'dalli'
+gem 'cache_digests', '~> 0.3.1'
 gem 'font-awesome-rails', '3.2.1.3'
 
 gem 'paper_trail_manager', :git => 'https://github.com/dhedlund/paper_trail_manager.git', :ref => 'ba8e2dafb3d196950cdc62949b197a779e491779'

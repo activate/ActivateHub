@@ -8,48 +8,49 @@
   event ||= raise ArgumentError, "event is required in view partial #{__FILE__}"
 
 
-.event-item
-  .event.vevent{:itemscope => 'itemscope', :itemtype => 'http://schema.org/Event'}
-    %h1.event-title.summary{:itemprop => 'name'}= event.title
+- cache event do
+  .event-item
+    .event.vevent{:itemscope => 'itemscope', :itemtype => 'http://schema.org/Event'}
+      %h1.event-title.summary{:itemprop => 'name'}= event.title
 
-    %meta{:itemprop => 'startDate', :content => event.start_time.utc.iso8601}
-    %meta{:itemprop => 'endDate', :content => event.end_time.utc.iso8601}
+      %meta{:itemprop => 'startDate', :content => event.start_time.utc.iso8601}
+      %meta{:itemprop => 'endDate', :content => event.end_time.utc.iso8601}
 
-    .event-time-abs.date= normalize_time(event)
-    - if organization = event.organization
-      .event-organization
-        .event-organization-label= t('.organization_label')
-        = link_to organization.name, organization_path(organization)
+      .event-time-abs.date= normalize_time(event)
+      - if organization = event.organization
+        .event-organization
+          .event-organization-label= t('.organization_label')
+          = link_to organization.name, organization_path(organization)
 
-    = render 'share_buttons'
+      = render 'share_buttons'
 
-    - if event.venue
-      %h2.event-venue-title= t('.venue')
-      .event-venue{:class => (event.venue.location ? 'has-location' : '')}
-        = render 'venues/card', :venue => event.venue
+      - if event.venue
+        %h2.event-venue-title= t('.venue')
+        .event-venue{:class => (event.venue.location ? 'has-location' : '')}
+          = render 'venues/card', :venue => event.venue
 
-        - if event.venue_details? || event.venue.access_notes?
-          .venue-notes-container
-            %h3.venue-notes-title= t('.venue_notes')
-            .venue-notes= event.venue_details.presence || event.venue.access_notes.presence
+          - if event.venue_details? || event.venue.access_notes?
+            .venue-notes-container
+              %h3.venue-notes-title= t('.venue_notes')
+              .venue-notes= event.venue_details.presence || event.venue.access_notes.presence
 
-    - if event.url?
-      %h2.event-website-title= t('.website')
-      .event-website= link_to truncate(event.url, :length => 128), event.url, :rel => 'nofollow', :class => 'url', :itemprop => 'url', :target => '_blank'
-    - if event.description?
-      %h2.event-description-title= t('.description')
-      .event-description.description{:itemprop => 'description'}
-        = format_description(event.description)
+      - if event.url?
+        %h2.event-website-title= t('.website')
+        .event-website= link_to truncate(event.url, :length => 128), event.url, :rel => 'nofollow', :class => 'url', :itemprop => 'url', :target => '_blank'
+      - if event.description?
+        %h2.event-description-title= t('.description')
+        .event-description.description{:itemprop => 'description'}
+          = format_description(event.description)
 
-    .event-topics-types<
-      - if event.topics.any?
-        - event.topics.order(:name).each do |topic|
-          = link_to topic[:name], params.merge(:topic => topic[:name]), :class => 'topic'
-      - if event.types.any?
-        - event.types.order(:name).each do |type|
-          = link_to type[:name], params.merge(:type => type[:name]), :class => 'type'
+      .event-topics-types<
+        - if event.topics.any?
+          - event.topics.order(:name).each do |topic|
+            = link_to topic[:name], params.merge(:topic => topic[:name]), :class => 'topic'
+        - if event.types.any?
+          - event.types.order(:name).each do |type|
+            = link_to type[:name], params.merge(:type => type[:name]), :class => 'type'
 
-    = render 'comments'
+      = render 'comments'
 
 :javascript
   $('.event-description a').attr('target', '_blank');

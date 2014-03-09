@@ -41,8 +41,6 @@ namespace :sources do
 
       raise ActiveRecord::Rollback if dry_run
     end
-
-    CacheObserver.expire_all
   end
 
   task :tenantized_environment, [:site] => :environment do |t,args|

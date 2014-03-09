@@ -23,10 +23,27 @@ class Organization < ActiveRecord::Base
     :allow_nil => true,
     :message => "is invalid (did you include the @ part?)"
 
+  before_save :check_touch_events
+  after_save :touch_events
+
   default_scope :order => 'LOWER(organizations.name) ASC'
 
   def title
     @name
+  end
+
+
+  private
+
+  def check_touch_events
+    @touch_events = name_changed?
+    true
+  end
+
+  def touch_events
+    return unless @touch_events
+    events.update_all(:updated_at => Time.zone.now)
+    sources.update_all(:updated_at => Time.zone.now)
   end
 
 end

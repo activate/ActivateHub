@@ -52,7 +52,6 @@ module Calagator
     config.autoload_paths += [
       # App
       Rails.root.join('app','mixins'),
-      Rails.root.join('app','observers'),
       # Plugins
       Rails.root.join('lib','catch_cookie_exception', 'lib'),
       Rails.root.join('lib','exception_notification', 'lib'),
@@ -65,10 +64,6 @@ module Calagator
     ]
 
     #---[ Rails ]-----------------------------------------------------------
-
-    # Activate observers that should always be running
-    # config.active_record.observers = :cacher, :garbage_collector
-    config.active_record.observers = :cache_observer
 
     # Deliver email using sendmail by default
     config.action_mailer.delivery_method = :sendmail
