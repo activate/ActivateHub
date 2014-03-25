@@ -47,6 +47,8 @@ module DuplicateChecking
       belongs_to :duplicate_of, :class_name => self.name, :foreign_key => DUPLICATE_MARK_COLUMN
       has_many   :duplicates,   :class_name => self.name, :foreign_key => DUPLICATE_MARK_COLUMN
 
+      before_save :check_duplicate_of_loop
+
       scope :marked_duplicates, :conditions => "#{self.table_name}.#{DUPLICATE_MARK_COLUMN} IS NOT NULL"
       scope :non_duplicates, :conditions => "#{self.table_name}.#{DUPLICATE_MARK_COLUMN} IS NULL"
     end
@@ -76,15 +78,13 @@ module DuplicateChecking
     seen = Set.new
 
     while true
-      if parent.master?
+      if seen.include?(parent.id)
+        raise DuplicateCheckingError, "Loop detected in duplicates chain at #{parent.class}##{parent.id}"
+      elsif parent.master?
         return parent
       else
-        if seen.include?(parent)
-          raise DuplicateCheckingError, "Loop detected in duplicates chain at #{parent.class}##{parent.id}"
-        else
-          seen << parent
-          parent = parent.duplicate_of
-        end
+        seen << parent.id
+        parent = parent.duplicate_of
       end
     end
   end
@@ -99,6 +99,13 @@ module DuplicateChecking
     duplicates = self.class.where(matchable_attributes).reject{|t| t.id == self.id}
     return duplicates.blank? ? nil : duplicates
   end
+
+  def check_duplicate_of_loop
+    # Finding the progenitor require walking up the duplicate chain, which
+    # should find and raise the DuplicateCheckingError for us if any loops
+    progenitor
+  end
+
 
   module ClassMethods
 

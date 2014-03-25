@@ -614,14 +614,6 @@ describe Event do
       @event.associate_with_venue(@venue.id).should eq @venue
     end
 
-    it "should raise an exception if there's a loop in the duplicates chain" do
-      venue1 = create(:venue)
-      venue2 = create(:venue, :duplicate_of => venue1)
-      venue1.update_attribute(:duplicate_of, venue2)
-
-      lambda { @event.associate_with_venue(venue1.id) }.should raise_error DuplicateCheckingError
-    end
-
     it "should raise an exception if associated with an unknown type" do
       lambda { @event.associate_with_venue(double('SourceParser')) }.should raise_error TypeError
     end
@@ -802,6 +794,10 @@ describe Event do
       Event.from_abstract_event(@abstract_event).should eq @master
     end
 
+    it "should raise a DuplicateCheckingError if duplicate_of loop" do
+      @master.duplicate_of = @slave2
+      expect { @master.save! }.to raise_error DuplicateCheckingError
+    end
   end
 
   describe "when versioning" do

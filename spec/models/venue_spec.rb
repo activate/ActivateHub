@@ -159,6 +159,11 @@ describe Venue, "when checking for squashing" do
     Venue.from_abstract_location(@abstract_location).should eq @master
   end
 
+  it "should raise a DuplicateCheckingError if duplicate_of loop" do
+    @master.duplicate_of = @slave_second
+    expect { @master.save! }.to raise_error DuplicateCheckingError
+  end
+
 end
 
 describe Venue, "when squashing duplicates" do
