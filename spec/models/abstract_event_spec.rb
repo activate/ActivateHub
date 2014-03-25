@@ -208,12 +208,21 @@ describe AbstractEvent do
           abstract_event.result.should eq 'updated'
         end
 
-        it "populates and saves the event" do
-          expect {
-            abstract_event.should_receive(:populate_event).and_call_original
-            abstract_event.import!
-          }.to change { existing.event.reload.description }
+        context "has an associated event" do
+          it "populates and saves the event" do
+            expect {
+              abstract_event.should_receive(:populate_event).and_call_original
+              abstract_event.import!
+            }.to change { existing.event.reload.description }
+          end
+        end
 
+        context "has no associated event (was destroyed)" do
+          before(:each) { existing.event.destroy }
+
+          it "does not try to create a new event" do
+            expect { abstract_event.import! }.to_not change { Event.count }
+          end
         end
 
         context "has invalid attributes" do

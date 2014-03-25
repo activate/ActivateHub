@@ -161,11 +161,21 @@ describe AbstractLocation do
           abstract_location.result.should eq 'updated'
         end
 
-        it "populates and saves the venue" do
-          expect {
-            abstract_location.should_receive(:populate_venue).and_call_original
-            abstract_location.import!
-          }.to change { existing.venue.reload.description }
+        context "has an associated venue" do
+          it "populates and saves the venue" do
+            expect {
+              abstract_location.should_receive(:populate_venue).and_call_original
+              abstract_location.import!
+            }.to change { existing.venue.reload.description }
+          end
+        end
+
+        context "has no associated venue (was destroyed)" do
+          before(:each) { existing.venue.destroy }
+
+          it "does not try to create a new venue" do
+            expect { abstract_location.import! }.to_not change { Venue.count }
+          end
         end
 
         context "has invalid attributes" do

@@ -106,7 +106,7 @@ class AbstractEvent < ActiveRecord::Base
     if event_attributes_changed?
       self.result = (existing ? 'updated' : 'created')
       populate_event
-      event.save!
+      event.save! if event
       save!
     else
       self.id = existing.id
