@@ -41,7 +41,7 @@
 
     .all-venues
       %ul.venues-list
-        - for venue in @venues
+        - for venue in @venues.sort_by { |venue| venue.title.upcase }
           %li.venue
             .venue-title= link_to venue.title, venue_path(venue)
             .venue-address= venue.full_address
