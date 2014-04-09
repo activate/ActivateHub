@@ -327,7 +327,7 @@ describe SourcesController do
 
       it "should redirect to the index page" do
         delete :destroy, :id => source.id
-        expect(response).to redirect_to(organization_sources_url)
+        expect(response).to redirect_to(organization_url(:id => organization.id))
       end
     end
   end

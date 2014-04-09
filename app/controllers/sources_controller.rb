@@ -157,10 +157,13 @@ class SourcesController < ApplicationController
   # DELETE /sources/1.xml
   def destroy
     @source = Source.find(params[:id])
+    @organization = @source.organization
+
     @source.destroy
 
     respond_to do |format|
-      format.html { redirect_to(organization_sources_url) }
+      flash[:notice] = 'Source was successfully removed.'
+      format.html { redirect_to(organization_url(@organization)) }
       format.xml  { head :ok }
     end
   end
