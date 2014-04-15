@@ -7,6 +7,9 @@
 
 #---[ Heroku Settings ]-----------------------------------------------------
 
+# heroku requires ruby version on own line (reps for version, not evals)
+ruby '1.9.3'
+
 # enable serving of static assets on production
 ENV['STATIC_ASSETS'] = 'true'
 

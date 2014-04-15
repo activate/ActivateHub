@@ -3,12 +3,6 @@
 
 source 'https://rubygems.org'
 
-unless ENV['IGNORE_RUBY_VER']
-  # ensures everybody has same version of ruby this app uses in production.
-  # heroku requires ruby version on own line (greps for version, not evals)
-  ruby '1.9.3'
-end
-
 # FIXME: added Aug 5, 2012 -- this may be out of date
 unless defined?($BUNDLER_INTERPRETER_CHECKED)
   if defined?(JRUBY_VERSION)
