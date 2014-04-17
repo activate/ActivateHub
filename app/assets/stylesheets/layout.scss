@@ -4,6 +4,9 @@
 /*---[ navbar ]-------------------------------------------------------------*/
 
 #navbar {
+  @media print {
+    display: none;
+  }
   position: fixed;
   top: 0px;
   width: 100%;
@@ -86,6 +89,9 @@
 /*---[ sidebar ]------------------------------------------------------------*/
 
 #sidebar {
+  @media print{
+    display: none;
+  }
   float: left;
   position: relative;
   width: $sidebar-width;
@@ -119,6 +125,9 @@
 
 #main {
   margin: ($navbar-height + 20px) 20px 20px ($sidebar-width + 60px);
+  @media print {
+    margin: 20px;
+  }
 
   .main-title {
     font-size: 24px;
@@ -136,6 +145,9 @@
 /*---[ footer ]-------------------------------------------------------------*/
 
 #footer {
+  @media print {
+    display: none;
+  }
   margin-top: 60px;
   padding: 15px 0px;
   border-top: 1px solid $footer-edge-color;
