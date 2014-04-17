@@ -25,6 +25,8 @@ en:
         organizations: "Organizations"
         venues: "Venues"
         new_event: "Add Event"
+        adding-events: "Adding Events Tutorial"
+
       search:
         placeholder: "Search events..."
     welcome:
