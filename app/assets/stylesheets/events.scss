@@ -390,6 +390,10 @@
   }
 
   .event-share-buttons {
+    @media print {
+      display: none;
+    }
+
     max-width: $main-width;
     min-height: 25px;
     margin-top: 10px;
@@ -405,6 +409,10 @@
   }
 
   .event-comments {
+    @media print {
+      display: none;
+    }
+
     max-width: $main-width;
     margin-top: 20px;
   }
