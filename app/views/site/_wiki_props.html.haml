@@ -10,7 +10,8 @@
 
 .wiki-actions
   - edit_link = link_to t('.edit'), edit_polymorphic_path(ns)
-  - delete_link = link_to t('.delete'), polymorphic_path(ns), :method => :delete, :confirm => t('.delete_confirm', :obj => object_name)
+  - if current_user
+    - delete_link = link_to t('.delete'), polymorphic_path(ns), :method => :delete, :confirm => t('.delete_confirm', :obj => object_name)
 
   - if clone
     - clone_link = link_to t('.clone'), polymorphic_path([:clone, *ns])
