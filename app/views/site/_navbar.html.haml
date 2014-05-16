@@ -17,6 +17,7 @@
     %li{:class => link_class[:organizations]}= link_to t('.menu.organizations'), organizations_path
     %li{:class => link_class[:venues]}= link_to t('.menu.venues'), venues_path
     %li= link_to t('.menu.new_event'), new_event_path
+    %li= render 'devise/menu/login_links'
 
 #navbar-search
   = form_tag search_events_path, :method => :get do
