@@ -19,6 +19,7 @@ describe "/devise/menu/_login_links.html.erb" do
 
       rendered.should_not include "Login"
       rendered.should include "Logout"
+      rendered.should include "/users/sign_out"
     end
   end
 
@@ -27,6 +28,7 @@ describe "/devise/menu/_login_links.html.erb" do
       render
 
       rendered.should include "Login"
+      rendered.should include "/users/sign_in"
       rendered.should_not include "Logout"
     end
   end
