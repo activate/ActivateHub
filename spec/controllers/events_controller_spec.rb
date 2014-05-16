@@ -488,19 +488,30 @@ describe EventsController do
       end
     end
 
+    describe "edit" do
+      context "when a user is logged in" do
+        it "should display form for editing event" do
+          sign_in create(:user)
+
+          get :edit, :id => create(:event).id
+          response.should be_success
+          response.should render_template :edit
+        end
+      end
+
+      context "when a user is not logged in" do
+        it "should redirect the user to sign in" do
+          get :edit, :id => create(:event).id
+          response.should redirect_to(user_session_path)
+        end
+      end
+    end
+
     describe "#update" do
       before(:each) do
         @event = build(:event_with_venue, :id => 42)
         @venue = @event.venue
         Event.stub(:find).and_return(@event)
-      end
-
-      it "should display form for editing event" do
-        Event.should_receive(:find).and_return(@event)
-
-        get "edit", :id => 1
-        response.should be_success
-        response.should render_template :edit
       end
 
       it "should update an event without a venue" do
@@ -891,7 +902,6 @@ describe EventsController do
           response.body.should match /SUMMARY:#{current_event_2.title}/
           response.body.should match /SUMMARY:#{past_event.title}/
         end
-
       end
     end
   end
@@ -917,6 +927,5 @@ describe EventsController do
         response.should redirect_to(user_session_path)
       end
     end
-
   end
 end
