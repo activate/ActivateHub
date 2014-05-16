@@ -21,6 +21,16 @@
     color: $navbar-link-color;
   }
 
+  a {
+    float: left;
+    display: block;
+    height: $navbar-height;
+    line-height: $navbar-height;
+    padding: 0px 15px;
+    vertical-align: middle;
+    font-size: 15px;
+  }
+
   a:hover {
     color: $navbar-link-hover;
   }
@@ -56,16 +66,6 @@
     display: inline;
   }
 
-  a {
-    float: left;
-    display: block;
-    height: $navbar-height;
-    line-height: $navbar-height;
-    padding: 0px 15px;
-    vertical-align: middle;
-    font-size: 15px;
-  }
-
   a:hover {
     background-color: $navbar-bgcolor-hover;
   }
@@ -85,7 +85,9 @@
   padding: 0px 20px;
 }
 
-
+#login_links a {
+  float: right;
+}
 /*---[ sidebar ]------------------------------------------------------------*/
 
 #sidebar {
