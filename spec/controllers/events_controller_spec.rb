@@ -897,13 +897,26 @@ describe EventsController do
   end
 
   describe "#destroy" do
-    it "should destroy events" do
-      event = build(:event)
-      event.should_receive(:destroy)
-      Event.should_receive(:find).and_return(event)
+    context "when the user is logged in" do
+      it "should destroy events" do
+        sign_in create(:user)
+        event = build(:event)
+        event.should_receive(:destroy)
+        Event.should_receive(:find).and_return(event)
 
-      delete 'destroy', :id => 1234
-      response.should redirect_to(events_url)
+        delete 'destroy', :id => 1234
+        response.should redirect_to(events_url)
+      end
     end
+
+    context "when the user is logged out" do
+      it "they are redirected to signin" do
+        event = create(:event)
+
+        delete 'destroy', :id => event.id
+        response.should redirect_to(user_session_path)
+      end
+    end
+
   end
 end
