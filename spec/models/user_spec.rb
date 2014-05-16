@@ -1,5 +1,8 @@
 require 'spec_helper'
 
 describe User do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "should be registerable" do
+    @user = create(:user)
+    expect(@user.devise_modules).to include :registerable
+  end
 end
