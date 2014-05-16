@@ -641,34 +641,47 @@ describe EventsController do
     end
 
     describe "#clone" do
-      before do
-        @event = create(:event)
+      context "when a user is not logged in" do
+        it "redirects the user signin" do
+          event = create(:event)
+          get :clone, :id => event.id
 
-        Event.stub(:find).and_return(@event)
-
-        get "clone", :id => 1
-      end
-
-      it "should build an unsaved record" do
-        record = assigns[:event]
-        record.should be_a_new_record
-        record.id.should be_nil
-      end
-
-      it "should build a cloned record similar to the existing record" do
-        record = assigns[:event]
-        %w[title description venue_id venue_details].each do |field|
-          record.attributes[field].should eq @event.attributes[field]
+          expect(response).to redirect_to(user_session_path)
         end
       end
 
-      it "should display a new event form" do
-        response.should be_success
-        response.should render_template :new
-      end
+      context "when a user is logged in" do
+        before do
+          user = create(:user)
+          sign_in user
+          @event = create(:event)
 
-      it "should have notice with cloning instructions" do
-        flash[:success].should match /clone/i
+          #Event.stub(:find).and_return(@event)
+
+          get "clone", :id => 1
+        end
+
+        it "should build an unsaved record" do
+          record = assigns[:event]
+          record.should be_a_new_record
+          record.id.should be_nil
+        end
+
+        it "should build a cloned record similar to the existing record" do
+          record = assigns[:event]
+          %w[title description venue_id venue_details].each do |field|
+            record.attributes[field].should eq @event.attributes[field]
+          end
+        end
+
+        it "should display a new event form" do
+          response.should be_success
+          response.should render_template :new
+        end
+
+        it "should have notice with cloning instructions" do
+          flash[:success].should match /clone/i
+        end
       end
     end
   end
