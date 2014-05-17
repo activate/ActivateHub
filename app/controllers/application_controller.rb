@@ -85,3 +85,6 @@ end
 def escape_once(*args)
   help.escape_once(*args)
 end
+def authenticate_admin
+  redirect_to root_url unless current_user.try(:admin)
+end

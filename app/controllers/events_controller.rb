@@ -2,6 +2,7 @@ class EventsController < ApplicationController
   include SquashManyDuplicatesMixin # Provides squash_many_duplicates
 
   before_filter :authenticate_user!, only: [:clone, :destroy, :edit]
+  before_filter :authenticate_admin, only: [:duplicates]
 
   # GET /events
   # GET /events.xml

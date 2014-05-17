@@ -698,49 +698,68 @@ describe EventsController do
   end
 
   describe "#duplicates" do
-    render_views
-
-    it "should find current duplicates and not past duplicates" do
-      current_master = create(:event, :title => "Current")
-      current_duplicate = create(:event, :title => current_master.title)
-
-      past_master = create(:event, :title => "Past", :start_time => now - 2.days)
-      past_duplicate = create(:event, :title => past_master.title, :start_time => now - 1.day)
-
-      get 'duplicates', :type => 'title'
-
-      # Current duplicates
-      assigns[:grouped_events].select{|keys,values| keys.include?(current_master.title)}.tap do |events|
-        events.should_not be_empty
-        events.first.last.size.should eq 2
+    context "when the user is a normal user" do
+      before do
+        sign_in create(:user, admin: false)
       end
 
-      # Past duplicates
-      assigns[:grouped_events].select{|keys,values| keys.include?(past_master.title)}.should be_empty
+      it "does not allow them to clean duplicates" do
+        get :duplicates, :type => 'title'
+
+        response.should redirect_to root_url
+      end
     end
 
-    it "should redirect duplicate events to their master" do
-      event_master = create(:event)
-      event_duplicate = create(:event)
+    context "when the user is an admin" do
+      before do
+        sign_in create(:user, admin: true)
+      end
 
-      get 'show', :id => event_duplicate.id
-      response.should_not be_redirect
-      assigns(:event).id.should eq event_duplicate.id
+      render_views
 
-      event_duplicate.duplicate_of = event_master
-      event_duplicate.save!
+      it "should find current duplicates and not past duplicates" do
+        current_master = create(:event, :title => "Current")
+        current_duplicate = create(:event, :title => current_master.title)
 
-      get 'show', :id => event_duplicate.id
-      response.should be_redirect
-      response.should redirect_to(event_url(event_master.id))
+        past_master = create(:event, :title => "Past", :start_time => now - 2.days)
+        past_duplicate = create(:event, :title => past_master.title, :start_time => now - 1.day)
+
+        get 'duplicates', :type => 'title'
+
+        # Current duplicates
+        assigns[:grouped_events].select{|keys,values| keys.include?(current_master.title)}.tap do |events|
+          events.should_not be_empty
+          events.first.last.size.should eq 2
+        end
+
+        # Past duplicates
+        assigns[:grouped_events].select{|keys,values| keys.include?(past_master.title)}.should be_empty
+      end
+
+      it "should redirect duplicate events to their master" do
+        event_master = create(:event)
+        event_duplicate = create(:event)
+
+        get 'show', :id => event_duplicate.id
+        response.should_not be_redirect
+        assigns(:event).id.should eq event_duplicate.id
+
+        event_duplicate.duplicate_of = event_master
+        event_duplicate.save!
+
+        get 'show', :id => event_duplicate.id
+        response.should be_redirect
+        response.should redirect_to(event_url(event_master.id))
+      end
+
+      it "should display an error message if given invalid arguments" do
+        get 'duplicates', :type => 'omgwtfbbq'
+
+        response.should be_success
+        response.should have_selector('.failure', :content => 'omgwtfbbq')
+      end
     end
 
-    it "should display an error message if given invalid arguments" do
-      get 'duplicates', :type => 'omgwtfbbq'
-
-      response.should be_success
-      response.should have_selector('.failure', :content => 'omgwtfbbq')
-    end
 
   end
 
