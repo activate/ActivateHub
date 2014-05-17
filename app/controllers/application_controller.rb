@@ -85,6 +85,11 @@ end
 def escape_once(*args)
   help.escape_once(*args)
 end
+
+def user_for_paper_trail
+  user_signed_in? ? current_user.id : nil
+end
+
 def authenticate_admin
   redirect_to root_url unless current_user.try(:admin)
 end

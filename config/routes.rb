@@ -1,6 +1,7 @@
 Calagator::Application.routes.draw do
   devise_for :users
 
+  resource :user, :controller => 'paper_trail_manager/changes'
   mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
 
   match 'omfg' => 'site#omfg'
