@@ -1,14 +1,16 @@
 require 'spec_helper'
 
 describe "/site/_navbar.html.haml" do
-  it "renders a login link" do
+  it "renders a login links" do
     link_class = {:events => '', :organizations => '', :venues => ''}
-    view.should_receive(:link_class).any_number_of_times.and_return(link_class)
+    expect(view).to receive(:link_class).exactly(3).times.and_return(link_class)
+    expect(view).to receive(:user_signed_in?).and_return(false)
+
 
     current_site = double(:name => "foo")
     assign(:current_site, current_site)
 
     render
-    rendered.should include "Login"
+    expect(rendered).to include "Login"
   end
 end

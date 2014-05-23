@@ -667,9 +667,7 @@ describe EventsController do
           sign_in user
           @event = create(:event)
 
-          #Event.stub(:find).and_return(@event)
-
-          get "clone", :id => 1
+          get "clone", :id => @event.id
         end
 
         it "should build an unsaved record" do
