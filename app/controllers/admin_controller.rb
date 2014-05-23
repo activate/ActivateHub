@@ -1,8 +1,8 @@
 class AdminController < ApplicationController
   layout 'admin'
 
-  def index
+  before_filter :authenticate_admin
 
-  end
+  def index; end
 
 end
