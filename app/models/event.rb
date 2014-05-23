@@ -31,6 +31,7 @@ class Event < ActiveRecord::Base
   # meant to make iCalendar exports display this event as covering a range of
   # days, rather than hours.
   MIN_MULTIDAY_DURATION = 20.hours
+  WEBSITE_FORMAT = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
 
   has_paper_trail :meta => { :site_id => :site_id }
   acts_as_taggable
@@ -55,7 +56,7 @@ class Event < ActiveRecord::Base
   validates_presence_of :title, :start_time
   validate :end_time_later_than_start_time
   validates_format_of :url,
-    :with => /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
+    :with => WEBSITE_FORMAT,
     :allow_blank => true,
     :allow_nil => true
 

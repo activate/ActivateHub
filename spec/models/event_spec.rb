@@ -1,6 +1,20 @@
 require 'spec_helper'
 
 describe Event do
+
+  describe "url validations" do
+    it "should add http:// to websites that don't have it" do
+      event = build(:event, url: "www.example.com")
+      event.save!
+
+      expect(event.reload.valid?).to be_true
+    end
+
+    it "should validate on a regex" do
+      expect("http://www.example.com".match(Event::WEBSITE_FORMAT)).to be_true
+    end
+  end
+
   describe "in general"  do
     it "should be valid" do
       event = Event.new(:title => "Event title", :start_time => Time.zone.parse('2008.04.12'))
