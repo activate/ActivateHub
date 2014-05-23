@@ -21,11 +21,11 @@ RailsAdmin.config do |config|
   # config.audit_with :paper_trail, 'User'
   config.audit_with :paper_trail
 
-  #config.authorize_with do |controller|
-  #  unless current_user.try(:admin?)
-  #    redirect_to '/'
-  #  end
-  #end
+  config.authorize_with do |controller|
+    unless current_user.try(:admin?)
+      redirect_to '/'
+    end
+  end
 
   # Display empty fields in show views:
   # config.compact_show_view = false
