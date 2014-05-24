@@ -53,6 +53,28 @@ describe VenuesController do
     end
   end
 
+  describe "#index" do
+    it "can be scoped by type of events held at that venue" do
+      social = create(:type, name: "social")
+      social_venue = create(:venue, title:"social venue")
+      social_event = create(:event, venue_id: social_venue.id)
+      social_event.types << social
+      
+      meeting = create(:type, name: "meeting")
+      meeting_venue = create(:venue, title:"meeting venue")
+      meeting_event = create(:event, venue_id: meeting_venue.id)
+      meeting_event.types << meeting
+
+      get :index, type: social.name
+
+      expect(assigns(:types).map(&:name)).to eq ["social", "meeting"]
+      expect(assigns(:selected_types)).to eq social.name
+      expect(assigns(:newest_venues).map(&:title)).to eq ["social venue"]
+      expect(assigns(:most_active_venues).map(&:title)).to eq ["social venue"]
+      expect(assigns(:venues).map(&:title)).to eq ["social venue"]
+    end
+  end
+
   describe "when rendering the venues index" do
     before do
       @open_venue = create(:venue, :title => 'Open Town', :description => 'baz', :wifi => false)
