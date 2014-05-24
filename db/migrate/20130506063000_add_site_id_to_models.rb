@@ -1,4 +1,6 @@
 class AddSiteIdToModels < ActiveRecord::Migration
+  class Site < ActiveRecord::Base ; end
+
   def self.tables
     [:events, :organizations, :sources, :topics, :types, :venues]
   end
