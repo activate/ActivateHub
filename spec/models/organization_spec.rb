@@ -39,4 +39,16 @@ describe Organization do
     specify {@org.should_not be_valid}
   end
 
+  it "has a default venue" do
+    venue = create(:venue)
+    org = create(:organization, default_venue_id: venue.id)
+
+    expect(org.default_venue).to eq venue
+
+    org.default_venue_id = nil
+    org.save
+
+    expect(org.default_venue).to be_nil
+  end
+
 end
