@@ -72,6 +72,8 @@ class Event < ActiveRecord::Base
   duplicate_checking_ignores_attributes    :source_id, :version, :venue_id, :description, :url, :rrule, :venue_details, :organization_id
   duplicate_squashing_ignores_associations :tags, :base_tags, :taggings
 
+  after_save :inherit_default_venue
+
   # Named scopes
   scope :on_or_after_date, lambda { |date|
     time = date.beginning_of_day
@@ -102,6 +104,13 @@ class Event < ActiveRecord::Base
         order('start_time')
     end
   }
+
+  def inherit_default_venue
+    if organization.present? && organization.default_venue && (venue.nil? || !venue.valid?)
+      self.venue = Venue.where(id: organization.default_venue_id).first
+      self.save!
+    end
+  end
 
   #---[ Overrides ]-------------------------------------------------------
 

@@ -2,6 +2,37 @@ require 'spec_helper'
 
 describe Event do
 
+  describe "when an event has no venue" do
+    context "when the event is affiliated with an organization that has a default venue" do
+      before do
+        @venue = create(:venue)
+        @organization = create(:organization, default_venue_id: @venue.id)
+      end
+
+      it "inherits the default venue from the organization" do
+        expect(create(:event, organization_id: @organization.id).venue).to eq @venue
+      end
+    end
+
+    context "when the event is already affiliated with a empty venue" do
+      before do
+        @org_venue = create(:venue, title: "Org Venue")
+        @organization = create(:organization, default_venue_id: @org_venue.id)
+
+        blank_title_from_associate_with_venue = ""
+        @venue = build(:venue, title: blank_title_from_associate_with_venue)
+      end
+
+      it "uses the organization's default venue" do
+        event = build(:event, organization_id: @organization.id)
+        event.venue = @venue
+        event.save
+
+        expect(event.reload.venue.title).to eq @org_venue.title
+      end
+    end
+  end
+
   describe "url validations" do
     it "should add http:// to websites that don't have it" do
       event = build(:event, url: "www.example.com")
