@@ -67,8 +67,8 @@ describe VenuesController do
 
       get :index, type: social.name
 
-      expect(assigns(:types).map(&:name)).to eq ["social", "meeting"]
-      expect(assigns(:selected_types)).to eq social.name
+      expect(assigns(:types).map(&:name)).to match_array ["social", "meeting"]
+      expect(assigns(:selected_types)).to eq [social.name]
       expect(assigns(:newest_venues).map(&:title)).to eq ["social venue"]
       expect(assigns(:most_active_venues).map(&:title)).to eq ["social venue"]
       expect(assigns(:venues).map(&:title)).to eq ["social venue"]
