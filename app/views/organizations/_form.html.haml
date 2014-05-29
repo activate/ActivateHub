@@ -16,6 +16,14 @@
       = f.input :url, :label => 'Website'
       = f.input :description
 
+    = f.inputs :name => 'Venue Details' do
+      %li#event_venue_title_input.string.input.required.stringish
+        = f.label :venue_id, 'Venue', :class => 'label'
+        = text_field_tag 'venue_name', '', :class=> 'autocomplete', :value => organization.default_venue.present? ? organization.default_venue.title : params[:venue_name]
+        = hidden_field(:event, :venue_id, :value => (!organization.default_venue.nil? ? organization.default_venue.id : params[:event_venue_id]))
+        = image_tag 'spinner.gif', :id => 'event_venue_loading', :style => 'display: none; margin-left: 0.5em;'
+        %p.inline-hints Start typing the name of a venue to search. If it doesn't exist, we'll create it for you.
+
     = f.inputs 'Contact Details' do
       = f.input :contact_name
       = f.input :email
@@ -33,7 +41,38 @@
 
 
 :javascript
+  var completed_title = '';
   $(document).ready(function(){
+
+    // Initialize autocompletion for venues
+    $("input.autocomplete").attr('autocomplete', 'off').autocomplete({
+      source: #{venues_path(:format => :js).to_json.html_safe},
+      minLength: 2,
+      search: function(event, ui) {
+        //$("#event_venue_loading").show();
+        $("#event_venue_id").val('');
+      },
+      select: function(event, ui) {
+        $('input.autocomplete').val( ui.item.title );
+        $("#event_venue_id").val( ui.item.id );
+        $("#event_venue_details").val( ui.item.access_notes );
+
+        return false;
+      },
+      change: function(e, ui) {
+        if (!ui.item) {
+            $("#event_venue_id").val('');
+        }
+      }
+    }).data( "autocomplete" )._renderItem = function( ul, item ) {
+      var short_address = (item.street_address && item.street_address.length > 0)
+                            ? item.street_address+", "+item.locality+" "+item.region
+                            : (item.address || '<span class="address-unknown">address not known</span>');
+      return $( "<li><a><strong>"+item.title+"</strong><br />"+short_address+"</a></li>" )
+              .data( "item.autocomplete", item )
+              .appendTo(ul);
+    };
+
     // toggleable topic list using a hidden multi-select to track state
     var $topics_select = $("#organization_topic_ids").hide();
     var $topics_list = $('<div>').addClass('topics-select').insertAfter($topics_select);
