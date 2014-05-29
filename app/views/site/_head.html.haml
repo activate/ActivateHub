@@ -1,0 +1,28 @@
+%title= t('site_title', :page_title => @page_title, :site_name => @current_site.name, :tagline => @current_site.tagline)
+
+- # zoom app to fit on mobile screen, allow user to adjust scale manually
+%meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0, user-scalable=yes"}
+
+= csrf_meta_tags
+- # allows the app to run in full-screen mode on iOS devices w/ black status bar
+%meta{:name => "apple-mobile-web-app-capable", :content => "yes"}
+%meta{:name => "apple-mobile-web-app-status-bar-style", :content => "black"}
+- if og_logo = t('assets.og_logo', :default => '').presence
+  %meta{:property => 'og:image', :content => root_url.chomp('/') + asset_path(og_logo)}
+
+- # basic OpenSearch support, see: http://en.wikipedia.org/wiki/OpenSearch
+%link{:href => "/opensearch.xml", :rel => "search", :title => @current_site.name, :type => "application/opensearchdescription+xml"}
+
+= stylesheet_link_tag 'application', 'theme', :media => :all
+= stylesheet_link_tag 'mobile', :media => :screen
+= yield :css_insert
+
+= javascript_include_tag 'application', 'theme'
+= yield :javascript_insert
+
+- # FIXME: does the title affect importing into readers?
+= auto_discovery_link_tag(:atom, events_url(:format => 'atom'), :title => 'Atom: All Events' )
+= yield :discovery_insert
+
+= render 'site/tracking'
+= yield(:tracking) if content_for?(:tracking)
