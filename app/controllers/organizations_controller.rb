@@ -58,7 +58,7 @@ class OrganizationsController < ApplicationController
   def create
     params[:organization][:topic_ids] = create_missing_refs(params[:organization][:topic_ids], Topic)
 
-    @organization = Organization.new(params[:organization])
+    @organization = Organization.new(params[:organization].merge(default_venue_id: params["event"]["venue_id"]))
 
     if evil_robot = !params[:trap_field].blank?
       flash[:failure] = "<h3>Evil Robot</h3> We didn't create this organization because we think you're an evil robot. If you're really not an evil robot, look at the form instructions more carefully. If this doesn't work please file a bug report and let us know."
@@ -89,7 +89,7 @@ class OrganizationsController < ApplicationController
     end
 
     respond_to do |format|
-      if !evil_robot && params[:preview].nil? && @organization.update_attributes(params[:organization])
+      if !evil_robot && params[:preview].nil? && @organization.update_attributes(params[:organization].merge(default_venue_id: params["event"]["venue_id"]))
         flash[:success] = 'Organization was successfully updated.'
         format.html { redirect_to( organization_path(@organization) ) }
         format.xml  { head :ok }
