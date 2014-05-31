@@ -130,3 +130,6 @@ Feedback wanted
 ---------------
 
 Is there something wrong, unclear or outdated in this documentation? Please get in touch so we can make it better. If you can contribute improved text, we'd really appreciate it.
+
+
+Error message: when running bundle exec rake db:migrate db:test:prepare: undefined method `timezone' for #<Site:0x00000005a39300>/var/lib/gems/1.9.1/gems/activemodel-3.2.16/lib/active_model/attribute_methods.rb:407:in `method_missing'
