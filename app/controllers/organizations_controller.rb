@@ -70,7 +70,7 @@ class OrganizationsController < ApplicationController
       if !evil_robot && params[:preview].nil? && @organization.save
         flash[:success] = 'Organization was successfully created.'
         if has_new_venue && params[:venue_name].present?
-          flash[:success] += " Please tell us more about where it's being held."
+          flash[:success] += " Please tell us more about the default venue for this organization."
           format.html {redirect_to(edit_venue_url(@organization.venue, :from_org => @organization.id))}
         else
           format.html { redirect_to( organization_path(@organization) ) }
