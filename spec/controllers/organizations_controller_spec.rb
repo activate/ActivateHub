@@ -93,6 +93,28 @@ describe OrganizationsController do
 
       expect(Organization.last.venue).to eq new_venue
     end
+
+    it "should create a new venue if needed and then associate it with the org" do
+      org = create(:organization)
+      params = {
+          "id"=>org.id,
+          "organization"=>{
+              "name"=>"Org 11"
+          },
+          "venue_name"=>"New One",
+          "event"=>{
+              "venue_id"=>""
+          }
+      }
+
+      expect {
+        put :update, params
+      }.to change{ Venue.count }.by(1)
+
+      expect(Venue.last.title).to eq "New One"
+      expect(Organization.last.venue).to eq Venue.last
+      expect(response).to redirect_to(edit_venue_url(Venue.last, :from_org => Organization.last.id))
+    end
   end
 
 end
