@@ -93,3 +93,11 @@ end
 def authenticate_admin
   redirect_to root_url unless current_user.try(:admin)
 end
+
+def venue_ref(event_hash, venue_name)
+  if (event_hash && event_hash[:venue_id].present?)
+    event_hash[:venue_id].to_i
+  else
+    venue_name
+  end
+end

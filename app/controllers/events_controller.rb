@@ -94,7 +94,7 @@ class EventsController < ApplicationController
     params[:event][:topic_ids] = create_missing_refs(params[:event][:topic_ids], Topic)
 
     @event = Event.new(params[:event])
-    @event.associate_with_venue(venue_ref(params))
+    @event.associate_with_venue(venue_ref(params[:event], params[:venue_name]))
     has_new_venue = @event.venue && @event.venue.new_record?
 
     @event.start_time = [ params[:start_date], params[:start_time] ]
@@ -132,7 +132,7 @@ class EventsController < ApplicationController
   # PUT /events/1.xml
   def update
     @event = Event.find(params[:id])
-    @event.associate_with_venue(venue_ref(params))
+    @event.associate_with_venue(venue_ref(params[:event], params[:venue_name]))
     has_new_venue = @event.venue && @event.venue.new_record?
 
     params[:event] ||= {}
@@ -292,21 +292,6 @@ class EventsController < ApplicationController
       format.atom { render :template => 'events/index' }
       format.xml  { render :xml  => events.to_xml(:include => :venue) }
       format.json { render :json => events.to_json(:include => :venue), :callback => params[:callback] }
-    end
-  end
-
-  # Venues may be referred to in the params hash either by id or by name. This
-  # method looks for whichever type of reference is present and returns that
-  # reference. If both a venue id and a venue name are present, then the venue
-  # id is returned.
-  #
-  # If a venue id is returned it is cast to an integer for compatibility with
-  # Event#associate_with_venue.
-  def venue_ref(p)
-    if (p[:event] && !p[:event][:venue_id].blank?)
-      p[:event][:venue_id].to_i
-    else
-      p[:venue_name]
     end
   end
 

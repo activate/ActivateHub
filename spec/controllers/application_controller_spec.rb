@@ -40,4 +40,24 @@ describe ApplicationController do
       controller.send(:escape_once, escaped).should eq escaped
     end
   end
+
+  describe "#venue_ref" do
+    context "when a venue id is present" do
+      it "returns the venue id" do
+        expect(venue_ref({venue_id: "1"}, "")).to eq 1
+      end
+    end
+
+    context "when the venue name is present" do
+      it "returns the venue name" do
+        expect(venue_ref({venue_id: ""}, "name")).to eq "name"
+      end
+    end
+
+    context "when id and name are present" do
+      it "returns the id" do
+        expect(venue_ref({venue_id: "1"}, "name")).to eq 1
+      end
+    end
+  end
 end
