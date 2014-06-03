@@ -37,6 +37,9 @@
     - if params[:from_event].present?
       = hidden_field_tag :from_event, params[:from_event]
 
+    - if params[:from_org].present?
+      = hidden_field_tag :from_org, params[:from_org]
+
     = f.actions do
       = f.action :submit, :label => 'Preview', :button_html => { :name => 'preview' }
       = f.action :submit
