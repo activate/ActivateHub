@@ -59,6 +59,8 @@ class OrganizationsController < ApplicationController
     params[:organization][:topic_ids] = create_missing_refs(params[:organization][:topic_ids], Topic)
 
     @organization = Organization.new(params[:organization].merge(venue_id: params["event"]["venue_id"]))
+    @organization.associate_with_venue(venue_ref(params[:event], params[:venue_name]))
+    has_new_venue = @organization.venue && @organization.venue.new_record?
 
     if evil_robot = !params[:trap_field].blank?
       flash[:failure] = "<h3>Evil Robot</h3> We didn't create this organization because we think you're an evil robot. If you're really not an evil robot, look at the form instructions more carefully. If this doesn't work please file a bug report and let us know."
@@ -67,8 +69,13 @@ class OrganizationsController < ApplicationController
     respond_to do |format|
       if !evil_robot && params[:preview].nil? && @organization.save
         flash[:success] = 'Organization was successfully created.'
-        format.html { redirect_to( organization_path(@organization) ) }
-        format.xml  { render :xml => @organization, :status => :created, :location => @organization }
+        if has_new_venue && params[:venue_name].present?
+          flash[:success] += " Please tell us more about where it's being held."
+          format.html {redirect_to(edit_venue_url(@organization.venue, :from_org => @organization.id))}
+        else
+          format.html { redirect_to( organization_path(@organization) ) }
+          format.xml  { render :xml => @organization, :status => :created, :location => @organization }
+        end
       else
         @organization.valid? if params[:preview]
         format.html { render :action => "new" }
