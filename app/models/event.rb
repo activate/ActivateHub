@@ -25,6 +25,7 @@
 # A model representing a calendar event.
 class Event < ActiveRecord::Base
   include SearchEngine
+  include AssociatedVenues
 
   # Treat any event with a duration of at least this many hours as a multiday
   # event. This constant is used by the #multiday? method and is primarily
@@ -196,30 +197,6 @@ class Event < ActiveRecord::Base
   end
 
   #---[ Queries ]---------------------------------------------------------
-
-  # Associate this event with the +venue+. The +venue+ can be given as a Venue
-  # instance, an ID, or a title.
-  def associate_with_venue(venue)
-    venue = \
-      case venue
-      when Venue    then venue
-      when NilClass then nil
-      when String   then Venue.find_or_initialize_by_title(venue)
-      when Fixnum   then Venue.find(venue)
-      else raise TypeError, "Unknown type: #{venue.class}"
-      end
-
-    if venue && ((self.venue && self.venue != venue) || (!self.venue))
-      # Set venue if one is provided and it's different than the current, or no venue is currently set.
-      self.venue = venue.progenitor
-    elsif !venue && self.venue
-      # Clear the event's venue field
-      self.venue = nil
-    end
-
-    return self.venue
-  end
-
 
   # Returns groups of records for the site overview screen in the following format:
   #
