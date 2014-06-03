@@ -51,6 +51,20 @@ describe VenuesController do
       put :update,:id => '1', :trap_field => "I AM AN EVIL ROBOT, I EAT OLD PEOPLE'S MEDICINE FOR FOOD!"
       response.should render_template :edit
     end
+
+    describe "redirection" do
+      it "when the user comes from an org creation page" do
+        org = create(:organization)
+        put :update,:id => '1', :from_org => org.id
+        expect(response).to redirect_to organization_url(org)
+      end
+
+      it "when the user comes from an event creation page" do
+        event = create(:event)
+        put :update,:id => '1', :from_event => event.id
+        expect(response).to redirect_to event_url(event)
+      end
+    end
   end
 
   describe "#index" do

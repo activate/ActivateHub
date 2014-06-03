@@ -139,6 +139,8 @@ class VenuesController < ApplicationController
         format.html { 
           if(!params[:from_event].blank?)
             redirect_to(event_url(params[:from_event]))
+          elsif(params[:from_org].present?)
+            redirect_to(organization_url(params[:from_org]))
           else
             redirect_to( venue_path(@venue) )
           end
