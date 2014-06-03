@@ -19,8 +19,8 @@
     = f.inputs :name => 'Default Venue' do
       %li#event_venue_title_input.string.input.required.stringish
         = f.label :venue_id, 'Venue', :class => 'label'
-        = text_field_tag 'venue_name', '', :class=> 'autocomplete', :value => organization.default_venue.present? ? organization.default_venue.title : params[:venue_name]
-        = hidden_field(:event, :venue_id, :value => (!organization.default_venue.nil? ? organization.default_venue.id : params[:event_venue_id]))
+        = text_field_tag 'venue_name', '', :class=> 'autocomplete', :value => organization.venue.present? ? organization.venue.title : params[:venue_name]
+        = hidden_field(:event, :venue_id, :value => (!organization.venue.nil? ? organization.venue.id : params[:event_venue_id]))
         = image_tag 'spinner.gif', :id => 'event_venue_loading', :style => 'display: none; margin-left: 0.5em;'
         %p.inline-hints This venue will be used if none is specified for this organization's events.
         %p.inline-hints Start typing the name of a venue to search. If it doesn't exist, we'll create it for you.

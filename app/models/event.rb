@@ -72,7 +72,7 @@ class Event < ActiveRecord::Base
   duplicate_checking_ignores_attributes    :source_id, :version, :venue_id, :description, :url, :rrule, :venue_details, :organization_id
   duplicate_squashing_ignores_associations :tags, :base_tags, :taggings
 
-  after_save :inherit_default_venue
+  after_save :inherit_organizations_venue
 
   # Named scopes
   scope :on_or_after_date, lambda { |date|
@@ -105,9 +105,9 @@ class Event < ActiveRecord::Base
     end
   }
 
-  def inherit_default_venue
-    if organization.present? && organization.default_venue && (venue.nil? || !venue.valid?)
-      self.venue = Venue.where(id: organization.default_venue_id).first
+  def inherit_organizations_venue
+    if organization.present? && organization.venue && (venue.nil? || !venue.valid?)
+      self.venue = Venue.where(id: organization.venue_id).first
       self.save!
     end
   end

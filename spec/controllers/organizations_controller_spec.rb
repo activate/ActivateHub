@@ -51,14 +51,33 @@ describe OrganizationsController do
         post :create, params
       }.to change{Organization.count}.by(1)
 
-      expect(Organization.last.default_venue).to eq venue
+      expect(Organization.last.venue).to eq venue
+    end
+
+    it "should create a new venue if needed and then associate it with the org" do
+      params = {
+          "organization"=>{
+              "name"=>"Org 11"
+          },
+          "venue_name"=>"New One",
+          "event"=>{
+              "venue_id"=>""
+          }
+      }
+
+      expect {
+        post :create, params
+      }.to change{ Venue.count }.by(1)
+
+      expect(Organization.last.venue).to eq Venue.last
+      expect(response).to redirect_to(edit_venue_url(Venue.last, :from_org => Organization.last.id))
     end
   end
 
   describe '#update' do
     it "should take the autocompleted event venue and apply it to the organization" do
       old_venue = create(:venue)
-      organization = create(:organization, default_venue_id: old_venue.id)
+      organization = create(:organization, venue_id: old_venue.id)
 
       new_venue = create(:venue)
       params = {
@@ -72,7 +91,7 @@ describe OrganizationsController do
 
       put :update, params
 
-      expect(Organization.last.default_venue).to eq new_venue
+      expect(Organization.last.venue).to eq new_venue
     end
   end
 

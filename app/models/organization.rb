@@ -4,8 +4,8 @@ class Organization < ActiveRecord::Base
   has_many :events
   has_many :sources
   has_and_belongs_to_many :topics
-  belongs_to :default_venue, class_name: "Venue",
-                            foreign_key: "default_venue_id"
+  belongs_to :venue
+
   # Validations
   validates :name, presence: true
 
@@ -32,7 +32,6 @@ class Organization < ActiveRecord::Base
   def title
     @name
   end
-
 
   private
 

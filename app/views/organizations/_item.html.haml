@@ -17,9 +17,9 @@
         %h2.organization-url-title= t('.url.title')
         .organization-url= link_to organization.url, organization.url, :target => '_blank'
 
-      - if organization.default_venue.present?
+      - if organization.venue.present?
         %h2.organization-url-title Default Venue
-        .organization-url= link_to organization.default_venue.title, venue_path(organization.default_venue)
+        .organization-url= link_to organization.venue.title, venue_path(organization.venue)
 
       %h2.organization-description-title= t('.description.title')
       .organization-description{:class => (organization.description? ? '' : 'no-content')}

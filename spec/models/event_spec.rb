@@ -6,7 +6,7 @@ describe Event do
     context "when the event is affiliated with an organization that has a default venue" do
       before do
         @venue = create(:venue)
-        @organization = create(:organization, default_venue_id: @venue.id)
+        @organization = create(:organization, venue_id: @venue.id)
       end
 
       it "inherits the default venue from the organization" do
@@ -17,7 +17,7 @@ describe Event do
     context "when the event is already affiliated with a empty venue" do
       before do
         @org_venue = create(:venue, title: "Org Venue")
-        @organization = create(:organization, default_venue_id: @org_venue.id)
+        @organization = create(:organization, venue_id: @org_venue.id)
 
         blank_title_from_associate_with_venue = ""
         @venue = build(:venue, title: blank_title_from_associate_with_venue)

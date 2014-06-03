@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140529191701) do
+ActiveRecord::Schema.define(:version => 20140603005652) do
 
   create_table "abstract_events", :force => true do |t|
     t.integer  "site_id"
@@ -106,13 +106,13 @@ ActiveRecord::Schema.define(:version => 20140529191701) do
   create_table "organizations", :force => true do |t|
     t.string   "name"
     t.string   "url"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.integer  "site_id"
     t.string   "contact_name"
     t.string   "email"
     t.string   "description"
-    t.integer  "default_venue_id"
+    t.integer  "venue_id"
   end
 
   add_index "organizations", ["updated_at"], :name => "index_organizations_on_updated_at"
