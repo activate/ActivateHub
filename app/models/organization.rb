@@ -1,5 +1,6 @@
 class Organization < ActiveRecord::Base
   include AssociatedVenues
+  include UrlValidator
 
   scope_to_current_site
   belongs_to :site
@@ -14,11 +15,11 @@ class Organization < ActiveRecord::Base
   include ValidatesBlacklistOnMixin
   validates_blacklist_on :name, :url
 
+  before_validation :normalize_url!
   validates_format_of :url,
-    :with => /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
+    :with => WEBSITE_FORMAT,
     :allow_blank => true,
-    :allow_nil => true,
-    :message => "is invalid (did you include the http:// part?)"
+    :allow_nil => true
 
   validates_format_of :email,
     :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/,

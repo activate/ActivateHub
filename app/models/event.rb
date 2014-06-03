@@ -26,13 +26,13 @@
 class Event < ActiveRecord::Base
   include SearchEngine
   include AssociatedVenues
+  include UrlValidator
 
   # Treat any event with a duration of at least this many hours as a multiday
   # event. This constant is used by the #multiday? method and is primarily
   # meant to make iCalendar exports display this event as covering a range of
   # days, rather than hours.
   MIN_MULTIDAY_DURATION = 20.hours
-  WEBSITE_FORMAT = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
 
   has_paper_trail :meta => { :site_id => :site_id }
   acts_as_taggable
@@ -49,13 +49,13 @@ class Event < ActiveRecord::Base
   has_and_belongs_to_many :types
   has_and_belongs_to_many :topics
 
-  # Triggers
-  before_validation :normalize_url!
   before_create :associate_source_topics_types, :if => :source
 
   # Validations
   validates_presence_of :title, :start_time
   validate :end_time_later_than_start_time
+
+  before_validation :normalize_url!
   validates_format_of :url,
     :with => WEBSITE_FORMAT,
     :allow_blank => true,
@@ -453,12 +453,6 @@ EOF
 
   def location
     venue && venue.location
-  end
-
-  def normalize_url!
-    unless self.url.blank? || self.url.match(/^[\d\D]+:\/\//)
-      self.url = 'http://' + self.url
-    end
   end
 
   # Array of attributes that should be cloned by #to_clone.

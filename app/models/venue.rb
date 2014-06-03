@@ -31,6 +31,7 @@
 class Venue < ActiveRecord::Base
   include SearchEngine
   include StripWhitespace
+  include UrlValidator
 
   has_paper_trail :meta => { :site_id => :site_id }
   acts_as_taggable
@@ -48,16 +49,18 @@ class Venue < ActiveRecord::Base
 
   # Triggers
   strip_whitespace! :title, :description, :address, :url, :street_address, :locality, :region, :postal_code, :country, :email, :telephone
-  before_validation :normalize_url!
   before_save :geocode
   after_save :touch_events
 
   # Validations
   validates_presence_of :title
+
+  before_validation :normalize_url!
   validates_format_of :url,
-    :with => /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
+    :with => WEBSITE_FORMAT,
     :allow_blank => true,
     :allow_nil => true
+
   validates_inclusion_of :latitude, :longitude,
     :in => -180..180,
     :allow_nil => true,
@@ -254,15 +257,6 @@ class Venue < ActiveRecord::Base
 
     return true
   end
-
-  #===[ Triggers ]========================================================
-
-  def normalize_url!
-    unless self.url.blank? || self.url.match(/^[\d\D]+:\/\//)
-      self.url = 'http://' + self.url
-    end
-  end
-
 
   private
 
