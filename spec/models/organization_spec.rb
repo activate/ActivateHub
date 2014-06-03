@@ -51,4 +51,11 @@ describe Organization do
     expect(org.venue).to be_nil
   end
 
+  it "can be associated with a venue" do
+    org = create(:organization)
+    venue = create(:venue)
+
+    expect(org.associate_with_venue(venue)).to eq venue
+  end
+
 end

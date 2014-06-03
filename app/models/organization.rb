@@ -1,4 +1,6 @@
 class Organization < ActiveRecord::Base
+  include AssociatedVenues
+
   scope_to_current_site
   belongs_to :site
   has_many :events
