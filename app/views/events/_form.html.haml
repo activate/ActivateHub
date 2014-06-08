@@ -30,21 +30,20 @@
           = text_field_tag 'end_date', event.end_time.to_date, :id => 'event_date_end', :class => 'date_picker'
           = f.semantic_errors :start_date, :start_time, :end_date, :end_time
 
+      = f.input :organization
       = f.input :url, :label => 'Website', :hint => "Is there a website people can visit to learn more about this event?"
-      = f.input :description, :input_html => {:rows => 12, :class => 'autogrow' }, :hint => "Format text using #{link_to("Markdown", "http://www.simpleeditions.com/59001/markdown-an-introduction", :target => "_blank")} and HTML.".html_safe
 
-    = f.inputs :name => 'Venue Details' do
       %li#event_venue_title_input.string.input.required.stringish
         = f.label :venue_id, 'Venue', :class => 'label'
         = text_field_tag 'venue_name', '', :class=> 'autocomplete', :value => !event.venue.nil? ? event.venue.title : params[:venue_name]
         = hidden_field(:event, :venue_id, :value => (!event.venue.nil? ? event.venue.id : params[:event_venue_id]))
         = image_tag 'spinner.gif', :id => 'event_venue_loading', :style => 'display: none; margin-left: 0.5em;'
         %p.inline-hints Start typing the name of a venue to search. If it doesn't exist, we'll create it for you.
+        = f.input :venue_details, :label => 'Venue Details', :input_html => { :rows => 4 }, :hint => "Event-specific details like the room number, or who to call to be let into the building."
 
-      = f.input :venue_details, :label => 'Venue Details', :input_html => { :rows => 4 }, :hint => "Event-specific details like the room number, or who to call to be let into the building."
+      = f.input :description, :input_html => {:rows => 12, :class => 'autogrow' }, :hint => "Format text using #{link_to("Markdown", "http://www.simpleeditions.com/59001/markdown-an-introduction", :target => "_blank")} and HTML.".html_safe
 
     = f.inputs :name => 'Extra Details' do
-      = f.input :organization
       = f.input :topics
       = f.input :types
 
