@@ -31,9 +31,9 @@ class EventsController < ApplicationController
       @events = @events.joins(:types).where('types.name' => @selected_types)
     end
 
-    @topics = Topic.joins(:events).where("events.start_time > NOW()") \
+    @topics = Topic.joins(:events).where("events.start_time > CURRENT_TIMESTAMP") \
       .select("DISTINCT topics.name AS name").reorder(:name)
-    @types = Type.joins(:events).where("events.start_time > NOW()") \
+    @types = Type.joins(:events).where("events.start_time > CURRENT_TIMESTAMP") \
       .select("DISTINCT types.name AS name").reorder(:name)
 
     @custom_content = true
