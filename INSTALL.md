@@ -34,6 +34,24 @@ To run ActivateHub in `development` mode, which automatically reloads code as yo
   * Read the [Rails Guides](http://guides.rubyonrails.org/) to learn how to develop a Ruby on Rails application.
   * When done, stop the *Ruby on Rails* server (e.g. `rails server`) by pressing `CTRL-C`.
 
+### Windows error: bluecloth
+
+Windows is not exactly a supported development environment. However, if you got an error running "bundle" involving bluecloth, you may be able to past it by running the following commands (per [this StackOverflow answer](http://stackoverflow.com/a/13544086)). These apply a patch to the Bluecloth source and rebuild it.
+
+  1. `gem install bluecloth -v '2.2.0'`
+  * (This will fail!)
+  * `pushd C:\Ruby193\lib\ruby\gems\1.9.1\gems\bluecloth-2.2.0`
+  * `git clone https://gist.github.com/1539611.git`
+  * `git apply .\1539611\gistfile1.diff --ignore-space-change`
+  * `rake gem`
+  * Run any commands "rake gem" tells you to.
+  * `mkdir ~/tmp`
+  * `cp pkg\bluecloth-2.2.0.gem ~/tmp`
+  * `popd`
+  * `pushd ~/tmp`
+  * `gem install bluecloth-2.2.0.gem --platform=ruby`
+  * `popd`
+
 
 Production
 ----------
