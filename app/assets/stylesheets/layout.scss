@@ -81,8 +81,17 @@
 }
 
 #navbar-search {
-  float: right;
+  position: absolute;
+  right: 13%;
+  top: 15px;
+  color: $navbar-link-color;
+  background-color: white;
   padding: 0px 20px;
+  z-index: 2;
+  width: 15%;
+  height: 30px;
+  border-radius: 3px;
+  display: block;
 }
 
 #login_links a {

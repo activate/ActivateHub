@@ -21,4 +21,9 @@ class SiteController < ApplicationController
       format.xml { render :content_type => 'application/opensearchdescription+xml' }
     end
   end
+
+  def search
+    event = Event.find_by_title(params[:search])
+    redirect_to '/events/'+event.id.to_s
+  end
 end

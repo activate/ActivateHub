@@ -20,6 +20,5 @@
     %li{:class => link_class[:venues]}= link_to t('.menu.venues'), venues_path
     %li= link_to t('.menu.new_event'), new_event_path
 
-#navbar-search
   = form_tag search_events_path, :method => :get do
-    = text_field_tag 'query', @query, :placeholder => t('.search.placeholder')
+    = text_field_tag :search, nil, id: "navbar-search", :placeholder => "Search for an event"
