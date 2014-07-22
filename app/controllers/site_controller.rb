@@ -24,6 +24,13 @@ class SiteController < ApplicationController
 
   def search
     event = Event.find_by_title(params[:search])
-    redirect_to '/events/'+event.id.to_s
+    venue = Venue.find_by_title(params[:search])
+    if event != nil
+      redirect_to '/events/'+event.id.to_s
+    elsif venue != nil
+      redirect_to '/venues/'+venue.id.to_s
+    else
+      redirect_to '/'
+    end
   end
 end
