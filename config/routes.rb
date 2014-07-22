@@ -15,7 +15,7 @@ Calagator::Application.routes.draw do
   resources :events do
     collection do
       post :squash_many_duplicates
-      get :search
+      get :search, to: 'site#search', as: 'search'
       get :duplicates
       get :widget, :action => 'index', :widget => true
       get 'widget/builder', :action => 'widget_builder'

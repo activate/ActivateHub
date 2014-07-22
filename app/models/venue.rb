@@ -153,6 +153,12 @@ class Venue < ActiveRecord::Base
     end
   end
 
+  def self.find_venue(search)
+    if search
+      Venue.find(:all, :conditions => ['title LIKE ?', "%#{search}%"])
+    end
+  end
+
   #===[ Address helpers ]=================================================
 
   # Does this venue have any address information?

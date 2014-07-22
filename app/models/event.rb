@@ -196,6 +196,12 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def self.find_event(search)
+    if search
+      Event.find(:all, :conditions => ['title LIKE ?', "%#{search}%"])
+    end
+  end
+
   #---[ Queries ]---------------------------------------------------------
 
   # Returns groups of records for the site overview screen in the following format:

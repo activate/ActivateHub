@@ -21,4 +21,17 @@ class SiteController < ApplicationController
       format.xml { render :content_type => 'application/opensearchdescription+xml' }
     end
   end
+
+  def search
+    event = Event.find_event(params[:search])
+    venue = Venue.find_venue(params[:search])
+    if event != [] 
+      redirect_to '/events/'+event.first.id.to_s
+    elsif venue != []
+      redirect_to '/venues/'+venue.first.id.to_s
+    else
+      redirect_to '/'
+    end
+  end
+
 end
