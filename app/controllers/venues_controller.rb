@@ -43,6 +43,7 @@ class VenuesController < ApplicationController
 
     @most_active_venues = scoped_venues.where('events_count is not null').limit(10).order('events_count DESC')
     @newest_venues = scoped_venues.limit(10).order('created_at DESC')
+    @venues.sort! { |a, b| a.title <=> b.title }
 
     respond_to do |format|
       format.html # index.html.erb
@@ -128,7 +129,7 @@ class VenuesController < ApplicationController
   def update
     params[:venue][:latitude] = params[:venue][:longitude] = nil if params[:venue][:force_geocoding]=="1" unless params[:venue].blank?
     @venue = Venue.find(params[:id])
-    
+
     if evil_robot = !params[:trap_field].blank?
       flash[:failure] = "<h3>Evil Robot</h3> We didn't update this venue because we think you're an evil robot. If you're really not an evil robot, look at the form instructions more carefully. If this doesn't work please file a bug report and let us know."
     end
@@ -136,7 +137,7 @@ class VenuesController < ApplicationController
     respond_to do |format|
       if !evil_robot && params[:preview].nil? && @venue.update_attributes(params[:venue])
         flash[:success] = 'Venue was successfully updated.'
-        format.html { 
+        format.html {
           if(!params[:from_event].blank?)
             redirect_to(event_url(params[:from_event]))
           elsif(params[:from_org].present?)
