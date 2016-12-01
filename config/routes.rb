@@ -3,8 +3,6 @@ Calagator::Application.routes.draw do
 
   resource :user, only: [:show]
 
-  mount RailsAdmin::Engine => '/rails_admin', :as => 'rails_admin'
-
   match 'omfg' => 'site#omfg'
   match 'hello' => 'site#hello'
 
