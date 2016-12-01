@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe User do
+RSpec.describe User, type: :model do
   it "should be registerable" do
     user = create(:user)
     expect(user.devise_modules).to include :registerable
@@ -10,6 +10,6 @@ describe User do
     user = create(:user)
     user.update_attributes(admin: true)
 
-    expect(user.admin).to be_true
+    expect(user.admin).to be true
   end
 end

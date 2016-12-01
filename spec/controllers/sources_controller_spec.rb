@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SourcesController do
+RSpec.describe SourcesController, type: :controller do
   let(:organization) { create(:organization) }
 
   def default_url_options
@@ -169,7 +169,7 @@ describe SourcesController do
 
     it "@source should be a new record" do
       get :new
-      expect(assigns(:source).new_record?).to be_true
+      expect(assigns(:source).new_record?).to be true
     end
 
     context ":format => :html" do

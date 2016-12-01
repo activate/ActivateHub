@@ -7,7 +7,7 @@ def events_from_ical_at(filename)
   return source.to_events(:skip_old => false)
 end
 
-describe SourceParser::Ical, "in general" do
+RSpec.describe SourceParser::Ical, "in general" do
   it "should read http URLs as-is" do
     http_url = "http://foo.bar/"
     stub_source_parser_http_response!(:body => 42)
@@ -23,7 +23,7 @@ describe SourceParser::Ical, "in general" do
   end
 end
 
-describe SourceParser::Ical, "when parsing events and their locations" do
+RSpec.describe SourceParser::Ical, "when parsing events and their locations" do
 
   before(:each) do
     SourceParser::Base.should_receive(:read_url).and_return(read_sample('ical_eventful_many.ics'))
@@ -38,7 +38,7 @@ describe SourceParser::Ical, "when parsing events and their locations" do
 
 end
 
-describe SourceParser::Ical, "when parsing multiple items in an Eventful feed" do
+RSpec.describe SourceParser::Ical, "when parsing multiple items in an Eventful feed" do
   before(:each) do
     SourceParser::Base.should_receive(:read_url).and_return(read_sample('ical_eventful_many.ics'))
     @events = SourceParser.to_abstract_events(:url => "intercepted", :skip_old => false)
@@ -70,7 +70,7 @@ describe SourceParser::Ical, "when parsing multiple items in an Eventful feed" d
   end
 end
 
-describe SourceParser::Ical, "with iCalendar events" do
+RSpec.describe SourceParser::Ical, "with iCalendar events" do
 
   it "should parse Apple iCalendar v3 format" do
     events = events_from_ical_at('ical_apple_v3.ics')
@@ -143,7 +143,7 @@ describe SourceParser::Ical, "with iCalendar events" do
 
 end
 
-describe SourceParser::Ical, "when importing events with non-local times" do
+RSpec.describe SourceParser::Ical, "when importing events with non-local times" do
 
   it "should store time ending in Z as UTC" do
     url = "http://foo.bar/"
@@ -173,7 +173,7 @@ describe SourceParser::Ical, "when importing events with non-local times" do
 
 end
 
-describe SourceParser::Ical, "when skipping old events" do
+RSpec.describe SourceParser::Ical, "when skipping old events" do
   before(:each) do
     SourceParser::Base.stub(:read_url).and_return(<<-HERE)
 BEGIN:VCALENDAR

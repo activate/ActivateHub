@@ -31,7 +31,7 @@ class ModelWithDecodeHack < ModelWithoutDecodeHack
   include DecodeHtmlEntitiesHack
 end
 
-describe DecodeHtmlEntitiesHack do
+RSpec.describe DecodeHtmlEntitiesHack, type: :model do
   let(:encoded_string) { "cute &amp; furry" }
   let(:decoded_string) { "cute & furry" }
 

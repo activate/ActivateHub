@@ -6,7 +6,7 @@ require 'spec_helper'
 # If you want to add tests for the mix-in's behavior itself, see the
 # *_spec.rb version of this file instead.
 #
-shared_examples_for DirtyAttrAccessor do
+RSpec.shared_examples_for DirtyAttrAccessor do
   describe "mixing class methods into model" do
     subject { described_class }
     it { should respond_to :dirty_attr_accessor }

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Event with default blacklist" do
+RSpec.describe "Event with default blacklist", type: :model do
   before(:each) do
     @event = Event.new(:title => "Title", :start_time => Time.zone.now)
   end
@@ -15,7 +15,7 @@ describe "Event with default blacklist" do
   end
 end
 
-describe "Event with custom blacklist" do
+RSpec.describe "Event with custom blacklist", type: :model do
   class Event
     validates_blacklist_on :title, :patterns => [/Kltpzyxm/i]
   end
@@ -34,7 +34,7 @@ describe "Event with custom blacklist" do
   end
 end
 
-describe "Event created with custom blacklist file" do
+RSpec.describe "Event created with custom blacklist file", type: :model do
   before(:each) do
     Event.should_receive(:_get_blacklist_patterns_from).with(nil).and_return([])
     Event.should_receive(:_get_blacklist_patterns_from).with("blacklist-local.txt").and_return([/Kltpzyxm/i])

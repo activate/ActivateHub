@@ -1,6 +1,6 @@
 require 'spec_helper'
 include VenuesHelper
 
-describe VenuesHelper do
+RSpec.describe VenuesHelper, type: :helper do
 
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ActsAsTaggableOn::Tag do
+RSpec.describe ActsAsTaggableOn::Tag, type: :model do
   describe "handling machine tags" do
     before do
       @valid_machine_tag = ActsAsTaggableOn::Tag.new(:name => 'lanyrd:event=1234')

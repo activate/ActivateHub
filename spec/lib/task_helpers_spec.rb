@@ -3,7 +3,7 @@ require 'task_helpers'
 
 require 'rake/task_arguments'
 
-describe TaskHelpers do
+RSpec.describe TaskHelpers do
   let(:args) { {} }
   let(:task_args) { Rake::TaskArguments.new(args.keys, args.values) }
 

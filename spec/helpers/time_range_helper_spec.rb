@@ -1,7 +1,7 @@
 require 'spec_helper'
 include TimeRangeHelper
 
-describe "Time formatting" do
+RSpec.describe "Time formatting", type: :helper do
   before(:each) do
     @start_time = Time.zone.local(2008, 4, 1, 9, 00)
   end

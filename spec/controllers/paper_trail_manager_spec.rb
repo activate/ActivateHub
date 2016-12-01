@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PaperTrailManager::ChangesController do
+RSpec.describe PaperTrailManager::ChangesController, type: :controller do
   describe "#index" do
     context "when the user is an admin" do
       before do

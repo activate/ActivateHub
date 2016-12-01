@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Source, "in general" do
+RSpec.describe Source, "in general", type: :model do
   subject(:source) { build(:source) }
 
   before(:each) do
@@ -45,12 +45,12 @@ describe Source, "in general" do
 
   describe "#enabled" do
     it "should be enabled by default" do
-      Source.new.enabled.should be_true
+      Source.new.enabled.should be true
     end
   end
 end
 
-describe Source, "when reading name" do
+RSpec.describe Source, "when reading name", type: :model do
   before(:each) do
     @title = "title"
     @url = "http://my.url/"
@@ -82,7 +82,7 @@ describe Source, "when reading name" do
   end
 end
 
-describe Source, "when parsing URLs" do
+RSpec.describe Source, "when parsing URLs", type: :model do
   before(:each) do
     @http_url = 'http://upcoming.yahoo.com/event/390164/'
     @ical_url = 'webcal://upcoming.yahoo.com/event/390164/'
@@ -125,7 +125,7 @@ describe Source, "when parsing URLs" do
   end
 end
 
-describe Source, "find_or_create_from" do
+RSpec.describe Source, "find_or_create_from", type: :model do
   before do
     @url = "http://foo.bar"
   end
@@ -150,6 +150,6 @@ describe Source, "find_or_create_from" do
     Source.should_receive(:find_or_create_by_url).and_return(record)
 
     result = Source.find_or_create_from(:url => @url, :reimport => true)
-    result.reimport.should be_true
+    result.reimport.should be true
   end
 end

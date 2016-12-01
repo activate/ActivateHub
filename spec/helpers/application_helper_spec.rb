@@ -1,7 +1,7 @@
 require 'spec_helper'
 include ApplicationHelper
 
-describe ApplicationHelper do
+RSpec.describe ApplicationHelper, type: :helper do
   describe "when escaping HTML while preserving entities (cleanse)" do
     it "should preserve plain text" do
       cleanse("Allison to Lillia").should eq "Allison to Lillia"
@@ -52,7 +52,7 @@ describe ApplicationHelper do
     it "should force rendering of non-mobile site if given a param of '0' and save it as cookie" do
       controller.params[:mobile] = "0"
 
-      helper.mobile_stylesheet_media("hello").should be_false
+      helper.mobile_stylesheet_media("hello").should be false
 
       mobile_cookie.should eq "0"
     end
@@ -77,7 +77,7 @@ describe ApplicationHelper do
     it "should use non-mobile rendering if cookie's mobile preference is set to '0'" do
       mobile_cookie "0"
 
-      helper.mobile_stylesheet_media("hello").should be_false
+      helper.mobile_stylesheet_media("hello").should be false
 
       mobile_cookie.should eq "0"
     end

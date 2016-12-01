@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ApplicationController do
+RSpec.describe ApplicationController, type: :controller do
   describe "#append_flash" do
     before :each do
       flash.clear

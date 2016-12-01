@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SiteController do
+RSpec.describe SiteController, type: :controller do
 
   describe "#index" do
     it "should render requests for HTML successfully" do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SourceParser::Ical, "when parsing VVENUE" do
+RSpec.describe SourceParser::Ical, "when parsing VVENUE" do
    before(:each) do
      @location = SourceParser::Ical.to_abstract_location(<<-HERE)
 BEGIN:VVENUE
@@ -40,7 +40,7 @@ END:VVENUE
   end
 end
 
-describe SourceParser::Ical, "when parsing VCARD lines" do
+RSpec.describe SourceParser::Ical, "when parsing VCARD lines" do
    before(:each) do
      # Note that each line here represents a single, complete property definition -- this method doesn't do any magical unwrapping of text.
      @vcard_hash = SourceParser::Ical.hash_from_vcard_lines(<<-HERE)

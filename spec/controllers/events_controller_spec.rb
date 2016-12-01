@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EventsController do
+RSpec.describe EventsController, type: :controller do
   describe "#index" do
     render_views
 

@@ -87,7 +87,7 @@ end
 #   bundle install --without development:test
 group :development, :test do
   gem 'pry-rails'
-  gem 'rspec-rails', '2.14.0'
+  gem 'rspec-rails', '~> 2.99'
   gem 'test-unit'
   gem 'spork', '~> 0.9.2'
 
@@ -104,6 +104,9 @@ group :test do
   gem 'factory_girl_rails', '4.2.1'
   gem 'database_cleaner', '~> 0.8.0'
   gem 'faker'
+  gem 'rspec-its'
+  gem 'rspec-activemodel-mocks'
+  gem 'rspec-collection_matchers'
   gem 'shoulda-matchers', '~> 2.3'
   gem 'timecop'
 end

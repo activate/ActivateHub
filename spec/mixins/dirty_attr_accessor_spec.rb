@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mixins/dirty_attr_accessor_examples'
 
-describe DirtyAttrAccessor do
+RSpec.describe DirtyAttrAccessor do
   subject(:boat_ride_model) do
     Class.new(TestClasses::DirtyModel) do
       define_attributes *[] # ^^^ don't emulate any ActiveRecord columns

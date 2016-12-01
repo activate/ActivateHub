@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe VenuesController do
+RSpec.describe VenuesController, type: :controller do
   render_views
 
   #Delete this example and add some real ones

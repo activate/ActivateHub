@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "/site/_navbar.html.haml" do
+RSpec.describe "/site/_navbar.html.haml", type: :view do
   it "renders a login links" do
     link_class = {:events => '', :organizations => '', :venues => ''}
     expect(view).to receive(:link_class).exactly(3).times.and_return(link_class)

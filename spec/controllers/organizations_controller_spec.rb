@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe OrganizationsController do
+RSpec.describe OrganizationsController, type: :controller do
 
   describe "GET 'index'" do
     it "should be successful" do

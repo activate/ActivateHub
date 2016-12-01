@@ -1,8 +1,6 @@
 require 'spec_helper'
 
-describe Type do
-  pending "Add tests in #{__FILE__}"
-
+RSpec.describe Type, type: :model do
   describe "in general" do
 	  before(:each) do
 	    @type = Type.new(:name => "My Type")

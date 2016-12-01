@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Organization do
+RSpec.describe Organization, type: :model do
   subject(:organization) { build(:organization) }
 
   # Tests for Organization:

@@ -1,7 +1,7 @@
 require 'spec_helper'
 include EventsHelper
 
-describe EventsHelper do
+RSpec.describe EventsHelper, type: :helper do
   describe "#events_sort_label" do
     it "should return nil without arguments" do
       helper.events_sort_label(nil).should be_nil

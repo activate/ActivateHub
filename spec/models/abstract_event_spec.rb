@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mixins/dirty_attr_accessor_examples'
 require 'mixins/rebaseable_examples'
 
-describe AbstractEvent do
+RSpec.describe AbstractEvent, type: :model do
   subject(:abstract_event) { build_stubbed(:abstract_event, :source => source) }
   let(:source) { build_stubbed(:source) }
 
@@ -165,12 +165,12 @@ describe AbstractEvent do
   describe "#event_attributes_changed?" do
     it "is true when #event_attributes_changed is not empty" do
       abstract_event.stub(:event_attributes_changed => [:title, :description])
-      abstract_event.event_attributes_changed?.should be_true
+      abstract_event.event_attributes_changed?.should be true
     end
 
     it "is false when #event_attributes_changed is empty" do
       abstract_event.stub(:event_attributes_changed => [])
-      abstract_event.event_attributes_changed?.should be_false
+      abstract_event.event_attributes_changed?.should be false
     end
   end
 
@@ -409,7 +409,7 @@ describe AbstractEvent do
 
         it "should not change the event" do
           event = abstract_event.populate_event
-          event.changed?.should be_false
+          event.changed?.should be false
         end
       end
 
@@ -560,7 +560,7 @@ describe AbstractEvent do
     context "when both abstract events have same values" do
       it "should not report having any event field changes" do
         abstract_event.rebase_changed_attributes!(existing)
-        abstract_event.event_attributes_changed?.should be_false
+        abstract_event.event_attributes_changed?.should be false
       end
     end
 
@@ -569,7 +569,7 @@ describe AbstractEvent do
 
       it "should not have any event field changes" do
         abstract_event.rebase_changed_attributes!(existing)
-        abstract_event.event_attributes_changed?.should be_false
+        abstract_event.event_attributes_changed?.should be false
       end
     end
 
@@ -578,7 +578,7 @@ describe AbstractEvent do
 
       it "should report having event field changes" do
         abstract_event.rebase_changed_attributes!(existing)
-        abstract_event.event_attributes_changed?.should be_true
+        abstract_event.event_attributes_changed?.should be true
       end
     end
   end

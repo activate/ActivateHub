@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SourceParser::Meetup do
+RSpec.describe SourceParser::Meetup do
   describe "with a meetup.com API key in secrets.yml" do
     before do
       SECRETS.meetup_api_key = "foo"

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Site do
+RSpec.describe Site, type: :model do
   subject(:site) { create(:site) }
 
   it { should be_valid }

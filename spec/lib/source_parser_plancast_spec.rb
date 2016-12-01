@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SourceParser::Plancast do
+RSpec.describe SourceParser::Plancast do
 
   before(:each) do
     content = read_sample('plancast.json')

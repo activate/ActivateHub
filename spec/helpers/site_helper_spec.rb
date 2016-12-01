@@ -1,5 +1,5 @@
 require 'spec_helper'
 include SiteHelper
 
-describe SiteHelper do
+RSpec.describe SiteHelper, type: :helper do
 end

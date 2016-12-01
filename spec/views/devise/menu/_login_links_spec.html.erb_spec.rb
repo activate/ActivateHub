@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "/devise/menu/_login_links.html.erb" do
+RSpec.describe "/devise/menu/_login_links.html.erb", type: :view do
   context "when we have a logged in user" do
     before do
       expect(view).to receive(:user_signed_in?).and_return(true)

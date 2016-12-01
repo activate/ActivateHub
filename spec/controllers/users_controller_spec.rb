@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe UsersController do
+RSpec.describe UsersController, type: :controller do
 
   describe "GET :show" do
     it "should be successful" do

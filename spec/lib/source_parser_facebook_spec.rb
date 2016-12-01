@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SourceParser::Facebook do
+RSpec.describe SourceParser::Facebook do
 
   describe "when importing an event" do
     before(:each) do

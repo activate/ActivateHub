@@ -2,7 +2,7 @@ require 'spec_helper'
 
 # TODO consider converting this to nested describe statements, similar to event_spec
 
-describe Venue do
+RSpec.describe Venue, type: :model do
 
   it "should be valid" do
     venue = Venue.new(:title => 'My Event')
@@ -35,7 +35,7 @@ describe Venue do
 
 end
 
-describe Venue, "when finding exact duplicates" do
+RSpec.describe Venue, "when finding exact duplicates", type: :model do
   it "should ignore attributes like created_at" do
     venue1 = Venue.create!(:title => "this", :description => "desc",:created_at => Time.zone.now)
     venue2 = Venue.new(    :title => "this", :description => "desc",:created_at => Time.zone.now.yesterday)
@@ -58,7 +58,7 @@ describe Venue, "when finding exact duplicates" do
   end
 end
 
-describe Venue, "with finding unmarked duplicates" do
+RSpec.describe Venue, "with finding unmarked duplicates", type: :model do
   it "should find all venues with duplicate titles" do
     Venue.should_receive(:find_by_sql).with("SELECT DISTINCT a.* from venues a, venues b WHERE a.id <> b.id AND ( a.title = b.title )")
     Venue.find_duplicates_by(:title )
@@ -70,7 +70,7 @@ describe Venue, "with finding unmarked duplicates" do
   end
 end
 
-describe Venue, "when finding duplicates [integration test]" do
+RSpec.describe Venue, "when finding duplicates [integration test]", type: :model do
   before do
     @existing = create(:venue)
   end
@@ -117,7 +117,7 @@ describe Venue, "when finding duplicates [integration test]" do
   end
 end
 
-describe Venue, "when checking for squashing" do
+RSpec.describe Venue, "when checking for squashing", type: :model do
   before do
     @master = Venue.create!(:title => "Master")
     @slave_first = Venue.create!(:title => "1st slave", :duplicate_of_id => @master.id)
@@ -166,7 +166,7 @@ describe Venue, "when checking for squashing" do
 
 end
 
-describe Venue, "when squashing duplicates" do
+RSpec.describe Venue, "when squashing duplicates" do
   before do
     @master_venue    = Venue.create!(:title => "Master")
     @submaster_venue = Venue.create!(:title => "Submaster")
@@ -184,7 +184,7 @@ describe Venue, "when squashing duplicates" do
     Venue.squash(:master => @master_venue, :duplicates => @submaster_venue)
 
     @submaster_venue.duplicate_of.should eq @master_venue
-    @submaster_venue.duplicate?.should be_true
+    @submaster_venue.duplicate?.should be true
   end
 
   it "should squash multiple duplicates" do
@@ -226,7 +226,7 @@ describe Venue, "when squashing duplicates" do
   end
 end
 
-describe "Venue geocoding" do
+RSpec.describe "Venue geocoding" do
   before do
     @venue = Venue.new(:title => "title", :address => "test")
     @geo_failure = double("geo", :success => false)
@@ -238,7 +238,7 @@ describe "Venue geocoding" do
   end
 
   it "should be valid even if not yet geocoded" do
-    @venue.valid?.should be_true
+    @venue.valid?.should be true
   end
 
   it "should report its location properly if it has one" do
@@ -305,7 +305,7 @@ describe "Venue geocoding" do
   end
 end
 
-describe "Venue geocode addressing" do
+RSpec.describe "Venue geocode addressing" do
   before do
     @venue = Venue.new(:title => "title")
   end

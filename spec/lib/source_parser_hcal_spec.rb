@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SourceParser::Hcal, "with hCalendar events" do
+RSpec.describe SourceParser::Hcal, "with hCalendar events" do
   it "should parse hcal" do
     hcal_content = read_sample('hcal_single.xml')
     hcal_source = Source.new(:title => "Calendar event feed", :url => "http://mysample.hcal/")
@@ -46,7 +46,7 @@ describe SourceParser::Hcal, "with hCalendar events" do
   end
 end
 
-describe SourceParser::Hcal, "with hCalendar to AbstractLocation parsing" do
+RSpec.describe SourceParser::Hcal, "with hCalendar to AbstractLocation parsing" do
   it "should extract an AbstractLocation from an hCalendar text" do
     hcal_upcoming = read_sample('hcal_upcoming_v1.html')
 

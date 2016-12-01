@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mixins/rebaseable_examples'
 
-describe Rebaseable do
+RSpec.describe Rebaseable do
   subject(:car) do
     Class.new(TestClasses::DirtyModel) do
       include Rebaseable
@@ -64,7 +64,7 @@ describe Rebaseable do
     it "preserves false value changes in child" do
       child.doors = false
       child.rebase_changed_attributes!(parent)
-      child.doors.should be_false
+      child.doors.should be false
     end
 
     it "changed attribute info reflects changes between parent and child" do
@@ -88,13 +88,13 @@ describe Rebaseable do
       it "retains :id of child" do
         result = model.new(:id => 99).rebase_changed_attributes!(parent)
         result.id.should eq 99
-        result.id_changed?.should be_true
+        result.id_changed?.should be true
       end
 
       it "ignores :id of parent" do
         result = model.new.rebase_changed_attributes!(parent)
         result.id.should be_nil
-        result.id_changed?.should be_false
+        result.id_changed?.should be false
       end
     end
   end

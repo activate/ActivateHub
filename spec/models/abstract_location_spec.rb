@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'mixins/rebaseable_examples'
 
-describe AbstractLocation do
+RSpec.describe AbstractLocation, type: :model do
   subject(:abstract_location) { build_stubbed(:abstract_location) }
 
   it { should be_valid }
@@ -292,7 +292,7 @@ describe AbstractLocation do
 
         it "should not change the venue" do
           venue = abstract_location.populate_venue
-          venue.changed?.should be_false
+          venue.changed?.should be false
         end
       end
 
@@ -373,7 +373,7 @@ describe AbstractLocation do
     context "when both abstract locations have same values" do
       it "should not report having any venue field changes" do
         abstract_location.rebase_changed_attributes!(existing)
-        abstract_location.venue_attributes_changed?.should be_false
+        abstract_location.venue_attributes_changed?.should be false
       end
     end
 
@@ -382,7 +382,7 @@ describe AbstractLocation do
 
       it "should not have any venue field changes" do
         abstract_location.rebase_changed_attributes!(existing)
-        abstract_location.venue_attributes_changed?.should be_false
+        abstract_location.venue_attributes_changed?.should be false
       end
     end
 
@@ -391,7 +391,7 @@ describe AbstractLocation do
 
       it "should report having venue field changes" do
         abstract_location.rebase_changed_attributes!(existing)
-        abstract_location.venue_attributes_changed?.should be_true
+        abstract_location.venue_attributes_changed?.should be true
       end
     end
   end
@@ -439,12 +439,12 @@ describe AbstractLocation do
   describe "#venue_attributes_changed?" do
     it "is true when #venue_attributes_changed is not empty" do
       abstract_location.stub(:venue_attributes_changed => [:title, :description])
-      abstract_location.venue_attributes_changed?.should be_true
+      abstract_location.venue_attributes_changed?.should be true
     end
 
     it "is false when #venue_attributes_changed is empty" do
       abstract_location.stub(:venue_attributes_changed => [])
-      abstract_location.venue_attributes_changed?.should be_false
+      abstract_location.venue_attributes_changed?.should be false
     end
   end
 

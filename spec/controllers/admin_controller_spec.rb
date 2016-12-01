@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe AdminController do
+RSpec.describe AdminController, type: :controller do
   describe "#index" do
     context "when the user is an admin" do
       before do

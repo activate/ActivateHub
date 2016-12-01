@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Event do
+RSpec.describe Event, type: :model do
 
   describe "when an event has no venue" do
     context "when the event is affiliated with an organization that has a default venue" do
@@ -38,11 +38,11 @@ describe Event do
       event = build(:event, url: "www.example.com")
       event.save!
 
-      expect(event.reload.valid?).to be_true
+      expect(event.reload.valid?).to be true
     end
 
     it "should validate on a regex" do
-      expect("http://www.example.com".match(Event::WEBSITE_FORMAT)).to be_true
+      expect("http://www.example.com".match(Event::WEBSITE_FORMAT)).to be_truthy
     end
   end
 
@@ -285,7 +285,7 @@ describe Event do
     it "should fail to validate if end_time is earlier than start time " do
       @event.start_time = now
       @event.end_time = @event.start_time - 2.hours
-      @event.save.should be_false
+      @event.save.should be false
       @event.should have(1).error_on(:end_time)
     end
 
@@ -895,7 +895,7 @@ describe Event do
       original.to_clone
     end
 
-    its(:new_record?) { should be_true }
+    its(:new_record?) { should be true }
 
     its(:id) { should be_nil }
 

@@ -1,7 +1,7 @@
 require 'spec_helper'
 include SourcesHelper
 
-describe SourcesHelper do
+RSpec.describe SourcesHelper, type: :helper do
 
   #Delete this example and add some real ones or delete this file
   it "should be included in the object returned by #helper" do

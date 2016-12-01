@@ -3,7 +3,7 @@ require 'spec_helper'
 class SourceParser::FakeParser < SourceParser::Base
 end
 
-describe SourceParser, "when reading content" do
+RSpec.describe SourceParser, "when reading content" do
   it "should read from a normal URL" do
     stub_source_parser_http_response!(:body => 42)
     SourceParser.read_url("http://a.real/~url").should eq 42
@@ -30,7 +30,7 @@ describe SourceParser, "when reading content" do
   end
 end
 
-describe SourceParser, "when subclassing" do
+RSpec.describe SourceParser, "when subclassing" do
   it "should demand that to_hcals is implemented" do
     lambda{ SourceParser::FakeParser.to_hcals }.should raise_error(NotImplementedError)
   end
@@ -40,7 +40,7 @@ describe SourceParser, "when subclassing" do
   end
 end
 
-describe SourceParser, "when parsing events" do
+RSpec.describe SourceParser, "when parsing events" do
   it "should have expected parsers plus FakeParser" do
     SourceParser.parsers.should eq [
       SourceParser::Plancast,
@@ -63,7 +63,7 @@ describe SourceParser, "when parsing events" do
   end
 end
 
-describe SourceParser, "checking duplicates when importing" do
+RSpec.describe SourceParser, "checking duplicates when importing" do
   describe "with two identical events" do
     before :each do
       @venue_size_before_import = Venue.find(:all).size
@@ -231,7 +231,7 @@ describe SourceParser, "checking duplicates when importing" do
   end
 end
 
-describe SourceParser, "labels" do
+RSpec.describe SourceParser, "labels" do
   it "should have labels" do
     SourceParser.labels.should_not be_blank
   end
