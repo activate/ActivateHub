@@ -104,7 +104,7 @@ group :test do
   gem 'factory_girl_rails', '4.2.1'
   gem 'database_cleaner', '~> 0.8.0'
   gem 'faker'
-  gem 'shoulda-matchers', '~> 2.3.0'
+  gem 'shoulda-matchers', '~> 2.3'
   gem 'timecop', '~> 0.6.3'
 end
 
