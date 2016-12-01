@@ -7,7 +7,7 @@ FactoryGirl.define do
     url 'http://a.valid.url.test'
     title 'My Source'
 
-    ignore do
+    transient do
       topics_count 0
       types_count 0
     end

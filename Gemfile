@@ -87,9 +87,10 @@ end
 #   bundle install --without development:test
 group :development, :test do
   gem 'pry-rails'
-  gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-rails'
   gem 'test-unit'
-  gem 'spork', '~> 0.9.2'
+  gem 'faker' # Used by db/seeds.rb
+  gem 'spork'
 
   # Do not install these interactive libraries onto the continuous integration server.
   unless ENV['CI'] || ENV['TRAVIS']
@@ -100,14 +101,13 @@ group :development, :test do
 end
 
 group :test do
-  gem 'webrat', '0.7.3'
-  gem 'factory_girl_rails', '4.2.1'
-  gem 'database_cleaner', '~> 0.8.0'
-  gem 'faker'
+  gem 'webrat'
+  gem 'factory_girl_rails'
+  gem 'database_cleaner'
   gem 'rspec-its'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-collection_matchers'
-  gem 'shoulda-matchers', '~> 2.3'
+  gem 'shoulda-matchers'
   gem 'capybara'
   gem 'timecop'
 end
