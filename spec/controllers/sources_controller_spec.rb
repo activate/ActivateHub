@@ -22,11 +22,11 @@ RSpec.describe SourcesController, type: :controller do
 
       it "should persist changs to the source object" do
         post :import, :source => { :url => source.url, :title => "undisclosed" }
-        assigns(:source).reload.title.should eq "undisclosed"
+        expect(assigns(:source).reload.title).to eq "undisclosed"
       end
 
       it "should try to import assocated events" do
-        SourceImporter.any_instance.should_receive(:import!)
+        expect_any_instance_of(SourceImporter).to receive(:import!)
         post :import, :source => source_attrs
       end
     end
@@ -39,64 +39,64 @@ RSpec.describe SourcesController, type: :controller do
       end
 
       it "should try to import assocated events" do
-        SourceImporter.any_instance.should_receive(:import!)
+        expect_any_instance_of(SourceImporter).to receive(:import!)
         post :import, :source => source_attrs
       end
     end
 
     describe "is given problematic sources" do
       before do
-        Source.should_receive(:find_or_create_from).and_return(source)
+        expect(Source).to receive(:find_or_create_from).and_return(source)
       end
 
       def assert_import_raises(exception)
-        SourceImporter.any_instance.should_receive(:import!).and_raise(exception)
+        expect_any_instance_of(SourceImporter).to receive(:import!).and_raise(exception)
         post :import, :source => {:url => "http://invalid.host"}
       end
 
       it "should fail when host responds with an error" do
         assert_import_raises(OpenURI::HTTPError.new("omfg", "bbq"))
-        flash[:failure].should match /Couldn't download events/
+        expect(flash[:failure]).to match /Couldn't download events/
       end
 
       it "should fail when host is not responding" do
         assert_import_raises(Errno::EHOSTUNREACH.new("omfg"))
-        flash[:failure].should match /Couldn't connect to remote site/
+        expect(flash[:failure]).to match /Couldn't connect to remote site/
       end
 
       it "should fail when host is not found" do
         assert_import_raises(SocketError.new("omfg"))
-        flash[:failure].should match /Couldn't find IP address for remote site/
+        expect(flash[:failure]).to match /Couldn't find IP address for remote site/
       end
 
       it "should fail when host requires authentication" do
         assert_import_raises(SourceParser::HttpAuthenticationRequiredError.new("omfg"))
-        flash[:failure].should match /requires authentication/
+        expect(flash[:failure]).to match /requires authentication/
       end
     end
 
     it "should limit the number of created events to list in the flash" do
       max_display = SourcesController::MAXIMUM_EVENTS_TO_DISPLAY_IN_FLASH
       events = 1.upto(max_display + 5).map { build_stubbed(:event) }
-      SourceImporter.any_instance.should_receive(:import!) do
-        Source.any_instance.stub(:events).and_return(events)
+      expect_any_instance_of(SourceImporter).to receive(:import!) do
+        allow_any_instance_of(Source).to receive(:events).and_return(events)
       end
 
       post :import, :source => { :url => source.url, :title => 'My Title' }
-      flash[:success].should match /And 5 other events/si
+      expect(flash[:success]).to match /And 5 other events/si
     end
   end
 
   describe "GET :index" do
     it "should be successful" do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
 
     it "should assign the sources to @sources" do
       source = create(:source, :organization => organization)
       get :index
-      assigns(:sources).should eq [source]
+      expect(assigns(:sources)).to eq [source]
     end
 
     context ":format => :html" do
@@ -109,7 +109,7 @@ RSpec.describe SourcesController, type: :controller do
     context ":format => :xml" do
       it "should render the found sources as xml" do
         get :index, :format => :xml
-        response.content_type.should eq 'application/xml'
+        expect(response.content_type).to eq 'application/xml'
       end
     end
   end
@@ -118,7 +118,7 @@ RSpec.describe SourcesController, type: :controller do
     context "source doesn't exist" do
       it "should redirect to the new source page" do
         get :show, :id => 'MI7'
-        response.should redirect_to(new_organization_source_path)
+        expect(response).to redirect_to(new_organization_source_path)
       end
 
       it "should provide a failure message" do
@@ -132,12 +132,12 @@ RSpec.describe SourcesController, type: :controller do
 
       it "should be successful" do
         get :show, :id => source.id
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should assign the source to @source" do
         get :show, :id => source.id
-        assigns(:source).should eq source
+        expect(assigns(:source)).to eq source
       end
 
       context ":format => :html" do
@@ -150,7 +150,7 @@ RSpec.describe SourcesController, type: :controller do
       context ":format => :xml" do
         it "should render the source as xml" do
           get :show, :id => source.id, :format => :xml
-          response.content_type.should eq 'application/xml'
+          expect(response.content_type).to eq 'application/xml'
         end
       end
     end
@@ -159,12 +159,12 @@ RSpec.describe SourcesController, type: :controller do
   describe "GET :new" do
     it "should be successful" do
       get :new
-      response.should be_success
+      expect(response).to be_success
     end
 
     it "should assign the newly initialized source to @source" do
       get :new
-      assigns(:source).should be_present
+      expect(assigns(:source)).to be_present
     end
 
     it "@source should be a new record" do
@@ -192,12 +192,12 @@ RSpec.describe SourcesController, type: :controller do
 
       it "should be successful" do
         get :edit, :id => source.id
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should assign the source to @source" do
         get :edit, :id => source.id
-        assigns(:source).should eq source
+        expect(assigns(:source)).to eq source
       end
 
       context ":format => :html" do
@@ -222,7 +222,7 @@ RSpec.describe SourcesController, type: :controller do
 
       it "should assign the source to @source" do
         post :create, :source => source_attrs
-        assigns(:source).should_not be_nil
+        expect(assigns(:source)).to_not be_nil
       end
 
       it "should redirect to the source show page" do
@@ -261,13 +261,13 @@ RSpec.describe SourcesController, type: :controller do
 
       it "should assign the source to @source" do
         put :update, :id => source.id, :source => source.attributes
-        assigns(:source).should_not be_nil
+        expect(assigns(:source)).to_not be_nil
       end
 
       context "source changes are valid" do
         it "should persist changs to the source object" do
           put :update, :id => source.id, :source => { :title => "undisclosed" }
-          assigns(:source).reload.title.should eq "undisclosed"
+          expect(assigns(:source).reload.title).to eq "undisclosed"
         end
 
         it "should redirect to the source show page" do
@@ -285,7 +285,7 @@ RSpec.describe SourcesController, type: :controller do
       context "source changes are invalid" do
         it "should not persist changes to the source object" do
           put :update, :id => source.id, :source => { :url => "" }
-          assigns(:source).reload.url.should == source.url
+          expect(assigns(:source).reload.url).to eq source.url
         end
 
         it "should render the :edit template" do
@@ -321,7 +321,7 @@ RSpec.describe SourcesController, type: :controller do
 
       it "should call destroy on source object (not delete)" do
         # we want to ensure any destroy hooks are triggered (paper trail, etc)
-        Source.any_instance.should_receive(:destroy)
+        expect_any_instance_of(Source).to receive(:destroy)
         delete :destroy, :id => source.id
       end
 

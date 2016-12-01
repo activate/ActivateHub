@@ -4,20 +4,20 @@ include EventsHelper
 RSpec.describe EventsHelper, type: :helper do
   describe "#events_sort_label" do
     it "should return nil without arguments" do
-      helper.events_sort_label(nil).should be_nil
+      expect(helper.events_sort_label(nil)).to be_nil
     end
 
     it "should return string for a string key" do
-      helper.events_sort_label("score").should match(/ by .+#{Event::SORTING_LABELS['score']}.+/)
+      expect(helper.events_sort_label("score")).to match(/ by .+#{Event::SORTING_LABELS['score']}.+/)
     end
 
     it "should return string for a symbol key" do
-      helper.events_sort_label(:score).should match(/ by .+#{Event::SORTING_LABELS['score']}.+/)
+      expect(helper.events_sort_label(:score)).to match(/ by .+#{Event::SORTING_LABELS['score']}.+/)
     end
 
     it "should return special string when using a tag" do
       assign :tag, ActsAsTaggableOn::Tag.new
-      helper.events_sort_label(nil).should match(/ by .+#{Event::SORTING_LABELS['default']}.+/)
+      expect(helper.events_sort_label(nil)).to match(/ by .+#{Event::SORTING_LABELS['default']}.+/)
     end
   end
 
@@ -36,19 +36,19 @@ RSpec.describe EventsHelper, type: :helper do
 
     shared_examples_for "exported event" do
       it "should have title" do
-        @export.should match /\&text=#{escape(@event.title)}/
+        expect(@export).to match /\&text=#{escape(@event.title)}/
       end
 
       it "should have time range" do
-        @export.should match /\&dates=#{helper.format_google_timespan(@event)}/
+        expect(@export).to match /\&dates=#{helper.format_google_timespan(@event)}/
       end
 
       it "should have venue title" do
-        @export.should match /\&location=#{escape(@event.venue.title)}/
+        expect(@export).to match /\&location=#{escape(@event.venue.title)}/
       end
 
       it "should have venue address" do
-        @export.should match /\&location=.+?#{escape(@event.venue.geocode_address)}/
+        expect(@export).to match /\&location=.+?#{escape(@event.venue.geocode_address)}/
       end
     end
 
@@ -59,7 +59,7 @@ RSpec.describe EventsHelper, type: :helper do
       it_should_behave_like "exported event"
 
       it "should have a complete event description" do
-        @export.should match /\&details=.*#{escape(event_description)}/
+        expect(@export).to match /\&details=.*#{escape(event_description)}/
       end
     end
 
@@ -70,11 +70,11 @@ RSpec.describe EventsHelper, type: :helper do
       it_should_behave_like "exported event"
 
       it "should have a truncated event description" do
-        @export.should match /\&details=.*#{escape(event_description[0..100])}/
+        expect(@export).to match /\&details=.*#{escape(event_description[0..100])}/
       end
 
       it "should have a truncated URL" do
-        @export.size.should be < event_description.size
+        expect(@export.size).to be < event_description.size
       end
     end
   end
@@ -85,19 +85,19 @@ RSpec.describe EventsHelper, type: :helper do
     end
 
     it "should fail if given unknown options" do
-      lambda { method(:omg => :kittens) }.should raise_error ArgumentError
+      expect { method(:omg => :kittens) }.to raise_error ArgumentError
     end
 
     it "should generate a default link" do
-      method.should eq "http://www.google.com/calendar/render?cid=http%3A%2F%2Ftest.host%2Fevents.ics"
+      expect(method).to eq "http://www.google.com/calendar/render?cid=http%3A%2F%2Ftest.host%2Fevents.ics"
     end
 
     it "should generate a search link" do
-      method(:query => "my query").should eq "http://www.google.com/calendar/render?cid=http%3A%2F%2Ftest.host%2Fevents%2Fsearch.ics%3Fquery%3Dmy%2Bquery"
+      expect(method(:query => "my query")).to eq "http://www.google.com/calendar/render?cid=http%3A%2F%2Ftest.host%2Fevents%2Fsearch.ics%3Fquery%3Dmy%2Bquery"
     end
 
     it "should generate a tag link" do
-      method(:tag => "mytag").should eq "http://www.google.com/calendar/render?cid=http%3A%2F%2Ftest.host%2Fevents%2Fsearch.ics%3Ftag%3Dmytag"
+      expect(method(:tag => "mytag")).to eq "http://www.google.com/calendar/render?cid=http%3A%2F%2Ftest.host%2Fevents%2Fsearch.ics%3Ftag%3Dmytag"
     end
   end
 
@@ -107,19 +107,19 @@ RSpec.describe EventsHelper, type: :helper do
     end
 
     it "should fail if given unknown options" do
-      lambda { method(:omg => :kittens) }.should raise_error ArgumentError
+      expect { method(:omg => :kittens) }.to raise_error ArgumentError
     end
 
     it "should generate a default link" do
-      method.should eq "webcal://test.host/events.ics"
+      expect(method).to eq "webcal://test.host/events.ics"
     end
 
     it "should generate a search link" do
-      method(:query => "my query").should eq "webcal://test.host/events/search.ics?query=my+query"
+      expect(method(:query => "my query")).to eq "webcal://test.host/events/search.ics?query=my+query"
     end
 
     it "should generate a tag link" do
-      method(:tag => "mytag").should eq "webcal://test.host/events/search.ics?tag=mytag"
+      expect(method(:tag => "mytag")).to eq "webcal://test.host/events/search.ics?tag=mytag"
     end
   end
 
@@ -129,19 +129,19 @@ RSpec.describe EventsHelper, type: :helper do
     end
 
     it "should fail if given unknown options" do
-      lambda { method(:omg => :kittens) }.should raise_error ArgumentError
+      expect { method(:omg => :kittens) }.to raise_error ArgumentError
     end
 
     it "should generate a default link" do
-      method.should eq "http://test.host/events.ics"
+      expect(method).to eq "http://test.host/events.ics"
     end
 
     it "should generate a search link" do
-      method(:query => "my query").should eq "http://test.host/events/search.ics?query=my+query"
+      expect(method(:query => "my query")).to eq "http://test.host/events/search.ics?query=my+query"
     end
 
     it "should generate a tag link" do
-      method(:tag => "mytag").should eq "http://test.host/events/search.ics?tag=mytag"
+      expect(method(:tag => "mytag")).to eq "http://test.host/events/search.ics?tag=mytag"
     end
   end
 
@@ -151,19 +151,19 @@ RSpec.describe EventsHelper, type: :helper do
     end
 
     it "should fail if given unknown options" do
-      lambda { method(:omg => :kittens) }.should raise_error ArgumentError
+      expect { method(:omg => :kittens) }.to raise_error ArgumentError
     end
 
     it "should generate a default link" do
-      method.should eq "http://test.host/events.atom"
+      expect(method).to eq "http://test.host/events.atom"
     end
 
     it "should generate a search link" do
-      method(:query => "my query").should eq "http://test.host/events/search.atom?query=my+query"
+      expect(method(:query => "my query")).to eq "http://test.host/events/search.atom?query=my+query"
     end
 
     it "should generate a tag link" do
-      method(:tag => "mytag").should eq "http://test.host/events/search.atom?tag=mytag"
+      expect(method(:tag => "mytag")).to eq "http://test.host/events/search.atom?tag=mytag"
     end
   end
 

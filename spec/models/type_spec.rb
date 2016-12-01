@@ -5,7 +5,7 @@ RSpec.describe Type, type: :model do
 	  before(:each) do
 	    @type = Type.new(:name => "My Type")
 	  end
-	  specify {@type.should be_valid}
+	  specify {expect(@type).to be_valid}
   end
 
   # describe "when relating types and events" do
@@ -21,7 +21,7 @@ RSpec.describe Type, type: :model do
 	  before(:each) do
 	    @type = Type.new()
 	  end
-	  specify {@type.should_not be_valid}
+	  specify {expect(@type).to_not be_valid}
   end
 end
 

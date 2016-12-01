@@ -37,14 +37,14 @@ RSpec.describe DecodeHtmlEntitiesHack, type: :model do
 
   it "should not modify attributes in models that don't include it" do
     record = ModelWithoutDecodeHack.new(:kitten => encoded_string)
-    record.should be_valid
-    record.kitten.should eq encoded_string
+    expect(record).to be_valid
+    expect(record.kitten).to eq encoded_string
   end
 
   it "should modify attributes in models that include it" do
     record = ModelWithDecodeHack.new(:kitten => encoded_string)
-    record.should be_valid
-    record.kitten.should eq decoded_string
+    expect(record).to be_valid
+    expect(record.kitten).to eq decoded_string
   end
 
 end

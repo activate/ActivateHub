@@ -14,14 +14,14 @@ RSpec.describe Organization, type: :model do
     before(:each) do
       @org = Organization.new(:name => "My Organization", :contact_name => "Juana", :email => "juana@myorganization.org")
     end
-    specify {@org.should be_valid}
+    specify {expect(@org).to be_valid}
   end
 
   describe "when creating nameless organizations" do
     before(:each) do
       @org = Organization.new()
     end
-    specify {@org.should_not be_valid}
+    specify {expect(@org).to_not be_valid}
   end
 
   describe "when creating spam" do
@@ -29,14 +29,14 @@ RSpec.describe Organization, type: :model do
       @org = Organization.new(:name => "Some like viagra")
     end
 
-    specify {@org.should_not be_valid}
+    specify {expect(@org).to_not be_valid}
   end
 
   describe "when adding email" do
     before(:each) do
       @org = Organization.new(:name => "Awsome Organization", :email => "juana is not awsome")
     end
-    specify {@org.should_not be_valid}
+    specify {expect(@org).to_not be_valid}
   end
 
   it "has a venue" do

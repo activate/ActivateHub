@@ -19,8 +19,8 @@ RSpec.describe Rebaseable do
 
     it "returns a copy of the child after #rebase_changed_attributes!" do
       result = child.rebase_changed_attributes(parent)
-      result.color.should eq 'white'
-      result.doors.should eq 0
+      expect(result.color).to eq 'white'
+      expect(result.doors).to eq 0
     end
 
     it "doesn't change original child attributes" do
@@ -34,21 +34,21 @@ RSpec.describe Rebaseable do
     let(:child) { car.new(:color => 'white', :doors => 2, :price => 8_000) }
 
     it "returns the receiver/self" do
-      child.rebase_changed_attributes!(parent).should eq child
+      expect(child.rebase_changed_attributes!(parent)).to eq child
     end
 
     it "copies attributes from the parent" do
       # ...that haven't been flagged as changed in the child
       child.rebase_changed_attributes!(parent)
-      child.model.should eq 'ZZ-T00'
+      expect(child.model).to eq 'ZZ-T00'
     end
 
     it "only keeps child attributes that have been flagged as changed" do
       child.changed_attributes.delete('doors')
       child.rebase_changed_attributes!(parent)
-      child.doors.should eq 4       # unchanged
-      child.color.should eq 'white' # changed
-      child.price.should eq 8_000   # changed
+      expect(child.doors).to eq 4       # unchanged
+      expect(child.color).to eq 'white' # changed
+      expect(child.price).to eq 8_000   # changed
     end
 
     it "preserves nil value changes in child" do
@@ -58,13 +58,13 @@ RSpec.describe Rebaseable do
 
       child.doors = nil
       child.rebase_changed_attributes!(parent)
-      child.doors.should eq nil
+      expect(child.doors).to eq nil
     end
 
     it "preserves false value changes in child" do
       child.doors = false
       child.rebase_changed_attributes!(parent)
-      child.doors.should be false
+      expect(child.doors).to be false
     end
 
     it "changed attribute info reflects changes between parent and child" do
@@ -72,7 +72,7 @@ RSpec.describe Rebaseable do
       child.doors = 4 # parent.doors is already 4
 
       child.rebase_changed_attributes!(parent)
-      child.changed.sort.should eq %w(color price)
+      expect(child.changed.sort).to eq %w(color price)
     end
 
     context "when model has an :id attribute field" do
@@ -87,14 +87,14 @@ RSpec.describe Rebaseable do
 
       it "retains :id of child" do
         result = model.new(:id => 99).rebase_changed_attributes!(parent)
-        result.id.should eq 99
-        result.id_changed?.should be true
+        expect(result.id).to eq 99
+        expect(result.id_changed?).to be true
       end
 
       it "ignores :id of parent" do
         result = model.new.rebase_changed_attributes!(parent)
-        result.id.should be_nil
-        result.id_changed?.should be false
+        expect(result.id).to be_nil
+        expect(result.id_changed?).to be false
       end
     end
   end

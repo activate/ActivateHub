@@ -24,7 +24,7 @@ END:VVENUE
   end
 
   it "should have a street_address" do
-    @location.street_address.should_not be_nil
+    expect(@location.street_address).to_not be_nil
   end
 
   it "should have the adress as is" do
@@ -32,7 +32,7 @@ END:VVENUE
   end
 
   it "should have a locality" do
-    @location.locality.should_not be_nil
+    expect(@location.locality).to_not be_nil
   end
 
   it "should have the locality as is" do
@@ -60,15 +60,15 @@ CATEGORIES:apple applecom appleinc technology
   end
 
   it "should find a property set by its key" do
-    @vcard_hash['NAME'].should eq 'Apple Store Pioneer Place'
+    expect(@vcard_hash['NAME']).to eq 'Apple Store Pioneer Place'
   end
 
   it "should find a property set by its key and meta-qualifier" do
-    @vcard_hash['URL;X-LABEL=Venue Info'].should eq 'http://eventful.com/V0-001-001423875-1'
+    expect(@vcard_hash['URL;X-LABEL=Venue Info']).to eq 'http://eventful.com/V0-001-001423875-1'
   end
 
   it "should find a property set by its key and meta-qualifier by its key when one wasn't specified" do
-    @vcard_hash['URL'].should eq 'http://eventful.com/V0-001-001423875-1'
+    expect(@vcard_hash['URL']).to eq 'http://eventful.com/V0-001-001423875-1'
   end
 
   it "should find a property set by its key and multiple meta-qualifier by" do

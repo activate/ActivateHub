@@ -32,7 +32,7 @@ RSpec.describe AbstractEvent, type: :model do
       it "should return only invalid abstract events" do
         create(:abstract_event)
         build_list(:abstract_event, 2, :invalid).each(&:save_invalid!)
-        AbstractEvent.invalid.size.should eq 2
+        expect(AbstractEvent.invalid.size).to eq 2
       end
     end
   end
@@ -47,7 +47,7 @@ RSpec.describe AbstractEvent, type: :model do
       abstract_event.import!
 
       expected = abstract_event.source.organization_id
-      AbstractEvent.find(abstract_event.id).organization_id.should eq expected
+      expect(AbstractEvent.find(abstract_event.id).organization_id).to eq expected
     end
 
     it "populates the venue_id attribute from abstract_location" do
@@ -57,7 +57,7 @@ RSpec.describe AbstractEvent, type: :model do
       abstract_event.import!
 
       expected = abstract_event.abstract_location.venue_id
-      AbstractEvent.find(abstract_event.id).venue_id.should eq expected
+      expect(AbstractEvent.find(abstract_event.id).venue_id).to eq expected
     end
   end
 
@@ -65,7 +65,7 @@ RSpec.describe AbstractEvent, type: :model do
 
   describe "::EVENT_ATTRIBUTES" do
     it "includes expected attributes" do
-      AbstractEvent::EVENT_ATTRIBUTES.should include(
+      expect(AbstractEvent::EVENT_ATTRIBUTES).to include(
         :url, :title, :end_time, :start_time, :description, :venue_id,
         :organization_id
       )
@@ -74,7 +74,7 @@ RSpec.describe AbstractEvent, type: :model do
     it ":end_time comes before :start_time, otherwise might get auto-gen" do
       start_time_idx = AbstractEvent::EVENT_ATTRIBUTES.index(:start_time)
       end_time_idx = AbstractEvent::EVENT_ATTRIBUTES.index(:end_time)
-      end_time_idx.should be < start_time_idx
+      expect(end_time_idx).to be < start_time_idx
     end
   end
 
@@ -83,25 +83,25 @@ RSpec.describe AbstractEvent, type: :model do
 
   describe ":organization_id" do
     it "is included in attributes list" do
-      abstract_event.attributes.keys.should include('organization_id')
+      expect(abstract_event.attributes.keys).to include('organization_id')
     end
 
     it "supports dirty/change tracking" do
       abstract_event.organization_id = 12345
-      abstract_event.organization_id_changed?.should be true
-      abstract_event.changed_attributes.should include('organization_id')
+      expect(abstract_event.organization_id_changed?).to be true
+      expect(abstract_event.changed_attributes).to include('organization_id')
     end
   end
 
   describe ":venue_id" do
     it "is included in attributes list" do
-      abstract_event.attributes.keys.should include('venue_id')
+      expect(abstract_event.attributes.keys).to include('venue_id')
     end
 
     it "supports dirty/change tracking" do
       abstract_event.venue_id = 54321
-      abstract_event.venue_id_changed?.should be true
-      abstract_event.changed_attributes.should include('venue_id')
+      expect(abstract_event.venue_id_changed?).to be true
+      expect(abstract_event.changed_attributes).to include('venue_id')
     end
   end
 
@@ -111,13 +111,13 @@ RSpec.describe AbstractEvent, type: :model do
     it "sets the :venue_title attribute to abstract location's title" do
       al = build_stubbed(:abstract_location, :source => source, :title => 'The Bog')
       abstract_event.abstract_location = al
-      abstract_event.venue_title.should eq 'The Bog'
+      expect(abstract_event.venue_title).to eq 'The Bog'
     end
 
     it "sets the :venue_id attribute to abstract location's venue_id" do
       al = build_stubbed(:abstract_location, :source => source, :venue_id => 864531)
       abstract_event.abstract_location = al
-      abstract_event.venue_id.should eq 864531
+      expect(abstract_event.venue_id).to eq 864531
     end
   end
 
@@ -125,52 +125,52 @@ RSpec.describe AbstractEvent, type: :model do
     subject(:abstract_event) { AbstractEvent.new } # has no changes
 
     it "is empty when nothing changes" do
-      abstract_event.event_attributes_changed.should eq []
+      expect(abstract_event.event_attributes_changed).to eq []
     end
 
     it "is empty when a non event attribute changes" do
       abstract_event.raw_event = 'Kanon!'
-      abstract_event.event_attributes_changed.should eq []
+      expect(abstract_event.event_attributes_changed).to eq []
     end
 
     exclude = [:organization_id, :venue_id, :start_time, :end_time]
     (AbstractEvent::EVENT_ATTRIBUTES-exclude).each do |attribute_name|
       it "includes attribute name when #{attribute_name} changes" do
         abstract_event.send("#{attribute_name}=", 'foo')
-        abstract_event.event_attributes_changed.should eq [attribute_name]
+        expect(abstract_event.event_attributes_changed).to eq [attribute_name]
       end
 
       it "includes attribute name when start_time changes" do
         abstract_event.start_time = 27.days.from_now
-        abstract_event.event_attributes_changed.should eq [:start_time]
+        expect(abstract_event.event_attributes_changed).to eq [:start_time]
       end
 
       it "includes attribute name when end_time changes" do
         abstract_event.end_time = 28.days.from_now
-        abstract_event.event_attributes_changed.should eq [:end_time]
+        expect(abstract_event.event_attributes_changed).to eq [:end_time]
       end
 
       it "includes attribute name when venue_id changes" do
         abstract_event.abstract_location = build_stubbed(:abstract_location, :venue_id => 947343)
-        abstract_event.event_attributes_changed.should eq [:venue_id]
+        expect(abstract_event.event_attributes_changed).to eq [:venue_id]
       end
 
       it "includes attribute name when organization_id changes" do
         abstract_event.source = build_stubbed(:source, :organization_id => 474747)
-        abstract_event.event_attributes_changed.should eq [:organization_id]
+        expect(abstract_event.event_attributes_changed).to eq [:organization_id]
       end
     end
   end
 
   describe "#event_attributes_changed?" do
     it "is true when #event_attributes_changed is not empty" do
-      abstract_event.stub(:event_attributes_changed => [:title, :description])
-      abstract_event.event_attributes_changed?.should be true
+      allow(abstract_event).to receive(:event_attributes_changed).and_return([:title, :description])
+      expect(abstract_event.event_attributes_changed?).to be true
     end
 
     it "is false when #event_attributes_changed is empty" do
-      abstract_event.stub(:event_attributes_changed => [])
-      abstract_event.event_attributes_changed?.should be false
+      allow(abstract_event).to receive(:event_attributes_changed).and_return([])
+      expect(abstract_event.event_attributes_changed?).to be false
     end
   end
 
@@ -183,11 +183,11 @@ RSpec.describe AbstractEvent, type: :model do
       end
 
       before(:each) do
-        AbstractEvent.any_instance.stub(:find_existing => existing)
+        allow_any_instance_of(AbstractEvent).to receive(:find_existing).and_return(existing)
       end
 
       it "should attempt a rebase" do
-        abstract_event.should_receive(:rebase_changed_attributes!).with(existing)
+        expect(abstract_event).to receive(:rebase_changed_attributes!).with(existing)
         abstract_event.import!
       end
 
@@ -205,13 +205,13 @@ RSpec.describe AbstractEvent, type: :model do
 
         it "set the :result attribute to 'updated'" do
           abstract_event.tap(&:import!).reload # ensure it's persisted
-          abstract_event.result.should eq 'updated'
+          expect(abstract_event.result).to eq 'updated'
         end
 
         context "has an associated event" do
           it "populates and saves the event" do
             expect {
-              abstract_event.should_receive(:populate_event).and_call_original
+              expect(abstract_event).to receive(:populate_event).and_call_original
               abstract_event.import!
             }.to change { existing.event.reload.description }
           end
@@ -247,7 +247,7 @@ RSpec.describe AbstractEvent, type: :model do
 
         it "sets the :result attribute to 'unchanged'" do
           abstract_event.import!
-          abstract_event.result.should eq 'unchanged'
+          expect(abstract_event.result).to eq 'unchanged'
         end
 
         it "sets the id to the existing abstract event" do
@@ -264,7 +264,7 @@ RSpec.describe AbstractEvent, type: :model do
       end
 
       it "should not rebase the event" do
-        abstract_event.should_not_receive :rebase_changed_attributes!
+        expect(abstract_event).to_not receive :rebase_changed_attributes!
         abstract_event.import!
       end
 
@@ -274,7 +274,7 @@ RSpec.describe AbstractEvent, type: :model do
 
       it "set the :result attribute to 'created'" do
         abstract_event.tap(&:import!).reload # ensure it's persisted
-        abstract_event.result.should eq 'created'
+        expect(abstract_event.result).to eq 'created'
       end
 
       context "has invalid attributes" do
@@ -292,20 +292,20 @@ RSpec.describe AbstractEvent, type: :model do
       before(:each) { abstract_event.abstract_location = abstract_location }
 
       it "imports the abstract location if not imported" do
-        abstract_location.should_receive(:import!).and_call_original
+        expect(abstract_location).to receive(:import!).and_call_original
         abstract_event.import!
       end
 
       it "doesn't import abstract location if already imported" do
         abstract_location.import!
-        abstract_location.should_receive(:import!).never
+        expect(abstract_location).to receive(:import!).never
         abstract_event.import!
       end
 
       it "associates the venue with the created event" do
         abstract_event.import!
-        abstract_event.event.venue.should_not be_nil # sanity check
-        abstract_event.event.venue_id.should eq abstract_location.venue_id
+        expect(abstract_event.event.venue).to_not be_nil # sanity check
+        expect(abstract_event.event.venue_id).to eq abstract_location.venue_id
       end
 
       context "abstract_location is invalid" do
@@ -313,12 +313,12 @@ RSpec.describe AbstractEvent, type: :model do
 
         it "saves the the location as invalid" do
           abstract_event.import!
-          abstract_event.abstract_location.result.should eq 'invalid'
+          expect(abstract_event.abstract_location.result).to eq 'invalid'
         end
 
         it "doesn't prevent importing the event" do
           abstract_event.import!
-          abstract_event.result.should eq 'created'
+          expect(abstract_event.result).to eq 'created'
         end
       end
 
@@ -329,18 +329,18 @@ RSpec.describe AbstractEvent, type: :model do
         before(:each) do
           abstract_location.dup.import!
           abstract_location.import!
-          abstract_location.result.should eq 'unchanged'
+          expect(abstract_location.result).to eq 'unchanged'
         end
 
         it "should not try to re-save abstract location" do
-          abstract_location.should_not receive(:save)
+          expect(abstract_location).to_not receive(:save)
           abstract_event.import!
         end
       end
 
       context "abstract_location raises an error" do
         before(:each) do
-          abstract_location.stub(:import!).and_raise('unhandled_error')
+          allow(abstract_location).to receive(:import!).and_raise('unhandled_error')
         end
 
         it "doesn't save abstract event" do
@@ -361,13 +361,13 @@ RSpec.describe AbstractEvent, type: :model do
 
     it "should return the event object" do
       event = abstract_event.populate_event
-      event.should eq abstract_event.event
+      expect(event).to eq abstract_event.event
     end
 
     context "no associated event" do
       it "should initialize a new event object" do
         abstract_event.populate_event
-        abstract_event.event.should_not be_nil
+        expect(abstract_event.event).to_not be_nil
       end
 
       it "should not save the event" do
@@ -381,12 +381,12 @@ RSpec.describe AbstractEvent, type: :model do
 
         abstract_event.populate_event
         changed = abstract_event.event.changed
-        changed.should include(*event_attributes)
+        expect(changed).to include(*event_attributes)
       end
 
       it "should associate event with abstract event's source" do
         abstract_event.populate_event
-        abstract_event.event.source.should eq abstract_event.source
+        expect(abstract_event.event.source).to eq abstract_event.source
       end
     end
 
@@ -399,8 +399,8 @@ RSpec.describe AbstractEvent, type: :model do
       end
 
       it "should not save the event" do
-        event.should_not_receive :save
-        event.should_not_receive :save!
+        expect(event).to_not receive :save
+        expect(event).to_not receive :save!
         abstract_event.populate_event
       end
 
@@ -409,7 +409,7 @@ RSpec.describe AbstractEvent, type: :model do
 
         it "should not change the event" do
           event = abstract_event.populate_event
-          event.changed?.should be false
+          expect(event.changed?).to be false
         end
       end
 
@@ -422,8 +422,8 @@ RSpec.describe AbstractEvent, type: :model do
           abstract_event.description = 'We upgraded our snow shoes to moon boots'
 
           abstract_event.populate_event
-          event.description.should eq 'We upgraded our snow shoes to moon boots'
-          event.changed.should include('description')
+          expect(event.description).to eq 'We upgraded our snow shoes to moon boots'
+          expect(event.changed).to include('description')
         end
 
         it "doesn't change attributes changed outside of abstract event" do
@@ -436,7 +436,7 @@ RSpec.describe AbstractEvent, type: :model do
           abstract_event.url = 'youtu.be/LRq_SAuQDec' # "Howdy doodly doo!"
 
           abstract_event.populate_event
-          event.changed.should_not include('url')
+          expect(event.changed).to_not include('url')
         end
       end
     end
@@ -455,8 +455,8 @@ RSpec.describe AbstractEvent, type: :model do
         abstract_event.description = "Who needs shoes when there's no gravity?"
 
         abstract_event.populate_event
-        progenitor.description.should eq "Who needs shoes when there's no gravity?"
-        progenitor.changed.should include('description')
+        expect(progenitor.description).to eq "Who needs shoes when there's no gravity?"
+        expect(progenitor.changed).to include('description')
       end
     end
 
@@ -485,7 +485,7 @@ RSpec.describe AbstractEvent, type: :model do
 
   describe "#tags" do
     it "should be an empty array by default" do
-      AbstractEvent.new.tags.should eq([])
+      expect(AbstractEvent.new.tags).to eq([])
     end
   end
 
@@ -496,19 +496,19 @@ RSpec.describe AbstractEvent, type: :model do
     it "only searches within the current source" do
       existing = create(:abstract_event, :external_id => 'faraway')
       ae = build(:abstract_event, :external_id => 'faraway')
-      ae.find_existing.should be_nil
+      expect(ae.find_existing).to be_nil
     end
 
     it "matches using :external_id attribute" do
       existing = create(:abstract_event, :source => source, :external_id => 'FA')
       ae = build(:abstract_event, :source => source, :external_id => 'FA')
-      ae.find_existing.should eq existing
+      expect(ae.find_existing).to eq existing
     end
 
     it "doesn't attempt any matchers that have blank attributes" do
       create(:abstract_event, :source => source, :external_id => '')
       ae = build(:abstract_event, :source => source, :external_id => '')
-      ae.find_existing.should_not eq abstract_event
+      expect(ae.find_existing).to_not eq abstract_event
     end
 
     it "matches using :title and :start_time attributes" do
@@ -522,7 +522,7 @@ RSpec.describe AbstractEvent, type: :model do
         :start_time => Time.zone.now + 1.day,
       )
 
-      ae.find_existing.should eq existing
+      expect(ae.find_existing).to eq existing
     end
 
     it "matches using :venue_title and :start_time attributes" do
@@ -536,7 +536,7 @@ RSpec.describe AbstractEvent, type: :model do
         :start_time  => Time.zone.now + 1.day,
       )
 
-      ae.find_existing.should eq existing
+      expect(ae.find_existing).to eq existing
     end
 
     it "returns the most recently created match" do
@@ -549,7 +549,7 @@ RSpec.describe AbstractEvent, type: :model do
       create(:abstract_event, :source => source) # filler, won't match
 
       ae = build(:abstract_event, :source => source, :external_id => 'x')
-      ae.find_existing.should eq expected
+      expect(ae.find_existing).to eq expected
     end
   end
 
@@ -560,7 +560,7 @@ RSpec.describe AbstractEvent, type: :model do
     context "when both abstract events have same values" do
       it "should not report having any event field changes" do
         abstract_event.rebase_changed_attributes!(existing)
-        abstract_event.event_attributes_changed?.should be false
+        expect(abstract_event.event_attributes_changed?).to be false
       end
     end
 
@@ -569,7 +569,7 @@ RSpec.describe AbstractEvent, type: :model do
 
       it "should not have any event field changes" do
         abstract_event.rebase_changed_attributes!(existing)
-        abstract_event.event_attributes_changed?.should be false
+        expect(abstract_event.event_attributes_changed?).to be false
       end
     end
 
@@ -578,7 +578,7 @@ RSpec.describe AbstractEvent, type: :model do
 
       it "should report having event field changes" do
         abstract_event.rebase_changed_attributes!(existing)
-        abstract_event.event_attributes_changed?.should be true
+        expect(abstract_event.event_attributes_changed?).to be true
       end
     end
   end
@@ -593,7 +593,7 @@ RSpec.describe AbstractEvent, type: :model do
 
     it "should flag it as being invalid" do
       abstract_event.save_invalid!
-      abstract_event.result.should eq 'invalid'
+      expect(abstract_event.result).to eq 'invalid'
     end
   end
 

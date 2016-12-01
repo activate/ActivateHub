@@ -5,7 +5,7 @@ RSpec.describe OrganizationsController, type: :controller do
   describe "GET 'index'" do
     it "should be successful" do
       get 'index'
-      response.should be_success
+      expect(response).to be_success
     end
   end
 
@@ -14,14 +14,14 @@ RSpec.describe OrganizationsController, type: :controller do
 
     it "should be successful" do
       get 'show', :id => organization.id
-      response.should be_success
+      expect(response).to be_success
     end
   end
 
   describe "GET 'new'" do
     it "should be successful" do
       get 'new'
-      response.should be_success
+      expect(response).to be_success
     end
   end
 
@@ -30,7 +30,7 @@ RSpec.describe OrganizationsController, type: :controller do
 
     it "should be successful" do
       get 'edit', :id => organization.id
-      response.should be_success
+      expect(response).to be_success
     end
   end
 

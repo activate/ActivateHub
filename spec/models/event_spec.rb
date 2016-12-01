@@ -49,32 +49,32 @@ RSpec.describe Event, type: :model do
   describe "in general"  do
     it "should be valid" do
       event = Event.new(:title => "Event title", :start_time => Time.zone.parse('2008.04.12'))
-      event.should be_valid
+      expect(event).to be_valid
     end
 
     it "should add a http:// prefix to urls without one" do
       event = Event.new(:title => "Event title", :start_time => Time.zone.parse('2008.04.12'), :url => 'google.com')
-      event.should be_valid
+      expect(event).to be_valid
     end
 
     describe "#description" do
       it "returns nil if no value" do
         # it used to return "" for a time due to explicit :to_s
-        Event.new.description.should eq nil
+        expect(Event.new.description).to eq nil
       end
     end
 
     describe "#end_time" do
       it "default to start_time if nil" do
         start_time = 1.week.from_now
-        Event.new(:start_time => start_time).end_time.should eq start_time
+        expect(Event.new(:start_time => start_time).end_time).to eq start_time
       end
     end
 
     describe "#title" do
       it "returns nil if no value" do
         # it used to return "" for a time due to explicit :to_s
-        Event.new.title.should eq nil
+        expect(Event.new.title).to eq nil
       end
     end
 
@@ -82,27 +82,27 @@ RSpec.describe Event, type: :model do
 
   describe "when checking time status" do
     it "should be old if event ended before today" do
-      build(:event, :start_time => today - 1.hour).should be_old
+      expect(build(:event, :start_time => today - 1.hour)).to be_old
     end
 
     it "should be current if event is happening today" do
-      build(:event, :start_time => today + 1.hour).should be_current
+      expect(build(:event, :start_time => today + 1.hour)).to be_current
     end
 
     it "should be ongoing if it began before today but ends today or later" do
-      build(:event, :start_time => today - 1.day, :end_time => today + 1.day).should be_ongoing
+      expect(build(:event, :start_time => today - 1.day, :end_time => today + 1.day)).to be_ongoing
     end
 
     it "should be considered a multi-day event if it spans multiple days" do
-      build(:event, :start_time => today - 1.day, :end_time => now + 1.day).should be_multiday
+      expect(build(:event, :start_time => today - 1.day, :end_time => now + 1.day)).to be_multiday
     end
 
     it "should be considered a multi-day event if it crosses a day boundry and is longer than the minimum duration (#{Event::MIN_MULTIDAY_DURATION.inspect})" do
-      Event.new(:start_time => today - 1.second, :end_time => today + Event::MIN_MULTIDAY_DURATION).should be_multiday
+      expect(Event.new(:start_time => today - 1.second, :end_time => today + Event::MIN_MULTIDAY_DURATION)).to be_multiday
     end
 
     it "should not be considered a multi-day event if it crosses a day boundry, but is not longer than the minimum duration (#{Event::MIN_MULTIDAY_DURATION.inspect})" do
-      Event.new(:start_time => today - 1.second, :end_time => today - 1.second + Event::MIN_MULTIDAY_DURATION).should_not be_multiday
+      expect(Event.new(:start_time => today - 1.second, :end_time => today - 1.second + Event::MIN_MULTIDAY_DURATION)).to_not be_multiday
     end
   end
 
@@ -113,15 +113,15 @@ RSpec.describe Event, type: :model do
     end
 
     it "should be taggable" do
-      @event.tag_list.should eq []
+      expect(@event.tag_list).to eq []
     end
 
     it "should just cache tagging if it is a new record" do
-      @event.should_not_receive :save
-      @event.should_not_receive :tag_with
-      @event.should be_new_record
+      expect(@event).to_not receive :save
+      expect(@event).to_not receive :tag_with
+      expect(@event).to be_new_record
       @event.tag_list = @tags
-      @event.tag_list.to_s.should eq @tags
+      expect(@event.tag_list.to_s).to eq @tags
     end
 
     it "should use tags with punctuation" do
@@ -130,7 +130,7 @@ RSpec.describe Event, type: :model do
       @event.save
 
       @event.reload
-      @event.tags.map(&:name).sort.should eq tags.sort
+      expect(@event.tags.map(&:name).sort).to eq tags.sort
     end
 
     it "should not interpret numeric tags as IDs" do
@@ -139,13 +139,13 @@ RSpec.describe Event, type: :model do
       @event.save
 
       @event.reload
-      @event.tags.first.name.should eq "123"
+      expect(@event.tags.first.name).to eq "123"
     end
 
     it "should return a collection of events for a given tag" do
       @event.tag_list = @tags
       @event.save
-      Event.tagged_with('tags').should eq [@event]
+      expect(Event.tagged_with('tags')).to eq [@event]
     end
   end
 
@@ -167,7 +167,7 @@ RSpec.describe Event, type: :model do
                         :description => "EventDescription",
                         :start_time => Time.zone.parse("2008-05-20"),
                         :end_time => Time.zone.parse("2008-05-22"))
-      Event.should_receive(:new).and_return(event)
+      expect(Event).to receive(:new).and_return(event)
 
       abstract_event = AbstractEvent.new(
         :title => "EventTitle",
@@ -176,13 +176,13 @@ RSpec.describe Event, type: :model do
         :end_time => Time.zone.parse("2008-05-22"),
       )
 
-      Event.from_abstract_event(abstract_event).should eq event
+      expect(Event.from_abstract_event(abstract_event)).to eq event
     end
 
     it "should parse an Event into an hCalendar" do
       actual_hcal = @basic_event.to_hcal
       pattern = Regexp.new(@basic_hcal.gsub(/\s+/, '\s+')) # Ignore spacing changes
-      actual_hcal.should match pattern
+      expect(actual_hcal).to match pattern
     end
 
     it "should parse an Event into an iCalendar" do
@@ -190,13 +190,13 @@ RSpec.describe Event, type: :model do
 
       abstract_events = SourceParser.to_abstract_events(:content => actual_ical, :skip_old => false)
 
-      abstract_events.size.should eq 1
+      expect(abstract_events.size).to eq 1
       abstract_event = abstract_events.first
-      abstract_event.title.should eq @basic_event.title
-      abstract_event.url.should eq @basic_event.url
-      abstract_event.description.should be_nil
+      expect(abstract_event.title).to eq @basic_event.title
+      expect(abstract_event.url).to eq @basic_event.url
+      expect(abstract_event.description).to be_nil
 
-      abstract_event.abstract_location.title.should match "#{@basic_event.venue.title}: #{@basic_event.venue.full_address}"
+      expect(abstract_event.abstract_location.title).to match "#{@basic_event.venue.title}: #{@basic_event.venue.full_address}"
     end
 
     it "should parse an Event into an iCalendar without a URL and generate it" do
@@ -206,33 +206,33 @@ RSpec.describe Event, type: :model do
 
       abstract_events = SourceParser.to_abstract_events(:content => actual_ical, :skip_old => false)
 
-      abstract_events.size.should eq 1
+      expect(abstract_events.size).to eq 1
       abstract_event = abstract_events.first
-      abstract_event.title.should eq @basic_event.title
-      abstract_event.url.should eq @basic_event.url
-      abstract_event.description.should match /Imported from: #{generated_url}/
+      expect(abstract_event.title).to eq @basic_event.title
+      expect(abstract_event.url).to eq @basic_event.url
+      expect(abstract_event.description).to match /Imported from: #{generated_url}/
 
-      abstract_event.abstract_location.title.should match "#{@basic_event.venue.title}: #{@basic_event.venue.full_address}"
+      expect(abstract_event.abstract_location.title).to match "#{@basic_event.venue.title}: #{@basic_event.venue.full_address}"
     end
 
   end
 
   describe "when finding duplicates" do
     it "should find all events with duplicate titles" do
-      Event.should_receive(:find_by_sql).with("SELECT DISTINCT a.* from events a, events b WHERE a.id <> b.id AND ( a.title = b.title )")
+      expect(Event).to receive(:find_by_sql).with("SELECT DISTINCT a.* from events a, events b WHERE a.id <> b.id AND ( a.title = b.title )")
       Event.find_duplicates_by(:title)
     end
 
     it "should find all events with duplicate titles and urls" do
-      Event.should_receive(:find_by_sql).with("SELECT DISTINCT a.* from events a, events b WHERE a.id <> b.id AND ( a.title = b.title AND a.url = b.url )")
+      expect(Event).to receive(:find_by_sql).with("SELECT DISTINCT a.* from events a, events b WHERE a.id <> b.id AND ( a.title = b.title AND a.url = b.url )")
       Event.find_duplicates_by([:title,:url])
     end
   end
 
   describe "when finding duplicates by type" do
     def assert_default_find_duplicates_by_type(type)
-      Event.should_receive(:future).and_return 42
-      Event.find_duplicates_by_type(type).should eq({ [] => 42 })
+      expect(Event).to receive(:future).and_return 42
+      expect(Event.find_duplicates_by_type(type)).to eq({ [] => 42 })
     end
 
     it "should find all future events if called with nil" do
@@ -248,7 +248,7 @@ RSpec.describe Event, type: :model do
     end
 
     def assert_specific_find_by_duplicates_by(type, queried)
-      Event.should_receive(:find_duplicates_by).with(queried, {:grouped => true, :where => anything()})
+      expect(Event).to receive(:find_duplicates_by).with(queried, {:grouped => true, :where => anything()})
       Event.find_duplicates_by_type(type)
     end
 
@@ -272,21 +272,21 @@ RSpec.describe Event, type: :model do
 
     it "should fail to validate if start time is nil" do
       @event.start_time = nil
-      @event.should_not be_valid
-      @event.should have(1).error_on(:start_time)
+      expect(@event).to_not be_valid
+      expect(@event).to have(1).error_on(:start_time)
     end
 
     it "should fail to validate if start time is blank" do
       @event.start_time = ""
-      @event.should_not be_valid
-      @event.should have(1).error_on(:start_time)
+      expect(@event).to_not be_valid
+      expect(@event).to have(1).error_on(:start_time)
     end
 
     it "should fail to validate if end_time is earlier than start time " do
       @event.start_time = now
       @event.end_time = @event.start_time - 2.hours
-      @event.save.should be false
-      @event.should have(1).error_on(:end_time)
+      expect(@event.save).to be false
+      expect(@event).to have(1).error_on(:end_time)
     end
 
   end
@@ -300,76 +300,76 @@ RSpec.describe Event, type: :model do
     end
 
     it "should return nil for a NilClass" do
-      Event.time_for(nil).should be_nil
+      expect(Event.time_for(nil)).to be_nil
     end
 
     it "should return time for a String" do
-      Event.time_for(@date_time).should eq @value
+      expect(Event.time_for(@date_time)).to eq @value
     end
 
     it "should return time for an Array of Strings" do
-      Event.time_for([@date, @time]).should eq @value
+      expect(Event.time_for([@date, @time])).to eq @value
     end
 
     it "should return time for a DateTime" do
-      Event.time_for(@value).should eq @value
+      expect(Event.time_for(@value)).to eq @value
     end
 
     it "should return exception for an invalid date expressed as a String" do
-      lambda { Event.time_for("0/0/0") }.should raise_error
+      expect { Event.time_for("0/0/0") }.to raise_error
     end
 
     it "should raise exception for an invalid type" do
-      lambda { Event.time_for(Event) }.should raise_error TypeError
+      expect { Event.time_for(Event) }.to raise_error TypeError
     end
   end
 
   describe "#set_time_on" do
     it "should clear with nil" do
-      Event.new(:start_time => nil).start_time.should be_nil
+      expect(Event.new(:start_time => nil).start_time).to be_nil
     end
 
     it "should set from date String" do
       event = Event.new(:start_time => today.to_date.to_s(:db))
-      event.start_time.should be_a_kind_of ActiveSupport::TimeWithZone
-      event.start_time.should eq today
+      expect(event.start_time).to be_a_kind_of ActiveSupport::TimeWithZone
+      expect(event.start_time).to eq today
     end
 
     it "should set from date-time String" do
       event = Event.new(:start_time => today.localtime.to_s(:db))
-      event.start_time.should be_a_kind_of ActiveSupport::TimeWithZone
-      event.start_time.should eq today
+      expect(event.start_time).to be_a_kind_of ActiveSupport::TimeWithZone
+      expect(event.start_time).to eq today
     end
 
     it "should set from Date" do
       event = Event.new(:start_time => today.to_date)
-      event.start_time.should be_a_kind_of ActiveSupport::TimeWithZone
-      event.start_time.should eq today
+      expect(event.start_time).to be_a_kind_of ActiveSupport::TimeWithZone
+      expect(event.start_time).to eq today
     end
 
     it "should set from DateTime" do
       event = Event.new(:start_time => today.to_datetime)
-      event.start_time.should be_a_kind_of ActiveSupport::TimeWithZone
-      event.start_time.should eq today
+      expect(event.start_time).to be_a_kind_of ActiveSupport::TimeWithZone
+      expect(event.start_time).to eq today
     end
 
     it "should set from TimeWithZone" do
       event = Event.new(:start_time => Time.zone.now.midnight)
-      event.start_time.should be_a_kind_of ActiveSupport::TimeWithZone
-      event.start_time.should eq today
+      expect(event.start_time).to be_a_kind_of ActiveSupport::TimeWithZone
+      expect(event.start_time).to eq today
     end
 
     it "should set from Time" do
       time = today
       event = Event.new(:start_time => time)
-      event.start_time.should be_a_kind_of ActiveSupport::TimeWithZone
-      event.start_time.should eq time
+      expect(event.start_time).to be_a_kind_of ActiveSupport::TimeWithZone
+      expect(event.start_time).to eq time
     end
 
     it "should flag an invalid time" do
       event = build(:event)
       event.start_time = "1/0"
-      event.errors[:start_time].should be_present
+      expect(event.errors[:start_time]).to be_present
     end
   end
 
@@ -381,12 +381,12 @@ RSpec.describe Event, type: :model do
 
         it "associates source topics with event" do
           event.save!
-          event.topic_ids.should include(*source.topic_ids)
+          expect(event.topic_ids).to include(*source.topic_ids)
         end
 
         it "associates source types with event" do
           event.save!
-          event.type_ids.should include(*source.type_ids)
+          expect(event.type_ids).to include(*source.type_ids)
         end
       end
     end
@@ -455,45 +455,45 @@ RSpec.describe Event, type: :model do
 
       describe "events today" do
         it "should include events that started before today and end after today" do
-          @overview[:today].should include @started_before_today_and_ends_after_today
+          expect(@overview[:today]).to include @started_before_today_and_ends_after_today
         end
 
         it "should include events that started earlier today" do
-          @overview[:today].should include @started_midnight_and_continuing_after
+          expect(@overview[:today]).to include @started_midnight_and_continuing_after
         end
 
         it "should not include events that ended before today" do
-          @overview[:today].should_not include @started_and_ended_yesterday
+          expect(@overview[:today]).to_not include @started_and_ended_yesterday
         end
 
         it "should not include events that start tomorrow" do
-          @overview[:today].should_not include @starts_and_ends_tomorrow
+          expect(@overview[:today]).to_not include @starts_and_ends_tomorrow
         end
 
         it "should not include events that ended at midnight today" do
-          @overview[:today].should_not include @started_before_today_and_ends_at_midnight
+          expect(@overview[:today]).to_not include @started_before_today_and_ends_at_midnight
         end
       end
 
       describe "events tomorrow" do
         it "should not include events that start after tomorrow" do
-          @overview[:tomorrow].should_not include @starts_after_tomorrow
+          expect(@overview[:tomorrow]).to_not include @starts_after_tomorrow
         end
       end
 
       describe "determining if we should show the more link" do
         it "should provide :more item if there are events past the future cutoff" do
           event = stub_model(Event)
-          Event.should_receive(:first).with(:order=>"start_time asc", :conditions => ["start_time >= ?", today + 2.weeks]).and_return(event)
+          expect(Event).to receive(:first).with(:order=>"start_time asc", :conditions => ["start_time >= ?", today + 2.weeks]).and_return(event)
 
-          Event.select_for_overview[:more].should eq event
+          expect(Event.select_for_overview[:more]).to eq event
         end
 
         it "should set :more item if there are no events past the future cutoff" do
           event = stub_model(Event)
-          Event.should_receive(:first).with(:order=>"start_time asc", :conditions => ["start_time >= ?", today + 2.weeks]).and_return(event)
+          expect(Event).to receive(:first).with(:order=>"start_time asc", :conditions => ["start_time >= ?", today + 2.weeks]).and_return(event)
 
-          Event.select_for_overview[:more?].should be_blank
+          expect(Event.select_for_overview[:more?]).to be_blank
         end
       end
     end
@@ -504,24 +504,24 @@ RSpec.describe Event, type: :model do
       end
 
       it "should include events that started earlier today" do
-        @future_events.should include @started_midnight_and_continuing_after
+        expect(@future_events).to include @started_midnight_and_continuing_after
       end
 
       it "should include events with no end time that started today" do
-        @future_events.should include @started_today_and_no_end_time
+        expect(@future_events).to include @started_today_and_no_end_time
       end
 
       it "should include events that started before today and ended after today" do
         events = Event.future
-        events.should include @started_before_today_and_ends_after_today
+        expect(events).to include @started_before_today_and_ends_after_today
       end
 
       it "should include events with no end time that started today" do
-        @future_events.should include @started_today_and_no_end_time
+        expect(@future_events).to include @started_today_and_no_end_time
       end
 
       it "should not include events that ended before today" do
-        @future_events.should_not include @started_and_ended_yesterday
+        expect(@future_events).to_not include @started_and_ended_yesterday
       end
     end
 
@@ -541,67 +541,67 @@ RSpec.describe Event, type: :model do
 
       # TODO Consider moving these examples elsewhere because they don't appear to relate to this scope. This comment applies to the examples from here...
       it "should include events that started earlier today" do
-        @future_events_for_this_venue.should include @started_midnight_and_continuing_after
+        expect(@future_events_for_this_venue).to include @started_midnight_and_continuing_after
       end
 
       it "should include events with no end time that started today" do
-        @future_events_for_this_venue.should include @started_today_and_no_end_time
+        expect(@future_events_for_this_venue).to include @started_today_and_no_end_time
       end
 
       it "should include events that started before today and ended after today" do
-        @future_events_for_this_venue.should include @started_before_today_and_ends_after_today
+        expect(@future_events_for_this_venue).to include @started_before_today_and_ends_after_today
       end
 
       it "should not include events that ended before today" do
-        @future_events_for_this_venue.should_not include @started_and_ended_yesterday
+        expect(@future_events_for_this_venue).to_not include @started_and_ended_yesterday
       end
       # TODO ...to here.
 
       it "should not include events for another venue" do
-        @future_events_for_this_venue.should_not include @future_event_another_venue
+        expect(@future_events_for_this_venue).to_not include @future_event_another_venue
       end
 
       it "should not include events with no venue" do
-        @future_events_for_this_venue.should_not include @future_event_no_venue
+        expect(@future_events_for_this_venue).to_not include @future_event_no_venue
       end
     end
 
     describe "for date range" do
       it "should include events that started earlier today" do
         events = Event.within_dates(@today_midnight, @tomorrow)
-        events.should include @started_midnight_and_continuing_after
+        expect(events).to include @started_midnight_and_continuing_after
       end
 
       it "should include events that started before today and end after today" do
         events = Event.within_dates(@today_midnight, @tomorrow)
-        events.should include @started_before_today_and_ends_after_today
+        expect(events).to include @started_before_today_and_ends_after_today
       end
 
       it "should not include past events" do
         events = Event.within_dates(@today_midnight, @tomorrow)
-        events.should_not include @started_and_ended_yesterday
+        expect(events).to_not include @started_and_ended_yesterday
       end
 
       it "should exclude events that start after the end of the range" do
         events = Event.within_dates(@tomorrow, @tomorrow)
-        events.should_not include @started_today_and_no_end_time
+        expect(events).to_not include @started_today_and_no_end_time
       end
     end
   end
 
   describe "when searching" do
     it "should find events" do
-      Event.should_receive(:search).and_return([])
+      expect(Event).to receive(:search).and_return([])
 
-      Event.search("myquery").should be_empty
+      expect(Event.search("myquery")).to be_empty
     end
 
     it "should find events and group them" do
       current_event = mock_model(Event, :current? => true, :duplicate_of_id => nil)
       past_event = mock_model(Event, :current? => false, :duplicate_of_id => nil)
-      Event.should_receive(:search).and_return([current_event, past_event])
+      expect(Event).to receive(:search).and_return([current_event, past_event])
 
-      Event.search_keywords_grouped_by_currentness("myquery").should eq({
+      expect(Event.search_keywords_grouped_by_currentness("myquery")).to eq({
         :current => [current_event],
         :past    => [past_event],
       })
@@ -613,9 +613,9 @@ RSpec.describe Event, type: :model do
       event_O = Event.new(:title => "Ooooooo! Oooooooooooooo!", :start_time => (now + 3.weeks))
       event_o = Event.new(:title => "ommmmmmmmmmm...", :start_time => (now + 4.weeks))
 
-      Event.should_receive(:search).and_return([event_A, event_Z, event_O, event_o])
+      expect(Event).to receive(:search).and_return([event_A, event_Z, event_O, event_o])
 
-      Event.search_keywords_grouped_by_currentness("myquery", :order => 'name').should eq({
+      expect(Event.search_keywords_grouped_by_currentness("myquery", :order => 'name')).to eq({
         :current => [event_A, event_Z, event_O, event_o],
         :past => []
       })
@@ -629,38 +629,38 @@ RSpec.describe Event, type: :model do
     end
 
     it "should not change a venue to a nil venue" do
-      @event.associate_with_venue(nil).should be_nil
+      expect(@event.associate_with_venue(nil)).to be_nil
     end
 
     it "should associate a venue if one wasn't set before" do
-      @event.associate_with_venue(@venue).should eq @venue
+      expect(@event.associate_with_venue(@venue)).to eq @venue
     end
 
     it "should change an existing venue to a different one" do
       @event.venue = create(:venue, :duplicate_of => @venue)
 
-      @event.associate_with_venue(@venue).should eq @venue
+      expect(@event.associate_with_venue(@venue)).to eq @venue
     end
 
     it "should clear an existing venue if given a nil venue" do
       @event.venue = @venue
 
-      @event.associate_with_venue(nil).should be_nil
-      @event.venue.should be_nil
+      expect(@event.associate_with_venue(nil)).to be_nil
+      expect(@event.venue).to be_nil
     end
 
     it "should associate venue by title" do
-      Venue.should_receive(:find_or_initialize_by_title).and_return(@venue)
+      expect(Venue).to receive(:find_or_initialize_by_title).and_return(@venue)
 
-      @event.associate_with_venue(@venue.title).should eq @venue
+      expect(@event.associate_with_venue(@venue.title)).to eq @venue
     end
 
     it "should associate venue by id" do
-      @event.associate_with_venue(@venue.id).should eq @venue
+      expect(@event.associate_with_venue(@venue.id)).to eq @venue
     end
 
     it "should raise an exception if associated with an unknown type" do
-      lambda { @event.associate_with_venue(double('SourceParser')) }.should raise_error TypeError
+      expect { @event.associate_with_venue(double('SourceParser')) }.to raise_error TypeError
     end
 
     describe "and searching" do
@@ -675,9 +675,9 @@ RSpec.describe Event, type: :model do
         event_O.venue = Venue.new(:title => "Oz")
         event_Z.venue = Venue.new(:title => "Zippers and Things")
 
-        Event.should_receive(:search).and_return([event_A, event_Z, event_O, event_o])
+        expect(Event).to receive(:search).and_return([event_A, event_Z, event_O, event_o])
 
-        Event.search_keywords_grouped_by_currentness("myquery", :order => 'venue').should eq({
+        expect(Event.search_keywords_grouped_by_currentness("myquery", :order => 'venue')).to eq({
           :current => [event_A, event_Z, event_O, event_o],
           :past => []
         })
@@ -687,12 +687,12 @@ RSpec.describe Event, type: :model do
 
   describe "with finding duplicates" do
     it "should find all events with duplicate titles" do
-      Event.should_receive(:find_by_sql).with("SELECT DISTINCT a.* from events a, events b WHERE a.id <> b.id AND ( a.title = b.title )")
+      expect(Event).to receive(:find_by_sql).with("SELECT DISTINCT a.* from events a, events b WHERE a.id <> b.id AND ( a.title = b.title )")
       Event.find_duplicates_by(:title )
     end
 
     it "should find all events with duplicate titles and urls" do
-      Event.should_receive(:find_by_sql).with("SELECT DISTINCT a.* from events a, events b WHERE a.id <> b.id AND ( a.title = b.title AND a.url = b.url )")
+      expect(Event).to receive(:find_by_sql).with("SELECT DISTINCT a.* from events a, events b WHERE a.id <> b.id AND ( a.title = b.title AND a.url = b.url )")
       Event.find_duplicates_by([:title,:url])
     end
 
@@ -705,14 +705,14 @@ RSpec.describe Event, type: :model do
 
       it "should find all events that have not been marked as duplicate" do
         non_duplicates = Event.non_duplicates
-        non_duplicates.should include @non_duplicate_event
-        non_duplicates.should_not include @duplicate_event
+        expect(non_duplicates).to include @non_duplicate_event
+        expect(non_duplicates).to_not include @duplicate_event
       end
 
       it "should find all events that have been marked as duplicate" do
         duplicates = Event.marked_duplicates
-        duplicates.should include @duplicate_event
-        duplicates.should_not include @non_duplicate_event
+        expect(duplicates).to include @duplicate_event
+        expect(duplicates).to_not include @non_duplicate_event
       end
     end
   end
@@ -733,40 +733,40 @@ RSpec.describe Event, type: :model do
 
     it "should find duplicate title by title" do
       pre, post = find_duplicates_create_a_clone_and_find_again(:title, {:title => @event.title, :start_time => @event.start_time} )
-      post.size.should eq(pre.size + 2)
+      expect(post.size).to eq(pre.size + 2)
     end
 
     it "should find duplicate title by any" do
       # TODO figure out why the #find_duplicates_create_a_clone_and_find_again isn't giving expected results and a workaround was needed.
       #pre, post = find_duplicates_create_a_clone_and_find_again(:any, {:title => @event.title, :start_time => @event.start_time} )
-      #post.size.should eq(pre.size + 2)
+      #expect(post.size).to eq(pre.size + 2)
       dup_title = Event.create!({:title => @event.title, :start_time => @event.start_time + 1.minute})
-      Event.find_duplicates_by(:any).should include dup_title
+      expect(Event.find_duplicates_by(:any)).to include dup_title
     end
 
     it "should not find duplicate title by url" do
       pre, post = find_duplicates_create_a_clone_and_find_again(:url, {:title => @event.title, :start_time => @event.start_time} )
-      post.size.should eq pre.size
+      expect(post.size).to eq pre.size
     end
 
     it "should find complete duplicates by all" do
       pre, post = find_duplicates_create_a_clone_and_find_again(:all, @event.attributes)
-      post.size.should eq(pre.size + 2)
+      expect(post.size).to eq(pre.size + 2)
     end
 
     it "should not find incomplete duplicates by all" do
       pre, post = find_duplicates_create_a_clone_and_find_again(:all, @event.attributes.merge(:title => "SpaceCube", :start_time => @event.start_time ))
-      post.size.should eq pre.size
+      expect(post.size).to eq pre.size
     end
 
     it "should find duplicate for matching multiple fields" do
       pre, post = find_duplicates_create_a_clone_and_find_again([:title, :start_time], {:title => @event.title, :start_time => @event.start_time })
-      post.size.should eq(pre.size + 2)
+      expect(post.size).to eq(pre.size + 2)
     end
 
     it "should not find duplicates for mismatching multiple fields" do
       pre, post = find_duplicates_create_a_clone_and_find_again([:title, :start_time], {:title => "SpaceCube", :start_time => @event.start_time })
-      post.size.should eq pre.size
+      expect(post.size).to eq pre.size
     end
   end
 
@@ -782,11 +782,11 @@ RSpec.describe Event, type: :model do
       clone.tag_list.replace %w[second third] # duplicate event also contains one duplicate tag, and one unique tag
       clone.save!
       clone.reload
-      clone.should_not be_duplicate
+      expect(clone).to_not be_duplicate
 
       Event.squash(:master => @event, :duplicates => clone)
-      @event.tag_list.to_a.sort.should eq %w[first second third] # master now contains all three tags
-      clone.duplicate_of.should eq @event
+      expect(@event.tag_list.to_a.sort).to eq %w[first second third] # master now contains all three tags
+      expect(clone.duplicate_of).to eq @event
     end
   end
 
@@ -800,35 +800,35 @@ RSpec.describe Event, type: :model do
     end
 
     it "should recognize a master" do
-      @master.should be_a_master
+      expect(@master).to be_a_master
     end
 
     it "should recognize a slave" do
-      @slave1.should be_a_slave
+      expect(@slave1).to be_a_slave
     end
 
     it "should not think that a slave is a master" do
-      @slave2.should_not be_a_master
+      expect(@slave2).to_not be_a_master
     end
 
     it "should not think that a master is a slave" do
-      @master.should_not be_a_slave
+      expect(@master).to_not be_a_slave
     end
 
     it "should return the progenitor of a child" do
-      @slave1.progenitor.should eq @master
+      expect(@slave1.progenitor).to eq @master
     end
 
     it "should return the progenitor of a grandchild" do
-      @slave2.progenitor.should eq @master
+      expect(@slave2.progenitor).to eq @master
     end
 
     it "should return a master as its own progenitor" do
-      @master.progenitor.should eq @master
+      expect(@master.progenitor).to eq @master
     end
 
     it "should return a marked duplicate as progenitor if it is orphaned"  do
-      @orphan.progenitor.should eq @orphan
+      expect(@orphan.progenitor).to eq @orphan
     end
 
     it "should return the progenitor if an imported event has an exact duplicate" do
@@ -836,7 +836,7 @@ RSpec.describe Event, type: :model do
       @abstract_event.title = @slave2.title
       @abstract_event.start_time = @slave2.start_time.to_s
 
-      Event.from_abstract_event(@abstract_event).should eq @master
+      expect(Event.from_abstract_event(@abstract_event)).to eq @master
     end
 
     it "should raise a DuplicateCheckingError if duplicate_of loop" do
@@ -847,16 +847,16 @@ RSpec.describe Event, type: :model do
 
   describe "when versioning" do
     it "should have versions" do
-      Event.new.versions.should eq []
+      expect(Event.new.versions).to eq []
     end
 
     it "should create a new version after updating" do
       event = Event.create!(:title => "Event title", :start_time => Time.zone.parse('2008.04.12'))
-      event.versions.count.should eq 1
+      expect(event.versions.count).to eq 1
 
       event.title = "New Title"
       event.save!
-      event.versions.count.should eq 2
+      expect(event.versions.count).to eq 2
     end
   end
 
@@ -867,17 +867,17 @@ RSpec.describe Event, type: :model do
 
     it "should not molest contents without carriage-returns" do
       @event.description         = "foo\nbar"
-      @event.description.should eq "foo\nbar"
+      expect(@event.description).to eq "foo\nbar"
     end
 
     it "should replace CRLF with LF" do
       @event.description         = "foo\r\nbar"
-      @event.description.should eq "foo\nbar"
+      expect(@event.description).to eq "foo\nbar"
     end
 
     it "should replace stand-alone CR with LF" do
       @event.description         = "foo\rbar"
-      @event.description.should eq "foo\nbar"
+      expect(@event.description).to eq "foo\nbar"
     end
   end
 
@@ -921,21 +921,21 @@ RSpec.describe Event, type: :model do
     end
 
     it "should produce parsable iCal output" do
-      lambda { ical_roundtrip( build(:event) ) }.should_not raise_error
+      expect { ical_roundtrip( build(:event) ) }.to_not raise_error
     end
 
     it "should represent an event without an end time as a 1-hour block" do
       event = build(:event, :start_time => now, :end_time => nil)
 
       rt = ical_roundtrip(event)
-      (rt.dtend - rt.dtstart).should eq 1.hour
+      expect(rt.dtend - rt.dtstart).to eq 1.hour
     end
 
     it "should set the appropriate end time if one is given" do
       event = build(:event, :start_time => now, :end_time => now + 2.hours)
 
       rt = ical_roundtrip(event)
-      (rt.dtend - rt.dtstart).should eq 2.hours
+      expect(rt.dtend - rt.dtstart).to eq 2.hours
     end
 
     describe "when comparing Event's attributes to its iCalendar output" do
@@ -957,9 +957,9 @@ RSpec.describe Event, type: :model do
           case model_value
           when ActiveSupport::TimeWithZone
             # Compare raw time because one is using local time zone, while other is using UTC time.
-            model_value.to_i.should eq ical_value.to_i
+            expect(model_value.to_i).to eq ical_value.to_i
           else
-            model_value.should eq ical_value
+            expect(model_value).to eq ical_value
           end
         end
       end
@@ -967,28 +967,28 @@ RSpec.describe Event, type: :model do
 
     it "should call the URL helper to generate a UID" do
       event = build(:event)
-      ical_roundtrip(event, :url_helper => lambda {|e| "UID'D!" }).uid.should eq "UID'D!"
+      expect(ical_roundtrip(event, :url_helper => lambda {|e| "UID'D!" }).uid).to eq "UID'D!"
     end
 
     it "should strip HTML from the description" do
       event = create(:event, :description => "<blink>OMFG HTML IS TEH AWESOME</blink>")
-      ical_roundtrip(event).description.should_not include "<blink>"
+      expect(ical_roundtrip(event).description).to_not include "<blink>"
     end
 
     it "should include tags in the description" do
       event = build(:event)
       event.tag_list = "tags, folksonomy, categorization"
-      ical_roundtrip(event).description.should include event.tag_list.to_s
+      expect(ical_roundtrip(event).description).to include event.tag_list.to_s
     end
 
     it "should leave URL blank if no URL is provided" do
       event = build(:event, :url => nil)
-      ical_roundtrip(event).url.should be_nil
+      expect(ical_roundtrip(event).url).to be_nil
     end
 
     it "should have Source URL if URL helper is given)" do
       event = build(:event)
-      ical_roundtrip(event, :url_helper => lambda{|e| "FAKE"} ).description.should match /FAKE/
+      expect(ical_roundtrip(event, :url_helper => lambda{|e| "FAKE"} ).description).to match /FAKE/
     end
 
     it "should create multi-day entries for multi-day events" do
@@ -997,8 +997,8 @@ RSpec.describe Event, type: :model do
       parsed_event = ical_roundtrip( event )
 
       start_time = Date.today
-      parsed_event.dtstart.should eq start_time
-      parsed_event.dtend.should eq(start_time + 5.days)
+      expect(parsed_event.dtstart).to eq start_time
+      expect(parsed_event.dtend).to eq(start_time + 5.days)
     end
 
     describe "sequence" do
@@ -1009,22 +1009,15 @@ RSpec.describe Event, type: :model do
       it "should set an initial sequence on a new event" do
         event = create(:event)
         ical = event_to_ical(event)
-        ical.sequence.should eq 1
+        expect(ical.sequence).to eq 1
       end
 
       it "should increment the sequence if it is updated" do
         event = create(:event)
         event.update_attribute(:title, "Update 1")
         ical = event_to_ical(event)
-        ical.sequence.should eq 2
+        expect(ical.sequence).to eq 2
       end
-
-      # it "should offset the squence based the global SECRETS.icalendar_sequence_offset" do
-        # SECRETS.should_receive(:icalendar_sequence_offset).and_return(41)
-        # event = build(:event)
-        # ical = event_to_ical(event)
-        # ical.sequence.should eq 42
-      # end
     end
 
     describe "- the headers" do
@@ -1033,15 +1026,15 @@ RSpec.describe Event, type: :model do
       end
 
       it "should include the calendar name" do
-        @data.should match /\sX-WR-CALNAME:#{SETTINGS.name}\s/
+        expect(@data).to match /\sX-WR-CALNAME:#{SETTINGS.name}\s/
       end
 
       it "should include the method" do
-        @data.should match /\sMETHOD:PUBLISH\s/
+        expect(@data).to match /\sMETHOD:PUBLISH\s/
       end
 
       it "should include the scale" do
-        @data.should match /\sCALSCALE:Gregorian\s/i
+        expect(@data).to match /\sCALSCALE:Gregorian\s/i
       end
     end
 
@@ -1049,19 +1042,19 @@ RSpec.describe Event, type: :model do
 
   describe "sorting labels" do
     it "should have sorting labels" do
-      Event::SORTING_LABELS.should be_a_kind_of Hash
+      expect(Event::SORTING_LABELS).to be_a_kind_of Hash
     end
 
     it "should display human-friendly label for a known value" do
-      Event::sorting_label_for('name').should eq 'Event Name'
+      expect(Event::sorting_label_for('name')).to eq 'Event Name'
     end
 
     it "should display a default label" do
-      Event::sorting_label_for(nil).should eq 'Relevance'
+      expect(Event::sorting_label_for(nil)).to eq 'Relevance'
     end
 
     it "should display a different default label when searching by tag" do
-      Event::sorting_label_for(nil, true).should eq 'Date'
+      expect(Event::sorting_label_for(nil, true)).to eq 'Date'
     end
   end
 

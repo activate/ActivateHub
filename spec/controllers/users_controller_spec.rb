@@ -7,7 +7,7 @@ RSpec.describe UsersController, type: :controller do
       user = create(:user)
       get :show, format: user.id
 
-      response.should be_success
+      expect(response).to be_success
       expect(assigns(:user)).to eq(user)
     end
   end

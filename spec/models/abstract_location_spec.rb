@@ -27,7 +27,7 @@ RSpec.describe AbstractLocation, type: :model do
       it "should return only invalid abstract location" do
         create(:abstract_location)
         build_list(:abstract_location, 2, :invalid).each(&:save_invalid!)
-        AbstractLocation.invalid.size.should eq 2
+        expect(AbstractLocation.invalid.size).to eq 2
       end
     end
   end
@@ -36,7 +36,7 @@ RSpec.describe AbstractLocation, type: :model do
 
   describe "::VENUE_ATTRIBUTES" do
     it "includes expected attributes" do
-      AbstractLocation::VENUE_ATTRIBUTES.should include(
+      expect(AbstractLocation::VENUE_ATTRIBUTES).to include(
         :url, :title, :description, :address, :street_address, :locality, :region,
         :postal_code, :country, :latitude, :longitude, :email, :telephone
       )
@@ -52,19 +52,19 @@ RSpec.describe AbstractLocation, type: :model do
     it "only searches within the current source" do
       existing = create(:abstract_location, :external_id => 'Rx448354')
       aloc = build(:abstract_location, :external_id => 'Rx448354')
-      aloc.find_existing.should be_nil
+      expect(aloc.find_existing).to be_nil
     end
 
     it "matches using :external_id attribute" do
       existing = create(:abstract_location, :source => source, :external_id => 'ZF')
       aloc = build(:abstract_location, :source => source, :external_id => 'ZF')
-      aloc.find_existing.should eq existing
+      expect(aloc.find_existing).to eq existing
     end
 
     it "doesn't attempt any matchers that have blank attributes" do
       create(:abstract_location, :source => source, :external_id => '')
       aloc = build(:abstract_location, :source => source, :external_id => '')
-      aloc.find_existing.should_not eq abstract_location
+      expect(aloc.find_existing).to_not eq abstract_location
     end
 
     it "matches using :title attribute" do
@@ -76,7 +76,7 @@ RSpec.describe AbstractLocation, type: :model do
         :title => "The mind of Schrodinger's cat",
       )
 
-      aloc.find_existing.should eq existing
+      expect(aloc.find_existing).to eq existing
     end
 
     it "matches using address fields when :street_address is present" do
@@ -93,7 +93,7 @@ RSpec.describe AbstractLocation, type: :model do
         # inc. country is overkill as almost guaranteed uniq without
       )
 
-      aloc.find_existing.should eq existing
+      expect(aloc.find_existing).to eq existing
     end
 
     it "doesn't match using address fields when :street_address is blank" do
@@ -110,7 +110,7 @@ RSpec.describe AbstractLocation, type: :model do
         # inc. country is overkill as almost guaranteed uniq without
       )
 
-      aloc.find_existing.should be_nil
+      expect(aloc.find_existing).to be_nil
     end
 
     it "returns the most recently created match" do
@@ -123,7 +123,7 @@ RSpec.describe AbstractLocation, type: :model do
       create(:abstract_location, :source => source) # filler, won't match
 
       aloc = build(:abstract_location, :source => source, :external_id => 'k')
-      aloc.find_existing.should eq expected
+      expect(aloc.find_existing).to eq expected
     end
   end
 
@@ -136,11 +136,11 @@ RSpec.describe AbstractLocation, type: :model do
       end
 
       before(:each) do
-        AbstractLocation.any_instance.stub(:find_existing => existing)
+        allow_any_instance_of(AbstractLocation).to receive(:find_existing).and_return(existing)
       end
 
       it "should attempt a rebase" do
-        abstract_location.should_receive(:rebase_changed_attributes!).with(existing)
+        expect(abstract_location).to receive(:rebase_changed_attributes!).with(existing)
         abstract_location.import!
       end
 
@@ -158,13 +158,13 @@ RSpec.describe AbstractLocation, type: :model do
 
         it "set the :result attribute to 'updated'" do
           abstract_location.tap(&:import!).reload # ensure it's persisted
-          abstract_location.result.should eq 'updated'
+          expect(abstract_location.result).to eq 'updated'
         end
 
         context "has an associated venue" do
           it "populates and saves the venue" do
             expect {
-              abstract_location.should_receive(:populate_venue).and_call_original
+              expect(abstract_location).to receive(:populate_venue).and_call_original
               abstract_location.import!
             }.to change { existing.venue.reload.description }
           end
@@ -200,7 +200,7 @@ RSpec.describe AbstractLocation, type: :model do
 
         it "sets the :result attribute to 'unchanged'" do
           abstract_location.import!
-          abstract_location.result.should eq 'unchanged'
+          expect(abstract_location.result).to eq 'unchanged'
         end
 
         it "sets the id to the existing abstract location" do
@@ -217,7 +217,7 @@ RSpec.describe AbstractLocation, type: :model do
       end
 
       it "should not rebase the location" do
-        abstract_location.should_not_receive :rebase_changed_attributes!
+        expect(abstract_location).to_not receive :rebase_changed_attributes!
         abstract_location.import!
       end
 
@@ -227,7 +227,7 @@ RSpec.describe AbstractLocation, type: :model do
 
       it "set the :result attribute to 'created'" do
         abstract_location.tap(&:import!).reload # ensure it's persisted
-        abstract_location.result.should eq 'created'
+        expect(abstract_location.result).to eq 'created'
       end
 
       context "has invalid attributes" do
@@ -247,13 +247,13 @@ RSpec.describe AbstractLocation, type: :model do
 
     it "should return the venue object" do
       venue = abstract_location.populate_venue
-      venue.should eq abstract_location.venue
+      expect(venue).to eq abstract_location.venue
     end
 
     context "no associated venue" do
       it "should initialize a new venue object" do
         abstract_location.populate_venue
-        abstract_location.venue.should_not be_nil
+        expect(abstract_location.venue).to_not be_nil
       end
 
       it "should not save the venue" do
@@ -264,12 +264,12 @@ RSpec.describe AbstractLocation, type: :model do
       it "should populate venue with venue attributes" do
         abstract_location.populate_venue
         changed = abstract_location.venue.changed
-        changed.should include(*venue_attributes)
+        expect(changed).to include(*venue_attributes)
       end
 
       it "should associate venue with abstract location's source" do
         abstract_location.populate_venue
-        abstract_location.venue.source.should eq abstract_location.source
+        expect(abstract_location.venue.source).to eq abstract_location.source
       end
     end
 
@@ -282,8 +282,8 @@ RSpec.describe AbstractLocation, type: :model do
       end
 
       it "should not save the venue" do
-        venue.should_not_receive :save
-        venue.should_not_receive :save!
+        expect(venue).to_not receive :save
+        expect(venue).to_not receive :save!
         abstract_location.populate_venue
       end
 
@@ -292,7 +292,7 @@ RSpec.describe AbstractLocation, type: :model do
 
         it "should not change the venue" do
           venue = abstract_location.populate_venue
-          venue.changed?.should be false
+          expect(venue.changed?).to be false
         end
       end
 
@@ -305,8 +305,8 @@ RSpec.describe AbstractLocation, type: :model do
           abstract_location.description = 'Classified'
 
           abstract_location.populate_venue
-          venue.description.should eq 'Classified'
-          venue.changed.should include('description')
+          expect(venue.description).to eq 'Classified'
+          expect(venue.changed).to include('description')
         end
 
         it "doesn't change attributes changed outside of abstract location" do
@@ -319,7 +319,7 @@ RSpec.describe AbstractLocation, type: :model do
           abstract_location.url = 'http://bit.ly/1hdhFhW' # yes, yes it does
 
           abstract_location.populate_venue
-          venue.changed.should_not include('url')
+          expect(venue.changed).to_not include('url')
         end
       end
     end
@@ -338,8 +338,8 @@ RSpec.describe AbstractLocation, type: :model do
         abstract_location.description = 'Description missing, reward offered!'
 
         abstract_location.populate_venue
-        progenitor.description.should eq 'Description missing, reward offered!'
-        progenitor.changed.should include('description')
+        expect(progenitor.description).to eq 'Description missing, reward offered!'
+        expect(progenitor.changed).to include('description')
       end
     end
 
@@ -373,7 +373,7 @@ RSpec.describe AbstractLocation, type: :model do
     context "when both abstract locations have same values" do
       it "should not report having any venue field changes" do
         abstract_location.rebase_changed_attributes!(existing)
-        abstract_location.venue_attributes_changed?.should be false
+        expect(abstract_location.venue_attributes_changed?).to be false
       end
     end
 
@@ -382,7 +382,7 @@ RSpec.describe AbstractLocation, type: :model do
 
       it "should not have any venue field changes" do
         abstract_location.rebase_changed_attributes!(existing)
-        abstract_location.venue_attributes_changed?.should be false
+        expect(abstract_location.venue_attributes_changed?).to be false
       end
     end
 
@@ -391,14 +391,14 @@ RSpec.describe AbstractLocation, type: :model do
 
       it "should report having venue field changes" do
         abstract_location.rebase_changed_attributes!(existing)
-        abstract_location.venue_attributes_changed?.should be true
+        expect(abstract_location.venue_attributes_changed?).to be true
       end
     end
   end
 
   describe "#tags" do
     it "should be an empty array by default" do
-      AbstractLocation.new.tags.should eq([])
+      expect(AbstractLocation.new.tags).to eq([])
     end
   end
 
@@ -412,7 +412,7 @@ RSpec.describe AbstractLocation, type: :model do
 
     it "should flag it as being invalid" do
       abstract_location.save_invalid!
-      abstract_location.result.should eq 'invalid'
+      expect(abstract_location.result).to eq 'invalid'
     end
   end
 
@@ -420,31 +420,31 @@ RSpec.describe AbstractLocation, type: :model do
     subject(:abstract_location) { AbstractLocation.new } # has no changes
 
     it "is empty when nothing changes" do
-      abstract_location.venue_attributes_changed.should eq []
+      expect(abstract_location.venue_attributes_changed).to eq []
     end
 
     it "is empty when a non venue attribute changes" do
       abstract_location.raw_venue = 'Where spiders the weave fairy floss'
-      abstract_location.venue_attributes_changed.should eq []
+      expect(abstract_location.venue_attributes_changed).to eq []
     end
 
     AbstractLocation::VENUE_ATTRIBUTES.each do |attribute_name|
       it "includes attribute name  when #{attribute_name} changes" do
         abstract_location.send("#{attribute_name}=", :foo)
-        abstract_location.venue_attributes_changed.should eq [attribute_name]
+        expect(abstract_location.venue_attributes_changed).to eq [attribute_name]
       end
     end
   end
 
   describe "#venue_attributes_changed?" do
     it "is true when #venue_attributes_changed is not empty" do
-      abstract_location.stub(:venue_attributes_changed => [:title, :description])
-      abstract_location.venue_attributes_changed?.should be true
+      allow(abstract_location).to receive(:venue_attributes_changed).and_return([:title, :description])
+      expect(abstract_location.venue_attributes_changed?).to be true
     end
 
     it "is false when #venue_attributes_changed is empty" do
-      abstract_location.stub(:venue_attributes_changed => [])
-      abstract_location.venue_attributes_changed?.should be false
+      allow(abstract_location).to receive(:venue_attributes_changed).and_return([])
+      expect(abstract_location.venue_attributes_changed?).to be false
     end
   end
 

@@ -19,33 +19,33 @@ RSpec.describe DirtyAttrAccessor do
 
   describe "::dirty_attr_accessor" do
     it "sets up readers for all args" do
-      boat_ride.should respond_to :top_speed
-      boat_ride.should respond_to :llamas_sighted
+      expect(boat_ride).to respond_to :top_speed
+      expect(boat_ride).to respond_to :llamas_sighted
     end
 
     it "sets up writer for all args" do
-      boat_ride.should respond_to :top_speed=
-      boat_ride.should respond_to :llamas_sighted=
+      expect(boat_ride).to respond_to :top_speed=
+      expect(boat_ride).to respond_to :llamas_sighted=
     end
   end
 
   describe "#llamas_sighted (attr reader)" do
     it "returns the assigned value" do
       boat_ride.llamas_sighted = 6
-      boat_ride.llamas_sighted.should eq 6
+      expect(boat_ride.llamas_sighted).to eq 6
     end
   end
 
   describe "#llamas_sighted= (attr writer)" do
     it "adds the attribute to list of changed attributes" do
       boat_ride.llamas_sighted = 7_141_000_000
-      boat_ride.changed_attributes.should include('llamas_sighted')
+      expect(boat_ride.changed_attributes).to include('llamas_sighted')
     end
 
     it "removes attr from changed attributes when orig value restored" do
       boat_ride.llamas_sighted = 47
       boat_ride.llamas_sighted = nil
-      boat_ride.changed_attributes.should_not include('llamas_sighted')
+      expect(boat_ride.changed_attributes).to_not include('llamas_sighted')
     end
   end
 
@@ -63,7 +63,7 @@ RSpec.describe DirtyAttrAccessor do
 
     it "clears the changed flag" do
       boat_ride.reset_llamas_sighted!
-      boat_ride.llamas_sighted_changed?.should be false
+      expect(boat_ride.llamas_sighted_changed?).to be false
     end
   end
 
@@ -87,7 +87,7 @@ RSpec.describe DirtyAttrAccessor do
     boat_ride.changed_attributes.clear
 
     boat_ride.llamas_sighted = 40_124 # wat?
-    boat_ride.llamas_sighted_was.should eq 216
+    expect(boat_ride.llamas_sighted_was).to eq 216
   end
 
 end
