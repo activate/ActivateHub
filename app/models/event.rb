@@ -23,6 +23,9 @@
 # == Event
 #
 # A model representing a calendar event.
+
+require 'loofah/helpers'
+
 class Event < ActiveRecord::Base
   include SearchEngine
   include AssociatedVenues
@@ -401,7 +404,7 @@ EOF
               d << "\n\n Description:\n"
             end
 
-            d << Loofah::Helpers::strip_tags(item.description) if item.description.present?
+            d << Loofah::Helpers.strip_tags(item.description) if item.description.present?
             d << "\n\nTags: #{item.tag_list}" unless item.tag_list.blank?
             d << "\n\nImported from: #{opts[:url_helper].call(item)}" if opts[:url_helper]
           end

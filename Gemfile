@@ -18,7 +18,7 @@ end
 case defined?(DB_ADAPTER) ? DB_ADAPTER : ENV['DB_ADAPTER'] || 'sqlite3'
   when 'custom'     then # will load gems manually
   when 'postgresql' then # will always get installed, see below
-  when 'mysql'      then gem 'mysql2', '~> 0.3.11'
+  when 'mysql'      then gem 'mysql2'
   when 'sqlite3'    then gem 'sqlite3'
   else raise "unknown database adapter: #{ENV['DB_ADAPTER']}"
 end
@@ -29,41 +29,38 @@ gem 'pg' unless defined?(DB_ADAPTER) && DB_ADAPTER != 'postgresql'
 
 #---[ Core Gems ]-----------------------------------------------------------
 
-gem 'thin', '~> 1.5.1'
+gem 'thin'
 
 # Run-time dependencies
 gem 'rails', '~> 3.2.16'
-gem 'rails_autolink', '1.1.3'
-gem 'nokogiri', '1.5.10'
-gem 'columnize', '0.3.6'
-gem 'rdoc', '3.12.2', :require => false
-gem 'geokit', '1.6.5'
-gem 'htmlentities', '4.3.1'
-gem 'paper_trail', '2.7.2'
-gem 'ri_cal', '0.8.8'
-gem 'rubyzip', '0.9.9', :require =>  'zip/zip'
-gem 'kaminari', '~> 0.14'
-gem 'httparty', '0.11.0'
+gem 'rails_autolink'
+gem 'nokogiri'
+gem 'columnize'
+gem 'rdoc', :require => false
+gem 'geokit'
+gem 'htmlentities'
+gem 'paper_trail'
+gem 'ri_cal'
+gem 'rubyzip'
+gem 'kaminari'
+gem 'httparty'
 gem 'multi_json' # Use whichever version 'httparty' wants, needed for our specs
-gem 'loofah', '1.2.1'
-# NOTE: 'loofah-activerecord' doesn't support Rails 3.2, so use my fork:
-gem 'loofah-activerecord', :git => 'https://github.com/igal/loofah-activerecord.git', :branch => 'with_rails_3.1_and_3.2'
-gem 'bluecloth', '2.2.0'
-gem 'formtastic', '~> 2.2.1'
-# validation_reflection 1.0.0 doesn't support Rails 3.2, so use unofficial patches:
-gem 'validation_reflection', :git => 'https://github.com/ncri/validation_reflection.git', :ref => '60320e6beb088808fd625a8d958dbd0d2661d494'
-gem 'acts-as-taggable-on', '2.4.1'
-gem 'jquery-rails', '2.1'
-gem 'progress_bar', '1.0.0'
-gem 'exception_notification', '2.6.1'
+gem 'loofah'
+gem 'loofah-activerecord'
+gem 'bluecloth'
+gem 'formtastic'
+gem 'acts-as-taggable-on'
+gem 'jquery-rails'
+gem 'progress_bar'
+gem 'exception_notification'
 gem 'rails3-jquery-autocomplete'
 gem 'haml'
 gem 'devise'
 gem 'dalli'
-gem 'cache_digests', '~> 0.3.1'
-gem 'font-awesome-rails', '3.2.1.3'
+gem 'cache_digests'
+gem 'font-awesome-rails'
 
-gem 'paper_trail_manager', :git => 'https://github.com/dhedlund/paper_trail_manager.git', :ref => 'ba8e2dafb3d196950cdc62949b197a779e491779'
+gem 'paper_trail_manager'
 # gem 'paper_trail_manager', :path => '../paper_trail_manager'
 # gem 'paper_trail_manager', '>= 0.2.0'
 
@@ -92,12 +89,12 @@ group :development, :test do
   gem 'faker' # Used by db/seeds.rb
   gem 'spork'
 
-  # Do not install these interactive libraries onto the continuous integration server.
-  unless ENV['CI'] || ENV['TRAVIS']
-    # Deployment
-    gem 'capistrano', '2.12.0'
-    gem 'capistrano-ext', '1.2.1'
-  end
+# # Do not install these interactive libraries onto the continuous integration server.
+# unless ENV['CI'] || ENV['TRAVIS']
+#   # Deployment
+#   gem 'capistrano', '2.12.0'
+#   gem 'capistrano-ext', '1.2.1'
+# end
 end
 
 group :test do
@@ -121,8 +118,8 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails'
+  gem 'coffee-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer', :platforms => :ruby
@@ -130,7 +127,7 @@ group :assets do
   # Minify assets.  Requires a javascript runtime, such as 'therubyracer'
   # above. You will also need to set 'config.assets.compress' to true in
   # config/environments/production.rb
-  gem 'uglifier', '>= 1.0.3'
+  gem 'uglifier'
 end
 
 # Some dependencies are activated through server settings.
@@ -138,7 +135,6 @@ require "#{File.dirname(__FILE__)}/lib/secrets_reader"
 secrets = SecretsReader.read(:silent => true)
 case secrets.search_engine
 when 'sunspot'
-  sunspot_version = '1.3.3'
-  gem 'sunspot_rails', sunspot_version
-  gem 'sunspot_solr',  sunspot_version
+  gem 'sunspot_rails'
+  gem 'sunspot_solr'
 end

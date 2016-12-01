@@ -241,7 +241,7 @@ class Venue < ActiveRecord::Base
     # avoid [re]geocoding when nothing has changed
     return unless location.blank? || geocode_address_changed?
 
-    geo = GeoKit::Geocoders::MultiGeocoder.geocode(geocode_address)
+    geo = Geokit::Geocoders::MultiGeocoder.geocode(geocode_address)
     if geo.success
       self.latitude       = geo.lat
       self.longitude      = geo.lng

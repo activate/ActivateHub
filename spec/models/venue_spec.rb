@@ -250,7 +250,7 @@ RSpec.describe "Venue geocoding" do
 
   it "should geocode automatically on save" do
     Venue.with_geocoding do
-      expect(GeoKit::Geocoders::MultiGeocoder).to receive(:geocode).once.and_return(@geo_success)
+      expect(Geokit::Geocoders::MultiGeocoder).to receive(:geocode).once.and_return(@geo_success)
       @venue.save
     end
   end
@@ -258,7 +258,7 @@ RSpec.describe "Venue geocoding" do
   it "shouldn't geocode automatically unless there's an address" do
     Venue.with_geocoding do
       @venue.address = ""
-      expect(GeoKit::Geocoders::MultiGeocoder).to_not receive(:geocode)
+      expect(Geokit::Geocoders::MultiGeocoder).to_not receive(:geocode)
       @venue.save
     end
   end
@@ -266,21 +266,21 @@ RSpec.describe "Venue geocoding" do
   it "shouldn't geocode automatically if already geocoded" do
     Venue.with_geocoding do
       @venue.latitude = @venue.longitude = 0.0
-      expect(GeoKit::Geocoders::MultiGeocoder).to_not receive(:geocode)
+      expect(Geokit::Geocoders::MultiGeocoder).to_not receive(:geocode)
       @venue.save
     end
   end
 
   it "shouldn't fail if the geocoder returns failure" do
     Venue.with_geocoding do
-      expect(GeoKit::Geocoders::MultiGeocoder).to receive(:geocode).once.and_return(@geo_failure)
+      expect(Geokit::Geocoders::MultiGeocoder).to receive(:geocode).once.and_return(@geo_failure)
       @venue.save
     end
   end
 
   it "should fill in empty addressing fields" do
     Venue.with_geocoding do
-      expect(GeoKit::Geocoders::MultiGeocoder).to receive(:geocode).once.and_return(@geo_success)
+      expect(Geokit::Geocoders::MultiGeocoder).to receive(:geocode).once.and_return(@geo_success)
       @venue.save
       expect(@venue.street_address).to eq @geo_success.street_address
       expect(@venue.locality).to eq @geo_success.city
@@ -292,7 +292,7 @@ RSpec.describe "Venue geocoding" do
   it "should leave non-empty addressing fields alone" do
     Venue.with_geocoding do
       @venue.locality = "Cleveland"
-      expect(GeoKit::Geocoders::MultiGeocoder).to receive(:geocode).once.and_return(@geo_success)
+      expect(Geokit::Geocoders::MultiGeocoder).to receive(:geocode).once.and_return(@geo_success)
       @venue.save
       expect(@venue.locality).to eq "Cleveland"
     end

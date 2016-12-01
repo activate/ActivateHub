@@ -17,15 +17,15 @@
 # Defaults to true.
 # Formtastic::FormBuilder.include_blank_for_select_by_default = true
 
-# Set the string that will be appended to the labels/fieldsets which are required
+# Set the string that will be appended to the labels/fieldsets which are required.
 # It accepts string or procs and the default is a localized version of
 # '<abbr title="required">*</abbr>'. In other words, if you configure formtastic.required
 # in your locale, it will replace the abbr title properly. But if you don't want to use
-# abbr tag, you can simply give a string as below
+# abbr tag, you can simply give a string as below.
 # Formtastic::FormBuilder.required_string = "(required)"
 
-# Set the string that will be appended to the labels/fieldsets which are optional
-# Defaults to an empty string ("") and also accepts procs (see required_string above)
+# Set the string that will be appended to the labels/fieldsets which are optional.
+# Defaults to an empty string ("") and also accepts procs (see required_string above).
 # Formtastic::FormBuilder.optional_string = "(optional)"
 
 # Set the way inline errors will be displayed.
@@ -33,7 +33,7 @@
 # Formtastic::FormBuilder.inline_errors = :sentence
 # Formtastic uses the following classes as default for hints, inline_errors and error list
 
-# If you override the class here, please ensure to override it in your stylesheets as well
+# If you override the class here, please ensure to override it in your stylesheets as well.
 # Formtastic::FormBuilder.default_hint_class = "inline-hints"
 # Formtastic::FormBuilder.default_inline_error_class = "inline-errors"
 # Formtastic::FormBuilder.default_error_list_class = "errors"
@@ -53,7 +53,6 @@
 # Default value: true. Overridden for specific fields by setting value to true,
 # i.e. :label => true, or :hint => true (or opposite depending on initialized value)
 # Formtastic::FormBuilder.i18n_lookups_by_default = false
-Formtastic::FormBuilder.i18n_lookups_by_default = true
 
 # Specifies if I18n lookups of the default I18n Localizer should be cached to improve performance.
 # Defaults to true.
@@ -67,11 +66,48 @@ Formtastic::FormBuilder.i18n_lookups_by_default = true
 # specifying that class here.  Defaults to Formtastic::FormBuilder.
 # Formtastic::Helpers::FormHelper.builder = MyCustomBuilder
 
-# You can opt-in to Formtastic's use of the HTML5 `required` attribute on `<input>`, `<select>` 
+# All formtastic forms have a class that indicates that they are just that. You
+# can change it to any class you want.
+# Formtastic::Helpers::FormHelper.default_form_class = 'formtastic'
+
+# Formtastic will infer a class name from the model, array, string or symbol you pass to the
+# form builder. You can customize the way that class is presented by overriding
+# this proc.
+# Formtastic::Helpers::FormHelper.default_form_model_class_proc = proc { |model_class_name| model_class_name }
+
+# Allows to set a custom field_error_proc wrapper. By default this wrapper
+# is disabled since `formtastic` already adds an error class to the LI tag
+# containing the input.
+# Formtastic::Helpers::FormHelper.formtastic_field_error_proc = proc { |html_tag, instance_tag| html_tag }
+
+# You can opt-in to Formtastic's use of the HTML5 `required` attribute on `<input>`, `<select>`
 # and `<textarea>` tags by setting this to true (defaults to false).
 # Formtastic::FormBuilder.use_required_attribute = false
 
 # You can opt-in to new HTML5 browser validations (for things like email and url inputs) by setting
-# this to true. Doing so will add a `novalidate` attribute to the `<form>` tag.
+# this to true. Doing so will omit the `novalidate` attribute from the `<form>` tag.
 # See http://diveintohtml5.org/forms.html#validation for more info.
-Formtastic::FormBuilder.perform_browser_validations = false
+# Formtastic::FormBuilder.perform_browser_validations = true
+
+# By creating custom input class finder, you can change how input classes  are looked up.
+# For example you can make it to search for TextInputFilter instead of TextInput.
+# See # TODO: add link # for more information
+# NOTE: this behavior will be default from Formtastic 4.0
+Formtastic::FormBuilder.input_class_finder = Formtastic::InputClassFinder
+
+# Define custom namespaces in which to look up your Input classes. Default is
+# to look up in the global scope and in Formtastic::Inputs.
+# Formtastic::FormBuilder.input_namespaces = [ ::Object, ::MyInputsModule, ::Formtastic::Inputs ]
+
+# By creating custom action class finder, you can change how action classes are looked up.
+# For example you can make it to search for MyButtonAction instead of ButtonAction.
+# See # TODO: add link # for more information
+# NOTE: this behavior will be default from Formtastic 4.0
+Formtastic::FormBuilder.action_class_finder = Formtastic::ActionClassFinder
+
+# Define custom namespaces in which to look up your Action classes. Default is
+# to look up in the global scope and in Formtastic::Actions.
+# Formtastic::FormBuilder.action_namespaces = [ ::Object, ::MyActionsModule, ::Formtastic::Actions ]
+
+# Which columns to skip when automatically rendering a form without any fields specified.
+# Formtastic::FormBuilder.skipped_columns = [:created_at, :updated_at, :created_on, :updated_on, :lock_version, :version]
