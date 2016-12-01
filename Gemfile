@@ -32,7 +32,7 @@ gem 'pg' unless defined?(DB_ADAPTER) && DB_ADAPTER != 'postgresql'
 gem 'thin', '~> 1.5.1'
 
 # Run-time dependencies
-gem 'rails', '3.2.16'
+gem 'rails', '~> 3.2.16'
 gem 'rails_autolink', '1.1.3'
 gem 'nokogiri', '1.5.10'
 gem 'columnize', '0.3.6'
@@ -105,7 +105,7 @@ group :test do
   gem 'database_cleaner', '~> 0.8.0'
   gem 'faker'
   gem 'shoulda-matchers', '~> 2.3'
-  gem 'timecop', '~> 0.6.3'
+  gem 'timecop'
 end
 
 group :development do
