@@ -89,12 +89,12 @@ RSpec.describe SourceParser, "checking duplicates when importing" do
     end
 
     it "should create only one event" do
-      pending "Fails because code checks imported calendar for duplicates against only saved objects, but not against itself. TODO: fix code. See Issue241"
+      skip "Fails because code checks imported calendar for duplicates against only saved objects, but not against itself. TODO: fix code. See Issue241"
       expect(@created_events.size).to eq 1
     end
 
     it "should create only one venue" do
-      pending "Fails because code checks imported calendar for duplicates against only saved objects, but not against itself. TODO: fix code. See Issue241"
+      skip "Fails because code checks imported calendar for duplicates against only saved objects, but not against itself. TODO: fix code. See Issue241"
       expect(Venue.find(:all).size).to eq @venue_size_before_import + 1
     end
   end

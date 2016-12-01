@@ -183,7 +183,8 @@ RSpec.describe SourcesController, type: :controller do
   describe "GET :edit" do
     context "source doesn't exist" do
       it "should raise an error" do
-        expect { get :edit, :id => 'MI7' }.to raise_error
+        expect { get :edit, :id => 'MI7' }
+          .to raise_error ActiveRecord::RecordNotFound
       end
     end
 
@@ -252,7 +253,8 @@ RSpec.describe SourcesController, type: :controller do
   describe "PUT :update" do
     context "source doesn't exist" do
       it "should raise an error" do
-        expect { put :update, :id => 'MI7' }.to raise_error
+        expect { put :update, :id => 'MI7' }
+          .to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -304,7 +306,8 @@ RSpec.describe SourcesController, type: :controller do
   describe "DELETE :destroy" do
     context "source doesn't exist" do
       it "should raise an error" do
-        expect { delete :destroy, :id => 'MI7' }.to raise_error
+        expect { delete :destroy, :id => 'MI7' }
+          .to raise_error ActiveRecord::RecordNotFound
       end
     end
 

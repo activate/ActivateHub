@@ -163,7 +163,7 @@ RSpec.describe SourceParser::Ical, "when importing events with non-local times" 
   end
 
   it "should store time with TZID=GMT in UTC" do
-    pending "RiCal doesn't consider the time zone data in this file valid"
+    skip "RiCal doesn't consider the time zone data in this file valid"
     events = events_from_ical_at('ical_gmt.ics')
     expect(events.size).to eq 1
     abstract_event = events.first

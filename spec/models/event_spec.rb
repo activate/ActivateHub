@@ -316,7 +316,7 @@ RSpec.describe Event, type: :model do
     end
 
     it "should return exception for an invalid date expressed as a String" do
-      expect { Event.time_for("0/0/0") }.to raise_error
+      expect { Event.time_for("0/0/0") }.to raise_error ArgumentError
     end
 
     it "should raise exception for an invalid type" do

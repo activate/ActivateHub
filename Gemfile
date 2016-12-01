@@ -87,7 +87,7 @@ end
 #   bundle install --without development:test
 group :development, :test do
   gem 'pry-rails'
-  gem 'rspec-rails', '~> 3.0.0'
+  gem 'rspec-rails', '~> 3.0'
   gem 'test-unit'
   gem 'spork', '~> 0.9.2'
 

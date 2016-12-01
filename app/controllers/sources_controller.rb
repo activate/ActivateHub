@@ -136,9 +136,9 @@ class SourcesController < ApplicationController
   # PUT /sources/1
   # PUT /sources/1.xml
   def update
-    params[:source][:type_ids] = create_missing_refs(params[:source][:type_ids], Type)
-
     @source = Source.find(params[:id])
+
+    params[:source][:type_ids] = create_missing_refs(params[:source][:type_ids], Type)
 
     respond_to do |format|
       if @source.update_attributes(params[:source])

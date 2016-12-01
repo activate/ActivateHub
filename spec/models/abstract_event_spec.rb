@@ -349,7 +349,7 @@ RSpec.describe AbstractEvent, type: :model do
         end
 
         it "propagates the error" do
-          expect { abstract_event.import! }.to raise_error
+          expect { abstract_event.import! }.to raise_error('unhandled_error')
         end
       end
     end

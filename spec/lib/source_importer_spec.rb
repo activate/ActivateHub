@@ -170,7 +170,7 @@ RSpec.describe SourceImporter do
       end
 
       it "propagates the error" do
-        expect { importer.import! }.to raise_error
+        expect { importer.import! }.to raise_error('unhandled error')
       end
     end
 
@@ -180,7 +180,7 @@ RSpec.describe SourceImporter do
       end
 
       it "propagates the error" do
-        expect { importer.import! }.to raise_error
+        expect { importer.import! }.to raise_error('unhandled error')
       end
     end
 
