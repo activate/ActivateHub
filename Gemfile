@@ -88,13 +88,7 @@ end
 group :development, :test do
   gem 'pry-rails'
   gem 'rspec-rails', '2.14.0'
-  gem 'webrat', '0.7.3'
-  gem 'factory_girl_rails', '4.2.1'
   gem 'spork', '~> 0.9.2'
-  gem 'database_cleaner', '~> 0.8.0'
-  gem 'faker'
-  gem 'shoulda-matchers', '~> 2.3.0'
-  gem 'timecop', '~> 0.6.3'
 
   # Do not install these interactive libraries onto the continuous integration server.
   unless ENV['CI'] || ENV['TRAVIS']
@@ -102,6 +96,15 @@ group :development, :test do
     gem 'capistrano', '2.12.0'
     gem 'capistrano-ext', '1.2.1'
   end
+end
+
+group :test do
+  gem 'webrat', '0.7.3'
+  gem 'factory_girl_rails', '4.2.1'
+  gem 'database_cleaner', '~> 0.8.0'
+  gem 'faker'
+  gem 'shoulda-matchers', '~> 2.3.0'
+  gem 'timecop', '~> 0.6.3'
 end
 
 group :development do
