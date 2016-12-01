@@ -36,4 +36,9 @@ Calagator::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # Make locale testing fixtures available to test suite
+  locale_fixtures = Rails.root.join('spec', 'fixtures', 'locales', '**', '*.{rb,yml}')
+  config.i18n.load_path += Dir[locale_fixtures]
+
 end
