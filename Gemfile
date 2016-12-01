@@ -88,6 +88,7 @@ end
 group :development, :test do
   gem 'pry-rails'
   gem 'rspec-rails', '2.14.0'
+  gem 'test-unit'
   gem 'spork', '~> 0.9.2'
 
   # Do not install these interactive libraries onto the continuous integration server.
