@@ -119,12 +119,16 @@ class Source < ActiveRecord::Base
 
   # Normalize the URL.
   def url=(value)
-    begin
-      url = URI.parse(value.strip)
-      url.scheme = 'http' unless ['http','https','ftp'].include?(url.scheme) || url.scheme.nil?
-      write_attribute(:url, url.scheme.nil? ? 'http://'+value.strip : url.to_s)
-    rescue URI::InvalidURIError => e
-      false
+    if value.present?
+      begin
+        url = URI.parse(value.strip)
+        url.scheme = 'http' unless ['http','https','ftp'].include?(url.scheme) || url.scheme.nil?
+        write_attribute(:url, url.scheme.nil? ? 'http://'+value.strip : url.to_s)
+      rescue URI::InvalidURIError => e
+        false
+      end
+    else
+      write_attribute(:url, '')
     end
   end
 
