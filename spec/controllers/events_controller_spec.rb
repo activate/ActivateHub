@@ -8,7 +8,7 @@ RSpec.describe EventsController, type: :controller do
       it "should produce HTML" do
         get :index, :format => "html"
 
-        response.should have_selector ".events-index"
+        response.body.should have_selector ".events-index"
       end
     end
 
@@ -220,25 +220,25 @@ RSpec.describe EventsController, type: :controller do
           it "should use the default if given a malformed parameter" do
             get :index, :date => "omgkittens"
             assigns["#{@date_kind}_date"].should eq controller.send("default_#{@date_kind}_date")
-            response.should have_selector(".failure", :content => 'malformed')
+            response.body.should have_selector(".failure", :text => 'malformed')
           end
 
           it "should use the default if given a missing parameter" do
             get :index, :date => {:foo => "bar"}
             assigns["#{@date_kind}_date"].should eq controller.send("default_#{@date_kind}_date")
-            response.should have_selector(".failure", :content => 'missing')
+            response.body.should have_selector(".failure", :text => 'missing')
           end
 
           it "should use the default if given an empty parameter" do
             get :index, :date => {@date_kind => ""}
             assigns["#{@date_kind}_date"].should eq controller.send("default_#{@date_kind}_date")
-            response.should have_selector(".failure", :content => 'empty')
+            response.body.should have_selector(".failure", :text => 'empty')
           end
 
           it "should use the default if given an invalid parameter" do
             get :index, :date => {@date_kind => "omgkittens"}
             assigns["#{@date_kind}_date"].should eq controller.send("default_#{@date_kind}_date")
-            response.should have_selector(".failure", :content => 'invalid')
+            response.body.should have_selector(".failure", :text => 'invalid')
           end
 
           it "should use the value if valid" do
@@ -460,7 +460,7 @@ RSpec.describe EventsController, type: :controller do
                         :preview => "Preview",
                         :venue_name => "This venue had better not exist"
         response.should render_template :new
-        response.should have_selector '.event-preview'
+        response.body.should have_selector '.event-preview'
         event.should be_valid
       end
 
@@ -754,7 +754,7 @@ RSpec.describe EventsController, type: :controller do
         get 'duplicates', :type => 'omgwtfbbq'
 
         response.should be_success
-        response.should have_selector('.failure', :content => 'omgwtfbbq')
+        response.body.should have_selector('.failure', :text => 'omgwtfbbq')
       end
     end
 

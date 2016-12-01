@@ -31,7 +31,7 @@ RSpec.describe VenuesController, type: :controller do
     get 'duplicates', :type => 'omgwtfbbq'
 
     response.should be_success
-    response.should have_selector('.failure', :content => 'omgwtfbbq')
+    response.body.should have_selector('.failure', :text => 'omgwtfbbq')
   end
 
   describe "when creating venues" do
@@ -237,15 +237,15 @@ RSpec.describe VenuesController, type: :controller do
         end
 
         it "should have a venue" do
-          response.should have_selector(".location .fn", :content => @venue.title)
+          response.body.should have_selector(".location .fn", :text => @venue.title)
         end
 
         it "should have a future event" do
-          response.should have_selector(".future-events .event-title", :content => @future_event.title)
+          response.body.should have_selector(".future-events .event-title", :text => @future_event.title)
         end
 
         it "should have a past event" do
-          response.should have_selector(".past-events .event-title", :content => @past_event.title)
+          response.body.should have_selector(".past-events .event-title", :text => @past_event.title)
         end
       end
     end
