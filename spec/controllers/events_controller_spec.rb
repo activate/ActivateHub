@@ -624,7 +624,7 @@ RSpec.describe EventsController, type: :controller do
           http://example.net
           https://example.net
         DESC
-        @event.changed_attributes.delete('description') # sets up description_was
+        @event.clear_changes_information
 
         @params[:event][:description] = <<-DESC
           http://example.com

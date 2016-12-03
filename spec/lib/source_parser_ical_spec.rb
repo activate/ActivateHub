@@ -157,7 +157,7 @@ RSpec.describe SourceParser::Ical, "when importing events with non-local times" 
 
     # time should be the same after saving event to, and getting it from, database
     event.save
-    e = Event.find(event)
+    e = Event.find(event.id)
     expect(e.start_time).to eq Time.zone.parse('Thu Jul 01 08:00:00 +0000 2010')
     expect(e.end_time).to eq Time.zone.parse('Thu Jul 01 09:00:00 +0000 2010')
   end

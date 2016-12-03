@@ -9,7 +9,7 @@ Calagator::Application.configure do
   config.eager_load = false
 
   # Configure static asset server for tests with Cache-Control for performance
-  config.serve_static_assets = true
+  config.serve_static_files = true
   config.static_cache_control = "public, max-age=3600"
 
   # Show full error reports and disable caching
@@ -38,5 +38,8 @@ Calagator::Application.configure do
   # Make locale testing fixtures available to test suite
   locale_fixtures = Rails.root.join('spec', 'fixtures', 'locales', '**', '*.{rb,yml}')
   config.i18n.load_path += Dir[locale_fixtures]
+
+  # Run specs in random order
+  config.active_support.test_order = :random
 
 end

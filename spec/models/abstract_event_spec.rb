@@ -394,7 +394,7 @@ RSpec.describe AbstractEvent, type: :model do
       let!(:event) do
         # we sort of cheat here, but it should be valid unless other tests fail
         event = abstract_event.populate_event
-        event.changed_attributes.clear
+        event.clear_changes_information
         event
       end
 
@@ -418,7 +418,7 @@ RSpec.describe AbstractEvent, type: :model do
           # *_was is defined in ActiveModel::Dirty and represents value before
           # applying local changes (in our case, parent value before rebasing)
           abstract_event.description = event.description
-          abstract_event.changed_attributes.delete('description') # reset
+          abstract_event.clear_changes_information
           abstract_event.description = 'We upgraded our snow shoes to moon boots'
 
           abstract_event.populate_event
@@ -430,7 +430,7 @@ RSpec.describe AbstractEvent, type: :model do
           # simulate an event change outside of an abstract event, because
           # people like to program computers to change URLs to random things
           event.url = 'http://get-your-talkie-talking-toaster.now/'
-          event.changed_attributes.clear
+          event.clear_changes_information
 
           # whereas people like to translate their urls into gibberish
           abstract_event.url = 'youtu.be/LRq_SAuQDec' # "Howdy doodly doo!"

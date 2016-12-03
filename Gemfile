@@ -32,7 +32,7 @@ gem 'pg' unless defined?(DB_ADAPTER) && DB_ADAPTER != 'postgresql'
 gem 'thin'
 
 # Run-time dependencies
-gem 'rails', '~> 4.1.0'
+gem 'rails', '~> 4.2.0'
 gem 'rails_autolink'
 gem 'nokogiri'
 gem 'columnize'
@@ -60,6 +60,7 @@ gem 'cache_digests'
 gem 'font-awesome-rails'
 gem 'jquery-ui-rails'
 gem 'protected_attributes'
+gem 'responders'
 
 gem 'paper_trail_manager'
 # gem 'paper_trail_manager', :path => '../paper_trail_manager'
@@ -112,6 +113,7 @@ end
 
 group :development do
   gem 'spring'
+  gem 'web-console'
 
   # Better Errors (interactive web debugging)
   gem 'better_errors'

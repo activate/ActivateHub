@@ -13,7 +13,8 @@ module DirtyAttrAccessor
         define_method("#{attr_name}=") do |value|
           if changed_attributes[attr_name] == value
             # reverting to original value
-            changed_attributes.delete(attr_name)
+            # Instance var hacks around internal changes in rails 4.2
+            @changed_attributes.delete(attr_name)
           elsif instance_variable_get("@#{attr_name}") != value
             send("#{attr_name}_will_change!")
           end
@@ -35,7 +36,7 @@ module DirtyAttrAccessor
         # because there are ActiveRecord-specific prefix/affix/suffix definitions
         # that assume any attributes passed to them are real ActiveRecord columns.
 
-        define_method("reset_#{attr_name}!") { reset_attribute!(attr_name) }
+        define_method("restore_#{attr_name}!") { restore_attribute!(attr_name) }
         define_method("#{attr_name}_change") { attribute_change(attr_name) }
         define_method("#{attr_name}_changed?") { attribute_changed?(attr_name) }
         define_method("#{attr_name}_will_change!") { attribute_will_change!(attr_name) }

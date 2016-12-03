@@ -277,7 +277,7 @@ RSpec.describe AbstractLocation, type: :model do
       let!(:venue) do
         # we sort of cheat here, but it should be valid unless other tests fail
         venue = abstract_location.populate_venue
-        venue.changed_attributes.clear
+        venue.clear_changes_information
         venue
       end
 
@@ -301,7 +301,7 @@ RSpec.describe AbstractLocation, type: :model do
           # *_was is defined in ActiveModel::Dirty and represents value before
           # applying local changes (in our case, parent value before rebasing)
           abstract_location.description = venue.description
-          abstract_location.changed_attributes.delete('description') # reset
+          abstract_location.clear_changes_information
           abstract_location.description = 'Classified'
 
           abstract_location.populate_venue
@@ -313,7 +313,7 @@ RSpec.describe AbstractLocation, type: :model do
           # simulate a venue change outside of an abstract location, because
           # people like to program computers to change URLs to random things
           venue.url = 'http://if.charlie.brown.was.an.atheist/'
-          venue.changed_attributes.clear
+          venue.clear_changes_information
 
           # whereas people like to translate their urls into gibberish
           abstract_location.url = 'http://bit.ly/1hdhFhW' # yes, yes it does

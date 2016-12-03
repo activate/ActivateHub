@@ -49,7 +49,7 @@ RSpec.describe DirtyAttrAccessor do
     end
   end
 
-  describe "#reset_llamas_sighted!" do # why would you ever want to unsee a llama? :(
+  describe "#restore_llamas_sighted!" do # why would you ever want to unsee a llama? :(
     before(:each) do
       boat_ride.llamas_sighted = 324
       boat_ride.changed_attributes.clear
@@ -57,12 +57,12 @@ RSpec.describe DirtyAttrAccessor do
     end
 
     it "restores :llamas_sighted to orig value" do
-      boat_ride.reset_llamas_sighted!
+      boat_ride.restore_llamas_sighted!
       boat_ride.llamas_sighted = 324
     end
 
     it "clears the changed flag" do
-      boat_ride.reset_llamas_sighted!
+      boat_ride.restore_llamas_sighted!
       expect(boat_ride.llamas_sighted_changed?).to be false
     end
   end
