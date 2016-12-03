@@ -10,6 +10,6 @@
 #  updated_at :datetime
 #
 
-class Update < ActiveRecord::Base
+class Update < ApplicationRecord
   belongs_to :source
 end

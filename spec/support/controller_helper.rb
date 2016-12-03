@@ -3,24 +3,24 @@ module ControllerHelper
     {}
   end
 
-  def get(action, params = {}, session = nil, flash = nil)
+  def get(action, params: {}, **others)
     @request.host = ENV['TEST_REQ_HOST']
-    super(action, default_url_options.merge(params), session, flash)
+    super(action, params: default_url_options.merge(params), **others)
   end
 
-  def put(action, params = {}, session = nil, flash = nil)
+  def put(action, params: {}, **others)
     @request.host = ENV['TEST_REQ_HOST']
-    super(action, default_url_options.merge(params), session, flash)
+    super(action, params: default_url_options.merge(params), **others)
   end
 
-  def post(action, params = {}, session = nil, flash = nil)
+  def post(action, params: {}, **others)
     @request.host = ENV['TEST_REQ_HOST']
-    super(action, default_url_options.merge(params), session, flash)
+    super(action, params: default_url_options.merge(params), **others)
   end
 
-  def delete(action, params = {}, session = nil, flash = nil)
+  def delete(action, params: {}, **others)
     @request.host = ENV['TEST_REQ_HOST']
-    super(action, default_url_options.merge(params), session, flash)
+    super(action, params: default_url_options.merge(params), **others)
   end
 
 end

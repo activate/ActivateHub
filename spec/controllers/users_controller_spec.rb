@@ -5,7 +5,7 @@ RSpec.describe UsersController, type: :controller do
   describe "GET :show" do
     it "should be successful" do
       user = create(:user)
-      get :show, format: user.id
+      get :show, :params => { format: user.id }
 
       expect(response).to be_success
       expect(assigns(:user)).to eq(user)

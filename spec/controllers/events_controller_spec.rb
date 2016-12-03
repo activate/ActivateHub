@@ -6,7 +6,7 @@ RSpec.describe EventsController, type: :controller do
 
     describe "as HTML" do
       it "should produce HTML" do
-        get :index, :format => "html"
+        get :index, :params => { :format => "html" }
 
         expect(response.body).to have_selector ".events-index"
       end
@@ -15,7 +15,7 @@ RSpec.describe EventsController, type: :controller do
     describe "as XML" do
       describe "without events" do
         before do
-          get :index, :format => "xml"
+          get :index, :params => { :format => "xml" }
 
           @struct = Hash.from_xml(response.body)["events"]
         end
@@ -30,7 +30,7 @@ RSpec.describe EventsController, type: :controller do
           create(:event_with_venue)
           create(:event_with_venue)
 
-          get :index, :format => "xml"
+          get :index, :params => { :format => "xml" }
 
           @struct = Hash.from_xml(response.body)["events"]
         end
@@ -55,14 +55,14 @@ RSpec.describe EventsController, type: :controller do
 
     describe "as JSON" do
       it "should accept a JSONP callback" do
-        post :index, :format => "json", :callback => "some_function"
+        post :index, :params => { :format => "json", :callback => "some_function" }
 
         expect(response.body.split("\n").join).to match /\bsome_function\(.*\);?\s*$/
       end
 
       describe "without events" do
         before do
-          post :index, :format => "json"
+          post :index, :params => { :format => "json" }
 
           @struct = ActiveSupport::JSON.decode(response.body)
         end
@@ -81,7 +81,7 @@ RSpec.describe EventsController, type: :controller do
           @event = create(:event_with_venue)
           @venue = @event.venue
 
-          post :index, :format => "json"
+          post :index, :params => { :format => "json" }
 
           @struct = ActiveSupport::JSON.decode(response.body)
         end
@@ -109,7 +109,7 @@ RSpec.describe EventsController, type: :controller do
     describe "as ATOM" do
       describe "without events" do
         before do
-          post :index, :format => "atom"
+          post :index, :params => { :format => "atom" }
           @struct = Hash.from_xml(response.body)
         end
 
@@ -127,7 +127,7 @@ RSpec.describe EventsController, type: :controller do
           create(:event_with_venue)
           create(:event_with_venue)
 
-          post :index, :format => "atom"
+          post :index, :params => { :format => "atom" }
 
           @struct = Hash.from_xml(response.body)
         end
@@ -160,7 +160,7 @@ RSpec.describe EventsController, type: :controller do
     describe "as iCalendar" do
       describe "without events" do
         before do
-          post :index, :format => "ics"
+          post :index, :params => { :format => "ics" }
         end
 
         it "should have a calendar" do
@@ -177,7 +177,7 @@ RSpec.describe EventsController, type: :controller do
           @current_event = create(:event, :start_time => today + 1.hour)
           @past_event = create(:event, :start_time => today - 1.hour)
 
-          post :index, :format => "ics"
+          post :index, :params => { :format => "ics" }
         end
 
         it "should have a calendar" do
@@ -212,38 +212,38 @@ RSpec.describe EventsController, type: :controller do
           end
 
           it "should use the default if not given the parameter" do
-            get :index, :date => {}
+            get :index, :params => { :date => {} }
             expect(assigns["#{@date_kind}_date"]).to eq controller.send("default_#{@date_kind}_date")
             expect(flash[:failure]).to be_nil
           end
 
           it "should use the default if given a malformed parameter" do
-            get :index, :date => "omgkittens"
+            get :index, :params => { :date => "omgkittens" }
             expect(assigns["#{@date_kind}_date"]).to eq controller.send("default_#{@date_kind}_date")
             expect(response.body).to have_selector(".failure", :text => 'malformed')
           end
 
           it "should use the default if given a missing parameter" do
-            get :index, :date => {:foo => "bar"}
+            get :index, :params => { :date => {:foo => "bar"} }
             expect(assigns["#{@date_kind}_date"]).to eq controller.send("default_#{@date_kind}_date")
             expect(response.body).to have_selector(".failure", :text => 'missing')
           end
 
           it "should use the default if given an empty parameter" do
-            get :index, :date => {@date_kind => ""}
+            get :index, :params => { :date => {@date_kind => ""} }
             expect(assigns["#{@date_kind}_date"]).to eq controller.send("default_#{@date_kind}_date")
             expect(response.body).to have_selector(".failure", :text => 'empty')
           end
 
           it "should use the default if given an invalid parameter" do
-            get :index, :date => {@date_kind => "omgkittens"}
+            get :index, :params => { :date => {@date_kind => "omgkittens"} }
             expect(assigns["#{@date_kind}_date"]).to eq controller.send("default_#{@date_kind}_date")
             expect(response.body).to have_selector(".failure", :text => 'invalid')
           end
 
           it "should use the value if valid" do
             expected = Date.yesterday
-            get :index, :date => {@date_kind => expected.to_s("%Y-%m-%d")}
+            get :index, :params => { :date => {@date_kind => expected.to_s("%Y-%m-%d")} }
             expect(assigns["#{@date_kind}_date"]).to eq expected
           end
         end
@@ -277,7 +277,7 @@ RSpec.describe EventsController, type: :controller do
         ]
 
         # When
-        get :index, :date => {:start => "2010-01-16", :end => "2010-01-16"}
+        get :index, :params => { :date => {:start => "2010-01-16", :end => "2010-01-16"} }
         results = assigns[:events]
 
         # Then
@@ -292,7 +292,7 @@ RSpec.describe EventsController, type: :controller do
       event = create(:event, :start_time => now)
       expect(Event).to receive(:find).and_return(event)
 
-      get "show", :id => 1234
+      get "show", :params => { :id => 1234 }
       expect(response).to be_success
     end
 
@@ -301,14 +301,14 @@ RSpec.describe EventsController, type: :controller do
       event = Event.new(:start_time => now, :duplicate_of => master)
       expect(Event).to receive(:find).and_return(event)
 
-      get "show", :id => 1234
+      get "show", :params => { :id => 1234 }
       expect(response).to redirect_to(event_path(master))
     end
 
     it "should show an error when asked to display a non-existent event" do
       expect(Event).to receive(:find).and_raise(ActiveRecord::RecordNotFound)
 
-      get "show", :id => 1234
+      get "show", :params => { :id => 1234 }
       expect(response).to redirect_to(events_path)
       expect(flash[:failure]).to_not be_blank
     end
@@ -321,11 +321,11 @@ RSpec.describe EventsController, type: :controller do
         :end_date       => "2008-06-04",
         :start_date     => "2008-06-03",
         :event => {
-          "title"       => "MyVenue",
-          "url"         => "http://my.venue",
-          "description" => "Wheeeee",
-          "type_ids"    => [],
-          "topic_ids"   => [],
+          :title        => "MyVenue",
+          :url          => "http://my.venue",
+          :description  => "Wheeeee",
+          :type_ids     => [],
+          :topic_ids    => [],
         },
         :end_time       => "",
         :start_time     => ""
@@ -351,7 +351,7 @@ RSpec.describe EventsController, type: :controller do
         allow(@event).to receive(:venue).and_return(nil)
         expect(@event).to receive(:save).and_return(true)
 
-        post "create", @params
+        post "create", :params => @params
         expect(response).to redirect_to(event_path(@event))
       end
 
@@ -362,7 +362,7 @@ RSpec.describe EventsController, type: :controller do
         allow(@event).to receive(:venue).and_return(@venue)
         expect(@event).to receive(:save).and_return(true)
 
-        post "create", @params
+        post "create", :params => @params
       end
 
       it "should associate a venue based on a given venue name" do
@@ -372,7 +372,7 @@ RSpec.describe EventsController, type: :controller do
         allow(@event).to receive(:venue).and_return(@venue)
         expect(@event).to receive(:save).and_return(true)
 
-        post "create", @params
+        post "create", :params => @params
       end
 
       it "should associate a venue by id when both an id and a name are provided" do
@@ -383,7 +383,7 @@ RSpec.describe EventsController, type: :controller do
         allow(@event).to receive(:venue).and_return(@venue)
         expect(@event).to receive(:save).and_return(true)
 
-        post "create", @params
+        post "create", :params => @params
       end
 
       it "should create a new event for an existing venue" do
@@ -394,7 +394,7 @@ RSpec.describe EventsController, type: :controller do
         expect(@event).to receive(:save).and_return(true)
         allow(@venue).to receive(:new_record?).and_return(false)
 
-        post "create", @params
+        post "create", :params => @params
         expect(response).to redirect_to(event_path(@event))
       end
 
@@ -406,7 +406,7 @@ RSpec.describe EventsController, type: :controller do
         expect(@event).to receive(:save).and_return(true)
         allow(@venue).to receive(:new_record?).and_return(true)
 
-        post "create", @params
+        post "create", :params => @params
         expect(response).to redirect_to(edit_venue_url(@venue, :from_event => @event.id))
       end
 
@@ -416,7 +416,7 @@ RSpec.describe EventsController, type: :controller do
       end
 
       it "should stop evil robots" do
-        post "create", :trap_field => "I AM AN EVIL ROBOT, I EAT OLD PEOPLE'S MEDICINE FOR FOOD!"
+        post "create", :params => { :trap_field => "I AM AN EVIL ROBOT, I EAT OLD PEOPLE'S MEDICINE FOR FOOD!" }
         expect(response).to render_template :new
         expect(flash[:failure]).to match /evil robot/i
       end
@@ -428,7 +428,7 @@ RSpec.describe EventsController, type: :controller do
           http://example.net
           https://example.net
         DESC
-        post "create", @params
+        post "create", :params => @params
         expect(response).to render_template :new
         expect(flash[:failure]).to match /too many links/i
       end
@@ -444,7 +444,7 @@ RSpec.describe EventsController, type: :controller do
           I wouldn't mind seeing a PDX.pm talk about HTTP::Tiny vs Net::HTTP::Tiny vs Net::HTTP
           vs HTTP::Client vs HTTP::Client::Parallel
         DESC
-        post "create", @params
+        post "create", :params => @params
         expect(flash[:failure]).to be_nil
       end
 
@@ -454,11 +454,13 @@ RSpec.describe EventsController, type: :controller do
 
         expect(event).to_not receive(:save)
 
-        post "create", :event => { :title => "Awesomeness" },
-                        :start_time => now, :start_date => today,
-                        :end_time => now, :end_date => today,
-                        :preview => "Preview",
-                        :venue_name => "This venue had better not exist"
+        post "create", :params => {
+          :event => { :title => "Awesomeness" },
+          :start_time => now, :start_date => today,
+          :end_time => now, :end_date => today,
+          :preview => "Preview",
+          :venue_name => "This venue had better not exist",
+        }
         expect(response).to render_template :new
         expect(response.body).to have_selector '.event-preview'
         expect(event).to be_valid
@@ -467,7 +469,7 @@ RSpec.describe EventsController, type: :controller do
       it "should create an event for an existing venue" do
         venue = create(:venue)
 
-        post "create",
+        post "create", :params => {
           :start_time => now.strftime("%Y-%m-%d"),
           :end_time   => (now + 1.hour).strftime("%Y-%m-%d"),
           :event      => {
@@ -475,6 +477,7 @@ RSpec.describe EventsController, type: :controller do
             :tag_list   => ",,foo,bar, baz,",
           },
           :venue_name => venue.title
+        }
 
         expect(response).to be_redirect
 
@@ -493,7 +496,7 @@ RSpec.describe EventsController, type: :controller do
         it "should display form for editing event" do
           sign_in create(:user)
 
-          get :edit, :id => create(:event).id
+          get :edit, :params => { :id => create(:event).id }
           expect(response).to be_success
           expect(response).to render_template :edit
         end
@@ -501,7 +504,7 @@ RSpec.describe EventsController, type: :controller do
 
       context "when a user is not logged in" do
         it "should redirect the user to sign in" do
-          get :edit, :id => create(:event).id
+          get :edit, :params => { :id => create(:event).id }
           expect(response).to redirect_to(user_session_path)
         end
       end
@@ -522,7 +525,7 @@ RSpec.describe EventsController, type: :controller do
         expect(@event).to receive(:attributes=).with(@params[:event]).and_call_original
         expect(@event).to receive(:save).and_return(true)
 
-        put "update", @params
+        put "update", :params => @params
         expect(response).to redirect_to(event_path(@event))
       end
 
@@ -534,7 +537,7 @@ RSpec.describe EventsController, type: :controller do
         expect(@event).to receive(:attributes=).with(@params[:event]).and_call_original
         expect(@event).to receive(:save).and_return(true)
 
-        put "update", @params
+        put "update", :params => @params
       end
 
       it "should associate a venue based on a given venue name" do
@@ -545,7 +548,7 @@ RSpec.describe EventsController, type: :controller do
         expect(@event).to receive(:attributes=).with(@params[:event]).and_call_original
         expect(@event).to receive(:save).and_return(true)
 
-        put "update", @params
+        put "update", :params => @params
       end
 
       it "should associate a venue by id when both an id and a name are provided" do
@@ -557,7 +560,7 @@ RSpec.describe EventsController, type: :controller do
         expect(@event).to receive(:attributes=).with(@params[:event]).and_call_original
         expect(@event).to receive(:save).and_return(true)
 
-        put "update", @params
+        put "update", :params => @params
       end
 
       it "should update an event and associate it with an existing venue" do
@@ -569,7 +572,7 @@ RSpec.describe EventsController, type: :controller do
         expect(@event).to receive(:save).and_return(true)
         allow(@venue).to receive(:new_record?).and_return(false)
 
-        put "update", @params
+        put "update", :params => @params
         expect(response).to redirect_to(event_path(@event))
       end
 
@@ -582,7 +585,7 @@ RSpec.describe EventsController, type: :controller do
         expect(@event).to receive(:save).and_return(true)
         allow(@venue).to receive(:new_record?).and_return(true)
 
-        put "update", @params
+        put "update", :params => @params
         expect(response).to redirect_to(edit_venue_url(@venue, :from_event => @event.id))
       end
 
@@ -592,12 +595,12 @@ RSpec.describe EventsController, type: :controller do
         allow(@event).to receive(:venue).and_return(nil)
         expect(@event).to receive(:save).and_return(false)
 
-        put "update", :id => 1234
+        put "update", :params => { :id => 1234 }
         expect(response).to render_template :edit
       end
 
       it "should stop evil robots" do
-        put "update", :id => 1234, :trap_field => "I AM AN EVIL ROBOT, I EAT OLD PEOPLE'S MEDICINE FOR FOOD!"
+        put "update", :params => { :id => 1234, :trap_field => "I AM AN EVIL ROBOT, I EAT OLD PEOPLE'S MEDICINE FOR FOOD!" }
         expect(response).to render_template :edit
         expect(flash[:failure]).to match /evil robot/i
       end
@@ -609,7 +612,7 @@ RSpec.describe EventsController, type: :controller do
           http://example.net
           https://example.net
         DESC
-        put "update", @params
+        put "update", :params => @params
         expect(response).to render_template :edit
         expect(flash[:failure]).to match /too many links/i
       end
@@ -632,7 +635,7 @@ RSpec.describe EventsController, type: :controller do
           http://example.net
           https://example.net
         DESC
-        put "update", @params
+        put "update", :params => @params
         expect(response).to redirect_to(event_path(@event))
       end
 
@@ -646,7 +649,7 @@ RSpec.describe EventsController, type: :controller do
         expect(@event).to receive(:valid?).and_return(true)
         expect(@event).to receive(:tags).and_return(tags)
 
-        put "update", @params.merge(:preview => "Preview")
+        put "update", :params => @params.merge(:preview => "Preview")
         expect(response).to render_template :edit
       end
 
@@ -656,7 +659,7 @@ RSpec.describe EventsController, type: :controller do
       context "when a user is not logged in" do
         it "redirects the user signin" do
           event = create(:event)
-          get :clone, :id => event.id
+          get :clone, :params => { :id => event.id }
 
           expect(response).to redirect_to(user_session_path)
         end
@@ -668,7 +671,7 @@ RSpec.describe EventsController, type: :controller do
           sign_in user
           @event = create(:event)
 
-          get "clone", :id => @event.id
+          get "clone", :params => { :id => @event.id }
         end
 
         it "should build an unsaved record" do
@@ -703,7 +706,7 @@ RSpec.describe EventsController, type: :controller do
       end
 
       it "does not allow them to clean duplicates" do
-        get :duplicates, :type => 'title'
+        get :duplicates, :params => { :type => 'title' }
 
         expect(response).to redirect_to root_url
       end
@@ -723,7 +726,7 @@ RSpec.describe EventsController, type: :controller do
         past_master = create(:event, :title => "Past", :start_time => now - 2.days)
         past_duplicate = create(:event, :title => past_master.title, :start_time => now - 1.day)
 
-        get 'duplicates', :type => 'title'
+        get 'duplicates', :params => { :type => 'title' }
 
         # Current duplicates
         assigns[:grouped_events].select{|keys,values| keys.include?(current_master.title)}.tap do |events|
@@ -739,20 +742,20 @@ RSpec.describe EventsController, type: :controller do
         event_master = create(:event)
         event_duplicate = create(:event)
 
-        get 'show', :id => event_duplicate.id
+        get 'show', :params => { :id => event_duplicate.id }
         expect(response).to_not be_redirect
         expect(assigns(:event).id).to eq event_duplicate.id
 
         event_duplicate.duplicate_of = event_master
         event_duplicate.save!
 
-        get 'show', :id => event_duplicate.id
+        get 'show', :params => { :id => event_duplicate.id }
         expect(response).to be_redirect
         expect(response).to redirect_to(event_url(event_master.id))
       end
 
       it "should display an error message if given invalid arguments" do
-        get 'duplicates', :type => 'omgwtfbbq'
+        get 'duplicates', :params => { :type => 'omgwtfbbq' }
 
         expect(response).to be_success
         expect(response.body).to have_selector('.failure', :text => 'omgwtfbbq')
@@ -766,7 +769,7 @@ RSpec.describe EventsController, type: :controller do
     it "should search" do
       expect(Event).to receive(:search_keywords_grouped_by_currentness).and_return({:current => [], :past => []})
 
-      post :search, :query => "myquery"
+      post :search, :params => { :query => "myquery" }
     end
 
     it "should fail if given no search query" do
@@ -779,27 +782,27 @@ RSpec.describe EventsController, type: :controller do
     it "should be able to only return current events" do
       expect(Event).to receive(:search).with("myquery", :order => nil, :skip_old => true).and_return([])
 
-      post :search, :query => "myquery", :current => "1"
+      post :search, :params => { :query => "myquery", :current => "1" }
     end
 
     describe "by tag" do
       it "should be able to only return events matching specific tag" do
         expect(Event).to receive(:tagged_with).with("foo", :order => "events.start_time").and_return(Event.where('1 = 0'))
 
-        post :search, :tag => "foo"
+        post :search, :params => { :tag => "foo" }
       end
 
       it "should warn if user tries ordering tags by score" do
         expect(Event).to receive(:tagged_with).with("foo", :order => "events.start_time").and_return(Event.where('1 = 0'))
 
-        post :search, :tag => "foo", :order => "score"
+        post :search, :params => { :tag => "foo", :order => "score" }
         expect(flash[:failure]).to_not be_blank
       end
 
       it "should warn if user tries ordering tags by invalid order" do
         expect(Event).to receive(:tagged_with).with("foo", :order => "events.start_time").and_return(Event.where('1 = 0'))
 
-        post :search, :tag => "foo", :order => "kittens"
+        post :search, :params => { :tag => "foo", :order => "kittens" }
         expect(flash[:failure]).to_not be_blank
       end
 
@@ -825,7 +828,7 @@ RSpec.describe EventsController, type: :controller do
 
       describe "in HTML format" do
         before do
-          post :search, :query => "myquery", :format => "html"
+          post :search, :params => { :query => "myquery", :format => "html" }
         end
 
         it "should assign matching events" do
@@ -855,14 +858,14 @@ RSpec.describe EventsController, type: :controller do
       describe "in XML format" do
 
         it "should produce XML" do
-          post :search, :query => "myquery", :format => "xml"
+          post :search, :params => { :query => "myquery", :format => "xml" }
 
           hash = Hash.from_xml(response.body)
           expect(hash["events"]).to be_a_kind_of Array
         end
 
         it "should include venue details" do
-          post :search, :query => "myquery", :format => "xml"
+          post :search, :params => { :query => "myquery", :format => "xml" }
 
           hash = Hash.from_xml(response.body)
           event = hash["events"].first
@@ -877,20 +880,20 @@ RSpec.describe EventsController, type: :controller do
       describe "in JSON format" do
 
         it "should produce JSON" do
-          post :search, :query => "myquery", :format => "json"
+          post :search, :params => { :query => "myquery", :format => "json" }
 
           struct = ActiveSupport::JSON.decode(response.body)
           expect(struct).to be_a_kind_of Array
         end
 
         it "should accept a JSONP callback" do
-          post :search, :query => "myquery", :format => "json", :callback => "some_function"
+          post :search, :params => { :query => "myquery", :format => "json", :callback => "some_function" }
 
           expect(response.body.split("\n").join).to match /\bsome_function\(.*\);?\s*$/
         end
 
         it "should include venue details" do
-          post :search, :query => "myquery", :format => "json"
+          post :search, :params => { :query => "myquery", :format => "json" }
 
           struct = ActiveSupport::JSON.decode(response.body)
           event = struct.first
@@ -901,7 +904,7 @@ RSpec.describe EventsController, type: :controller do
       end
 
       it "should produce ATOM" do
-        post :search, :query => "myquery", :format => "atom"
+        post :search, :params => { :query => "myquery", :format => "atom" }
 
         hash = Hash.from_xml(response.body)
         expect(hash["feed"]["entry"]).to be_a_kind_of Array
@@ -910,13 +913,13 @@ RSpec.describe EventsController, type: :controller do
       describe "in ICS format" do
 
         it "should produce ICS" do
-          post :search, :query => "myquery", :format => "ics"
+          post :search, :params => { :query => "myquery", :format => "ics" }
 
           expect(response.body).to match /BEGIN:VEVENT/
         end
 
         it "should produce events matching the query" do
-          post :search, :query => "myquery", :format => "ics"
+          post :search, :params => { :query => "myquery", :format => "ics" }
           expect(response.body).to match /SUMMARY:#{current_event_2.title}/
           expect(response.body).to match /SUMMARY:#{past_event.title}/
         end
@@ -932,7 +935,7 @@ RSpec.describe EventsController, type: :controller do
         expect(event).to receive(:destroy)
         expect(Event).to receive(:find).and_return(event)
 
-        delete 'destroy', :id => 1234
+        delete 'destroy', :params => { :id => 1234 }
         expect(response).to redirect_to(events_url)
       end
     end
@@ -941,7 +944,7 @@ RSpec.describe EventsController, type: :controller do
       it "they are redirected to signin" do
         event = create(:event)
 
-        delete 'destroy', :id => event.id
+        delete 'destroy', :params => { :id => event.id }
         expect(response).to redirect_to(user_session_path)
       end
     end

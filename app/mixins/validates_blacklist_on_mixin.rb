@@ -70,18 +70,18 @@ protected
       patterns = [self.class._get_blacklist_patterns_from(opts[:blacklist]),
                 self.class._get_blacklist_patterns_from("blacklist-local.txt")].flatten.compact
     end
-    is_valid = true
+
     attrs.each do |attr|
       value = self.send(attr).to_s
       next if value.blank?
       patterns.each do |pattern|
         if value.match(pattern)
           self.errors.add(attr, opts[:message])
-          is_valid = false
-          break
+          throw(:abort)
         end
       end
     end
-    return is_valid
+
+    true
   end
 end

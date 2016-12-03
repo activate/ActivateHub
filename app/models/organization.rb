@@ -1,4 +1,4 @@
-class Organization < ActiveRecord::Base
+class Organization < ApplicationRecord
   include AssociatedVenues
   include UrlValidator
 
@@ -8,8 +8,6 @@ class Organization < ActiveRecord::Base
   has_many :sources
   has_and_belongs_to_many :topics
   belongs_to :venue
-
-  attr_protected nil # FIXME: Use strong_params
 
   # Validations
   validates :name, presence: true

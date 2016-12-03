@@ -9,7 +9,7 @@ RSpec.describe SiteController, type: :controller do
     end
 
     it "should redirect requests for non-HTML to events" do
-      get :index, :format => "json"
+      get :index, :params => { :format => "json" }
       expect(response).to redirect_to(events_path(:format => "json"))
     end
   end

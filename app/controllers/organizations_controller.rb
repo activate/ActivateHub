@@ -1,4 +1,9 @@
 class OrganizationsController < ApplicationController
+
+  def params
+    @params ||= super.permit! # FIXME: Add support for strong params
+  end
+
   def index
     @organizations = Organization.order(:name)
 
@@ -57,6 +62,7 @@ class OrganizationsController < ApplicationController
   # POST /organizations.xml
   def create
     params[:organization][:topic_ids] = create_missing_refs(params[:organization][:topic_ids], Topic)
+    params.permit! # FIXME: Remove when switching to using strong params
 
     @organization = Organization.new(params[:organization].merge(venue_id: params["event"]["venue_id"]))
     @organization.associate_with_venue(venue_ref(params[:event], params[:venue_name]))
@@ -88,11 +94,12 @@ class OrganizationsController < ApplicationController
   # PUT /organizations/1.xml
   def update
     params[:organization][:topic_ids] = create_missing_refs(params[:organization][:topic_ids], Topic)
-
-    @organization = Organization.find(params[:id])
-    @organization.associate_with_venue(venue_ref(params[:event], params[:venue_name]))
-    has_new_venue = @organization.venue && @organization.venue.new_record?
-
+    params.permit! # FIXME: Remove when switching to using strong params
+         
+             @organization = Organization.find(params[:id])
+             @organization.associate_with_venue(venue_ref(params[:event], params[:venue_name]))
+             has_new_venue = @organization.venue && @organization.venue.new_record?
+         
     if evil_robot = !params[:trap_field].blank?
       flash[:failure] = "<h3>Evil Robot</h3> We didn't update this organization because we think you're an evil robot. If you're really not an evil robot, look at the form instructions more carefully. If this doesn't work please file a bug report and let us know."
     end
@@ -109,7 +116,7 @@ class OrganizationsController < ApplicationController
         end
       else
         if params[:preview]
-          @organization.attributes = params[:organization]
+          @organization.attributes = params[:organization].to_h
           @organization.valid?
         end
         format.html { render :action => "edit" }

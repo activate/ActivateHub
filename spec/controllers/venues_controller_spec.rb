@@ -13,7 +13,7 @@ RSpec.describe VenuesController, type: :controller do
     venue_duplicate = create(:venue)
 
     # No redirect when they're unique
-    get 'show', :id => venue_duplicate.id
+    get 'show', :params => { :id => venue_duplicate.id }
     expect(response).to_not be_redirect
     expect(assigns(:venue).id).to eq venue_duplicate.id
 
@@ -22,13 +22,13 @@ RSpec.describe VenuesController, type: :controller do
     venue_duplicate.save!
 
     # Now check that redirection happens
-    get 'show', :id => venue_duplicate.id
+    get 'show', :params => { :id => venue_duplicate.id }
     expect(response).to be_redirect
     expect(response).to redirect_to(venue_url(venue_master.id))
   end
 
   it "should display an error message if given invalid arguments" do
-    get 'duplicates', :type => 'omgwtfbbq'
+    get :duplicates, :params => { :type => 'omgwtfbbq' }
 
     expect(response).to be_success
     expect(response.body).to have_selector('.failure', :text => 'omgwtfbbq')
@@ -36,7 +36,7 @@ RSpec.describe VenuesController, type: :controller do
 
   describe "when creating venues" do
     it "should stop evil robots" do
-      post :create, :trap_field => "I AM AN EVIL ROBOT, I EAT OLD PEOPLE'S MEDICINE FOR FOOD!"
+      post :create, :params => { :trap_field => "I AM AN EVIL ROBOT, I EAT OLD PEOPLE'S MEDICINE FOR FOOD!" }
       expect(response).to render_template :new
     end
   end
@@ -48,20 +48,20 @@ RSpec.describe VenuesController, type: :controller do
     end
 
     it "should stop evil robots" do
-      put :update,:id => '1', :trap_field => "I AM AN EVIL ROBOT, I EAT OLD PEOPLE'S MEDICINE FOR FOOD!"
+      put :update, :params => { :id => '1', :trap_field => "I AM AN EVIL ROBOT, I EAT OLD PEOPLE'S MEDICINE FOR FOOD!" }
       expect(response).to render_template :edit
     end
 
     describe "redirection" do
       it "when the user comes from an org creation page" do
         org = create(:organization)
-        put :update,:id => '1', :from_org => org.id
+        put :update, :params => { :id => '1', :from_org => org.id }
         expect(response).to redirect_to organization_url(org)
       end
 
       it "when the user comes from an event creation page" do
         event = create(:event)
-        put :update,:id => '1', :from_event => event.id
+        put :update, :params => { :id => '1', :from_event => event.id }
         expect(response).to redirect_to event_url(event)
       end
     end
@@ -79,7 +79,7 @@ RSpec.describe VenuesController, type: :controller do
       meeting_event = create(:event, venue_id: meeting_venue.id)
       meeting_event.types << meeting
 
-      get :index, type: social.name
+      get :index, :params => { type: social.name }
 
       expect(assigns(:types).map(&:name)).to match_array ["social", "meeting"]
       expect(assigns(:selected_types)).to eq [social.name]
@@ -114,12 +114,12 @@ RSpec.describe VenuesController, type: :controller do
 
     describe "and showing all venues" do
       it "should include closed venues when asked to with the include_closed parameter" do
-        get :index, :all => '1', :include_closed => '1'
+        get :index, :params => { :all => '1', :include_closed => '1' }
         expect(assigns[:venues]).to include @closed_venue
       end
 
       it "should include ONLY closed venues when asked to with the closed parameter" do
-        get :index, :all => '1', :closed => '1'
+        get :index, :params => { :all => '1', :closed => '1' }
         expect(assigns[:venues]).to include @closed_venue
         expect(assigns[:venues]).to_not include @open_venue
       end
@@ -128,7 +128,7 @@ RSpec.describe VenuesController, type: :controller do
     describe "when searching" do
       describe "for public wifi (and no keyword)" do
         before do
-          get :index, :query => '', :wifi => '1'
+          get :index, :params => { :query => '', :wifi => '1' }
         end
 
         it "should only include results with public wifi" do
@@ -139,19 +139,19 @@ RSpec.describe VenuesController, type: :controller do
 
       describe "when searching by keyword" do
         it "should find venues by title" do
-          get :index, :query => 'Open Town'
+          get :index, :params => { :query => 'Open Town' }
           expect(assigns[:venues]).to include @open_venue
           expect(assigns[:venues]).to_not include @wifi_venue
         end
         it "should find venues by description" do
-          get :index, :query => 'baz'
+          get :index, :params => { :query => 'baz' }
           expect(assigns[:venues]).to include @open_venue
           expect([:venues]).to_not include @wifi_venue
         end
 
         describe "and requiring public wifi" do
           it "should not find venues without public wifi" do
-            get :index, :query => 'baz', :wifi => '1'
+            get :index, :params => { :query => 'baz', :wifi => '1' }
             expect(assigns[:venues]).to_not include @open_venue
             expect(assigns[:venues]).to_not include @wifi_venue
           end
@@ -160,16 +160,16 @@ RSpec.describe VenuesController, type: :controller do
 
       describe "when searching by title (for the ajax selector)" do
         it "should find venues by title" do
-          get :index, :term => 'Open Town'
+          get :index, :params => { :term => 'Open Town' }
           expect(assigns[:venues]).to include @open_venue
           expect(assigns[:venues]).to_not include @wifi_venue
         end
         it "should NOT find venues by description" do
-          get :index, :term => 'baz'
+          get :index, :params => { :term => 'baz' }
           expect(assigns[:venues]).to_not include @open_venue
         end
         it "should NOT find closed venues" do
-          get :index, :term => 'closed'
+          get :index, :params => { :term => 'closed' }
           expect(assigns[:venues]).to_not include @closed_venue
         end
       end
@@ -177,19 +177,19 @@ RSpec.describe VenuesController, type: :controller do
 
     it "should be able to return events matching specific tag" do
       expect(Venue).to receive(:tagged_with).with("foo").and_return(Venue.where('1 = 0'))
-      get :index, :tag => "foo"
+      get :index, :params => { :tag => "foo" }
     end
 
     describe "in JSON format" do
       it "should produce JSON" do
-        get :index, :format => "json"
+        get :index, :params => { :format => "json" }
 
         struct = ActiveSupport::JSON.decode(response.body)
         expect(struct).to be_a_kind_of Array
       end
 
       it "should accept a JSONP callback" do
-        xhr :get, :index, :format => "json", :callback => "some_function"
+        get :index, :params => { :format => "json", :callback => "some_function" }, :xhr => true
 
         expect(response.body.split("\n").join).to match /\bsome_function\(.*\);?\s*$/
       end
@@ -205,7 +205,7 @@ RSpec.describe VenuesController, type: :controller do
         end
 
         it "should produce JSON" do
-          get :show, :id => @venue.to_param, :format => "json"
+          get :show, :params => { :id => @venue.to_param, :format => "json" }
 
           struct = ActiveSupport::JSON.decode(response.body)
           expect(struct).to be_a_kind_of Hash
@@ -215,7 +215,7 @@ RSpec.describe VenuesController, type: :controller do
         end
 
         it "should accept a JSONP callback" do
-          xhr :get, :show, :id => @venue.to_param, :format => "json", :callback => "some_function"
+          get :show, :params => { :id => @venue.to_param, :format => "json", :callback => "some_function" }, :xhr => true
 
           expect(response.body.split("\n").join).to match /\bsome_function\(.*\);?\s*$/
         end
@@ -231,7 +231,7 @@ RSpec.describe VenuesController, type: :controller do
             :start_time => Time.zone.now - 1.week + 1.hour,
             :end_time => Time.zone.now - 1.week + 2.hours)
 
-          get :show, :id => @venue.to_param, :format => "html"
+          get :show, :params => { :id => @venue.to_param, :format => "html" }
           expect(response).to be_success
         end
 
@@ -255,7 +255,7 @@ RSpec.describe VenuesController, type: :controller do
         @future_event = create(:event, :venue => @venue, :start_time => today + 1.hour)
         @past_event = create(:event, :venue => @venue, :start_time => today - 1.hour)
 
-        get :show, :id => @venue.to_param, :format => "ics"
+        get :show, :params => { :id => @venue.to_param, :format => "ics" }
       end
 
       it "should have a calendar" do
@@ -291,7 +291,7 @@ RSpec.describe VenuesController, type: :controller do
 
       describe "and rendering HTML" do
         before do
-          delete :destroy, :id => @venue.id
+          delete :destroy, :params => { :id => @venue.id }
         end
 
         it_should_behave_like "destroying a Venue record without events"
@@ -309,7 +309,7 @@ RSpec.describe VenuesController, type: :controller do
         render_views
 
         before do
-          delete :destroy, :id => @venue.id, :format => "xml"
+          delete :destroy, :params => { :id => @venue.id, :format => "xml" }
         end
 
         it_should_behave_like "destroying a Venue record without events"
@@ -334,7 +334,7 @@ RSpec.describe VenuesController, type: :controller do
 
       describe "and rendering HTML" do
         before do
-          delete :destroy, :id => @venue.id
+          delete :destroy, :params => { :id => @venue.id }
         end
 
         it_should_behave_like "destroying a Venue record with events"
@@ -350,7 +350,7 @@ RSpec.describe VenuesController, type: :controller do
 
       describe "and rendering XML" do
         before do
-          delete :destroy, :id => @venue.id, :format => "xml"
+          delete :destroy, :params => { :id => @venue.id, :format => "xml" }
         end
 
         it_should_behave_like "destroying a Venue record with events"

@@ -24,7 +24,7 @@ RSpec.describe Site, type: :model do
 
   describe "use!" do
     it "sets the default site associated with model objects" do
-      expect(ActiveRecord::Base).to receive(:current_site=).with(site)
+      expect(ApplicationRecord).to receive(:current_site=).with(site)
       site.use!
     end
 
@@ -58,7 +58,7 @@ RSpec.describe Site, type: :model do
       end
 
       it "has the site set as the current_site for database queries" do
-        site.with_site { expect(ActiveRecord::Base.current_site).to eq site }
+        site.with_site { expect(ApplicationRecord.current_site).to eq site }
       end
     end
 
@@ -77,7 +77,7 @@ RSpec.describe Site, type: :model do
 
       it "restores the original site scope" do
         expect { site.with_site { nil } } \
-          .to_not change { ActiveRecord::Base.current_site }
+          .to_not change { ApplicationRecord.current_site }
       end
     end
 
@@ -98,7 +98,7 @@ RSpec.describe Site, type: :model do
 
       it "restores the original site scope" do
         expect { site.with_site { raise 'ZONK!' } rescue nil } \
-          .to_not change { ActiveRecord::Base.current_site }
+          .to_not change { ApplicationRecord.current_site }
       end
     end
   end

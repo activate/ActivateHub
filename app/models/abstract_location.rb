@@ -1,4 +1,4 @@
-class AbstractLocation < ActiveRecord::Base
+class AbstractLocation < ApplicationRecord
   belongs_to :site
   belongs_to :source
   belongs_to :venue

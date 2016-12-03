@@ -1,4 +1,4 @@
-class AbstractEvent < ActiveRecord::Base
+class AbstractEvent < ApplicationRecord
   belongs_to :site
   belongs_to :source
   belongs_to :event

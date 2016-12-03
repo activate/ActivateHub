@@ -16,31 +16,31 @@ RSpec.describe SourcesController, type: :controller do
 
       it "should not create a new source object" do
         expect {
-          post :import, :source => source_attrs
+          post :import, :params => { :source => source_attrs }
         }.to_not change { Source.count }
       end
 
       it "should persist changs to the source object" do
-        post :import, :source => { :url => source.url, :title => "undisclosed" }
+        post :import, :params => { :source => { :url => source.url, :title => "undisclosed" } }
         expect(assigns(:source).reload.title).to eq "undisclosed"
       end
 
       it "should try to import assocated events" do
         expect_any_instance_of(SourceImporter).to receive(:import!)
-        post :import, :source => source_attrs
+        post :import, :params => { :source => source_attrs }
       end
     end
 
     context "with a unique URL" do
       it "should save a new source object" do
         expect {
-          post :import, :source => source_attrs
+          post :import, :params => { :source => source_attrs }
         }.to change { Source.count }.by(1)
       end
 
       it "should try to import assocated events" do
         expect_any_instance_of(SourceImporter).to receive(:import!)
-        post :import, :source => source_attrs
+        post :import, :params => { :source => source_attrs }
       end
     end
 
@@ -51,7 +51,7 @@ RSpec.describe SourcesController, type: :controller do
 
       def assert_import_raises(exception)
         expect_any_instance_of(SourceImporter).to receive(:import!).and_raise(exception)
-        post :import, :source => {:url => "http://invalid.host"}
+        post :import, :params => { :source => {:url => "http://invalid.host"} }
       end
 
       it "should fail when host responds with an error" do
@@ -82,7 +82,7 @@ RSpec.describe SourcesController, type: :controller do
         allow_any_instance_of(Source).to receive(:events).and_return(events)
       end
 
-      post :import, :source => { :url => source.url, :title => 'My Title' }
+      post :import, :params => { :source => { :url => source.url, :title => 'My Title' } }
       expect(flash[:success]).to match /And 5 other events/si
     end
   end
@@ -101,14 +101,14 @@ RSpec.describe SourcesController, type: :controller do
 
     context ":format => :html" do
       it "should render the :index template" do
-        get :index, :format => :html
+        get :index, :params => { :format => :html }
         expect(response).to render_template(:index)
       end
     end
 
     context ":format => :xml" do
       it "should render the found sources as xml" do
-        get :index, :format => :xml
+        get :index, :params => { :format => :xml }
         expect(response.content_type).to eq 'application/xml'
       end
     end
@@ -117,12 +117,12 @@ RSpec.describe SourcesController, type: :controller do
   describe "GET :show" do
     context "source doesn't exist" do
       it "should redirect to the new source page" do
-        get :show, :id => 'MI7'
+        get :show, :params => { :id => 'MI7' }
         expect(response).to redirect_to(new_organization_source_path)
       end
 
       it "should provide a failure message" do
-        get :show, :id => 'MI7'
+        get :show, :params => { :id => 'MI7' }
         expect(flash[:failure]).to be_present
       end
     end
@@ -131,25 +131,25 @@ RSpec.describe SourcesController, type: :controller do
       let(:source) { create(:source, :organization => organization) }
 
       it "should be successful" do
-        get :show, :id => source.id
+        get :show, :params => { :id => source.id }
         expect(response).to be_success
       end
 
       it "should assign the source to @source" do
-        get :show, :id => source.id
+        get :show, :params => { :id => source.id }
         expect(assigns(:source)).to eq source
       end
 
       context ":format => :html" do
         it "should render the :show template" do
-          get :show, :id => source.id, :format => :html
+          get :show, :params => { :id => source.id, :format => :html }
           expect(response).to render_template(:show)
         end
       end
 
       context ":format => :xml" do
         it "should render the source as xml" do
-          get :show, :id => source.id, :format => :xml
+          get :show, :params => { :id => source.id, :format => :xml }
           expect(response.content_type).to eq 'application/xml'
         end
       end
@@ -174,7 +174,7 @@ RSpec.describe SourcesController, type: :controller do
 
     context ":format => :html" do
       it "should render the :new template" do
-        get :new, :format => :html
+        get :new, :params => { :format => :html }
         expect(response).to render_template(:new)
       end
     end
@@ -183,7 +183,7 @@ RSpec.describe SourcesController, type: :controller do
   describe "GET :edit" do
     context "source doesn't exist" do
       it "should raise an error" do
-        expect { get :edit, :id => 'MI7' }
+        expect { get :edit, :params => { :id => 'MI7' } }
           .to raise_error ActiveRecord::RecordNotFound
       end
     end
@@ -192,18 +192,18 @@ RSpec.describe SourcesController, type: :controller do
       let(:source) { create(:source, :organization => organization) }
 
       it "should be successful" do
-        get :edit, :id => source.id
+        get :edit, :params => { :id => source.id }
         expect(response).to be_success
       end
 
       it "should assign the source to @source" do
-        get :edit, :id => source.id
+        get :edit, :params => { :id => source.id }
         expect(assigns(:source)).to eq source
       end
 
       context ":format => :html" do
         it "should render the :edit template" do
-          get :edit, :id => source.id, :format => :html
+          get :edit, :params => { :id => source.id, :format => :html }
           expect(response).to render_template(:edit)
         end
       end
@@ -217,17 +217,17 @@ RSpec.describe SourcesController, type: :controller do
 
       it "should save the source object" do
         expect {
-          post :create, :source => source_attrs
+          post :create, :params => { :source => source_attrs }
         }.to change { Source.count }.by(1)
       end
 
       it "should assign the source to @source" do
-        post :create, :source => source_attrs
+        post :create, :params => { :source => source_attrs }
         expect(assigns(:source)).to_not be_nil
       end
 
       it "should redirect to the source show page" do
-        post :create, :source => source_attrs
+        post :create, :params => { :source => source_attrs }
 
         path = organization_source_path(
           :organization_id => organization.id,
@@ -240,11 +240,12 @@ RSpec.describe SourcesController, type: :controller do
 
     context "with invalid source attributes" do
       it "should not save the source object" do
-        expect { post :create, :source => {} }.to_not change { Source.count }
+        expect { post :create, :params => { :source => {} } }
+          .to_not change { Source.count }
       end
 
       it "should render the :new template" do
-        post :create, :source => {}
+        post :create, :params => { :source => {} }
         expect(response).to render_template(:new)
       end
     end
@@ -253,7 +254,7 @@ RSpec.describe SourcesController, type: :controller do
   describe "PUT :update" do
     context "source doesn't exist" do
       it "should raise an error" do
-        expect { put :update, :id => 'MI7' }
+        expect { put :update, :params => { :id => 'MI7' } }
           .to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -262,18 +263,18 @@ RSpec.describe SourcesController, type: :controller do
       let(:source) { create(:source, :organization => organization) }
 
       it "should assign the source to @source" do
-        put :update, :id => source.id, :source => source.attributes
+        put :update, :params => { :id => source.id, :source => source.attributes }
         expect(assigns(:source)).to_not be_nil
       end
 
       context "source changes are valid" do
         it "should persist changs to the source object" do
-          put :update, :id => source.id, :source => { :title => "undisclosed" }
+          put :update, :params => { :id => source.id, :source => { :title => "undisclosed" } }
           expect(assigns(:source).reload.title).to eq "undisclosed"
         end
 
         it "should redirect to the source show page" do
-          put :update, :id => source.id, :source => source.attributes
+          put :update, :params => { :id => source.id, :source => source.attributes }
 
           path = organization_source_path(
             :organization_id => organization.id,
@@ -286,17 +287,17 @@ RSpec.describe SourcesController, type: :controller do
 
       context "source changes are invalid" do
         it "should not persist changes to the source object" do
-          put :update, :id => source.id, :source => { :url => "" }
+          put :update, :params => { :id => source.id, :source => { :url => "" } }
           expect(assigns(:source).reload.url).to eq source.url
         end
 
         it "should render the :edit template" do
-          put :update, :id => source.id, :source => { :url => "" }
+          put :update, :params => { :id => source.id, :source => { :url => "" } }
           expect(response).to render_template(:edit)
         end
 
         it "should provide an error message" do
-          put :update, :id => source.id, :source => { :url => "" }
+          put :update, :params => { :id => source.id, :source => { :url => "" } }
           expect(flash[:error]).to be_present
         end
       end
@@ -306,7 +307,7 @@ RSpec.describe SourcesController, type: :controller do
   describe "DELETE :destroy" do
     context "source doesn't exist" do
       it "should raise an error" do
-        expect { delete :destroy, :id => 'MI7' }
+        expect { delete :destroy, :params => { :id => 'MI7' } }
           .to raise_error ActiveRecord::RecordNotFound
       end
     end
@@ -318,18 +319,18 @@ RSpec.describe SourcesController, type: :controller do
         source # initialize now, let(...) is lazy
 
         expect {
-          delete :destroy, :id => source.id
+          delete :destroy, :params => { :id => source.id }
         }.to change { Source.count }.by(-1)
       end
 
       it "should call destroy on source object (not delete)" do
         # we want to ensure any destroy hooks are triggered (paper trail, etc)
         expect_any_instance_of(Source).to receive(:destroy)
-        delete :destroy, :id => source.id
+        delete :destroy, :params => { :id => source.id }
       end
 
       it "should redirect to the index page" do
-        delete :destroy, :id => source.id
+        delete :destroy, :params => { :id => source.id }
         expect(response).to redirect_to(organization_url(:id => organization.id))
       end
     end

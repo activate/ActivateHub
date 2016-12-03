@@ -32,7 +32,7 @@ gem 'pg' unless defined?(DB_ADAPTER) && DB_ADAPTER != 'postgresql'
 gem 'thin'
 
 # Run-time dependencies
-gem 'rails', '~> 4.2.0'
+gem 'rails', '~> 5.0.0'
 gem 'rails_autolink'
 gem 'nokogiri'
 gem 'columnize'
@@ -59,12 +59,14 @@ gem 'dalli'
 gem 'cache_digests'
 gem 'font-awesome-rails'
 gem 'jquery-ui-rails'
-gem 'protected_attributes'
 gem 'responders'
+gem 'activemodel-serializers-xml'
 
-gem 'paper_trail_manager'
-# gem 'paper_trail_manager', :path => '../paper_trail_manager'
-# gem 'paper_trail_manager', '>= 0.2.0'
+# Main gem does not yet have rails 5 support, using forked copy from PR:
+# https://github.com/fusion94/paper_trail_manager/pull/31
+gem 'paper_trail_manager',
+  git: 'https://github.com/kwstannard/paper_trail_manager.git',
+  branch: 'rails5'
 
 platform :jruby do
   gem 'activerecord-jdbc-adapter'
@@ -106,9 +108,15 @@ group :test do
   gem 'rspec-its'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-collection_matchers'
-  gem 'shoulda-matchers'
   gem 'capybara'
   gem 'timecop'
+  gem 'rails-controller-testing'
+
+  # Main gem does not yet have rails 5 support, using forked copy from PR:
+  # https://github.com/thoughtbot/shoulda-matchers/pull/965
+  gem 'shoulda-matchers',
+    git: 'https://github.com/bsodmike/shoulda-matchers',
+    branch: 'fix/rails5_issue_913'
 end
 
 group :development do

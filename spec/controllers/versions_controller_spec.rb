@@ -3,17 +3,17 @@ require 'spec_helper'
 RSpec.describe VersionsController, type: :controller do
   describe "without versions" do
     it "should raise RecordNotFound if not given an id" do
-      expect { get :edit, :id => '' }
+      expect { get :edit, :params => { :id => '' } }
         .to raise_error ActiveRecord::RecordNotFound
     end
 
     it "should raise RecordNotFound if given invalid id" do
-      expect { get :edit, :id => '-1' }
+      expect { get :edit, :params => { :id => '-1' } }
         .to raise_error ActiveRecord::RecordNotFound
     end
 
     it "should raise RecordNotFound if given id that doesn't exist" do
-      expect { get :edit, :id => '1234' }
+      expect { get :edit, :params => { :id => '1234' } }
         .to raise_error ActiveRecord::RecordNotFound
     end
   end
@@ -39,7 +39,7 @@ RSpec.describe VersionsController, type: :controller do
     def title_for(event)
       version_id = @event.versions.where(event: event).first.id
 
-      get :edit, :id => version_id
+      get :edit, :params => { :id => version_id }
 
       return assigns[:event].title
     end

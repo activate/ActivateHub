@@ -1,4 +1,4 @@
-class Site < ActiveRecord::Base
+class Site < ApplicationRecord
   validates :name, :presence => true
   validates :domain, :presence => true, :uniqueness => true
   validates :timezone, :presence => true
@@ -17,7 +17,7 @@ class Site < ActiveRecord::Base
   end
 
   def with_site(&block)
-    orig = ActiveRecord::Base.current_site
+    orig = ApplicationRecord.current_site
 
     begin
       use!
@@ -28,7 +28,7 @@ class Site < ActiveRecord::Base
   end
 
   def use!(&block)
-    ActiveRecord::Base.current_site = self
+    ApplicationRecord.current_site = self
     I18n.locale = locale
     Time.zone = timezone
     self

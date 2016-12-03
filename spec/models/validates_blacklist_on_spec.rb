@@ -1,13 +1,14 @@
 require 'spec_helper'
 
 RSpec.describe "Event with default blacklist", type: :model do
-  class Event < ActiveRecord::Base
-    include ValidatesBlacklistOnMixin
-    validates_blacklist_on :title
-  end
-
   before(:each) do
-    @event = Event.new(:title => "Title", :start_time => Time.zone.now)
+    event_class = Class.new(ActiveRecord::Base) do
+      self.table_name = 'events'
+      include ValidatesBlacklistOnMixin
+      validates_blacklist_on :title
+    end
+
+    @event = event_class.new(:title => "Title", :start_time => Time.zone.now)
   end
 
   it "should be valid when clean" do
@@ -21,13 +22,14 @@ RSpec.describe "Event with default blacklist", type: :model do
 end
 
 RSpec.describe "Event with custom blacklist", type: :model do
-  class Event < ActiveRecord::Base
-    include ValidatesBlacklistOnMixin
-    validates_blacklist_on :title, :patterns => [/Kltpzyxm/i]
-  end
-
   before(:each) do
-    @event = Event.new(:title => "Title", :start_time => Time.zone.now)
+    event_class = Class.new(ActiveRecord::Base) do
+      self.table_name = 'events'
+      include ValidatesBlacklistOnMixin
+      validates_blacklist_on :title, :patterns => [/Kltpzyxm/i]
+    end
+
+    @event = event_class.new(:title => "Title", :start_time => Time.zone.now)
   end
 
   it "should be valid when clean" do

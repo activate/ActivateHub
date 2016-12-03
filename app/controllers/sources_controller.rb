@@ -3,9 +3,14 @@ require 'source_parser'
 class SourcesController < ApplicationController
   MAXIMUM_EVENTS_TO_DISPLAY_IN_FLASH = 5
 
+  def params
+    @params ||= super.permit! # FIXME: Add support for strong params
+  end
+
   # Import sources
   def import
     params[:source][:type_ids] = create_missing_refs(params[:source][:type_ids], Type)
+    params.permit! # FIXME: Remove when switching to using strong params
 
     @source = Source.find_or_create_from(params[:source])
     @source.organization = Organization.find(params[:organization_id])
@@ -116,8 +121,10 @@ class SourcesController < ApplicationController
   # POST /sources
   # POST /sources.xml
   def create
+    params[:source] ||= {}
     params[:source][:topic_ids] = create_missing_refs(params[:source][:topic_ids], Topic)
     params[:source][:type_ids] = create_missing_refs(params[:source][:type_ids], Type)
+    params.permit! # FIXME: Remove when switching to using strong params
 
     @source = Source.new(params[:source])
 
@@ -139,6 +146,7 @@ class SourcesController < ApplicationController
     @source = Source.find(params[:id])
 
     params[:source][:type_ids] = create_missing_refs(params[:source][:type_ids], Type)
+    params.permit! # FIXME: Remove when switching to using strong params
 
     respond_to do |format|
       if @source.update_attributes(params[:source])

@@ -1,12 +1,10 @@
-class Topic < ActiveRecord::Base
+class Topic < ApplicationRecord
   has_and_belongs_to_many :events
   has_and_belongs_to_many :organizations
   has_and_belongs_to_many :sources
 
   belongs_to :site
   scope_to_current_site
-
-  attr_protected nil # FIXME: Use strong_params
 
   # Validations
   validates :name, :presence => true

@@ -1,6 +1,10 @@
 class VenuesController < ApplicationController
   include SquashManyDuplicatesMixin # Provides squash_many_duplicates
 
+  def params
+    @params ||= super.permit! # FIXME: Add support for strong params
+  end
+
   # GET /venues
   # GET /venues.xml
   def index
@@ -134,7 +138,7 @@ class VenuesController < ApplicationController
     end
 
     respond_to do |format|
-      if !evil_robot && params[:preview].nil? && @venue.update_attributes(params[:venue])
+      if !evil_robot && params[:preview].nil? && @venue.update_attributes(params[:venue].to_h)
         flash[:success] = 'Venue was successfully updated.'
         format.html { 
           if(!params[:from_event].blank?)
@@ -148,7 +152,7 @@ class VenuesController < ApplicationController
         format.xml  { head :ok }
       else
         if params[:preview]
-          @venue.attributes = params[:venue]
+          @venue.attributes = params[:venue].to_h
           @venue.geocode if @venue.valid?
         end
         format.html { render :action => "edit" }

@@ -13,7 +13,7 @@ RSpec.describe OrganizationsController, type: :controller do
     let(:organization) { create(:organization) }
 
     it "should be successful" do
-      get 'show', :id => organization.id
+      get 'show', :params => { :id => organization.id }
       expect(response).to be_success
     end
   end
@@ -29,7 +29,7 @@ RSpec.describe OrganizationsController, type: :controller do
     let(:organization) { create(:organization) }
 
     it "should be successful" do
-      get 'edit', :id => organization.id
+      get 'edit', :params => { :id => organization.id }
       expect(response).to be_success
     end
   end
@@ -48,7 +48,7 @@ RSpec.describe OrganizationsController, type: :controller do
       }
 
       expect {
-        post :create, params
+        post :create, params: params
       }.to change{Organization.count}.by(1)
 
       expect(Organization.last.venue).to eq venue
@@ -66,7 +66,7 @@ RSpec.describe OrganizationsController, type: :controller do
       }
 
       expect {
-        post :create, params
+        post :create, :params => params
       }.to change{ Venue.count }.by(1)
 
       expect(Organization.last.venue).to eq Venue.last
@@ -89,7 +89,7 @@ RSpec.describe OrganizationsController, type: :controller do
           "id"=>organization.id
       }
 
-      put :update, params
+      put :update, :params => params
 
       expect(Organization.last.venue).to eq new_venue
     end
@@ -108,7 +108,7 @@ RSpec.describe OrganizationsController, type: :controller do
       }
 
       expect {
-        put :update, params
+        put :update, :params => params
       }.to change{ Venue.count }.by(1)
 
       expect(Venue.last.title).to eq "New One"

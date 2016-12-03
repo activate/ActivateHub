@@ -1,8 +1,12 @@
 class EventsController < ApplicationController
   include SquashManyDuplicatesMixin # Provides squash_many_duplicates
 
-  before_filter :authenticate_user!, only: [:clone, :destroy, :edit]
-  before_filter :authenticate_admin, only: [:duplicates]
+  before_action :authenticate_user!, only: [:clone, :destroy, :edit]
+  before_action :authenticate_admin, only: [:duplicates]
+
+  def params
+    @params ||= super.permit! # FIXME: Add support for strong params
+  end
 
   # GET /events
   # GET /events.xml
@@ -92,8 +96,9 @@ class EventsController < ApplicationController
     params[:event] ||= {}
     params[:event][:type_ids] = create_missing_refs(params[:event][:type_ids], Type)
     params[:event][:topic_ids] = create_missing_refs(params[:event][:topic_ids], Topic)
+    params.permit! # FIXME: Remove when switching to using strong params
 
-    @event = Event.new(params[:event])
+    @event = Event.new(params[:event].to_h)
     @event.associate_with_venue(venue_ref(params[:event], params[:venue_name]))
     has_new_venue = @event.venue && @event.venue.new_record?
 
@@ -138,10 +143,11 @@ class EventsController < ApplicationController
     params[:event] ||= {}
     params[:event][:type_ids] = create_missing_refs(params[:event][:type_ids], Type)
     params[:event][:topic_ids] = create_missing_refs(params[:event][:topic_ids], Topic)
+    params.permit! # FIXME: Remove when switching to using strong params
 
     @event.start_time = [ params[:start_date], params[:start_time] ]
     @event.end_time   = [ params[:end_date], params[:end_time] ]
-    @event.attributes = params[:event]
+    @event.attributes = params[:event].to_h
 
     if evil_robot = !params[:trap_field].blank?
       flash[:failure] = "<h3>Evil Robot</h3> We didn't update this event because we think you're an evil robot. If you're really not an evil robot, look at the form instructions more carefully. If this doesn't work please file a bug report and let us know."

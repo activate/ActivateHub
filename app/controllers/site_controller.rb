@@ -1,4 +1,9 @@
 class SiteController < ApplicationController
+
+  def params
+    @params ||= super.permit! # FIXME: Add support for strong params
+  end
+
   # Raise exception, mostly for confirming that exception_notification works
   def omfg
     raise ArgumentError, "OMFG"

@@ -26,7 +26,7 @@
 
 require 'loofah/helpers'
 
-class Event < ActiveRecord::Base
+class Event < ApplicationRecord
   include SearchEngine
   include AssociatedVenues
   include UrlValidator
@@ -53,8 +53,6 @@ class Event < ActiveRecord::Base
   has_and_belongs_to_many :topics
 
   before_create :associate_source_topics_types, :if => :source
-
-  attr_protected nil # FIXME: Use strong_params
 
   # Validations
   validates_presence_of :title, :start_time
@@ -122,7 +120,7 @@ class Event < ActiveRecord::Base
 
   # Return the title but strip out any whitespace.
   def title
-    # TODO Generalize this code so we can use it on other attributes in the different model classes. The solution should use an #alias_method_chain to make sure it's not breaking any explicit overrides for an attribute.
+    # TODO Generalize this code so we can use it on other attributes in the different model classes.
     return read_attribute(:title).try {|t| t.to_s.strip }
   end
 
@@ -142,34 +140,24 @@ class Event < ActiveRecord::Base
 
     # Set the start_time from one of a number of time values, a string, or an
     # array of strings.
-    def start_time_with_smarter_setter=(value)
-      return self.class.set_time_on(self, :start_time, value)
+    def start_time=(value)
+      super(normalize_time(:start_time, value))
     end
-    alias_method_chain :start_time=, :smarter_setter
 
     # Set the end_time to the given +value+, which could be a Time, Date,
     # DateTime, String, Array of Strings, etc.
-    def end_time_with_smarter_setter=(value)
-      return self.class.set_time_on(self, :end_time, value)
+    def end_time=(value)
+      super(normalize_time(:end_time, value))
     end
-    alias_method_chain :end_time=, :smarter_setter
   end
 
-  # Sets record's attribute to time value. If time is invalid, marks record as invalid.
-  #
-  # @param [ActiveRecord::Base] record The record to modify.
-  # @param [String, Symbol] attribute The attribute to set, e.g. :start_time.
-  # @param [ActiveSupport::TimeWithZone] value The time.
-  #
-  # @return [ActiveSupport::TimeWithZone]
-  def self.set_time_on(record, attribute, value)
+  private def normalize_time(attribute, value)
     begin
-      result = self.time_for(value)
+      self.class.time_for(value)
     rescue Exception => e
-      record.errors.add(attribute, "is invalid")
-      return record.send("#{attribute}_without_smarter_setter=", nil)
+      self.errors.add(attribute, "is invalid")
+      nil
     end
-    return record.send("#{attribute}_without_smarter_setter=", result)
   end
 
   # Returns time for the value, which can be a Time, Date, DateTime, String,

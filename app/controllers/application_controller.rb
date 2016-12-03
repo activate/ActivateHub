@@ -11,9 +11,9 @@ class ApplicationController < ActionController::Base
   # Setup theme
   layout "application"
 
-  before_filter :current_site
-  before_filter :set_theme
-
+  before_action :current_site
+  before_action :set_theme
+  before_action :set_paper_trail_whodunnit
 protected
 
   def current_site
@@ -84,10 +84,6 @@ end
 # Return string with contents HTML escaped once.
 def escape_once(*args)
   help.escape_once(*args)
-end
-
-def user_for_paper_trail
-  user_signed_in? ? current_user.id : nil
 end
 
 def authenticate_admin

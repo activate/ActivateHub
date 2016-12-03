@@ -45,7 +45,7 @@ module Rebaseable
     # resets this object's attributes to be identical to parent's
     self.attributes = parent.attributes.symbolize_keys
     self.parent_keys_for_partial_write = changed_attributes.keys
-    @changed_attributes.clear # Instance var hacks around internal changes in rails 4.2
+    clear_changes_information
 
     # restore original attributes on top of parent attributes
     self.attributes = orig_attribute_changes

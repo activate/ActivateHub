@@ -15,7 +15,7 @@
 # == Source
 #
 # A model that represents a source of events data, such as feeds for hCal, iCal, etc.
-class Source < ActiveRecord::Base
+class Source < ApplicationRecord
   include SearchEngine
 
   validate :assert_url
@@ -29,8 +29,6 @@ class Source < ActiveRecord::Base
   belongs_to :organization, :touch => true
   belongs_to :site
   scope_to_current_site
-
-  attr_protected nil # FIXME: Use strong_params
 
   validates :url, :presence => true
   validates :title, :presence => true

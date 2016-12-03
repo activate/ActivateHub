@@ -1,6 +1,10 @@
 class Admin::TypesController < AdminController
   respond_to :html, :json
 
+  def params
+    @params ||= super.permit! # FIXME: Add support for strong params
+  end
+
   def index
     @types = Type.all
     respond_with [:admin, @types]
@@ -24,7 +28,7 @@ class Admin::TypesController < AdminController
     @type = Type.new
 
     params[:type][:name].downcase!
-    @type.attributes = params[:type]
+    @type.attributes = params[:type].to_h
 
     if @type.save
       respond_with [:admin, @type]

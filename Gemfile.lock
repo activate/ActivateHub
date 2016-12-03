@@ -1,46 +1,70 @@
+GIT
+  remote: https://github.com/bsodmike/shoulda-matchers
+  revision: 91c1d6a63ee80a1c024da45cf40451dac3aa9bed
+  branch: fix/rails5_issue_913
+  specs:
+    shoulda-matchers (3.1.1)
+      activesupport (>= 4.0.0)
+
+GIT
+  remote: https://github.com/kwstannard/paper_trail_manager.git
+  revision: 00a14d6a7e73ec063e32d2e72543fbc9474bd659
+  branch: rails5
+  specs:
+    paper_trail_manager (0.6.0)
+      paper_trail (~> 5.0)
+      rails (~> 5.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
-    actionmailer (4.2.7.1)
-      actionpack (= 4.2.7.1)
-      actionview (= 4.2.7.1)
-      activejob (= 4.2.7.1)
+    actioncable (5.0.0.1)
+      actionpack (= 5.0.0.1)
+      nio4r (~> 1.2)
+      websocket-driver (~> 0.6.1)
+    actionmailer (5.0.0.1)
+      actionpack (= 5.0.0.1)
+      actionview (= 5.0.0.1)
+      activejob (= 5.0.0.1)
       mail (~> 2.5, >= 2.5.4)
-      rails-dom-testing (~> 1.0, >= 1.0.5)
-    actionpack (4.2.7.1)
-      actionview (= 4.2.7.1)
-      activesupport (= 4.2.7.1)
-      rack (~> 1.6)
-      rack-test (~> 0.6.2)
-      rails-dom-testing (~> 1.0, >= 1.0.5)
+      rails-dom-testing (~> 2.0)
+    actionpack (5.0.0.1)
+      actionview (= 5.0.0.1)
+      activesupport (= 5.0.0.1)
+      rack (~> 2.0)
+      rack-test (~> 0.6.3)
+      rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    actionview (4.2.7.1)
-      activesupport (= 4.2.7.1)
+    actionview (5.0.0.1)
+      activesupport (= 5.0.0.1)
       builder (~> 3.1)
       erubis (~> 2.7.0)
-      rails-dom-testing (~> 1.0, >= 1.0.5)
+      rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    activejob (4.2.7.1)
-      activesupport (= 4.2.7.1)
-      globalid (>= 0.3.0)
-    activemodel (4.2.7.1)
-      activesupport (= 4.2.7.1)
+    activejob (5.0.0.1)
+      activesupport (= 5.0.0.1)
+      globalid (>= 0.3.6)
+    activemodel (5.0.0.1)
+      activesupport (= 5.0.0.1)
+    activemodel-serializers-xml (1.0.1)
+      activemodel (> 5.x)
+      activerecord (> 5.x)
+      activesupport (> 5.x)
       builder (~> 3.1)
-    activerecord (4.2.7.1)
-      activemodel (= 4.2.7.1)
-      activesupport (= 4.2.7.1)
-      arel (~> 6.0)
-    activesupport (4.2.7.1)
+    activerecord (5.0.0.1)
+      activemodel (= 5.0.0.1)
+      activesupport (= 5.0.0.1)
+      arel (~> 7.0)
+    activesupport (5.0.0.1)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
-      json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
-      thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     acts-as-taggable-on (4.0.0)
       activerecord (>= 4.0)
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
-    arel (6.0.3)
+    arel (7.1.4)
     bcrypt (3.1.11)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
@@ -115,7 +139,6 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
-    json (1.8.3)
     kaminari (0.17.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -133,24 +156,19 @@ GEM
     mini_portile2 (2.1.0)
     minitest (5.10.1)
     multi_xml (0.5.5)
+    nio4r (1.2.1)
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
     options (2.3.2)
     orm_adapter (0.5.0)
-    paper_trail (4.2.0)
+    paper_trail (5.2.3)
       activerecord (>= 3.0, < 6.0)
-      activesupport (>= 3.0, < 6.0)
       request_store (~> 1.1)
-    paper_trail_manager (0.6.0)
-      paper_trail (>= 3.0, < 5.0)
-      rails (>= 3.0, < 5.0)
     pg (0.19.0)
     power_assert (0.4.1)
     progress_bar (1.1.0)
       highline (~> 1.6)
       options (~> 2.3.0)
-    protected_attributes (1.1.3)
-      activemodel (>= 4.0.1, < 5.0)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -159,35 +177,38 @@ GEM
       pry (>= 0.9.10)
     public_suffix (2.0.4)
     racc (1.4.14)
-    rack (1.6.5)
+    rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
-    rails (4.2.7.1)
-      actionmailer (= 4.2.7.1)
-      actionpack (= 4.2.7.1)
-      actionview (= 4.2.7.1)
-      activejob (= 4.2.7.1)
-      activemodel (= 4.2.7.1)
-      activerecord (= 4.2.7.1)
-      activesupport (= 4.2.7.1)
+    rails (5.0.0.1)
+      actioncable (= 5.0.0.1)
+      actionmailer (= 5.0.0.1)
+      actionpack (= 5.0.0.1)
+      actionview (= 5.0.0.1)
+      activejob (= 5.0.0.1)
+      activemodel (= 5.0.0.1)
+      activerecord (= 5.0.0.1)
+      activesupport (= 5.0.0.1)
       bundler (>= 1.3.0, < 2.0)
-      railties (= 4.2.7.1)
-      sprockets-rails
-    rails-deprecated_sanitizer (1.0.3)
-      activesupport (>= 4.2.0.alpha)
-    rails-dom-testing (1.0.7)
-      activesupport (>= 4.2.0.beta, < 5.0)
+      railties (= 5.0.0.1)
+      sprockets-rails (>= 2.0.0)
+    rails-controller-testing (1.0.1)
+      actionpack (~> 5.x)
+      actionview (~> 5.x)
+      activesupport (~> 5.x)
+    rails-dom-testing (2.0.1)
+      activesupport (>= 4.2.0, < 6.0)
       nokogiri (~> 1.6.0)
-      rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
     rails3-jquery-autocomplete (1.0.15)
       rails (>= 3.2)
     rails_autolink (1.1.6)
       rails (> 3.1)
-    railties (4.2.7.1)
-      actionpack (= 4.2.7.1)
-      activesupport (= 4.2.7.1)
+    railties (5.0.0.1)
+      actionpack (= 5.0.0.1)
+      activesupport (= 5.0.0.1)
+      method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (11.3.0)
@@ -433,8 +454,6 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    shoulda-matchers (3.1.1)
-      activesupport (>= 4.0.0)
     slop (3.6.0)
     spork (0.9.2)
     spring (2.0.0)
@@ -465,14 +484,18 @@ GEM
       execjs (>= 0.3.0, < 3)
     warden (1.2.6)
       rack (>= 1.0)
-    web-console (3.3.0)
-      activemodel (>= 4.2)
+    web-console (3.4.0)
+      actionview (>= 5.0)
+      activemodel (>= 5.0)
       debug_inspector
-      railties (>= 4.2)
+      railties (>= 5.0)
     webrat (0.7.3)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
       rack-test (>= 0.5.3)
+    websocket-driver (0.6.4)
+      websocket-extensions (>= 0.1.0)
+    websocket-extensions (0.1.2)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -480,6 +503,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activemodel-serializers-xml
   activerecord-jdbc-adapter
   activerecord-jdbcsqlite3-adapter
   acts-as-taggable-on
@@ -512,13 +536,13 @@ DEPENDENCIES
   loofah-activerecord
   nokogiri
   paper_trail
-  paper_trail_manager
+  paper_trail_manager!
   pg
   progress_bar
-  protected_attributes
   pry-rails
   racc
-  rails (~> 4.2.0)
+  rails (~> 5.0.0)
+  rails-controller-testing
   rails3-jquery-autocomplete
   rails_autolink
   rdoc
@@ -531,7 +555,7 @@ DEPENDENCIES
   rubysl
   rubyzip
   sass-rails
-  shoulda-matchers
+  shoulda-matchers!
   spork
   spring
   test-unit

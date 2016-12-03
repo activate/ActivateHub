@@ -62,12 +62,11 @@ module Calagator
 
     #---[ Rails ]-----------------------------------------------------------
 
+    config.action_controller.per_form_csrf_tokens = true
+
     # Deliver email using sendmail by default
     config.action_mailer.delivery_method = :sendmail
     config.action_mailer.sendmail_settings = { :arguments => '-i' }
-
-    # Let exceptions raise through activerecord callbacks
-    config.active_record.raise_in_transactional_callbacks = true
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
@@ -88,6 +87,7 @@ module Calagator
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
+    config.assets.precompile += ["*.gif", "*.jpg", "*.png"]
     config.assets.precompile += ["forms.css", "forms.js"]
     config.assets.precompile += ["leaflet_google_layer.js", 'jquery-ui.js']
 

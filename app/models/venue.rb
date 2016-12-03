@@ -28,7 +28,7 @@
 #  events_count    :integer
 #
 
-class Venue < ActiveRecord::Base
+class Venue < ApplicationRecord
   include SearchEngine
   include StripWhitespace
   include UrlValidator
@@ -51,8 +51,6 @@ class Venue < ActiveRecord::Base
   strip_whitespace! :title, :description, :address, :url, :street_address, :locality, :region, :postal_code, :country, :email, :telephone
   before_save :geocode
   after_save :touch_events
-
-  attr_protected nil
 
   # Validations
   validates_presence_of :title
