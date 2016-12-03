@@ -37,7 +37,7 @@ RSpec.describe VersionsController, type: :controller do
 
     # Returns the versioned record's title for the event (e.g. :update).
     def title_for(event)
-      version_id = @event.versions.first(:conditions => {:event => event}).id
+      version_id = @event.versions.where(event: event).first.id
 
       get :edit, :id => version_id
 

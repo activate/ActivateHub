@@ -38,11 +38,13 @@ Spork.prefork do
     config.backtrace_exclusion_patterns << /lib\/rspec\/rails/
     config.backtrace_exclusion_patterns << /gems\//
 
-    # Disable these so transactions can be used by the database cleaner
-    config.use_transactional_fixtures = false
+    config.use_transactional_fixtures = true
 
     # Allows us to use create(:user) instead of FactoryGirl.create :user
     config.include FactoryGirl::Syntax::Methods
+
+    config.include Shoulda::Matchers::ActiveModel, type: :model
+    config.include Shoulda::Matchers::ActiveRecord, type: :model
 
     # Makes warden available in tests, provides :sign_in and :sign_out
     config.include Devise::TestHelpers, :type => :controller
@@ -55,9 +57,6 @@ Spork.prefork do
 
     # Database cleaner
     config.before(:suite) do
-      DatabaseCleaner.strategy = :transaction
-      DatabaseCleaner.clean_with(:deletion)
-
       # use a fixed time so tests and fixtures can make assumptions
       # about future events and not worry about changes in seconds, etc
       Timecop.travel(Time.zone.parse('2013-03-22 14:05:27'))
@@ -65,8 +64,6 @@ Spork.prefork do
     end
 
     config.before(:each) do
-      DatabaseCleaner.start
-
       # data is tenantized by site, so we need to ensure a site exists for
       # all tests and that it matches the request.domain used for controller
       # and functional tests.
@@ -77,10 +74,6 @@ Spork.prefork do
         :timezone => 'Pacific Time (US & Canada)',
         :locale   => 'en',
       ).use!
-    end
-
-    config.after(:each) do
-      DatabaseCleaner.clean
     end
   end
 end

@@ -2,7 +2,7 @@
 
 #admin-content
   - unless @type.any_items?
-    = link_to 'Delete this type', admin_type_path(@type), :method => :delete, :confirm => 'Are you sure?'
+    = link_to 'Delete this type', admin_type_path(@type), :method => :delete, :data => { :confirm => 'Are you sure?' }
 
   %h3 Most Recently Created Events
   - if @events.any?

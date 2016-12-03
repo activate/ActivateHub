@@ -2,7 +2,7 @@
 
 #admin-content
   - unless @topic.any_items?
-    = link_to 'Delete this topic', admin_topic_path(@topic), :method => :delete, :confirm => 'Are you sure?'
+    = link_to 'Delete this topic', admin_topic_path(@topic), :method => :delete, :data => { :confirm => 'Are you sure?' }
 
   %h3 Most Recently Created Events
   - if @events.any?

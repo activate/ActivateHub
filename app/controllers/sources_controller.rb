@@ -77,7 +77,7 @@ class SourcesController < ApplicationController
     organization_id = params[:organization_id]
 
     begin
-      @source = Source.find(params[:id], :include => [:events, :venues])
+      @source = Source.includes(:events, :venues).find(params[:id])
     rescue ActiveRecord::RecordNotFound => e
       flash[:failure] = e.to_s if params[:id] != "import"
       return redirect_to(new_organization_source_path(:organization_id => organization_id))

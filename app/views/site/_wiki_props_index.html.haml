@@ -1,6 +1,6 @@
 :ruby
   collection ||= raise ArgumentError, "collection is required in view partial #{__FILE__}"
-  object_name = collection.scoped.klass.name.downcase
+  object_name = collection.klass.name.downcase
   collection_name = object_name.pluralize
 
 %h3.wiki-index-title= t('.title', :obj => collection_name)

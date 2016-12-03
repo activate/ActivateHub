@@ -4,6 +4,7 @@ Calagator::Application.configure do
   # The production environment is meant for finished, "live" apps.
   # Code is not reloaded between requests
   config.cache_classes = true
+  config.eager_load = true
 
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
@@ -13,8 +14,7 @@ Calagator::Application.configure do
   config.serve_static_assets = %w(true yes 1).include?(ENV['STATIC_ASSETS']) || false
 
   # Compress JavaScripts and CSS
-  #config.assets.compress = true
-  config.assets.compress = true
+  config.assets.js_compressor = :uglifier
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = false

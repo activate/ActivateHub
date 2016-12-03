@@ -1,6 +1,6 @@
 - content_for :sidebar do
   #sidebar-welcome.sidebar-box= render 'site/welcome'
-  #sidebar-wiki-props.sidebar-box= render 'site/wiki_props_index', :collection => Organization.scoped
+  #sidebar-wiki-props.sidebar-box= render 'site/wiki_props_index', :collection => Organization.all
   #sidebar-filters.sidebar-box= render 'organizations/filters'
 
 

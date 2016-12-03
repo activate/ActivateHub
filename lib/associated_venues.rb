@@ -4,7 +4,7 @@ module AssociatedVenues
       case venue
       when Venue    then venue
       when NilClass then nil
-      when String   then Venue.find_or_initialize_by_title(venue)
+      when String   then Venue.find_or_initialize_by(title: venue)
       when Fixnum   then Venue.find(venue)
       else raise TypeError, "Unknown type: #{venue.class}"
       end

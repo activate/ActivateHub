@@ -26,7 +26,7 @@ class AbstractEvent < ActiveRecord::Base
 
   serialize :tags, Array
 
-  scope :invalid, where(:result => 'invalid')
+  scope :invalid, -> { where(:result => 'invalid') }
 
 
   def abstract_location=(abstract_location)

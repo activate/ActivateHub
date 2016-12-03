@@ -13,7 +13,7 @@ class OrganizationsController < ApplicationController
   # GET /organizations/1.xml
   def show
     begin
-      @organization = Organization.find(params[:id], :include => [:events])
+      @organization = Organization.includes(:events).find(params[:id])
 
       if @organization.sources.none?
         flash[:notice] = "This organization has no events. " +

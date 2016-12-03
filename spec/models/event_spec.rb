@@ -483,16 +483,12 @@ RSpec.describe Event, type: :model do
 
       describe "determining if we should show the more link" do
         it "should provide :more item if there are events past the future cutoff" do
-          event = stub_model(Event)
-          expect(Event).to receive(:first).with(:order=>"start_time asc", :conditions => ["start_time >= ?", today + 2.weeks]).and_return(event)
-
+          event = create(:event, start_time: 3.weeks.from_now)
           expect(Event.select_for_overview[:more]).to eq event
         end
 
         it "should set :more item if there are no events past the future cutoff" do
-          event = stub_model(Event)
-          expect(Event).to receive(:first).with(:order=>"start_time asc", :conditions => ["start_time >= ?", today + 2.weeks]).and_return(event)
-
+          event = create(:event, start_time: 3.weeks.from_now)
           expect(Event.select_for_overview[:more?]).to be_blank
         end
       end
@@ -650,7 +646,7 @@ RSpec.describe Event, type: :model do
     end
 
     it "should associate venue by title" do
-      expect(Venue).to receive(:find_or_initialize_by_title).and_return(@venue)
+      expect(Venue).to receive(:find_or_initialize_by).and_return(@venue)
 
       expect(@event.associate_with_venue(@venue.title)).to eq @venue
     end
@@ -726,9 +722,9 @@ RSpec.describe Event, type: :model do
     # TODO Refactor #find_duplicates_create_a_clone_and_find_again and its uses into something simpler, like #assert_duplicate_count.
     def find_duplicates_create_a_clone_and_find_again(find_duplicates_arguments, clone_attributes, create_class = Event)
       before_results = create_class.find_duplicates_by( find_duplicates_arguments)
-      clone = create_class.create!(clone_attributes)
+      clone = create_class.create!(clone_attributes.except('id'))
       after_results = Event.find_duplicates_by(find_duplicates_arguments)
-      return [before_results.sort_by(&:created_at), after_results.sort_by(&:created_at)]
+      [before_results.sort_by(&:created_at), after_results.sort_by(&:created_at)]
     end
 
     it "should find duplicate title by title" do
@@ -778,7 +774,7 @@ RSpec.describe Event, type: :model do
     it "should consolidate associations, and merge tags" do
       @event.tag_list = %w[first second] # master event contains one duplicate tag, and one unique tag
 
-      clone = Event.create!(@event.attributes)
+      clone = Event.create!(@event.attributes.except('id'))
       clone.tag_list.replace %w[second third] # duplicate event also contains one duplicate tag, and one unique tag
       clone.save!
       clone.reload

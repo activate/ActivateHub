@@ -191,7 +191,7 @@ RSpec.describe VenuesController, type: :controller do
       it "should accept a JSONP callback" do
         get :index, :format => "json", :callback => "some_function"
 
-        expect(response.body.split("\n").join).to match /^\s*some_function\(.*\);?\s*$/
+        expect(response.body.split("\n").join).to match /\bsome_function\(.*\);?\s*$/
       end
     end
 
@@ -201,8 +201,7 @@ RSpec.describe VenuesController, type: :controller do
     describe "in JSON format" do
       describe "with events" do
         before do
-          @venue = build(:venue, :id => 123)
-          allow(Venue).to receive(:find).and_return(@venue)
+          @venue = create(:venue, :id => 123)
         end
 
         it "should produce JSON" do
@@ -218,7 +217,7 @@ RSpec.describe VenuesController, type: :controller do
         it "should accept a JSONP callback" do
           get :show, :id => @venue.to_param, :format => "json", :callback => "some_function"
 
-          expect(response.body.split("\n").join).to match /^\s*some_function\(.*\);?\s*$/
+          expect(response.body.split("\n").join).to match /\bsome_function\(.*\);?\s*$/
         end
       end
     end

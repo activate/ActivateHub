@@ -3,7 +3,7 @@ module TagModelExtensions
   def self.included(base)
     base.extend ClassMethods
     base.class_eval do
-      scope :machine_tags, where("name LIKE '%:%=%'")
+      scope :machine_tags, -> { where("name LIKE '%:%=%'") }
     end
   end
 

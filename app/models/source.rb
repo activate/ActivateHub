@@ -30,12 +30,14 @@ class Source < ActiveRecord::Base
   belongs_to :site
   scope_to_current_site
 
+  attr_protected nil # FIXME: Use strong_params
+
   validates :url, :presence => true
   validates :title, :presence => true
 
-  scope :listing, :order => 'created_at DESC'
-  scope :enabled, where(:enabled => true)
-  scope :disabled, where(:enabled => false)
+  scope :listing, -> { order('created_at DESC') }
+  scope :enabled, -> { where(:enabled => true) }
+  scope :disabled, -> { where(:enabled => false) }
 
   has_paper_trail :meta => { :site_id => :site_id }
 
@@ -58,7 +60,7 @@ class Source < ActiveRecord::Base
   # reimporting, they should edit the source.
   def self.find_or_create_from(attrs={})
     if attrs && attrs[:url]
-      source = Source.find_or_create_by_url(attrs[:url])
+      source = Source.find_or_create_by(url: attrs[:url])
       attrs.each_pair do |key, value|
         if key.to_sym == :reimport
           source.reimport = true if ! source.reimport && value

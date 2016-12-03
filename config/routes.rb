@@ -3,12 +3,12 @@ Calagator::Application.routes.draw do
 
   resource :user, only: [:show]
 
-  match 'omfg' => 'site#omfg'
-  match 'hello' => 'site#hello'
+  get 'omfg' => 'site#omfg'
+  get 'hello' => 'site#hello'
 
-  match 'about' => 'site#about'
+  get 'about' => 'site#about'
 
-  match 'opensearch.:format' => 'site#opensearch'
+  get 'opensearch.:format' => 'site#opensearch'
 
   resources :events do
     collection do
@@ -56,21 +56,21 @@ Calagator::Application.routes.draw do
 
   resources :versions, :only => [:edit]
   resources :changes, :controller => 'paper_trail_manager/changes'
-  match 'recent_changes' => redirect("/changes")
-  match 'recent_changes.:format' => redirect("/changes.%{format}")
+  get 'recent_changes' => redirect("/changes")
+  get 'recent_changes.:format' => redirect("/changes.%{format}")
 
-  match 'css/:name' => 'site#style'
-  match 'css/:name.:format' => 'site#style'
+  get 'css/:name' => 'site#style'
+  get 'css/:name.:format' => 'site#style'
 
-  match '/' => 'events#index', :as => :root
-  match '/index' => 'site#index'
-  match '/index.:format' => 'site#index'
+  get '/index' => 'site#index'
+  get '/index.:format' => 'site#index'
 
   # deprecated routes, remove after 3 months or when too hard to maintain
   get '/topics/:topic_name' => redirect('/events?topic=%{topic_name}') # created: 2013-08-13
   get '/types/:type_name'   => redirect('/events?type=%{type_name}')   # created: 2013-08-13
 
-  match '/:controller(/:action(/:id))'
+  # FIXME: What does this do? Where does it take us?
+  #match '/:controller(/:action(/:id))'
 
   root :to => "events#index"
 end

@@ -33,7 +33,7 @@ class VenuesController < ApplicationController
 
       if params[:term].present? # for the ajax autocomplete widget
         conditions = ["title LIKE :query", {:query => "%#{params[:term]}%"}]
-        @venues = scoped_venues.find(:all, :order => 'lower(title)', :conditions => conditions)
+        @venues = scoped_venues.where(conditions).order('lower(title)')
       elsif params[:query].present?
         @venues = Venue.search(params[:query], :include_closed => params[:include_closed], :wifi => params[:wifi])
       else
@@ -62,7 +62,7 @@ class VenuesController < ApplicationController
   # GET /venues/1.xml
   def show
     begin
-      @venue = Venue.find(params[:id], :include => :source)
+      @venue = Venue.includes(:source).find(params[:id])
     rescue ActiveRecord::RecordNotFound => e
       flash[:failure] = e.to_s
       return redirect_to(venues_path)

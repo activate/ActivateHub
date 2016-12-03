@@ -62,7 +62,7 @@ topics = [
   'war and peace'
 ]
 
-Site.scoped.each do |site|
+Site.all.each do |site|
   types.each {|t| Type.create!(:name => t, :site_id => site.id) }
   topics.each {|t| Topic.create!(:name => t, :site_id => site.id) }
 end

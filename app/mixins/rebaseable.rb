@@ -44,12 +44,27 @@ module Rebaseable
 
     # resets this object's attributes to be identical to parent's
     self.attributes = parent.attributes
+    self.parent_keys_for_partial_write = changed_attributes.keys
     changed_attributes.clear
 
     # restore original attributes on top of parent attributes
     self.attributes = orig_attribute_changes
 
     self
+  end
+
+  # Rails 4 introduced partial writes on database insert, which conflicts with
+  # this mixin's ability to rebase attributes and mark them as not changed;
+  # attributes need to be marked as not changed to give feedback about what
+  # attributes were modified from the parent we're rebasing onto. This works
+  # around the issue by overriding the code that determines what fields have
+  # changed from the database defaults used by the Dirty mixin.
+  def keys_for_partial_write
+    super | (@parent_keys_for_partial_write || [])
+  end
+
+  def parent_keys_for_partial_write=(keys)
+    @parent_keys_for_partial_write = keys
   end
 
 end

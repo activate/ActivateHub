@@ -54,6 +54,8 @@ class Event < ActiveRecord::Base
 
   before_create :associate_source_topics_types, :if => :source
 
+  attr_protected nil # FIXME: Use strong_params
+
   # Validations
   validates_presence_of :title, :start_time
   validate :end_time_later_than_start_time
@@ -236,7 +238,10 @@ class Event < ActiveRecord::Base
     end
 
     # Find next item beyond the future_cuttoff for use in making links to it:
-    times_to_events[:more] = Event.first(:conditions => ["start_time >= ?", future_cutoff], :order => 'start_time asc')
+    times_to_events[:more] = Event
+      .where("start_time >= ?", future_cutoff)
+      .order('start_time asc')
+      .first
 
     return times_to_events
   end

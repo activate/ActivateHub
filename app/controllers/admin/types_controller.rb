@@ -2,7 +2,7 @@ class Admin::TypesController < AdminController
   respond_to :html, :json
 
   def index
-    @types = Type.scoped
+    @types = Type.all
     respond_with [:admin, @types]
   end
 

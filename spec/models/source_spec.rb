@@ -138,7 +138,7 @@ RSpec.describe Source, "find_or_create_from", type: :model do
 
   it "should return an existing or newly-created record" do
     record = Source.new(:url => @url)
-    expect(Source).to receive(:find_or_create_by_url).and_return(record)
+    expect(Source).to receive(:find_or_create_by).and_return(record)
 
     result = Source.find_or_create_from(:url => @url)
     expect(record).to eq result
@@ -147,7 +147,7 @@ RSpec.describe Source, "find_or_create_from", type: :model do
   it "should set re-import flag if given" do
     record = Source.new(:url => @url)
     expect(record).to receive(:save)
-    expect(Source).to receive(:find_or_create_by_url).and_return(record)
+    expect(Source).to receive(:find_or_create_by).and_return(record)
 
     result = Source.find_or_create_from(:url => @url, :reimport => true)
     expect(result.reimport).to be true

@@ -32,7 +32,7 @@ gem 'pg' unless defined?(DB_ADAPTER) && DB_ADAPTER != 'postgresql'
 gem 'thin'
 
 # Run-time dependencies
-gem 'rails', '~> 3.2.16'
+gem 'rails', '~> 4.0.0'
 gem 'rails_autolink'
 gem 'nokogiri'
 gem 'columnize'
@@ -59,6 +59,8 @@ gem 'devise'
 gem 'dalli'
 gem 'cache_digests'
 gem 'font-awesome-rails'
+gem 'jquery-ui-rails'
+gem 'protected_attributes'
 
 gem 'paper_trail_manager'
 # gem 'paper_trail_manager', :path => '../paper_trail_manager'
@@ -117,18 +119,16 @@ end
 
 # Gems used only for assets and not required
 # in production environments by default.
-group :assets do
-  gem 'sass-rails'
-  gem 'coffee-rails'
+gem 'sass-rails', require: false
+gem 'coffee-rails', require: false
 
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'therubyracer', :platforms => :ruby
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+gem 'therubyracer', platforms: :ruby, require: false
 
-  # Minify assets.  Requires a javascript runtime, such as 'therubyracer'
-  # above. You will also need to set 'config.assets.compress' to true in
-  # config/environments/production.rb
-  gem 'uglifier'
-end
+# Minify assets.  Requires a javascript runtime, such as 'therubyracer'
+# above. You will also need to set 'config.assets.js_compressor' to ':uglifier'
+# in config/environments/production.rb
+gem 'uglifier', require: false
 
 # Some dependencies are activated through server settings.
 require "#{File.dirname(__FILE__)}/lib/secrets_reader"

@@ -57,7 +57,7 @@ RSpec.describe EventsController, type: :controller do
       it "should accept a JSONP callback" do
         post :index, :format => "json", :callback => "some_function"
 
-        expect(response.body.split("\n").join).to match /^\s*some_function\(.*\);?\s*$/
+        expect(response.body.split("\n").join).to match /\bsome_function\(.*\);?\s*$/
       end
 
       describe "without events" do
@@ -511,6 +511,7 @@ RSpec.describe EventsController, type: :controller do
       before(:each) do
         @event = build(:event_with_venue, :id => 42)
         @venue = @event.venue
+        @params = @params.merge(:id => 42)
         allow(Event).to receive(:find).and_return(@event)
       end
 
@@ -885,7 +886,7 @@ RSpec.describe EventsController, type: :controller do
         it "should accept a JSONP callback" do
           post :search, :query => "myquery", :format => "json", :callback => "some_function"
 
-          expect(response.body.split("\n").join).to match /^\s*some_function\(.*\);?\s*$/
+          expect(response.body.split("\n").join).to match /\bsome_function\(.*\);?\s*$/
         end
 
         it "should include venue details" do

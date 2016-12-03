@@ -20,7 +20,7 @@ class AbstractLocation < ActiveRecord::Base
 
   serialize :tags, Array
 
-  scope :invalid, where(:result => 'invalid')
+  scope :invalid, -> { where(:result => 'invalid') }
 
 
   def find_existing

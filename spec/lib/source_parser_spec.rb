@@ -66,7 +66,7 @@ end
 RSpec.describe SourceParser, "checking duplicates when importing" do
   describe "with two identical events" do
     before :each do
-      @venue_size_before_import = Venue.find(:all).size
+      @venue_size_before_import = Venue.count
       @cal_source = Source.new(:title => "Calendar event feed", :url => "http://mysample.hcal/")
       @cal_content = (%{
       <div class="vevent">
@@ -95,7 +95,7 @@ RSpec.describe SourceParser, "checking duplicates when importing" do
 
     it "should create only one venue" do
       skip "Fails because code checks imported calendar for duplicates against only saved objects, but not against itself. TODO: fix code. See Issue241"
-      expect(Venue.find(:all).size).to eq @venue_size_before_import + 1
+      expect(Venue.count).to eq @venue_size_before_import + 1
     end
   end
 

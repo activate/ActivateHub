@@ -9,6 +9,8 @@ class Organization < ActiveRecord::Base
   has_and_belongs_to_many :topics
   belongs_to :venue
 
+  attr_protected nil # FIXME: Use strong_params
+
   # Validations
   validates :name, presence: true
 
@@ -30,7 +32,7 @@ class Organization < ActiveRecord::Base
   before_save :check_touch_events
   after_save :touch_events
 
-  default_scope :order => 'LOWER(organizations.name) ASC'
+  default_scope -> { order('LOWER(organizations.name) ASC') }
 
   def title
     @name

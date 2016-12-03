@@ -2,7 +2,7 @@ class Admin::TopicsController < AdminController
   respond_to :html, :json
 
   def index
-    @topics = Topic.scoped
+    @topics = Topic.all
     respond_with [:admin, @topics]
   end
 

@@ -6,7 +6,7 @@ class AddSiteIdToModels < ActiveRecord::Migration
   end
 
   def self.up
-    default_site = Site.find_or_create_by_id 1
+    default_site = Site.find_or_create_by(id: 1)
     if !default_site.domain
       default_site.domain = "localhost"
       default_site.name = "localhost"

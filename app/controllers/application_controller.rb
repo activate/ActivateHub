@@ -58,7 +58,7 @@ protected
         begin
           i = model.find(Integer(item))
         rescue ArgumentError, ActiveRecord::RecordNotFound
-          i = model.find_or_create_by_name(item)
+          i = model.find_or_create_by(name: item)
         end
         i[:id]
       end

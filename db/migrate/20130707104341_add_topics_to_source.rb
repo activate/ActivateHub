@@ -9,7 +9,7 @@ class AddTopicsToSource < ActiveRecord::Migration
     add_index :sources_topics, :topic_id
 
     Source.reset_column_information
-    Source.scoped.each do |source|
+    Source.all.each do |source|
       next unless source.organization
 
       source.topic_ids = source.organization.topic_ids

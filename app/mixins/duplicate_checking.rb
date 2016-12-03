@@ -49,8 +49,8 @@ module DuplicateChecking
 
       before_save :check_duplicate_of_loop
 
-      scope :marked_duplicates, :conditions => "#{self.table_name}.#{DUPLICATE_MARK_COLUMN} IS NOT NULL"
-      scope :non_duplicates, :conditions => "#{self.table_name}.#{DUPLICATE_MARK_COLUMN} IS NULL"
+      scope :marked_duplicates, -> { where("#{self.table_name}.#{DUPLICATE_MARK_COLUMN} IS NOT NULL") }
+      scope :non_duplicates, -> { where("#{self.table_name}.#{DUPLICATE_MARK_COLUMN} IS NULL") }
     end
   end
 
