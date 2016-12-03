@@ -32,7 +32,7 @@ gem 'pg' unless defined?(DB_ADAPTER) && DB_ADAPTER != 'postgresql'
 gem 'thin'
 
 # Run-time dependencies
-gem 'rails', '~> 4.0.0'
+gem 'rails', '~> 4.1.0'
 gem 'rails_autolink'
 gem 'nokogiri'
 gem 'columnize'
@@ -44,7 +44,6 @@ gem 'ri_cal'
 gem 'rubyzip'
 gem 'kaminari'
 gem 'httparty'
-gem 'multi_json' # Use whichever version 'httparty' wants, needed for our specs
 gem 'loofah'
 gem 'loofah-activerecord'
 gem 'bluecloth'
@@ -112,6 +111,8 @@ group :test do
 end
 
 group :development do
+  gem 'spring'
+
   # Better Errors (interactive web debugging)
   gem 'better_errors'
   gem 'binding_of_caller'

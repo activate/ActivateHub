@@ -123,7 +123,7 @@ RSpec.describe SourcesController, type: :controller do
 
       it "should provide a failure message" do
         get :show, :id => 'MI7'
-        expect(flash.keys).to include(:failure)
+        expect(flash[:failure]).to be_present
       end
     end
 
@@ -297,7 +297,7 @@ RSpec.describe SourcesController, type: :controller do
 
         it "should provide an error message" do
           put :update, :id => source.id, :source => { :url => "" }
-          expect(flash.keys).to include(:error)
+          expect(flash[:error]).to be_present
         end
       end
     end

@@ -4,7 +4,7 @@ RSpec.describe SourceParser::Plancast do
 
   before(:each) do
     content = read_sample('plancast.json')
-    expect(HTTParty).to receive(:get).and_return(MultiJson.decode(content))
+    expect(HTTParty).to receive(:get).and_return(JSON.parse(content))
     @events = SourceParser::Plancast.to_abstract_events(:url => 'http://plancast.com/p/3cos/indiewebcamp')
     @event = @events.first
   end

@@ -5,7 +5,7 @@ RSpec.describe SourceParser::Facebook do
   describe "when importing an event" do
     before(:each) do
       content = read_sample('facebook.json')
-      parsed_content = MultiJson.decode(content)
+      parsed_content = JSON.parse(content)
       expect(HTTParty).to receive(:get).and_return(parsed_content)
       @events = SourceParser::Facebook.to_abstract_events(:url => 'http://facebook.com/event.php?eid=247619485255249')
       @event = @events.first

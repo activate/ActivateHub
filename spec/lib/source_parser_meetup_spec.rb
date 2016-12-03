@@ -8,7 +8,7 @@ RSpec.describe SourceParser::Meetup do
 
     before(:each) do
       content = read_sample('meetup.json')
-      expect(HTTParty).to receive(:get).and_return(MultiJson.decode(content))
+      expect(HTTParty).to receive(:get).and_return(JSON.parse(content))
       @events = SourceParser::Meetup.to_abstract_events(:url => 'http://www.meetup.com/pdxpython/events/ldhnqyplbnb/')
       @event = @events.first
     end

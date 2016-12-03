@@ -202,7 +202,7 @@ RSpec.describe SourceParser, "checking duplicates when importing" do
 
     content = read_sample('plancast.json')
     allow(SourceParser::Base).to receive(:read_url).and_return("this content doesn't matter")
-    expect(HTTParty).to receive(:get).and_return(MultiJson.decode(content))
+    expect(HTTParty).to receive(:get).and_return(JSON.parse(content))
 
     source = Source.new(
       :title => "Event with duplicate machine-tagged venue",

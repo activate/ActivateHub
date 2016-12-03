@@ -204,6 +204,6 @@ protected
 
   def ical_export(venue)
     events = venue.events.order("start_time ASC").non_duplicates
-    render(:text => Event.to_ical(events, :url_helper => lambda{|event| event_url(event)}), :mime_type => 'text/calendar')
+    render(:body => Event.to_ical(events, :url_helper => lambda{|event| event_url(event)}), :mime_type => 'text/calendar')
   end
 end

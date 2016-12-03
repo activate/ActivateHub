@@ -280,7 +280,7 @@ class EventsController < ApplicationController
   # Export +events+ to an iCalendar file.
   def ical_export(events=nil)
     events = events || Event.future.non_duplicates
-    render(:text => Event.to_ical(events, :url_helper => lambda{|event| event_url(event)}), :mime_type => 'text/calendar')
+    render(:body => Event.to_ical(events, :url_helper => lambda{|event| event_url(event)}), :mime_type => 'text/calendar')
   end
 
   # Render +events+ for a particular format.
