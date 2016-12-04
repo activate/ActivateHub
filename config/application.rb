@@ -21,8 +21,6 @@ module Calagator
     require 'uri'
 
     # Bundled libraries
-    $LOAD_PATH << Rails.root.join('vendor','gems','lucene_query-0.1','lib')
-    require 'lucene_query'
     $LOAD_PATH << Rails.root.join('vendor','gems','mofo-0.2.8','lib')
     require 'mofo'
 
