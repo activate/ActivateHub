@@ -65,12 +65,12 @@
             $("#event_venue_id").val('');
         }
       }
-    }).data( "autocomplete" )._renderItem = function( ul, item ) {
+    }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
       var short_address = (item.street_address && item.street_address.length > 0)
                             ? item.street_address+", "+item.locality+" "+item.region
                             : (item.address || '<span class="address-unknown">address not known</span>');
       return $( "<li><a><strong>"+item.title+"</strong><br />"+short_address+"</a></li>" )
-              .data( "item.autocomplete", item )
+              .data( "ui-autocomplete-item", item )
               .appendTo(ul);
     };
 
