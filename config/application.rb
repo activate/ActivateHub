@@ -88,7 +88,7 @@ module Calagator
     config.assets.version = '1.0'
 
     config.assets.precompile += ["*.gif", "*.jpg", "*.png"]
-    config.assets.precompile += ["forms.css", "forms.js"]
+    config.assets.precompile += ["forms.css", "forms.js", "widget.css", "widget.js"]
     config.assets.precompile += ["leaflet_google_layer.js", 'jquery-ui.js']
 
     #---[ Locale / Translations ]-------------------------------------------

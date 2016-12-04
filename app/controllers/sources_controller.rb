@@ -4,13 +4,12 @@ class SourcesController < ApplicationController
   MAXIMUM_EVENTS_TO_DISPLAY_IN_FLASH = 5
 
   def params
-    @params ||= super.permit! # FIXME: Add support for strong params
+    @params ||= UntaintedParams.new(super).for(action_name)
   end
 
   # Import sources
   def import
     params[:source][:type_ids] = create_missing_refs(params[:source][:type_ids], Type)
-    params.permit! # FIXME: Remove when switching to using strong params
 
     @source = Source.find_or_create_from(params[:source])
     @source.organization = Organization.find(params[:organization_id])
@@ -121,10 +120,9 @@ class SourcesController < ApplicationController
   # POST /sources
   # POST /sources.xml
   def create
-    params[:source] ||= {}
+    params[:source] ||= ActionController::Parameters.new({}).permit!
     params[:source][:topic_ids] = create_missing_refs(params[:source][:topic_ids], Topic)
     params[:source][:type_ids] = create_missing_refs(params[:source][:type_ids], Type)
-    params.permit! # FIXME: Remove when switching to using strong params
 
     @source = Source.new(params[:source])
 
@@ -146,7 +144,6 @@ class SourcesController < ApplicationController
     @source = Source.find(params[:id])
 
     params[:source][:type_ids] = create_missing_refs(params[:source][:type_ids], Type)
-    params.permit! # FIXME: Remove when switching to using strong params
 
     respond_to do |format|
       if @source.update_attributes(params[:source])
@@ -179,4 +176,51 @@ class SourcesController < ApplicationController
   def source_path(source)
     return self.organization_source_path source.organization, source
   end
+
+  class UntaintedParams < SimpleDelegator
+    def for(action)
+      respond_to?("for_#{action}") ? send("for_#{action}") : __getobj__
+    end
+
+    def for_create
+      permit(source: source_params)
+    end
+
+    def for_destroy
+      permit(:id)
+    end
+
+    def for_edit
+      permit(:id, :organization_id)
+    end
+
+    def for_index
+      permit(*pagination_params, :organization_id)
+    end
+
+    def for_import
+      permit(:organization_id, source: source_params)
+    end
+
+    def for_new
+      permit(:organization_id, :url)
+    end
+
+    def for_show
+      permit(:id, :organization_id)
+    end
+
+    def for_update
+      permit(:id, source: source_params)
+    end
+
+    private def pagination_params
+      [:page, :per_page]
+    end
+
+    private def source_params
+      [:organization_id, :title, :url, { topic_ids: [], type_ids: [] }]
+    end
+  end
+
 end

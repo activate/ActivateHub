@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   before_action :authenticate_admin, only: [:duplicates]
 
   def params
-    @params ||= super.permit! # FIXME: Add support for strong params
+    @params ||= UntaintedParams.new(super).for(action_name)
   end
 
   # GET /events
@@ -93,10 +93,9 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.xml
   def create
-    params[:event] ||= {}
+    params[:event] ||= ActionController::Parameters.new({}).permit!
     params[:event][:type_ids] = create_missing_refs(params[:event][:type_ids], Type)
     params[:event][:topic_ids] = create_missing_refs(params[:event][:topic_ids], Topic)
-    params.permit! # FIXME: Remove when switching to using strong params
 
     @event = Event.new(params[:event].to_h)
     @event.associate_with_venue(venue_ref(params[:event], params[:venue_name]))
@@ -140,10 +139,9 @@ class EventsController < ApplicationController
     @event.associate_with_venue(venue_ref(params[:event], params[:venue_name]))
     has_new_venue = @event.venue && @event.venue.new_record?
 
-    params[:event] ||= {}
+    params[:event] ||= ActionController::Parameters.new({}).permit!
     params[:event][:type_ids] = create_missing_refs(params[:event][:type_ids], Type)
     params[:event][:topic_ids] = create_missing_refs(params[:event][:topic_ids], Topic)
-    params.permit! # FIXME: Remove when switching to using strong params
 
     @event.start_time = [ params[:start_date], params[:start_time] ]
     @event.end_time   = [ params[:end_date], params[:end_time] ]
@@ -336,4 +334,73 @@ class EventsController < ApplicationController
     end
     return self.send("default_#{kind}_date")
   end
+
+  class UntaintedParams < SimpleDelegator
+    def for(action)
+      respond_to?("for_#{action}") ? send("for_#{action}") : __getobj__
+    end
+
+    def for_clone
+      permit(:id)
+    end
+
+    def for_create
+      permit(*form_params, event: event_params)
+    end
+
+    def for_destroy
+      permit(:id)
+    end
+
+    def for_duplicates
+      permit(:type)
+    end
+
+    def for_edit
+      permit(:id)
+    end
+
+    def for_index
+      permit(*filter_params, *widget_params, :callback)
+    end
+
+    def for_new
+      permit(event: event_params)
+    end
+
+    def for_search
+      permit(:callback, :current, :order, :query, :tag)
+    end
+
+    def for_show
+      permit(:callback, :id)
+    end
+
+    def for_update
+      permit(*form_params, :id, event: event_params)
+    end
+
+    def for_widget_builder
+      permit(*widget_params)
+    end
+
+    private def event_params
+      [ :description, :organization_id, :tag_list, :title, :url, :venue_id,
+        :venue_details, { type_ids: [], topic_ids: [] }
+      ]
+    end
+
+    private def filter_params
+      [:order, :topic, :type, date: [:end, :start]]
+    end
+
+    private def form_params
+      [:end_date, :end_time, :preview, :start_date, :start_time, :trap_field, :venue_name]
+    end
+
+    private def widget_params
+      [:organization, :topic, :types, :widget]
+    end
+  end
+
 end

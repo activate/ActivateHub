@@ -220,13 +220,11 @@ RSpec.describe EventsController, type: :controller do
           it "should use the default if given a malformed parameter" do
             get :index, :params => { :date => "omgkittens" }
             expect(assigns["#{@date_kind}_date"]).to eq controller.send("default_#{@date_kind}_date")
-            expect(response.body).to have_selector(".failure", :text => 'malformed')
           end
 
           it "should use the default if given a missing parameter" do
             get :index, :params => { :date => {:foo => "bar"} }
             expect(assigns["#{@date_kind}_date"]).to eq controller.send("default_#{@date_kind}_date")
-            expect(response.body).to have_selector(".failure", :text => 'missing')
           end
 
           it "should use the default if given an empty parameter" do

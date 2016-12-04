@@ -1,7 +1,7 @@
 class OrganizationsController < ApplicationController
 
   def params
-    @params ||= super.permit! # FIXME: Add support for strong params
+    @params ||= UntaintedParams.new(super).for(action_name)
   end
 
   def index
@@ -62,7 +62,6 @@ class OrganizationsController < ApplicationController
   # POST /organizations.xml
   def create
     params[:organization][:topic_ids] = create_missing_refs(params[:organization][:topic_ids], Topic)
-    params.permit! # FIXME: Remove when switching to using strong params
 
     @organization = Organization.new(params[:organization].merge(venue_id: params["event"]["venue_id"]))
     @organization.associate_with_venue(venue_ref(params[:event], params[:venue_name]))
@@ -94,7 +93,6 @@ class OrganizationsController < ApplicationController
   # PUT /organizations/1.xml
   def update
     params[:organization][:topic_ids] = create_missing_refs(params[:organization][:topic_ids], Topic)
-    params.permit! # FIXME: Remove when switching to using strong params
          
              @organization = Organization.find(params[:id])
              @organization.associate_with_venue(venue_ref(params[:event], params[:venue_name]))
@@ -134,6 +132,52 @@ class OrganizationsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(organizations_url, :flash => {:success => "\"#{@organization.title}\" has been deleted"}) }
       format.xml  { head :ok }
+    end
+  end
+
+  class UntaintedParams < SimpleDelegator
+    def for(action)
+      respond_to?("for_#{action}") ? send("for_#{action}") : __getobj__
+    end
+
+    def for_create
+      permit(*form_params, event: event_params, organization: organization_params)
+    end
+
+    def for_destroy
+      permit(:id)
+    end
+
+    def for_edit
+      permit(:id)
+    end
+
+    def for_index
+      permit(:topic)
+    end
+
+    def for_new
+      permit(organization: organization_params)
+    end
+
+    def for_show
+      permit(:id)
+    end
+
+    def for_update
+      permit(*form_params, :id, event: event_params, organization: organization_params)
+    end
+
+    private def form_params
+      [:preview, :trap_field, :venue_name]
+    end
+
+    private def event_params
+      [:venue_id]
+    end
+
+    private def organization_params
+      [:contact_name, :description, :email, :name, :url, :venue_id, { topic_ids: [] }]
     end
   end
 

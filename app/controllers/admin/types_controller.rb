@@ -1,13 +1,9 @@
 class Admin::TypesController < AdminController
   respond_to :html, :json
 
-  def params
-    @params ||= super.permit! # FIXME: Add support for strong params
-  end
-
   def index
     @types = Type.all
-    respond_with [:admin, @types]
+    respond_with :admin, @types
   end
 
   def show
@@ -16,22 +12,22 @@ class Admin::TypesController < AdminController
     @events = @type.events.order('created_at desc').limit(50)
     @sources = @type.sources
 
-    respond_with [:admin, @type]
+    respond_with :admin, @type
   end
 
   def new
     @type = Type.new
-    respond_with [:admin, @type]
+    respond_with :admin, @type
   end
 
   def create
     @type = Type.new
 
     params[:type][:name].downcase!
-    @type.attributes = params[:type].to_h
+    @type.attributes = params.require(:type).permit(:name)
 
     if @type.save
-      respond_with [:admin, @type]
+      respond_with :admin, @type
     else
       respond_with @type
     end

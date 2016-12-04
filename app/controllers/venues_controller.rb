@@ -2,7 +2,7 @@ class VenuesController < ApplicationController
   include SquashManyDuplicatesMixin # Provides squash_many_duplicates
 
   def params
-    @params ||= super.permit! # FIXME: Add support for strong params
+    @params ||= UntaintedParams.new(super).for(action_name)
   end
 
   # GET /venues
@@ -210,4 +210,50 @@ protected
     events = venue.events.order("start_time ASC").non_duplicates
     render(:body => Event.to_ical(events, :url_helper => lambda{|event| event_url(event)}), :mime_type => 'text/calendar')
   end
+
+  class UntaintedParams < SimpleDelegator
+    def for(action)
+      respond_to?("for_#{action}") ? send("for_#{action}") : __getobj__
+    end
+
+    def for_create
+      permit(:preview, :trap_field, venue: venue_params)
+    end
+
+    def for_destroy
+      permit(:id)
+    end
+
+    def for_duplicates
+      permit(:type)
+    end
+
+    def for_edit
+      permit(:id)
+    end
+
+    def for_index
+      permit(:callback, :closed, :include_closed, :query, :tag, :term, :type, :val, :wifi)
+    end
+
+    def for_new
+      permit(:layout)
+    end
+
+    def for_show
+      permit(:id, :callback)
+    end
+
+    def for_update
+      permit(:id, :from_event, :from_org, :preview, :trap_field, venue: venue_params)
+    end
+
+    private def venue_params
+      [ :access_notes, :description, :email, :force_geocoding, :latitude,
+        :locality, :longitude, :postal_code, :region, :street_address,
+        :telephone, :title, :url, :wifi,
+      ]
+    end
+  end
+
 end

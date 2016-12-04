@@ -1,13 +1,9 @@
 class Admin::TopicsController < AdminController
   respond_to :html, :json
 
-  def params
-    @params ||= super.permit! # FIXME: Add support for strong params
-  end
-
   def index
     @topics = Topic.all
-    respond_with [:admin, @topics]
+    respond_with :admin, @topics
   end
 
   def show
@@ -17,22 +13,22 @@ class Admin::TopicsController < AdminController
     @organizations = @topic.organizations
     @sources = @topic.sources
 
-    respond_with [:admin, @topic]
+    respond_with :admin, @topic
   end
 
   def new
     @topic = Topic.new
-    respond_with [:admin, @topic]
+    respond_with :admin, @topic
   end
 
   def create
     @topic = Topic.new
 
     params[:topic][:name].downcase!
-    @topic.attributes = params[:topic].to_h
+    @topic.attributes = params.require(:topic).permit(:name)
 
     if @topic.save
-      respond_with [:admin, @topic]
+      respond_with :admin, @topic
     else
       respond_with @topic
     end

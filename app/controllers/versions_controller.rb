@@ -1,4 +1,9 @@
 class VersionsController < ApplicationController
+
+  def params
+    @params ||= UntaintedParams.new(super).for(action_name)
+  end
+
   def edit
     @version = PaperTrail::Version.find(params[:id])
     @record = @version.next.try(:reify) || @version.item || @version.reify
@@ -13,4 +18,15 @@ class VersionsController < ApplicationController
       render "#{plural}/edit", :locals => { singular.to_sym =>  @record }
     end
   end
+
+  class UntaintedParams < SimpleDelegator
+    def for(action)
+      respond_to?("for_#{action}") ? send("for_#{action}") : __getobj__
+    end
+
+    def for_edit
+      permit(:id)
+    end
+  end
+
 end

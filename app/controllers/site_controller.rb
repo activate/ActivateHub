@@ -1,7 +1,7 @@
 class SiteController < ApplicationController
 
   def params
-    @params ||= super.permit! # FIXME: Add support for strong params
+    @params ||= UntaintedParams.new(super).for(action_name)
   end
 
   # Raise exception, mostly for confirming that exception_notification works
@@ -26,4 +26,15 @@ class SiteController < ApplicationController
       format.xml { render :content_type => 'application/opensearchdescription+xml' }
     end
   end
+
+  class UntaintedParams < SimpleDelegator
+    def for(action)
+      respond_to?("for_#{action}") ? send("for_#{action}") : __getobj__
+    end
+
+    def for_index
+      permit(:format)
+    end
+  end
+
 end

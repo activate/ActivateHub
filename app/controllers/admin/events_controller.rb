@@ -3,10 +3,6 @@ class Admin::EventsController < AdminController
 
   include SquashManyDuplicatesMixin # provides squash_many_duplicates
 
-  def params
-    @params ||= super.permit! # FIXME: Add support for strong params
-  end
-
   def index
     @events = Event.non_duplicates
 
