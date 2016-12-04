@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # Heroku requires ruby version on own line (reps for version, not evals)
 unless %w(true yes 1).include?(ENV['IGNORE_RUBY_VER'])
-  ruby '2.3.3'
+  ruby '~> 2.3.0'
 end
 
 gem 'rails', '~> 5.0.0'
