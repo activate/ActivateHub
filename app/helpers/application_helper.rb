@@ -70,7 +70,7 @@ module ApplicationHelper
   def datestamp(item)
     stamp = "This item was "
     if !item.respond_to?(:source) || item.source.nil?
-      stamp << "added directly to #{SETTINGS.name}"
+      stamp << "added directly to #{item.site.name}"
     else
       stamp << "imported from "
       if item.source.organization.nil? 

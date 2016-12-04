@@ -1017,20 +1017,19 @@ RSpec.describe Event, type: :model do
     end
 
     describe "- the headers" do
-      before do
-        @data = build(:event).to_ical
-      end
+      let(:event) { build(:event) }
+      subject(:ical) { event.to_ical }
 
       it "should include the calendar name" do
-        expect(@data).to match /\sX-WR-CALNAME:#{SETTINGS.name}\s/
+        expect(ical).to match /\sX-WR-CALNAME:#{event.site.name}\s/
       end
 
       it "should include the method" do
-        expect(@data).to match /\sMETHOD:PUBLISH\s/
+        expect(ical).to match /\sMETHOD:PUBLISH\s/
       end
 
       it "should include the scale" do
-        expect(@data).to match /\sCALSCALE:Gregorian\s/i
+        expect(ical).to match /\sCALSCALE:Gregorian\s/i
       end
     end
 

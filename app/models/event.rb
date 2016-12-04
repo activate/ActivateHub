@@ -384,6 +384,7 @@ EOF
   #   ics2 = Event.to_ical(myevents, :url_helper => lambda{|event| event_url(event)})
   def self.to_ical(events, opts={})
     events = [events].flatten
+    site_name = events.first.try {|e| e.site.name } || 'Event Calendar'
 
     icalendar = RiCal.Calendar do |calendar|
       calendar.prodid = "-//Calagator//EN"
@@ -442,7 +443,7 @@ EOF
     # Add the calendar name, normalize line-endings to UNIX LF, then replace them with DOS CF-LF.
     return icalendar.
       export.
-      sub(/(CALSCALE:\w+)/i, "\\1\nX-WR-CALNAME:#{SETTINGS.name}\nMETHOD:PUBLISH").
+      sub(/(CALSCALE:\w+)/i, "\\1\nX-WR-CALNAME:#{site_name}\nMETHOD:PUBLISH").
       gsub(/\r\n/,"\n").
       gsub(/\n/,"\r\n")
   end

@@ -109,8 +109,8 @@ module TagModelExtensions
       minimum_taggings = opts[:minimum_taggings] || 10
       levels = opts[:levels] || 5
       maximum_tags = opts[:maximum_tags] || 100
+      exclusions = opts[:exclusions] || ['']
 
-      exclusions = SETTINGS.tagcloud_exclusions || ['']
       counts_and_tags = []
       max_count = 0
       benchmark("Tag::for_tagcloud") do

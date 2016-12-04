@@ -12,7 +12,6 @@ class ApplicationController < ActionController::Base
   layout "application"
 
   before_action :current_site
-  before_action :set_theme
   before_action :set_paper_trail_whodunnit
 protected
 
@@ -63,10 +62,6 @@ protected
         i[:id]
       end
     end
-  end
-
-  def set_theme
-    prepend_view_path "themes/#{THEME_NAME}/views"
   end
 end
 

@@ -33,7 +33,6 @@ module Calagator
     require 'tag_model_extensions'
     ### monkeypatches
     require 'ext/nil_strip_html'
-    require 'ext/object_logit'
     require 'ext/time_get_zone'
 
     #---[ Plugins ]---------------------------------------------------------
@@ -83,8 +82,13 @@ module Calagator
     config.assets.version = '1.0'
 
     config.assets.precompile += ["*.gif", "*.jpg", "*.png"]
-    config.assets.precompile += ["forms.css", "forms.js", "widget.css", "widget.js"]
-    config.assets.precompile += ["leaflet_google_layer.js", 'jquery-ui.js']
+    config.assets.precompile += [
+      "forms.css", "forms.js",
+      "mobile.css", "mobile.js",
+      "theme.css", "theme.js",
+      "widget.css", "widget.js",
+      "jquery-ui.js",
+    ]
 
     #---[ Locale / Translations ]-------------------------------------------
 
@@ -103,30 +107,12 @@ module Calagator
       require 'secrets_reader'
       ::SECRETS = SecretsReader.read
 
-      # Read theme
-      ::THEME_NAME = 'activate'
-      Kernel.class_eval do
-        def theme_file(filename)
-          return Rails.root.join('themes',THEME_NAME,filename)
-        end
-      end
-
-      # Read theme settings
-      require 'settings_reader'
-      ::SETTINGS = SettingsReader.read(
-        theme_file("settings.yml"), {
-          'timezone' => 'Pacific Time (US & Canada)',
-        }
-      )
-
       # Set timezone for Rails
-      config.time_zone = SETTINGS.timezone
-
+      config.time_zone = 'America/Los_Angeles' # FIXME: Make compatible w/ 'UTC'
 
       # Set cookie session
       config.session_store :cookie_store, :key => SECRETS.session_name || "calagator"
       config.secret_token = SECRETS.session_secret
-
 
       # Activate search engine
       require 'search_engine'
