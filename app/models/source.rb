@@ -23,7 +23,6 @@ class Source < ApplicationRecord
 
   has_many :events
   has_many :venues
-  has_many :updates, :dependent => :destroy
   has_and_belongs_to_many :topics
   has_and_belongs_to_many :types
   belongs_to :organization, :touch => true
