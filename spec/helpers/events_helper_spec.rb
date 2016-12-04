@@ -2,25 +2,6 @@ require 'spec_helper'
 include EventsHelper
 
 RSpec.describe EventsHelper, type: :helper do
-  describe "#events_sort_label" do
-    it "should return nil without arguments" do
-      expect(helper.events_sort_label(nil)).to be_nil
-    end
-
-    it "should return string for a string key" do
-      expect(helper.events_sort_label("score")).to match(/ by .+#{Event::SORTING_LABELS['score']}.+/)
-    end
-
-    it "should return string for a symbol key" do
-      expect(helper.events_sort_label(:score)).to match(/ by .+#{Event::SORTING_LABELS['score']}.+/)
-    end
-
-    it "should return special string when using a tag" do
-      assign :tag, ActsAsTaggableOn::Tag.new
-      expect(helper.events_sort_label(nil)).to match(/ by .+#{Event::SORTING_LABELS['default']}.+/)
-    end
-  end
-
   describe "google_event_export_link" do
     def escape(string)
       return Regexp.escape(CGI.escape(string))

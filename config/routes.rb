@@ -27,7 +27,7 @@ Calagator::Application.routes.draw do
   end
 
   resources :organizations do
-    resources :sources do
+    resources :sources, except: [:index] do
       collection do
         post :import
       end

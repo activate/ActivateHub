@@ -87,33 +87,6 @@ RSpec.describe SourcesController, type: :controller do
     end
   end
 
-  describe "GET :index" do
-    it "should be successful" do
-      get :index
-      expect(response).to be_success
-    end
-
-    it "should assign the sources to @sources" do
-      source = create(:source, :organization => organization)
-      get :index
-      expect(assigns(:sources)).to eq [source]
-    end
-
-    context ":format => :html" do
-      it "should render the :index template" do
-        get :index, :params => { :format => :html }
-        expect(response).to render_template(:index)
-      end
-    end
-
-    context ":format => :xml" do
-      it "should render the found sources as xml" do
-        get :index, :params => { :format => :xml }
-        expect(response.content_type).to eq 'application/xml'
-      end
-    end
-  end
-
   describe "GET :show" do
     context "source doesn't exist" do
       it "should redirect to the new source page" do

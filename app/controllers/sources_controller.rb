@@ -64,17 +64,6 @@ class SourcesController < ApplicationController
     end
   end
 
-  # GET /sources
-  # GET /sources.xml
-  def index
-    @sources = Source.where('organization_id' => params[:organization_id])
-
-    respond_to do |format|
-      format.html { @sources = @sources.page(params[:page]).per(params[:per_page]) }
-      format.xml  { render :xml => @sources }
-    end
-  end
-
   # GET /sources/1
   # GET /sources/1.xml
   def show
@@ -192,10 +181,6 @@ class SourcesController < ApplicationController
 
     def for_edit
       permit(:id, :organization_id)
-    end
-
-    def for_index
-      permit(*pagination_params, :organization_id)
     end
 
     def for_import

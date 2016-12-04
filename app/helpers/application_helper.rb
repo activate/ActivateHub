@@ -15,55 +15,9 @@ module ApplicationHelper
     content.gsub('<br>','<br />')
   end
 
-  FLASH_TYPES = [:success, :failure]
-
-  def twitterized_type(type)
-    case type
-      when :alert
-        "warning"
-      when :error
-        "error"
-      when :notice
-        "info"
-      when :success
-        "success"
-      when :failure
-        "error"
-      else
-        type.to_s
-    end
-  end
-
   def datetime_format(time,format)
     format = format.gsub(/(%[dHImU])/,'*\1')
     time.strftime(format).gsub(/\*0*/,'').html_safe
-  end
-
-  # Retrun a string describing the source code version being used, or false/nil if it can't figure out how to find the version.
-  def self.source_code_version_raw
-    begin
-      if File.directory?(Rails.root.join(".svn"))
-        s = `svn info 2>&1`
-        m = s.match(/^Revision: (\d+)/s)
-        return " - SVN revision: #{m[1]}"
-      elsif File.directory?(Rails.root.join(".git"))
-        s = `git log -1 --format=medium 2>&1`
-        m = s.match(/^Date: (.+?)$/s)
-        return " - Git timestamp: #{m[1]}"
-      elsif File.directory?(Rails.root.join(".hg"))
-        s = `hg id -nibt 2>&1`
-        return " - Mercurial revision: #{s}"
-      end
-    rescue Errno::ENOENT
-      # Platform (e.g., Windows) has the checkout directory but not the command-line command to manipulate it.
-      return ""
-    end
-  end
-
-  ApplicationController::SOURCE_CODE_VERSION = self.source_code_version_raw
-
-  def source_code_version
-    return ApplicationController::SOURCE_CODE_VERSION
   end
 
   # returns html markup with source (if any), imported/created time, and - if modified - modified time
@@ -111,20 +65,6 @@ module ApplicationHelper
         </script>
       HERE
     end
-  end
-
-  # Focus cursor on DOM element specified by +xpath_query+ using JavaScript, e.g.:
-  #
-  #   <% focus_on '#search_field' %>
-  def focus_on(xpath_query)
-    insert_javascript "$('#{xpath_query}').focus();"
-  end
-
-  # Set the first tabindex to DOM element specified by +xpath_query+.
-  def tabindex_on(xpath_query)
-    #insert_javascript "$('#{xpath_query}')[0].tabindex = 1;"
-    #insert_javascript "$('#{xpath_query}')[0].attributes['tabindex'] = 1;"
-    # TODO Figure out how to set tabindex, because neither of these work right.
   end
 
   # Returns a string with safely encoded entities thanks to #h, while preserving any existing HTML entities.
