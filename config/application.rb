@@ -49,11 +49,6 @@ module Calagator
     config.autoload_paths += [
       # App
       Rails.root.join('app','mixins'),
-      # Plugins
-      Rails.root.join('lib','catch_cookie_exception', 'lib'),
-      Rails.root.join('lib','exception_notification', 'lib'),
-      Rails.root.join('lib','has_many_polymorphs', 'lib'),
-      Rails.root.join('lib','gmaps_on_rails', 'lib'),
     ]
 
     config.eager_load_paths += [
@@ -109,8 +104,7 @@ module Calagator
       ::SECRETS = SecretsReader.read
 
       # Read theme
-      require 'theme_reader'
-      ::THEME_NAME = ThemeReader.read
+      ::THEME_NAME = 'activate'
       Kernel.class_eval do
         def theme_file(filename)
           return Rails.root.join('themes',THEME_NAME,filename)
