@@ -48,6 +48,7 @@ Spork.prefork do
 
     # Makes warden available in tests, provides :sign_in and :sign_out
     config.include Devise::Test::ControllerHelpers, :type => :controller
+    config.include Devise::Test::IntegrationHelpers, :type => :request
 
     # Some of the controller specs are using capybara-based matchers
     config.include Capybara::RSpecMatchers, :type => :controller

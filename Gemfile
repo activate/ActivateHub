@@ -56,11 +56,12 @@ gem 'rails3-jquery-autocomplete'
 gem 'haml'
 gem 'devise'
 gem 'dalli'
-gem 'cache_digests'
 gem 'font-awesome-rails'
 gem 'jquery-ui-rails'
 gem 'responders'
 gem 'activemodel-serializers-xml'
+
+gem 'rails_admin'
 
 # Main gem does not yet have rails 5 support, using forked copy from PR:
 # https://github.com/fusion94/paper_trail_manager/pull/31
