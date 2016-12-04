@@ -31,7 +31,6 @@ module Calagator
     require 'tag_model_extensions'
     ### monkeypatches
     require 'ext/nil_strip_html'
-    require 'ext/time_get_zone'
 
     #---[ Plugins ]---------------------------------------------------------
 

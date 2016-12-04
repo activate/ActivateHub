@@ -17,10 +17,14 @@ gem 'acts-as-taggable-on'
 # Calendar Fetching / Generating
 gem 'httparty' # Used to fetch remote calendars
 gem 'htmlentities' # Used by hcal parser
-gem 'ri_cal' # iCalendar support
 gem 'loofah' # Strip tags from descriptions when not wanting HTML
 gem 'loofah-activerecord' # Mixes in ActiveRecord::Base#xss_foliate
 gem 'nokogiri' # Used by mofo for microformat parsing
+
+# Main gem is no longer maintained, the following forked seemed most active
+gem 'ri_cal', # iCalendar support
+  git: 'https://github.com/kjwierenga/ri_cal.git',
+  branch: 'master'
 
 # View / Rendering
 gem 'haml'
