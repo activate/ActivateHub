@@ -9,10 +9,8 @@
 .dtach
 .rvmrc
 .sass-cache
-.vagrant
 /.rbenv-vars
 Makefile
-Vagrantfile.local
 config/secrets.yml
 config/sunspot.yml
 coverage.info*
@@ -28,7 +26,6 @@ tmp/cache/*
 tmp/pids/*
 tmp/sessions/*
 tmp/sockets/*
-vagrant/cookbooks/vagrant/recipes/local.rb
 .ruby-gemset
 .ruby-version
 
