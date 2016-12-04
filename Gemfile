@@ -56,7 +56,6 @@ gem 'responders'
 
 group :development do
   gem 'spring'
-  gem 'spring-watcher-listen'
   gem 'web-console'
 end
 
