@@ -1,3 +1,5 @@
+require 'mofo'
+
 class SourceParser
   HTMLEntitiesCoder = HTMLEntities.new
 

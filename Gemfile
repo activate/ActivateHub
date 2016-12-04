@@ -55,6 +55,7 @@ gem 'activemodel-serializers-xml'
 gem 'responders'
 
 group :development do
+  gem 'listen'
   gem 'spring'
   gem 'web-console'
 end

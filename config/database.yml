@@ -19,18 +19,17 @@ common: &common
   # The server defaults to notice.
   #min_messages: warning
 
-development:
+development: &development
   database: calagator_dev
-  << : *common
-
-preview:
-  database: calagator_dev
-  << : *common
+  <<: *common
 
 test:
   database: calagator_test
-  << : *common
+  <<: *common
+
+preview:
+  <<: *development
 
 production:
   database: calagator_prod
-  << : *common
+  <<: *common

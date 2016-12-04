@@ -33,8 +33,8 @@ Geokit::Geocoders::YahooGeocoder.secret = 'REPLACE_WITH_YOUR_YAHOO_SECRET'
 # CALAGATOR: We also assign the key to GOOGLE_APPLICATION_ID to make
 # the gmaps_on_rails plugin happy.
 #
-if ENV['GOOGLE_API_KEY']
-  Geokit::Geocoders::GoogleGeocoder.api_key = GOOGLE_APPLICATION_ID = ENV['GOOGLE_API_KEY']
+if Rails.application.secrets.google_api_key.present?
+  Geokit::Geocoders::GoogleGeocoder.api_key = GOOGLE_APPLICATION_ID = Rails.application.secrets.google_api_key
 else
   Geokit::Geocoders::GoogleGeocoder.api_key = GOOGLE_APPLICATION_ID = "Google"
 end

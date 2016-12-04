@@ -59,7 +59,7 @@ module SearchEngine
 
   # Return kind of search engine to use, e.g. :sunspot.
   def self.kind
-    return @@kind
+    defined?(@@kind) ? @@kind : :sql
   end
 
   # Return class to use as search engine.

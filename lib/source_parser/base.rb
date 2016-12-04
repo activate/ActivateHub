@@ -1,3 +1,6 @@
+require 'metaclass'
+require 'ext/nil_strip_html'
+
 $SourceParserImplementations = []
 
 class SourceParser

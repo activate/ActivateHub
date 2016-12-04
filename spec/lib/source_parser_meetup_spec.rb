@@ -2,10 +2,6 @@ require 'spec_helper'
 
 RSpec.describe SourceParser::Meetup do
   describe "with a meetup.com API key in secrets.yml" do
-    before do
-      SECRETS.meetup_api_key = "foo"
-    end
-
     before(:each) do
       content = read_sample('meetup.json')
       expect(HTTParty).to receive(:get).and_return(JSON.parse(content))

@@ -1,4 +1,4 @@
-Calagator::Application.routes.draw do
+Rails.application.routes.draw do
   devise_for :users
 
   resource :user, only: [:show]
@@ -55,7 +55,6 @@ Calagator::Application.routes.draw do
     end
   end
 
-
   resources :versions, :only => [:edit]
   resources :changes, :controller => 'paper_trail_manager/changes'
   get 'recent_changes' => redirect("/changes")
@@ -66,13 +65,6 @@ Calagator::Application.routes.draw do
 
   get '/index' => 'site#index'
   get '/index.:format' => 'site#index'
-
-  # deprecated routes, remove after 3 months or when too hard to maintain
-  get '/topics/:topic_name' => redirect('/events?topic=%{topic_name}') # created: 2013-08-13
-  get '/types/:type_name'   => redirect('/events?type=%{type_name}')   # created: 2013-08-13
-
-  # FIXME: What does this do? Where does it take us?
-  #match '/:controller(/:action(/:id))'
 
   root :to => "events#index"
 end
