@@ -4,16 +4,16 @@
   %table.index-table
     %thead
       %tr
-        %th Title
-        %th Start Time
-        %th End Time
-        %th Venue
+        %th.title Title
+        %th.start-date Start Date
+        %th.end-date End Date
+        %th.venue Venue
     %tbody
       - @events.each do |event|
         %tr
-          %td= link_to event.title, event_path(event)
-          %td= event.start_time
-          %td= event.end_time
-          %td
+          %td.title= link_to event.title, event_path(event)
+          %td.start-date= event.start_time.to_date
+          %td.end-date= event.end_time.to_date
+          %td.venue
             - if venue = event.venue
               = link_to event.venue.title, venue_path(venue)

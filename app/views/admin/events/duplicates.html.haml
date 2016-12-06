@@ -5,22 +5,22 @@
     - venue = grouping.first.venue
     = form_for duplicates_admin_events_path, :html => { :class => 'grouped-duplicates-form' } do |f|
       %h3= venue.title
-      %table.index-table
+      %table.index-table.event-duplicates
         %thead
           %tr
-            %th Master?
-            %th Duplicate?
-            %th Title
-            %th Start Time
-            %th End Time
+            %th.master Master?
+            %th.duplicate Duplicate?
+            %th.title Title
+            %th.start-time Start Time
+            %th.end-time End Time
         %tbody
           - grouping.each do |event|
             %tr
-              %td= radio_button_tag 'master_id', event.id
-              %td= check_box_tag "duplicate_id_#{event.id}", event.id
-              %td= link_to event.title, event_path(event), :target => '_blank'
-              %td= event.start_time
-              %td= event.end_time
+              %td.master= radio_button_tag 'master_id', event.id
+              %td.duplicate= check_box_tag "duplicate_id_#{event.id}", event.id
+              %td.title= link_to event.title, event_path(event), :target => '_blank'
+              %td.start-time= event.start_time.strftime("%Y-%m-%d %H:%M")
+              %td.end-time= event.end_time.strftime("%Y-%m-%d %H:%M")
 
       = hidden_field_tag 'type', params[:type]
       = button_tag 'Squash Duplicates', :style => 'display:none'

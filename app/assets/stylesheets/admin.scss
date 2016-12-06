@@ -130,3 +130,43 @@
     margin-left: 20px;
   }
 }
+
+.index-table {
+  width: 100%;
+
+  &.event-duplicates {
+    .master, .duplicates {
+      width: 10%;
+    }
+
+    .title {
+      width: 50%;
+    }
+
+    .start-time, .end-time {
+      width: 15%;
+    }
+  }
+
+  &.venue-duplicates {
+    .master, .duplicate {
+      width: 10%;
+    }
+
+    .title {
+      width: 70%;
+    }
+
+    .num-events {
+      width: 10%;
+    }
+  }
+
+  td.start-date {
+    white-space: nowrap;
+  }
+
+  td.end-date {
+    white-space: nowrap;
+  }
+}

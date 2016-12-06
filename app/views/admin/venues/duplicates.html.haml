@@ -7,17 +7,17 @@
       %table.index-table
         %thead
           %tr
-            %th Master?
-            %th Duplicate?
-            %th Title
-            %th # Events
+            %th.master Master?
+            %th.duplicate Duplicate?
+            %th.title Title
+            %th.num-events # Events
         %tbody
           - grouping.each do |venue|
             %tr
-              %td= radio_button_tag 'master_id', venue.id
-              %td= check_box_tag "duplicate_id_#{venue.id}", venue.id
-              %td= link_to venue.title, venue_path(venue), :target => '_blank'
-              %td= venue.events.non_duplicates.count
+              %td.master= radio_button_tag 'master_id', venue.id
+              %td.duplicate= check_box_tag "duplicate_id_#{venue.id}", venue.id
+              %td.title= link_to venue.title, venue_path(venue), :target => '_blank'
+              %td.num-events= venue.events_count || '-'
 
       = hidden_field_tag 'type', params[:type]
       = button_tag 'Squash Duplicates', :style => 'display:none'

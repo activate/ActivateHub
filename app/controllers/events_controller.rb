@@ -361,7 +361,7 @@ class EventsController < ApplicationController
     end
 
     def for_index
-      permit(*filter_params, *widget_params, :callback)
+      permit(*filter_params, *widget_params, :callback, :manage)
     end
 
     def for_new
