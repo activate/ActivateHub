@@ -49,8 +49,7 @@ module ApplicationHelper
     end
 
     cache_key = "#{newest && newest.cache_key}-#{collection.size}"
-    cache_key += "-#{Digest::MD5.hexdigest(JSON.generate([scope]))}" if scope
-
+    cache_key += "-#{Digest::MD5.hexdigest([scope].to_json)}" if scope
     cache(cache_key, &block)
   end
 
