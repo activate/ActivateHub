@@ -44,6 +44,9 @@ gem 'jquery-ui-rails'
 gem 'devise' # Authentication
 gem 'rails_admin' # For creating new sites
 
+# Analytics / Error Reporting
+gem 'rollbar'
+
 # Main gem does not yet have rails 5 support, using forked copy from PR:
 # https://github.com/fusion94/paper_trail_manager/pull/31
 gem 'paper_trail_manager',
