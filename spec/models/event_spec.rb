@@ -215,6 +215,12 @@ RSpec.describe Event, type: :model do
       expect(abstract_event.abstract_location.title).to match "#{@basic_event.venue.title}: #{@basic_event.venue.full_address}"
     end
 
+    it "should handle ambiguous times when creating iCalendar due to dst switchover period" do
+      # See config/initializers/timezone.rb for more details
+      site = create(:site, timezone: 'America/Los_Angeles')
+      event = create(:event, created_at: '2016-11-06T01:32:54-0700')
+      expect { event.to_ical }.to_not raise_error
+    end
   end
 
   describe "when finding duplicates" do
