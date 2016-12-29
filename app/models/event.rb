@@ -25,6 +25,7 @@
 # A model representing a calendar event.
 
 require 'loofah/helpers'
+require 'time_range'
 
 class Event < ApplicationRecord
   include SearchEngine
