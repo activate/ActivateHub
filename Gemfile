@@ -50,8 +50,8 @@ gem 'rollbar'
 # Main gem does not yet have rails 5 support, using forked copy from PR:
 # https://github.com/fusion94/paper_trail_manager/pull/31
 gem 'paper_trail_manager',
-  git: 'https://github.com/kwstannard/paper_trail_manager.git',
-  branch: 'rails5'
+  git: 'https://github.com/activate/paper_trail_manager.git',
+  branch: 'with_model_override'
 
 # Legacy, to support rails/rspec upgrades
 gem 'activemodel-serializers-xml'

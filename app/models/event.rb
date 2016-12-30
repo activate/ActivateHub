@@ -38,7 +38,7 @@ class Event < ApplicationRecord
   # days, rather than hours.
   MIN_MULTIDAY_DURATION = 20.hours
 
-  has_paper_trail :meta => { :site_id => :site_id }
+  has_paper_trail :class_name => '::Version', :meta => { :site_id => :site_id }
   acts_as_taggable
 
   xss_foliate :strip => [:title], :sanitize => [:description, :venue_details]

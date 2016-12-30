@@ -1,3 +1,5 @@
+PaperTrailManager.version_model = '::Version'
+
 PaperTrailManager.whodunnit_class = User
 PaperTrailManager.whodunnit_name_method = :email
 PaperTrailManager.allow_index_when do |controller, version|

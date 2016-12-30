@@ -1,4 +1,13 @@
 GIT
+  remote: https://github.com/activate/paper_trail_manager.git
+  revision: b1b29a33e048a08359b72e96dbfd2363e31046d3
+  branch: with_model_override
+  specs:
+    paper_trail_manager (0.6.0)
+      paper_trail (~> 5.0)
+      rails (~> 5.0)
+
+GIT
   remote: https://github.com/bsodmike/shoulda-matchers
   revision: 91c1d6a63ee80a1c024da45cf40451dac3aa9bed
   branch: fix/rails5_issue_913
@@ -13,15 +22,6 @@ GIT
   specs:
     ri_cal (0.9.4)
       tzinfo
-
-GIT
-  remote: https://github.com/kwstannard/paper_trail_manager.git
-  revision: 00a14d6a7e73ec063e32d2e72543fbc9474bd659
-  branch: rails5
-  specs:
-    paper_trail_manager (0.6.0)
-      paper_trail (~> 5.0)
-      rails (~> 5.0)
 
 GEM
   remote: https://rubygems.org/

@@ -36,7 +36,7 @@ class Source < ApplicationRecord
   scope :enabled, -> { where(:enabled => true) }
   scope :disabled, -> { where(:enabled => false) }
 
-  has_paper_trail :meta => { :site_id => :site_id }
+  has_paper_trail :class_name => '::Version', :meta => { :site_id => :site_id }
 
   xss_foliate
   include DecodeHtmlEntitiesHack

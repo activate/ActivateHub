@@ -33,7 +33,7 @@ class Venue < ApplicationRecord
   include StripWhitespace
   include UrlValidator
 
-  has_paper_trail :meta => { :site_id => :site_id }
+  has_paper_trail :class_name => '::Version', :meta => { :site_id => :site_id }
   acts_as_taggable
 
   include VersionDiff

@@ -5,7 +5,7 @@ class VersionsController < ApplicationController
   end
 
   def edit
-    @version = PaperTrail::Version.find(params[:id])
+    @version = Version.find(params[:id])
     @record = @version.next.try(:reify) || @version.item || @version.reify
 
     singular = @record.class.name.singularize.underscore
