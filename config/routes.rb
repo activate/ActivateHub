@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  resource :user, only: [:show]
-
   mount RailsAdmin::Engine => '/rails_admin', as: 'rails_admin'
 
   get 'omfg' => 'site#omfg'
