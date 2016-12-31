@@ -391,7 +391,7 @@ class EventsController < ApplicationController
     end
 
     private def filter_params
-      [:order, :topic, :type, date: [:end, :start]]
+      [:order, :topic, :type, :view, date: [:end, :start]]
     end
 
     private def form_params
