@@ -10,6 +10,13 @@ RSpec.describe EventsController, type: :controller do
 
         expect(response.body).to have_selector ".events-index"
       end
+
+      it "does not include an 'X-Frame-Options' header" do
+        # Some people like to embed the calendar and other parts of
+        # the site in iframes, and w/ our widget, it's kind of expected
+        get :index, params: { format: 'html' }
+        expect(response.headers).to_not include('X-Frame-Options')
+      end
     end
 
     describe "as XML" do
