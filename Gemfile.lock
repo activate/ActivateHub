@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/activate/paper_trail_manager.git
-  revision: b1b29a33e048a08359b72e96dbfd2363e31046d3
+  revision: 6bf1a715cfcf817808c28f2eea0b488ebe7215a4
   branch: with_model_override
   specs:
     paper_trail_manager (0.6.0)
