@@ -31,6 +31,16 @@ RSpec.describe Venue, type: :model do
       venue.valid?
       expect(venue.url).to eq "http://#{expected_data}"
     end
+
+    it { should validate_length_of(:address).is_at_most(255) }
+    it { should validate_length_of(:country).is_at_most(255) }
+    it { should validate_length_of(:email).is_at_most(255) }
+    it { should validate_length_of(:locality).is_at_most(255) }
+    it { should validate_length_of(:postal_code).is_at_most(255) }
+    it { should validate_length_of(:region).is_at_most(255) }
+    it { should validate_length_of(:street_address).is_at_most(255) }
+    it { should validate_length_of(:telephone).is_at_most(255) }
+    it { should validate_length_of(:title).is_at_most(255) }
   end
 
 end

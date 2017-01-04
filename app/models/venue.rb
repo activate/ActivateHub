@@ -65,7 +65,17 @@ class Venue < ApplicationRecord
     :in => -180..180,
     :allow_nil => true,
     :message => "must be between -180 and 180"
+
+  validates :address, :length => { :maximum => 255 }
+  validates :country, :length => { :maximum => 255 }
+  validates :email, :length => { :maximum => 255 }
+  validates :locality, :length => { :maximum => 255 }
+  validates :postal_code, :length => { :maximum => 255 }
+  validates :region, :length => { :maximum => 255 }
+  validates :street_address, :length => { :maximum => 255 }
+  validates :telephone, :length => { :maximum => 255 }
   validates :title, :length => { :maximum => 255 }
+  validates :url, :length => { :maximum => 255 }
 
   include ValidatesBlacklistOnMixin
   validates_blacklist_on :title, :description, :address, :url, :street_address, :locality, :region, :postal_code, :country, :email, :telephone
