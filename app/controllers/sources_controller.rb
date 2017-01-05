@@ -172,11 +172,11 @@ class SourcesController < ApplicationController
     end
 
     def for_create
-      permit(source: source_params)
+      permit(*form_params, source: source_params)
     end
 
     def for_destroy
-      permit(:id)
+      permit(:authenticity_token, :id)
     end
 
     def for_edit
@@ -184,7 +184,7 @@ class SourcesController < ApplicationController
     end
 
     def for_import
-      permit(:organization_id, source: source_params)
+      permit(*form_params, :organization_id, source: source_params)
     end
 
     def for_new
@@ -196,7 +196,11 @@ class SourcesController < ApplicationController
     end
 
     def for_update
-      permit(:id, source: source_params)
+      permit(*form_params, :id, source: source_params)
+    end
+
+    private def form_params
+      [:authenticity_token]
     end
 
     private def pagination_params

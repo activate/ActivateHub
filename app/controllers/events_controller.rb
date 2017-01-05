@@ -337,7 +337,7 @@ class EventsController < ApplicationController
 
   class UntaintedParams < SimpleDelegator
     def for(action)
-      respond_to?("for_#{action}") ? send("for_#{action}") : __getobj__
+      keys = respond_to?("for_#{action}") ? send("for_#{action}") : __getobj__
     end
 
     def for_clone
@@ -349,7 +349,7 @@ class EventsController < ApplicationController
     end
 
     def for_destroy
-      permit(:id)
+      permit(:authenticity_token, :id)
     end
 
     def for_duplicates
@@ -395,7 +395,9 @@ class EventsController < ApplicationController
     end
 
     private def form_params
-      [:end_date, :end_time, :preview, :start_date, :start_time, :trap_field, :venue_name]
+      [ :authenticity_token, :end_date, :end_time, :preview, :start_date,
+        :start_time, :trap_field, :venue_name
+      ]
     end
 
     private def widget_params

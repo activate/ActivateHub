@@ -145,7 +145,7 @@ class OrganizationsController < ApplicationController
     end
 
     def for_destroy
-      permit(:id)
+      permit(:authenticity_token, :id)
     end
 
     def for_edit
@@ -169,7 +169,7 @@ class OrganizationsController < ApplicationController
     end
 
     private def form_params
-      [:preview, :trap_field, :venue_name]
+      [:authenticity_token, :preview, :trap_field, :venue_name]
     end
 
     private def event_params

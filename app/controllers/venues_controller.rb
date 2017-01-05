@@ -217,11 +217,11 @@ protected
     end
 
     def for_create
-      permit(:preview, :trap_field, venue: venue_params)
+      permit(*form_params, venue: venue_params)
     end
 
     def for_destroy
-      permit(:id)
+      permit(:authenticity_token, :id)
     end
 
     def for_duplicates
@@ -245,7 +245,11 @@ protected
     end
 
     def for_update
-      permit(:id, :from_event, :from_org, :preview, :trap_field, venue: venue_params)
+      permit(*form_params, :id, :from_event, :from_org, venue: venue_params)
+    end
+
+    def form_params
+      [:authenticity_token, :preview, :trap_field]
     end
 
     private def venue_params
