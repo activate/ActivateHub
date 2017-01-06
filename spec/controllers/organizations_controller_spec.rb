@@ -25,7 +25,11 @@ RSpec.describe OrganizationsController, type: :controller do
     end
   end
 
-  describe "GET 'edit'" do
+  describe "GET 'edit'", :requires_user do
+    def test_authenticated_request
+      get :edit, :params => { :id => create(:organization).id }
+    end
+
     let(:organization) { create(:organization) }
 
     it "should be successful" do
@@ -74,7 +78,17 @@ RSpec.describe OrganizationsController, type: :controller do
     end
   end
 
-  describe '#update' do
+  describe '#update', :requires_user do
+    def test_authenticated_request
+      venue = create(:venue)
+      org = create(:organization, :venue_id => venue.id)
+      put :update, :params => {
+        :id => org.id,
+        :organization => org.attributes,
+        :event => { :venue_id => venue.id },
+      }
+    end
+
     it "should take the autocompleted event venue and apply it to the organization" do
       old_venue = create(:venue)
       organization = create(:organization, venue_id: old_venue.id)
@@ -114,6 +128,12 @@ RSpec.describe OrganizationsController, type: :controller do
       expect(Venue.last.title).to eq "New One"
       expect(Organization.last.venue).to eq Venue.last
       expect(response).to redirect_to(edit_venue_url(Venue.last, :from_org => Organization.last.id))
+    end
+  end
+
+  describe "#destroy", :requires_user do
+    def test_authenticated_request
+      delete :destroy, :params => { :id => create(:organization).id }
     end
   end
 

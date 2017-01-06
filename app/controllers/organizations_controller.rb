@@ -1,5 +1,7 @@
 class OrganizationsController < ApplicationController
 
+  before_action :authenticate_user!, only: [:destroy, :edit, :update]
+
   def params
     @params ||= UntaintedParams.new(super).for(action_name)
   end
