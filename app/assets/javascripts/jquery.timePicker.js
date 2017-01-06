@@ -14,7 +14,16 @@
  * @example  $("#mytime").timePicker({step:30, startTime:"15:00", endTime:"18:00"});
  */
 
+jQuery.browser = {};
+
 (function($){
+  // Fix for newer version of jquery: http://stackoverflow.com/a/16972927
+  jQuery.browser.msie = false;
+  jQuery.browser.version = 0;
+  if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+      jQuery.browser.msie = true;
+      jQuery.browser.version = RegExp.$1;
+  }
 
   $.fn.timePicker = function(options) {
     // Build main options before element iteration
