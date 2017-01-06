@@ -45,6 +45,7 @@ RSpec.configure do |config|
 
   # custom helpers and mixins, see spec/support/*
   config.include ControllerHelper, :type => :controller
+  config.include AuthTestHelpers, :type => :controller
 
   # Database cleaner
   config.before(:suite) do

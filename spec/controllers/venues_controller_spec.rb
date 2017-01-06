@@ -41,7 +41,11 @@ RSpec.describe VenuesController, type: :controller do
     end
   end
 
-  describe "when updating venues" do
+  describe "when updating venues", :requires_user do
+    def test_authenticated_request
+      put :update, :params => { :id => create(:venue).id }
+    end
+
     before do
       @venue = build(:venue, :versions => [])
       allow(Venue).to receive(:find).and_return(@venue)
@@ -277,7 +281,11 @@ RSpec.describe VenuesController, type: :controller do
 
   end
 
-  describe "DELETE" do
+  describe "DELETE", :requires_user do
+    def test_authenticated_request
+      delete :destroy, :params => { :id => create(:venue).id }
+    end
+
     describe "when deleting a venue without events" do
       before do
         @venue = create(:venue)

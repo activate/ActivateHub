@@ -496,26 +496,23 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
-    describe "edit" do
-      context "when a user is logged in" do
-        it "should display form for editing event" do
-          sign_in create(:user)
-
-          get :edit, :params => { :id => create(:event).id }
-          expect(response).to be_success
-          expect(response).to render_template :edit
-        end
+    describe "edit", :requires_user do
+      def test_authenticated_request
+        get :edit, :params => { :id => create(:event).id }
       end
 
-      context "when a user is not logged in" do
-        it "should redirect the user to sign in" do
-          get :edit, :params => { :id => create(:event).id }
-          expect(response).to redirect_to(user_session_path)
-        end
+      it "should display form for editing event" do
+        get :edit, :params => { :id => create(:event).id }
+        expect(response).to be_success
+        expect(response).to render_template :edit
       end
     end
 
-    describe "#update" do
+    describe "#update", :requires_user do
+      def test_authenticated_request
+        put :update, :params => { :id => create(:event).id }
+      end
+
       before(:each) do
         @event = build(:event_with_venue, :id => 42)
         @venue = @event.venue
@@ -660,46 +657,37 @@ RSpec.describe EventsController, type: :controller do
 
     end
 
-    describe "#clone" do
-      context "when a user is not logged in" do
-        it "redirects the user signin" do
-          event = create(:event)
-          get :clone, :params => { :id => event.id }
+    describe "#clone", :requires_user do
+      def test_authenticated_request
+        get :clone, :params => { :id => create(:event).id }
+      end
 
-          expect(response).to redirect_to(user_session_path)
+      before do
+        @event = create(:event)
+
+        get "clone", :params => { :id => @event.id }
+      end
+
+      it "should build an unsaved record" do
+        record = assigns[:event]
+        expect(record).to be_a_new_record
+        expect(record.id).to be_nil
+      end
+
+      it "should build a cloned record similar to the existing record" do
+        record = assigns[:event]
+        %w[title description venue_id venue_details].each do |field|
+          expect(record.attributes[field]).to eq @event.attributes[field]
         end
       end
 
-      context "when a user is logged in" do
-        before do
-          user = create(:user)
-          sign_in user
-          @event = create(:event)
+      it "should display a new event form" do
+        expect(response).to be_success
+        expect(response).to render_template :new
+      end
 
-          get "clone", :params => { :id => @event.id }
-        end
-
-        it "should build an unsaved record" do
-          record = assigns[:event]
-          expect(record).to be_a_new_record
-          expect(record.id).to be_nil
-        end
-
-        it "should build a cloned record similar to the existing record" do
-          record = assigns[:event]
-          %w[title description venue_id venue_details].each do |field|
-            expect(record.attributes[field]).to eq @event.attributes[field]
-          end
-        end
-
-        it "should display a new event form" do
-          expect(response).to be_success
-          expect(response).to render_template :new
-        end
-
-        it "should have notice with cloning instructions" do
-          expect(flash[:success]).to match /clone/i
-        end
+      it "should have notice with cloning instructions" do
+        expect(flash[:success]).to match /clone/i
       end
     end
   end
@@ -932,26 +920,18 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
-  describe "#destroy" do
-    context "when the user is logged in" do
-      it "should destroy events" do
-        sign_in create(:user)
-        event = build(:event)
-        expect(event).to receive(:destroy)
-        expect(Event).to receive(:find).and_return(event)
-
-        delete 'destroy', :params => { :id => 1234 }
-        expect(response).to redirect_to(events_url)
-      end
+  describe "#destroy", :requires_user do
+    def test_authenticated_request
+      delete :destroy, :params => { :id => create(:event).id }
     end
 
-    context "when the user is logged out" do
-      it "they are redirected to signin" do
-        event = create(:event)
+    it "should destroy events" do
+      event = build(:event)
+      expect(event).to receive(:destroy)
+      expect(Event).to receive(:find).and_return(event)
 
-        delete 'destroy', :params => { :id => event.id }
-        expect(response).to redirect_to(user_session_path)
-      end
+      delete 'destroy', :params => { :id => 1234 }
+      expect(response).to redirect_to(events_url)
     end
   end
 end

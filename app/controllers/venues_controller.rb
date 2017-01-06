@@ -1,6 +1,8 @@
 class VenuesController < ApplicationController
   include SquashManyDuplicatesMixin # Provides squash_many_duplicates
 
+  before_action :authenticate_user!, only: [:clone, :destroy, :edit, :update]
+
   def params
     @params ||= UntaintedParams.new(super).for(action_name)
   end

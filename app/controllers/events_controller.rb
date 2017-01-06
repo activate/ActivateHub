@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   include SquashManyDuplicatesMixin # Provides squash_many_duplicates
 
-  before_action :authenticate_user!, only: [:clone, :destroy, :edit]
+  before_action :authenticate_user!, only: [:clone, :destroy, :edit, :update]
   before_action :authenticate_admin, only: [:duplicates]
 
   def params
