@@ -34,6 +34,7 @@ class Admin::EventsController < AdminController
       .left_outer_joins(:venue).where.not(venues: { id: nil })
 
     if params[:type] == 'overlapping_venue_and_time'
+      @events = @events.order('start_time desc, end_time asc')
       @events.group_by(&:venue_id).each do |venue_id,events|
         while event = events.shift
           matched = events.take_while {|e| e.end_time >= event.end_time }
