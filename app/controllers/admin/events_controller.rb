@@ -4,7 +4,7 @@ class Admin::EventsController < AdminController
   include SquashManyDuplicatesMixin # provides squash_many_duplicates
 
   def index
-    @events = Event.non_duplicates
+    @events = Event.non_duplicates.includes(:venue)
 
     if params[:type] == 'missing_end_time'
       @events = @events.where('end_time is null or end_time = start_time')
