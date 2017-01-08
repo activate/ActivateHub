@@ -27,12 +27,13 @@ class Admin::EventsController < AdminController
   end
 
   def duplicates
-    @events = Event.non_duplicates
     @groupings = []
 
+    # Only include events having venue records, sometimes id exists w/o venue
+    @events = Event.non_duplicates.includes(:venue)
+      .left_outer_joins(:venue).where.not(venues: { id: nil })
+
     if params[:type] == 'overlapping_venue_and_time'
-      @events = @events.where('venue_id is not null')
-      @events = @events.order('start_time desc, end_time asc')
       @events.group_by(&:venue_id).each do |venue_id,events|
         while event = events.shift
           matched = events.take_while {|e| e.end_time >= event.end_time }
@@ -42,7 +43,9 @@ class Admin::EventsController < AdminController
       end
     end
 
+    # Ensure grouped events are listed from newest to oldest star time
     @groupings.sort_by! {|event,_| -(event.start_time.to_i) }
+
     respond_with @groupings
   end
 
