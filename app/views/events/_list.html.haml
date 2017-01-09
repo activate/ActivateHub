@@ -1,0 +1,13 @@
+:ruby
+  events ||= raise ArgumentError, "event is required in view partial #{__FILE__}"
+  events_by_date = events.group_by {|e| e.start_time.to_date }
+
+
+- events_by_date.each do |date,events|
+  .date
+    .wday= t('date.day_names')[date.wday]
+    .month= t('date.abbr_month_names')[date.month]
+    .dom= date.day
+    .year= date.year
+  - events.each do |event|
+    = render 'events/index_item', :event => event
