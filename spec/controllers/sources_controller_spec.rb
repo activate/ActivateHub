@@ -153,7 +153,12 @@ RSpec.describe SourcesController, type: :controller do
     end
   end
 
-  describe "GET :edit" do
+  describe "GET :edit", :requires_user do
+    def test_authenticated_request
+      source = create(:source, :organization => organization)
+      get :edit, :params => { :id => source.id }
+    end
+
     context "source doesn't exist" do
       it "should raise an error" do
         expect { get :edit, :params => { :id => 'MI7' } }
@@ -224,7 +229,12 @@ RSpec.describe SourcesController, type: :controller do
     end
   end
 
-  describe "PUT :update" do
+  describe "PUT :update", :requires_user do
+    def test_authenticated_request
+      source = create(:source, :organization => organization)
+      put :update, :params => { :id => source.id, :source => source.attributes }
+    end
+
     context "source doesn't exist" do
       it "should raise an error" do
         expect { put :update, :params => { :id => 'MI7' } }
@@ -277,7 +287,12 @@ RSpec.describe SourcesController, type: :controller do
     end
   end
 
-  describe "DELETE :destroy" do
+  describe "DELETE :destroy", :requires_user do
+    def test_authenticated_request
+      source = create(:source, :organization => organization)
+      delete :destroy, :params => { :id => source.id }
+    end
+
     context "source doesn't exist" do
       it "should raise an error" do
         expect { delete :destroy, :params => { :id => 'MI7' } }

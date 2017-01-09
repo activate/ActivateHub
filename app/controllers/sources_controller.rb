@@ -3,6 +3,8 @@ require 'source_parser'
 class SourcesController < ApplicationController
   MAXIMUM_EVENTS_TO_DISPLAY_IN_FLASH = 5
 
+  before_action :authenticate_user!, only: [:destroy, :edit, :update]
+
   def params
     @params ||= UntaintedParams.new(super).for(action_name)
   end
