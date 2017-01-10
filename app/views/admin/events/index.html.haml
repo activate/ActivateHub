@@ -11,9 +11,9 @@
     %tbody
       - @events.each do |event|
         %tr
-          %td.title= link_to event.title, event_path(event)
+          %td.title= link_to event.title, event_path(event), :target => '_blank'
           %td.start-date= event.start_time.to_date
           %td.end-date= event.end_time.to_date
           %td.venue
             - if venue = event.venue
-              = link_to event.venue.title, venue_path(venue)
+              = link_to event.venue.title, venue_path(venue), :target => '_blank'

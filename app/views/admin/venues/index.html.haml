@@ -10,6 +10,6 @@
     %tbody
       - @venues.each do |venue|
         %tr
-          %td= link_to venue.title, venue_path(venue)
+          %td= link_to venue.title, venue_path(venue), :target => '_blank'
           %td= venue.events_count || '-'
           %td= venue.full_address || venue.address
