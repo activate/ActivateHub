@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161204144535) do
+ActiveRecord::Schema.define(version: 20170111075150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -254,6 +254,7 @@ ActiveRecord::Schema.define(version: 20161204144535) do
     t.text     "access_notes"
     t.integer  "events_count"
     t.integer  "site_id"
+    t.text     "geo_precision"
     t.index ["updated_at"], name: "index_venues_on_updated_at", using: :btree
   end
 

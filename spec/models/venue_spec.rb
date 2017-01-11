@@ -242,7 +242,8 @@ RSpec.describe "Venue geocoding" do
     @geo_failure = double("geo", :success => false)
     @geo_success = double("geo", :success => true, :lat => 0.0, :lng => 0.0,
                         :street_address => "622 SE Grand Ave.", :city => "Portland",
-                        :state => "OR", :country_code => "US", :zip => "97214")
+                        :state => "OR", :country_code => "US", :zip => "97214",
+                        :precision => "address")
     @geocodable_address = "#{@geo_success.street_address}, #{@geo_success.city}" \
                           "#{@geo_success.state} #{@geo_success.zip}"
   end

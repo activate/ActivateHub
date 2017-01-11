@@ -260,6 +260,7 @@ class Venue < ApplicationRecord
       self.region         = geo.state          if self.region.blank?
       self.postal_code    = geo.zip            if self.postal_code.blank?
       self.country        = geo.country_code   if self.country.blank?
+      self.geo_precision  = geo.precision      if self.geo_precision.blank?
     end
 
     msg = 'Venue#add_geocoding for ' + (self.new_record? ? 'new record' : "record #{self.id}") + ' ' + (geo.success ? 'was successful' : 'failed') + ', response was: ' + geo.inspect
