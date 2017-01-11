@@ -6,6 +6,9 @@ ENV['RAILS_ENV'] = 'test' if ENV['RAILS_ENV'].to_s.empty? || ENV['RAILS_ENV'] ==
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 
+# Automatically ensure test schema is up to date with development
+ActiveRecord::Migration.maintain_test_schema!
+
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
