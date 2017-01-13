@@ -118,7 +118,6 @@ RSpec.describe Event, type: :model do
 
     it "should just cache tagging if it is a new record" do
       expect(@event).to_not receive :save
-      expect(@event).to_not receive :tag_with
       expect(@event).to be_new_record
       @event.tag_list = @tags
       expect(@event.tag_list.to_s).to eq @tags

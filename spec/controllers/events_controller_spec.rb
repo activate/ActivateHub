@@ -642,14 +642,10 @@ RSpec.describe EventsController, type: :controller do
       end
 
       it "should allow the user to preview the event" do
-        tags = []
-        expect(tags).to receive(:reload)
-
         expect(Event).to receive(:find).and_return(@event)
         expect(@event).to_not receive(:update_attributes)
         expect(@event).to receive(:attributes=)
         expect(@event).to receive(:valid?).and_return(true)
-        expect(@event).to receive(:tags).and_return(tags)
 
         put "update", :params => @params.merge(:preview => "Preview")
         expect(response).to render_template :edit
