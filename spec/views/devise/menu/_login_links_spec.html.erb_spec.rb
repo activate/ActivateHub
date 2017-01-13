@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe "/devise/menu/_login_links.html.erb", type: :view do
   context "when we have a logged in user" do

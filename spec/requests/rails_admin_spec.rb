@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe RailsAdmin::MainController, type: :request do
   describe "#dashboard" do

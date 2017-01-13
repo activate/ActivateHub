@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 def events_from_ical_at(filename)
   url = "http://foo.bar/"

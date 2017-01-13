@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe SourceParser::Meetup do
   describe "with a meetup.com API key in secrets.yml" do

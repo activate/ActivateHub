@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe "/site/_navbar.html.haml", type: :view do
   it "renders a login links" do

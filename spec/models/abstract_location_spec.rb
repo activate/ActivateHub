@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'mixins/rebaseable_examples'
 
 RSpec.describe AbstractLocation, type: :model do

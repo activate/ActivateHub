@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe SourceParser::Hcal, "with hCalendar events" do
   it "should parse hcal" do

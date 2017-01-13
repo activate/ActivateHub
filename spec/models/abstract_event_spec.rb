@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'mixins/dirty_attr_accessor_examples'
 require 'mixins/rebaseable_examples'
 

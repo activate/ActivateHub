@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 # Tests defined in mix-in examples should only verify that the mix-in
 # was included in the +described_class+ and that it was properly set up.

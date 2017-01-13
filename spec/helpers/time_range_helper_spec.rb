@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 include TimeRangeHelper
 
 RSpec.describe "Time formatting", type: :helper do

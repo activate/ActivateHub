@@ -1,4 +1,2 @@
---colour
---format progress
---backtrace
---drb
+--color
+--require spec_helper

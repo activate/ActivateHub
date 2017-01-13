@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe SourceParser::Ical, "when parsing VVENUE" do
    before(:each) do

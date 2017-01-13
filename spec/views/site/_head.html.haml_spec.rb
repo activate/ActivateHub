@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe "/site/_head.html.haml", type: :view do
   it "should have csrf tags" do

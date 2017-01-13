@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe Source, "in general", type: :model do
   subject(:source) { build(:source) }

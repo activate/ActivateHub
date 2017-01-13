@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 # Non-database model derived from: http://railscasts.com/episodes/219-active-model
 class ModelWithoutDecodeHack
