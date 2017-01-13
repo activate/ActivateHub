@@ -340,6 +340,12 @@ RSpec.describe VenuesController, type: :controller do
         end
       end
 
+      it "allows destroying Venue if events are marked as duplicates" do
+        @event.update_attributes!(duplicate_of_id: 999_999)
+        expect { delete :destroy, :params => { :id => @venue.id } }
+          .to change { Venue.count }.by(-1)
+      end
+
       describe "and rendering HTML" do
         before do
           delete :destroy, :params => { :id => @venue.id }

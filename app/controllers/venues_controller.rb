@@ -168,7 +168,7 @@ class VenuesController < ApplicationController
   def destroy
     @venue = Venue.find(params[:id])
 
-    if @venue.events.count > 0
+    if @venue.events.non_duplicates.count > 0
       message = "Cannot destroy venue that has associated events, you must reassociate all its events first."
       respond_to do |format|
         format.html {
