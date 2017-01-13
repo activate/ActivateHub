@@ -378,7 +378,7 @@ RSpec.describe Event, type: :model do
     end
   end
 
-  describe "#save", :focus => true do
+  describe "#save" do
     context "creating an event" do
       context "with an associated source" do
         let(:source) { create(:source, :w_topics_types) }

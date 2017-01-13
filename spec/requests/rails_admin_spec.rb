@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe RailsAdmin::MainController, type: :request do
+RSpec.describe RailsAdmin::MainController, type: :request do
   describe "#dashboard" do
     context "when the user is an admin" do
       before do

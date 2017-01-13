@@ -27,6 +27,7 @@ tmp/sessions/*
 tmp/sockets/*
 .ruby-gemset
 .ruby-version
+/spec/examples.txt
 
 # OS or Editor folders
 .DS_Store
