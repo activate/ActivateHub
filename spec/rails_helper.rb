@@ -74,6 +74,7 @@ RSpec.configure do |config|
 
   # Include contexts or shared examples when following metadata is used
   config.include_context "requires user login", :requires_user
+  config.include_context "requires admin login", :requires_admin
 
   config.before(:each) do
     # data is tenantized by site, so we need to ensure a site exists for
