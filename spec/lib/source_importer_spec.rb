@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SourceImporter do
+RSpec.describe SourceImporter, :timecop_freeze do
   let(:source) { build_stubbed(:source) }
   let(:range_start) { Time.zone.now + 1.hour }
   let(:range_end) { Time.zone.now + 1.year }

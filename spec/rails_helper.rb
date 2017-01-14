@@ -76,6 +76,15 @@ RSpec.configure do |config|
   config.include_context "requires user login", :requires_user
   config.include_context "requires admin login", :requires_admin
 
+  # Prevent timecop from being used in a way that can bleed between specs
+  Timecop.safe_mode = true
+
+  config.around(:all, :timecop_freeze => lambda {|v| !!v }) do |ex|
+    metadata_value = ex.example.metadata[:timecop_freeze]
+    freeze_at = metadata_value === true ? Time.zone.now : metadata_value
+    Timecop.freeze(freeze_at.change(:nsec => 0)) { ex.run }
+  end
+
   config.before(:each) do
     # data is tenantized by site, so we need to ensure a site exists for
     # all tests and that it matches the request.domain used for controller

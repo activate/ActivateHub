@@ -491,7 +491,14 @@ RSpec.describe AbstractEvent, type: :model do
 
   describe "#find_existing" do
     let(:source) { create(:source) }
-    before(:each) { create(:abstract_event, :source => source) } # ensure multiple AEs
+    let(:start_time) { Time.zone.now + 1.day }
+
+    before(:each) do
+      create(:abstract_event, {
+        :start_time => start_time,
+        :source => source
+      }) # ensure multiple AEs
+    end
 
     it "only searches within the current source" do
       existing = create(:abstract_event, :external_id => 'faraway')
@@ -514,12 +521,12 @@ RSpec.describe AbstractEvent, type: :model do
     it "matches using :title and :start_time attributes" do
       existing = create(:abstract_event, :source => source,
         :title      => 'Pony Drag Racing XR',
-        :start_time => Time.zone.now + 1.day,
+        :start_time => start_time,
       )
 
       ae = build(:abstract_event, :source => source,
         :title      => 'Pony Drag Racing XR',
-        :start_time => Time.zone.now + 1.day,
+        :start_time => start_time,
       )
 
       expect(ae.find_existing).to eq existing
@@ -528,12 +535,12 @@ RSpec.describe AbstractEvent, type: :model do
     it "matches using :venue_title and :start_time attributes" do
       existing = create(:abstract_event, :source => source,
         :venue_title => 'Airport Detention Cell',
-        :start_time  => Time.zone.now + 1.day,
+        :start_time  => start_time,
       )
 
       ae = build(:abstract_event, :source => source,
         :venue_title => 'Airport Detention Cell',
-        :start_time  => Time.zone.now + 1.day,
+        :start_time  => start_time,
       )
 
       expect(ae.find_existing).to eq existing

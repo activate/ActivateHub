@@ -93,12 +93,4 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 
-  config.before(:suite) do
-    # use a fixed time so tests and fixtures can make assumptions
-    # about future events and not worry about changes in seconds, etc
-    require 'timecop'
-    Timecop.travel(Time.parse('2013-03-22T14:05:27Z'))
-    Timecop.safe_mode = true
-  end
-
 end
