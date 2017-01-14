@@ -71,7 +71,9 @@ RSpec.configure do |config|
 
   # custom helpers and mixins, see spec/support/*
   config.include ControllerHelper, :type => :controller
-  config.include AuthTestHelpers, :type => :controller
+
+  # Include contexts or shared examples when following metadata is used
+  config.include_context "requires user login", :requires_user
 
   config.before(:each) do
     # data is tenantized by site, so we need to ensure a site exists for
