@@ -101,6 +101,15 @@ RSpec.describe Site, type: :model do
           .to_not change { ApplicationRecord.current_site }
       end
     end
+
+    context "when multiple threads are set to different sites" do
+      let(:other_site) { create(:site) }
+
+      it "treats each thread's site selection independently" do
+        expect { Thread.new { site.use! }.join }
+          .to_not change { ApplicationRecord.current_site }
+      end
+    end
   end
 
 end

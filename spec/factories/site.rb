@@ -3,7 +3,7 @@
 FactoryGirl.define do
   factory :site do
     name 'My Site'
-    domain 'my.site'
+    sequence(:domain) {|n| "my.site#{n}" }
     timezone 'Asia/Tokyo'
     locale 'en-x-foo-bar'
   end
