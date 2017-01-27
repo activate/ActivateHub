@@ -30,7 +30,7 @@
       = f.input :email
 
     = f.inputs 'Extra Details' do
-      = f.input :topics
+      = f.input :topics, :collection => Topic.enabled
 
     %li.trap
       = label 'trap', 'field', "Leave this field blank or we'll think you're a robot."

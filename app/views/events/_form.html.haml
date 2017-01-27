@@ -44,8 +44,8 @@
       = f.input :description, :input_html => {:rows => 12, :class => 'autogrow' }, :hint => "Format text using #{link_to("Markdown", "http://www.simpleeditions.com/59001/markdown-an-introduction", :target => "_blank")} and HTML.".html_safe
 
     = f.inputs :name => 'Extra Details' do
-      = f.input :topics
-      = f.input :types
+      = f.input :topics, :collection => Topic.enabled
+      = f.input :types, :collection => Type.enabled
 
     %li.trap
       = label 'trap', 'field', "Leave this field blank or we'll think you're a robot."

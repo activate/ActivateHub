@@ -35,9 +35,11 @@ class EventsController < ApplicationController
       @events = @events.joins(:types).where('types.name' => @selected_types)
     end
 
-    @topics = Topic.joins(:events).where("events.start_time > CURRENT_TIMESTAMP") \
+    @topics = Topic.joins(:events).enabled
+      .where("events.start_time > CURRENT_TIMESTAMP")
       .select("DISTINCT topics.name AS name").reorder(:name)
-    @types = Type.joins(:events).where("events.start_time > CURRENT_TIMESTAMP") \
+    @types = Type.joins(:events).enabled
+      .where("events.start_time > CURRENT_TIMESTAMP")
       .select("DISTINCT types.name AS name").reorder(:name)
 
     @custom_content = true
@@ -264,8 +266,8 @@ class EventsController < ApplicationController
   end
 
   def widget_builder
-    @topics = Topic.order(:name)
-    @types = Type.order(:name)
+    @topics = Topic.enabled.order(:name)
+    @types = Type.enabled.order(:name)
     @organizations = Organization.order(:name)
   end
 

@@ -12,7 +12,7 @@ class VenuesController < ApplicationController
   def index
     scoped_venues = Venue.non_duplicates
 
-    @types = Type.select("DISTINCT types.name AS name").reorder(:name)
+    @types = Type.enabled.select("DISTINCT types.name AS name").reorder(:name)
     if type = params[:type].presence
       @selected_types = type.split(',')
       scoped_venues = scoped_venues.where(id: Event.joins(:types).where("types.id = ?", Type.find_by_name(type)).pluck(:venue_id))

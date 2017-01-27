@@ -25,8 +25,8 @@
     = semantic_form_for event, :html => { :id => 'event-widget-form' } do |f|
       = f.inputs :name => 'Widget Options' do
         = f.input :organization, :as => :select, :input_html => { :multiple => true, :size => 10 }
-        = f.input :topics, :input_html => { :size => 10 }
-        = f.input :types, :input_html => { :size => 10 }
+        = f.input :topics, :collection => Topic.enabled, :input_html => { :size => 10 }
+        = f.input :types, :collection => Type.enabled, :input_html => { :size => 10 }
 
       = f.actions do
         = f.action :submit, :label => 'Generate Widget'

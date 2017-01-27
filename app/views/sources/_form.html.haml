@@ -22,8 +22,8 @@
       = f.input :title, :label => 'Name', :hint => 'Give it a name people can understand, such as "Tree Planting Events"'
 
     = f.inputs :name => 'Extra Details' do
-      = f.input :topics
-      = f.input :types
+      = f.input :topics, :collection => Topic.enabled
+      = f.input :types, :collection => Type.enabled
       = f.input :organization_id, :as => :hidden
 
     %li.trap
