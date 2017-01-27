@@ -4,6 +4,8 @@
   - unless @type.any_items?
     = link_to 'Delete this type', admin_type_path(@type), :method => :delete, :data => { :confirm => 'Are you sure?' }
 
+  = render 'form', :type => @type
+
   %h3 Most Recently Created Events
   - if @events.any?
     %ul

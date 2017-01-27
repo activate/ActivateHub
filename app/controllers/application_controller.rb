@@ -82,7 +82,18 @@ def escape_once(*args)
 end
 
 def authenticate_admin
-  redirect_to root_url unless current_user.try(:admin)
+  if current_user
+    if current_user.admin?
+      # Logged in admin user, we're good
+    else
+      # Logged in user, but not an admin
+      flash[:failure] = "You do not have access to /admin"
+      redirect_to root_path
+    end
+  else
+    # Not logged in
+    redirect_to user_session_path
+  end
 end
 
 def venue_ref(event_hash, venue_name)

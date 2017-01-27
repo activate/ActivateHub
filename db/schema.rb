@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170111075150) do
+ActiveRecord::Schema.define(version: 20170113215729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -196,18 +196,20 @@ ActiveRecord::Schema.define(version: 20170111075150) do
 
   create_table "topics", force: :cascade do |t|
     t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "site_id"
+    t.boolean  "enabled",                default: true
     t.index ["site_id", "name"], name: "index_topics_on_site_id_and_name", using: :btree
     t.index ["updated_at"], name: "index_topics_on_updated_at", using: :btree
   end
 
   create_table "types", force: :cascade do |t|
     t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "site_id"
+    t.boolean  "enabled",                default: true
     t.index ["site_id", "name"], name: "index_types_on_site_id_and_name", using: :btree
     t.index ["updated_at"], name: "index_types_on_updated_at", using: :btree
   end

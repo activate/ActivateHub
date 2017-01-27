@@ -5,6 +5,7 @@
     %thead
       %tr
         %th Name
+        %th Enabled
         %th # Events
         %th # Organizations
         %th # Sources
@@ -12,6 +13,7 @@
       - @topics.each do |topic|
         %tr
           %td= link_to topic.name, admin_topic_path(topic)
+          %td= topic.enabled? ? '&#10004;'.html_safe : ''
           %td= topic.events.size
           %td= topic.organizations.size
           %td= topic.sources.size

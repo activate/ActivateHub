@@ -9,9 +9,7 @@ class Admin::TypesController < AdminController
   def show
     @type = Type.find(params[:id])
 
-    @events = @type.events.order('created_at desc').limit(50)
-    @sources = @type.sources
-
+    preload_associations(@type)
     respond_with :admin, @type
   end
 
@@ -27,16 +25,45 @@ class Admin::TypesController < AdminController
     @type.attributes = params.require(:type).permit(:name)
 
     if @type.save
+      flash[:success] = t('.success')
       respond_with :admin, @type
     else
-      respond_with @type
+      respond_with @type, status: 422
+    end
+  end
+
+  def edit
+    @type = Typee.find(params[:id])
+    respond_with :admin, @type
+  end
+
+  def update
+    @type = Type.find(params[:id])
+
+    if @type.update_attributes(params.require(:type).permit(:name, :enabled))
+      flash[:success] = t('.success')
+      respond_with :admin, @type
+    else
+      respond_with :admin, @type, status: 422
     end
   end
 
   def destroy
     @type = Type.find(params[:id])
 
-    @type.destroy unless @type.any_items?
-    respond_with :admin, @type
+    if !@type.any_items? && @type.destroy
+      flash[:success] = t('.success')
+      respond_with :admin, :types
+    else
+      flash[:failure] = t('.associated_content')
+      preload_associations(@type)
+      render 'show', status: 409
+    end
   end
+
+  private def preload_associations(type)
+    @events = type.events.order('created_at desc').limit(50)
+    @sources = type.sources
+  end
+
 end

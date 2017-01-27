@@ -18,6 +18,25 @@ en:
       submit: "Filter"
       reset: "Reset"
 
+  admin:
+    topics:
+      create:
+        success: "Topic was successfully created."
+      destroy:
+        associated_content: "Topic cannot be destroyed with associated content."
+        success: "Topic was successfully deleted."
+      update:
+        success: "Topic was successfully updated."
+
+    types:
+      create:
+        success: "Type was successfully created."
+      destroy:
+        associated_content: "Type cannot be destroyed with associated content."
+        success: "Type was successfully deleted."
+      update:
+        success: "Type was successfully updated."
+
   site:
     navbar:
       menu:

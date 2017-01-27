@@ -73,6 +73,7 @@ RSpec.configure do |config|
   config.include ControllerHelper, :type => :controller
 
   # Include contexts or shared examples when following metadata is used
+  config.include_context "site"
   config.include_context "requires user login", :requires_user
   config.include_context "requires admin login", :requires_admin
 
@@ -85,11 +86,11 @@ RSpec.configure do |config|
     Timecop.freeze(freeze_at.change(:nsec => 0)) { ex.run }
   end
 
-  config.before(:each) do
+  config.before(:suite) do
     # data is tenantized by site, so we need to ensure a site exists for
     # all tests and that it matches the request.domain used for controller
     # and functional tests.
-    ENV['TEST_REQ_HOST'] = 'activate.test'
+    ENV['TEST_REQ_HOST'] ||= 'activate.test'
     Site.create(
       :name     => 'Test Site',
       :domain   => ENV['TEST_REQ_HOST'],

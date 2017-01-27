@@ -1,4 +1,8 @@
 class Site < ApplicationRecord
+
+  has_many :topics
+  has_many :types
+
   validates :name, :presence => true
   validates :domain, :presence => true, :uniqueness => true
   validates :timezone, :presence => true

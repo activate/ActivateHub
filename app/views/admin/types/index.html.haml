@@ -5,11 +5,13 @@
     %thead
       %tr
         %th Name
+        %th Enabled
         %th # Events
         %th # Sources
     %tbody
       - @types.each do |type|
         %tr
           %td= link_to type.name, admin_type_path(type)
+          %td= type.enabled? ? '&#10004;'.html_safe : ''
           %td= type.events.size
           %td= type.sources.size

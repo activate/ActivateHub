@@ -8,6 +8,9 @@ class Type < ApplicationRecord
   validates :name, :presence => true
   validates :name, :uniqueness => { :scope => :site_id, :case_sensitive => false }
 
+  scope :enabled, -> { where(enabled: true) }
+  scope :disabled, -> { where(enabled: false) }
+
   default_scope -> { order('LOWER(types.name) ASC') }
 
 
