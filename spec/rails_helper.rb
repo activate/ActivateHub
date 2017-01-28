@@ -91,7 +91,8 @@ RSpec.configure do |config|
     # all tests and that it matches the request.domain used for controller
     # and functional tests.
     ENV['TEST_REQ_HOST'] ||= 'activate.test'
-    Site.create(
+    Site.destroy_all
+    Site.create!(
       :name     => 'Test Site',
       :domain   => ENV['TEST_REQ_HOST'],
       :timezone => 'Pacific Time (US & Canada)',
