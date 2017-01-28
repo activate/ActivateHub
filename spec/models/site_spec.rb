@@ -12,6 +12,9 @@ RSpec.describe Site, type: :model do
 
   it { should validate_uniqueness_of(:domain) }
 
+  # Ensure any cases of #use! in examples are cleaned up
+  around {|ex| site.with_site { ex.run } }
+
   describe "::with_site" do
     let(:alt_site) { create(:site, :locale => 'en-locale-loco') }
 
