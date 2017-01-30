@@ -3,6 +3,19 @@ require "rails_helper"
 RSpec.describe "Site Tenancy", type: :request do
   let(:other_site) { create(:site) }
 
+  it "returns a 404 not found if site domain is not found" do
+    expect { get events_url(host: site.domain + "x") }
+      .to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it "treats site domains as case-insensitive" do
+    get events_url(host: site.domain.upcase)
+    expect(response).to be_success
+
+    get events_url(host: site.domain.downcase)
+    expect(response).to be_success
+  end
+
   it "restrict content to that associated with site" do
     event = create(:event, title: "EVENT71443", site: site)
     other_event = create(:event, title: "EVENT47614", site: other_site)
@@ -15,6 +28,14 @@ RSpec.describe "Site Tenancy", type: :request do
   describe "Alternate Domains" do
     subject(:alt_domain) { create(:site_domain, site: site) }
     before { host! alt_domain.domain }
+
+    it "treats site domains as case-insensitive" do
+      get events_url(host: alt_domain.domain.upcase)
+      expect(response).to be_redirect
+
+      get events_url(host: alt_domain.domain.downcase)
+      expect(response).to be_redirect
+    end
 
     context "when alternate domain is set to redirect" do
       before { alt_domain.update_attributes!(redirect: true) }

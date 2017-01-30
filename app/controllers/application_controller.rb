@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 protected
 
   def with_site_from_domain(&blk)
-    domain = SiteDomain.includes(:site).find_by_domain!(request.host)
+    domain = SiteDomain.includes(:site).find_by_domain!(request.host.downcase)
     if domain.redirect?
       redirect_to(url_for(host: domain.site.domain))
     else

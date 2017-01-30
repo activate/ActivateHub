@@ -7,7 +7,9 @@ class Site < ApplicationRecord
   after_create :create_domain!
 
   validates :name, :presence => true
-  validates :domain, :presence => true, :uniqueness => true
+  validates :domain,
+    :presence => true,
+    :uniqueness => { :allow_blank => true, :case_sensitive => false }
   validates :timezone, :presence => true
   validates :locale, :presence => true
 
@@ -15,6 +17,9 @@ class Site < ApplicationRecord
     find_by_domain!(domain).with_site(&block)
   end
 
+  def domain=(value)
+    super(value.try(:downcase))
+  end
 
   def venues_google_map_options
     {

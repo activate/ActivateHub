@@ -10,7 +10,7 @@ RSpec.describe Site, type: :model do
   it { should validate_presence_of(:timezone) }
   it { should validate_presence_of(:locale) }
 
-  it { should validate_uniqueness_of(:domain) }
+  it { should validate_uniqueness_of(:domain).case_insensitive }
 
   # Ensure any cases of #use! in examples are cleaned up
   around {|ex| site.with_site { ex.run } }
@@ -36,7 +36,14 @@ RSpec.describe Site, type: :model do
     end
   end
 
-  describe "use!" do
+  describe "#domain=" do
+    it "downcases the domain on assignment" do
+      expect { site.domain = "FooBar.TEST" }
+        .to change { site.domain }.to("foobar.test")
+    end
+  end
+
+  describe "#use!" do
     it "sets the default site associated with model objects" do
       expect(ApplicationRecord).to receive(:current_site=).with(site)
       site.use!
