@@ -1,7 +1,10 @@
 class Site < ApplicationRecord
 
+  has_many :site_domains, dependent: :destroy
   has_many :topics
   has_many :types
+
+  after_create :create_domain!
 
   validates :name, :presence => true
   validates :domain, :presence => true, :uniqueness => true
@@ -36,6 +39,10 @@ class Site < ApplicationRecord
     I18n.locale = locale
     Time.zone = timezone
     self
+  end
+
+  private def create_domain!
+    site_domains.create!(domain: domain, redirect: false)
   end
 
 end

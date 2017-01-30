@@ -15,6 +15,17 @@ RSpec.describe Site, type: :model do
   # Ensure any cases of #use! in examples are cleaned up
   around {|ex| site.with_site { ex.run } }
 
+  describe "(callbacks)" do
+    it "creates a new non-redirect site domain record when site is created" do
+      site = build(:site)
+      expect { site.save! }.to change { SiteDomain.count }.by(1)
+
+      domain = site.site_domains.find_by_domain(site.domain)
+      expect(domain).to be_present
+      expect(domain.redirect?).to_not be true
+    end
+  end
+
   describe "::with_site" do
     let(:alt_site) { create(:site, :locale => 'en-locale-loco') }
 

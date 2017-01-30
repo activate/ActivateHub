@@ -11,13 +11,18 @@ class ApplicationController < ActionController::Base
   # Setup theme
   layout "application"
 
-  before_action :current_site
+  prepend_around_action :with_site_from_domain
   before_action :set_paper_trail_whodunnit
 protected
 
-  def current_site
-    @current_site = Site.find_by_domain!(request.host)
-    @current_site.use!
+  def with_site_from_domain(&blk)
+    domain = SiteDomain.includes(:site).find_by_domain!(request.host)
+    if domain.redirect?
+      redirect_to(url_for(host: domain.site.domain))
+    else
+      @current_site = domain.site
+      @current_site.with_site(&blk)
+    end
   end
 
   #---[ Helpers ]---------------------------------------------------------

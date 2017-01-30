@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170113215729) do
+ActiveRecord::Schema.define(version: 20170129122904) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -130,6 +130,16 @@ ActiveRecord::Schema.define(version: 20170113215729) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.index ["item", "table", "month", "year"], name: "index_rails_admin_histories", using: :btree
+  end
+
+  create_table "site_domains", force: :cascade do |t|
+    t.integer  "site_id",                   null: false
+    t.string   "domain",                    null: false
+    t.boolean  "redirect",   default: true, null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["domain"], name: "index_site_domains_on_domain", unique: true, using: :btree
+    t.index ["site_id"], name: "index_site_domains_on_site_id", using: :btree
   end
 
   create_table "sites", force: :cascade do |t|
@@ -271,4 +281,5 @@ ActiveRecord::Schema.define(version: 20170113215729) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   end
 
+  add_foreign_key "site_domains", "sites"
 end
