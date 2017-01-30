@@ -64,6 +64,48 @@ RSpec.describe Site, type: :model do
     end
   end
 
+  describe "::without_site" do
+    context "within the passed block" do
+      it "sets the timezone to UTC" do
+        Site.without_site do
+          expect(Time.zone).to eq Time.find_zone('UTC')
+          expect(Time.zone).to_not eq Time.find_zone(site.timezone) # Ensure changed
+        end
+      end
+
+      it "sets the locale to default locale" do
+        Site.without_site do
+          expect(I18n.locale).to eq I18n.default_locale
+          expect(I18n.locale.to_s).to_not eq site.locale
+        end
+      end
+
+      it "clear the current_site to use for database queries" do
+        expect(ApplicationRecord.current_site).to_not be_nil
+        Site.without_site { expect(ApplicationRecord.current_site).to be_nil }
+      end
+    end
+
+    context "when the block has finished executing" do
+      it "returns the last value from the block" do
+        expect(Site.without_site { :batman }).to eq :batman
+      end
+
+      it "restores the original timezone" do
+        expect { Site.without_site { nil } }.to_not change { Time.zone }
+      end
+
+      it "restores the original locale" do
+        expect { Site.without_site { nil } }.to_not change { I18n.locale }
+      end
+
+      it "restores the original site scope" do
+        expect { Site.without_site { nil } } \
+          .to_not change { ApplicationRecord.current_site }
+      end
+    end
+  end
+
   describe "#with_site" do
     context "within the passed block" do
       it "passes in the site as a argument" do

@@ -17,6 +17,18 @@ class Site < ApplicationRecord
     find_by_domain!(domain).with_site(&block)
   end
 
+  def self.without_site(&block)
+    orig = ApplicationRecord.current_site
+    begin
+      ApplicationRecord.current_site = nil
+      I18n.locale = I18n.default_locale
+      Time.zone = 'UTC'
+      yield
+    ensure
+      orig ? orig.use! : nil
+    end
+  end
+
   def domain=(value)
     super(value.try(:downcase))
   end
