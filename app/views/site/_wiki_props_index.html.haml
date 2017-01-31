@@ -6,5 +6,6 @@
 %h3.wiki-index-title= t('.title', :obj => collection_name)
 
 .wiki-actions
-  - add_link = link_to t('.add'), new_polymorphic_path(collection.klass)
+  - add_link = link_to t('.add'), new_polymorphic_path(collection.klass), :class => 'action-btn'
+
   = t('.actions', :add => add_link, :obj => object_name, :collection => collection_name).html_safe

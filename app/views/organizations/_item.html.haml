@@ -9,9 +9,8 @@
       .organization-title= organization.name
 
       .organization-source-actions
-        .show-sources>= link_to t('.sources.show'), '#'
-        ,
-        .add-source= link_to t('.sources.add'), new_organization_source_path(organization)
+        .add-source= link_to t('.sources.add'), new_organization_source_path(organization), :class => 'action-btn', :style => 'padding: 3px 5px'
+        .show-sources= link_to t('.sources.show'), '#', :class => 'action-btn', :style => 'padding: 3px 5px'
 
       - if organization.url?
         %h2.organization-url-title= t('.url.title')
